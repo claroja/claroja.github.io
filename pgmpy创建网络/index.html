@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="创建模型 在pgmpy中, 模型的结构和它的参数(CPDs)两者是分开的.所以创建需要三步:  定义模型的结构 定义所有的参数 将参数添加到结构中 我们以cancer model为例子: 1.png   1. 定义模型结构 本例中, 我们定义了Pollution -&gt; Cancer, Smoker -&gt; Cancer, Cancer -&gt; Xray, Cancer -&gt; D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pgmpy创建网络">
+<meta property="og:url" content="https://claroja.github.io/pgmpy%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="创建模型 在pgmpy中, 模型的结构和它的参数(CPDs)两者是分开的.所以创建需要三步:  定义模型的结构 定义所有的参数 将参数添加到结构中 我们以cancer model为例子: 1.png   1. 定义模型结构 本例中, 我们定义了Pollution -&gt; Cancer, Smoker -&gt; Cancer, Cancer -&gt; Xray, Cancer -&gt; D">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-25T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.427Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/pgmpy%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/pgmpy%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C/","path":"pgmpy创建网络/","title":"pgmpy创建网络"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>pgmpy创建网络 | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text"> 1. 定义模型结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%AE%9A%E4%B9%89cpds"><span class="nav-number">2.</span> <span class="nav-text"> 2. 定义CPDs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%90%91%E6%A8%A1%E5%9E%8B%E4%B8%AD%E6%B7%BB%E5%8A%A0cpds"><span class="nav-number">3.</span> <span class="nav-text"> 3. 向模型中添加CPDs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%AE%80%E5%8D%95%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text"> 模型简单操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%BD%E5%85%A5%E5%AE%98%E6%96%B9%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text"> 载入官方模型</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pgmpy%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="pgmpy创建网络 | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pgmpy创建网络
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 22:03:54" itemprop="dateCreated datePublished" datetime="2021-10-25T22:03:54+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>创建模型<br />
+在pgmpy中, 模型的结构和它的参数(CPDs)两者是分开的.所以创建需要三步:</p>
+<ol>
+<li>定义模型的结构</li>
+<li>定义所有的参数</li>
+<li>将参数添加到结构中<br />
+我们以<a target="_blank" rel="noopener" href="http://www.bnlearn.com/bnrepository/#cancer">cancer model</a>为例子:<br />
+<a href="1.png">1.png</a></li>
+</ol>
+<h1 id="1-定义模型结构"><a class="markdownIt-Anchor" href="#1-定义模型结构"></a> 1. 定义模型结构</h1>
+<p>本例中, 我们定义了Pollution -&gt; Cancer, Smoker -&gt; Cancer, Cancer -&gt; Xray, Cancer -&gt; Dyspnoea的结构.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>models <span class="token keyword">import</span> BayesianModel
+
+cancer_model <span class="token operator">=</span> BayesianModel<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'Pollution'</span><span class="token punctuation">,</span> <span class="token string">'Cancer'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                                <span class="token punctuation">(</span><span class="token string">'Smoker'</span><span class="token punctuation">,</span> <span class="token string">'Cancer'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                                <span class="token punctuation">(</span><span class="token string">'Cancer'</span><span class="token punctuation">,</span> <span class="token string">'Xray'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                                <span class="token punctuation">(</span><span class="token string">'Cancer'</span><span class="token punctuation">,</span> <span class="token string">'Dyspnoea'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="2-定义cpds"><a class="markdownIt-Anchor" href="#2-定义cpds"></a> 2. 定义CPDs</h1>
+<p>贝叶斯网络中每个节点都有一个CPD, 因此我们需要定义5个CPDs. 在pgmpy中, CPDs可以使用TabularCPD类, 具体可参考<a target="_blank" rel="noopener" href="https://pgmpy.org/_modules/pgmpy/factors/discrete/CPD.html">官方文档</a>.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>factors<span class="token punctuation">.</span>discrete <span class="token keyword">import</span> TabularCPD
+cpd_poll <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'Pollution'</span><span class="token punctuation">,</span> variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+                        values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.9</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0.1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+cpd_smoke <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'Smoker'</span><span class="token punctuation">,</span> variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+                       values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0.7</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+cpd_cancer <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'Cancer'</span><span class="token punctuation">,</span> variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+                        values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.03</span><span class="token punctuation">,</span> <span class="token number">0.05</span><span class="token punctuation">,</span> <span class="token number">0.001</span><span class="token punctuation">,</span> <span class="token number">0.02</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                <span class="token punctuation">[</span><span class="token number">0.97</span><span class="token punctuation">,</span> <span class="token number">0.95</span><span class="token punctuation">,</span> <span class="token number">0.999</span><span class="token punctuation">,</span> <span class="token number">0.98</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                        evidence<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'Smoker'</span><span class="token punctuation">,</span> <span class="token string">'Pollution'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                        evidence_card<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+cpd_xray <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'Xray'</span><span class="token punctuation">,</span> variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+                        values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.9</span><span class="token punctuation">,</span> <span class="token number">0.2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0.1</span><span class="token punctuation">,</span> <span class="token number">0.8</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                        evidence<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'Cancer'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> evidence_card<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+cpd_dysp <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'Dyspnoea'</span><span class="token punctuation">,</span> variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+                        values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.65</span><span class="token punctuation">,</span> <span class="token number">0.3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0.35</span><span class="token punctuation">,</span> <span class="token number">0.7</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                        evidence<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'Cancer'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> evidence_card<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="3-向模型中添加cpds"><a class="markdownIt-Anchor" href="#3-向模型中添加cpds"></a> 3. 向模型中添加CPDs</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Associating the parameters with the model structure.</span>
+cancer_model<span class="token punctuation">.</span>add_cpds<span class="token punctuation">(</span>cpd_poll<span class="token punctuation">,</span> cpd_smoke<span class="token punctuation">,</span> cpd_cancer<span class="token punctuation">,</span> cpd_xray<span class="token punctuation">,</span> cpd_dysp<span class="token punctuation">)</span>
+<span class="token comment"># Checking if the cpds are valid for the model.</span>
+cancer_model<span class="token punctuation">.</span>check_model<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="模型简单操作"><a class="markdownIt-Anchor" href="#模型简单操作"></a> 模型简单操作</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Check for d-separation between variables</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>cancer_model<span class="token punctuation">.</span>is_dconnected<span class="token punctuation">(</span><span class="token string">'Pollution'</span><span class="token punctuation">,</span> <span class="token string">'Smoker'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>cancer_model<span class="token punctuation">.</span>is_dconnected<span class="token punctuation">(</span><span class="token string">'Pollution'</span><span class="token punctuation">,</span> <span class="token string">'Smoker'</span><span class="token punctuation">,</span> observed<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'Cancer'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Get all d-connected nodes</span>
+cancer_model<span class="token punctuation">.</span>active_trail_nodes<span class="token punctuation">(</span><span class="token string">'Pollution'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># List local independencies for a node</span>
+cancer_model<span class="token punctuation">.</span>local_independencies<span class="token punctuation">(</span><span class="token string">'Xray'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Get all model implied independence conditions</span>
+cancer_model<span class="token punctuation">.</span>get_independencies<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="载入官方模型"><a class="markdownIt-Anchor" href="#载入官方模型"></a> 载入官方模型</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>utils <span class="token keyword">import</span> get_example_model
+model <span class="token operator">=</span> get_example_model<span class="token punctuation">(</span><span class="token string">'cancer'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Nodes in the model:"</span><span class="token punctuation">,</span> model<span class="token punctuation">.</span>nodes<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Edges in the model:"</span><span class="token punctuation">,</span> model<span class="token punctuation">.</span>edges<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+model<span class="token punctuation">.</span>get_cpds<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/python_log/" rel="prev" title="python_log">
+                  <i class="fa fa-chevron-left"></i> python_log
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/pgmpy%E6%8E%A8%E7%90%86/" rel="next" title="pgmpy推理">
+                  pgmpy推理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

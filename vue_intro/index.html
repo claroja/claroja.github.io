@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="vue安装 vue_cli  vue对象内部组件 vue通过数据代理的方式, 将各个属性(data,methods,computed等)挂载到vm对象上, 所以可以通过this指针直接访问.    属性 描述 参考     el 将vm对象与具体的htmlElement进行绑定 vue_el_data   data 挂载的数据 vue_el_data, v-bind.md, v-model.md">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue_intro">
+<meta property="og:url" content="https://claroja.github.io/vue_intro/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="vue安装 vue_cli  vue对象内部组件 vue通过数据代理的方式, 将各个属性(data,methods,computed等)挂载到vm对象上, 所以可以通过this指针直接访问.    属性 描述 参考     el 将vm对象与具体的htmlElement进行绑定 vue_el_data   data 挂载的数据 vue_el_data, v-bind.md, v-model.md">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-25T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.499Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/vue_intro/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/vue_intro/","path":"vue_intro/","title":"vue_intro"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>vue_intro | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vue%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text"> vue安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue%E5%AF%B9%E8%B1%A1%E5%86%85%E9%83%A8%E7%BB%84%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text"> vue对象内部组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue%E5%AF%B9%E8%B1%A1%E4%B8%8Ehtmlelement%E4%BA%A4%E4%BA%92"><span class="nav-number">3.</span> <span class="nav-text"> vue对象与htmlElement交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E6%B8%B2%E6%9F%93htmlelement%E9%83%A8%E5%88%86"><span class="nav-number">4.</span> <span class="nav-text"> 指令渲染htmlElement部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6component"><span class="nav-number">5.</span> <span class="nav-text"> 组件component</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%8F%92%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text"> 其他插件</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vue_intro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="vue_intro | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vue_intro
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 22:03:54" itemprop="dateCreated datePublished" datetime="2021-10-25T22:03:54+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="vue安装"><a class="markdownIt-Anchor" href="#vue安装"></a> vue安装</h2>
+<p><a href="/vue_cli/">vue_cli</a></p>
+<h2 id="vue对象内部组件"><a class="markdownIt-Anchor" href="#vue对象内部组件"></a> vue对象内部组件</h2>
+<p>vue通过数据代理的方式, 将各个属性(<code>data</code>,<code>methods</code>,<code>computed</code>等)挂载到vm对象上, 所以可以通过<code>this</code>指针直接访问.</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+<th>参考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>el</td>
+<td>将vm对象与具体的htmlElement进行绑定</td>
+<td><a href="/vue_el_data/">vue_el_data</a></td>
+</tr>
+<tr>
+<td>data</td>
+<td>挂载的数据</td>
+<td><a href="/vue_el_data/">vue_el_data</a>, <a target="_blank" rel="noopener" href="http://v-bind.md">v-bind.md</a>, <a target="_blank" rel="noopener" href="http://v-model.md">v-model.md</a>, <a target="_blank" rel="noopener" href="http://xn--fgt690bgoa77z.md">深层监测.md</a></td>
+</tr>
+<tr>
+<td>methods</td>
+<td>挂载的方法</td>
+<td><a href="/vue_methods/">vue_methods</a>, <a target="_blank" rel="noopener" href="http://v-on.md">v-on.md</a></td>
+</tr>
+<tr>
+<td>computed</td>
+<td>挂载的数据, 该数据是计算得来</td>
+<td><a href="/vue-computed/">vue-computed</a></td>
+</tr>
+<tr>
+<td>watch</td>
+<td>computed的高级版</td>
+<td><a href="/vue_watch/">vue_watch</a></td>
+</tr>
+<tr>
+<td>set</td>
+<td>数据深层监测,比如list中的元素</td>
+<td><a href="/vue_set/">vue_set</a></td>
+</tr>
+<tr>
+<td>lifecycle</td>
+<td>vue的生命周期函数, 用来初始化或销毁时做一些东西</td>
+<td><a href="/vue_lifecycle/">vue_lifecycle</a></td>
+</tr>
+<tr>
+<td>filters</td>
+<td>过滤方法, 用来格式化最终渲染的结果</td>
+<td><a href="/vue-filter/">vue-filter</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="vue对象与htmlelement交互"><a class="markdownIt-Anchor" href="#vue对象与htmlelement交互"></a> vue对象与htmlElement交互</h2>
+<ul>
+<li>vue的数据如何与htmlElement属性绑定</li>
+<li>vue的方法如何与htmlElement事件绑定</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>描述</th>
+<th>参考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v-bind</td>
+<td>将标签的属性值与vm对象上的数据进行绑定</td>
+<td><a href="/vue_v-bind/">vue_v-bind</a></td>
+</tr>
+<tr>
+<td>v-model</td>
+<td>同v-bind, 但是双向的</td>
+<td><a href="/vue_v-model/">vue_v-model</a></td>
+</tr>
+<tr>
+<td>v-on</td>
+<td>将元素事件与vm对象的方法进行绑定</td>
+<td><a href="/vue_v-on/">vue_v-on</a></td>
+</tr>
+<tr>
+<td>ref</td>
+<td>引用Element</td>
+<td><a href="/vue_ref/">vue_ref</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="指令渲染htmlelement部分"><a class="markdownIt-Anchor" href="#指令渲染htmlelement部分"></a> 指令渲染htmlElement部分</h2>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>描述</th>
+<th>参考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&#123;&#123;&#125;&#125;</code></td>
+<td>渲染数据</td>
+<td><a href="/vue_el_data/">vue_el_data</a></td>
+</tr>
+<tr>
+<td>v-for</td>
+<td>循环渲染Element</td>
+<td><a href="/vue_v-for/">vue_v-for</a></td>
+</tr>
+<tr>
+<td>v-if_show</td>
+<td>条件渲染Element</td>
+<td><a href="/vue_v-if_show/">vue_v-if_show</a></td>
+</tr>
+<tr>
+<td>v-once</td>
+<td>仅仅渲染一次</td>
+<td><a href="/vue_v-once/">vue_v-once</a></td>
+</tr>
+<tr>
+<td>v-pre</td>
+<td>不编译此Element, 可加快渲染速度</td>
+<td><a href="/vue_v-pre/">vue_v-pre</a></td>
+</tr>
+<tr>
+<td>directive</td>
+<td>自定义指令</td>
+<td><a href="/vue-directive/">vue-directive</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="组件component"><a class="markdownIt-Anchor" href="#组件component"></a> 组件component</h2>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>描述</th>
+<th>参考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>component</td>
+<td>定义及使用组件</td>
+<td><a href="/vue-component/">vue-component</a></td>
+</tr>
+<tr>
+<td>slot</td>
+<td>类比props,通过组件标签中的值,向组件中slot位置传值<a href="/vue_slot/">vue_slot</a></td>
+<td></td>
+</tr>
+<tr>
+<td>props</td>
+<td>类比slot,通过组件标签属性的值, 向组件中的props传值,然后绑定到data<a href="/vue_props/">vue_props</a></td>
+<td></td>
+</tr>
+<tr>
+<td>mixin</td>
+<td>提取公共方法</td>
+<td><a href="/vue_mixin/">vue_mixin</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="其他插件"><a class="markdownIt-Anchor" href="#其他插件"></a> 其他插件</h2>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>描述</th>
+<th>参考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vuex</td>
+<td>数据存储及交换</td>
+<td><a href="/vue_vuex/">vue_vuex</a></td>
+</tr>
+<tr>
+<td>router</td>
+<td>路由</td>
+<td><a href="/vue_router/">vue_router</a></td>
+</tr>
+</tbody>
+</table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/vue_mixin/" rel="prev" title="vue_mixin">
+                  <i class="fa fa-chevron-left"></i> vue_mixin
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/vue_lifecycle/" rel="next" title="vue_lifecycle">
+                  vue_lifecycle <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

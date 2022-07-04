@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="性能优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Webpack性能优化">
+<meta property="og:url" content="https://claroja.github.io/webpack%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="性能优化">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-16T07:29:59.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.516Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/webpack%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/webpack%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/","path":"webpack性能优化/","title":"Webpack性能优化"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Webpack性能优化 | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text"> 开发环境性能优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text"> 生产环境性能优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text"> 代码调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="nav-number">4.</span> <span class="nav-text"> 热更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#js%E7%BC%93%E5%AD%98"><span class="nav-number">5.</span> <span class="nav-text"> JS缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%83%AD%E7%BC%96%E8%AF%91"><span class="nav-number">5.1.</span> <span class="nav-text"> 热编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E7%BC%93%E5%AD%98%E5%A4%84%E7%90%86"><span class="nav-number">5.2.</span> <span class="nav-text"> 生产缓存处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#js%E5%A4%9A%E6%96%87%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="nav-number">6.</span> <span class="nav-text"> JS多文件编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%87%92%E5%8A%A0%E8%BD%BD%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD"><span class="nav-number">7.</span> <span class="nav-text"> 懒加载和预加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E9%99%A4%E6%A8%A1%E5%9D%97"><span class="nav-number">8.</span> <span class="nav-text"> 排除模块</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/webpack%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Webpack性能优化 | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Webpack性能优化
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-16 15:29:59" itemprop="dateCreated datePublished" datetime="2021-05-16T15:29:59+08:00">2021-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>性能优化</p>
+<span id="more"></span>
+<h2 id="开发环境性能优化"><a class="markdownIt-Anchor" href="#开发环境性能优化"></a> 开发环境性能优化</h2>
+<ul>
+<li>优化打包构建速度
+<ul>
+<li>HMR</li>
+</ul>
+</li>
+<li>优化代码调试
+<ul>
+<li>source-map</li>
+</ul>
+</li>
+</ul>
+<h2 id="生产环境性能优化"><a class="markdownIt-Anchor" href="#生产环境性能优化"></a> 生产环境性能优化</h2>
+<ul>
+<li>优化打包构建速度
+<ul>
+<li>oneOf</li>
+<li>babel缓存</li>
+<li>多进程打包</li>
+<li>externals</li>
+<li>dll</li>
+</ul>
+</li>
+<li>优化代码运行的性能
+<ul>
+<li>缓存(contenthash)</li>
+<li>tree shaking</li>
+<li>code split</li>
+<li>懒加载/预加载</li>
+<li>pwa</li>
+</ul>
+</li>
+</ul>
+<h2 id="代码调试"><a class="markdownIt-Anchor" href="#代码调试"></a> 代码调试</h2>
+<p>source-map: 源代码到构建后代码映射,方便debug<br />
+<code>webpack.config.js</code>配置</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token literal-property property">devtool</span><span class="token operator">:</span> <span class="token string">'esource-map'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果生产环境需要隐藏代码可以使用’nosources-source-map’</p>
+<ul>
+<li>nosources-source-map 全部隐藏</li>
+<li>hidden-source-map 只隐藏源代码，会提示构建后代码错误信息</li>
+</ul>
+<h2 id="热更新"><a class="markdownIt-Anchor" href="#热更新"></a> 热更新</h2>
+<p>了解即可,不必为一点打包时间浪费时间</p>
+<p>HMR: hot module replacement 热模块替换<br />
+作用：一个模块发生变化，只会重新打包这一个模块（而不是打包所有模块）<br />
+极大提升构建速度</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token literal-property property">devServer</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">contentBase</span><span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">'build'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">compress</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">port</span><span class="token operator">:</span> <span class="token number">3000</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">open</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">hot</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token comment">// 开启HMR功能,需重启webpack</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>样式文件：可以使用HMR功能：因为style-loader内部实现了~</li>
+<li>js文件：默认不能使用HMR功能 --&gt; 需要修改js代码，添加支持HMR功能的代码</li>
+<li>注意：HMR功能对js的处理，只能处理非入口js文件的其他文件。</li>
+<li>html文件: 默认不能使用HMR功能.同时会导致问题：html文件不能热更新了~ （不用做HMR功能）<br />
+解决：修改entry入口，将html文件引入</li>
+</ul>
+<h2 id="js缓存"><a class="markdownIt-Anchor" href="#js缓存"></a> JS缓存</h2>
+<h3 id="热编译"><a class="markdownIt-Anchor" href="#热编译"></a> 热编译</h3>
+<p>babel缓存,<code>cacheDirectory: true</code>这样就只会对修改的js进行编译</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">&#123;</span>
+<span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">\.js$</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+<span class="token literal-property property">exclude</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">node_modules</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+<span class="token literal-property property">loader</span><span class="token operator">:</span> <span class="token string">'babel-loader'</span><span class="token punctuation">,</span>
+<span class="token literal-property property">options</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">presets</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">[</span>
+        <span class="token string">'@babel/preset-env'</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">useBuiltIns</span><span class="token operator">:</span> <span class="token string">'usage'</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">corejs</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">version</span><span class="token operator">:</span> <span class="token number">3</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">targets</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token literal-property property">chrome</span><span class="token operator">:</span> <span class="token string">'60'</span><span class="token punctuation">,</span>
+            <span class="token literal-property property">firefox</span><span class="token operator">:</span> <span class="token string">'50'</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">]</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">cacheDirectory</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token comment">// 开启babel缓存</span>
+<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="生产缓存处理"><a class="markdownIt-Anchor" href="#生产缓存处理"></a> 生产缓存处理</h3>
+<p>当我们更新js后,由于客户端浏览器有缓存机制,相同文件名会优先使用cached缓存.如果我们想要立刻更新,需要改变名称.<br />
+既每次开发完成后,都更新文件名,这样就能做到每次跟新,客户端也会立刻更新.<br />
+更新文件名有三种方式:</p>
+<ul>
+<li>hash: 每次wepack构建时会生成一个唯一的hash值。<br />
+缺点:因为js和css同时使用一个hash值。当更新一个文件时其他文件也会修改.</li>
+<li>chunkhash：根据chunk生成的hash值。如果打包来源于同一个chunk，那么hash值就一样<br />
+缺点: js和css的hash值还是一样的,因为css是在js中被引入的，所以同属于一个chunk</li>
+<li>contenthash: 根据文件的内容生成hash值。不同文件hash值一定不一样</li>
+</ul>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token literal-property property">output</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+<span class="token literal-property property">filename</span><span class="token operator">:</span> <span class="token string">'js/built.[contenthash:10].js'</span><span class="token punctuation">,</span>
+<span class="token literal-property property">path</span><span class="token operator">:</span> <span class="token function">resolve</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">'build'</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="js多文件编译"><a class="markdownIt-Anchor" href="#js多文件编译"></a> JS多文件编译</h2>
+<p>可以将node_modules中代码单独打包一个chunk最终输出</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">optimization<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    splitChunks<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        chunks<span class="token operator">:</span> 'all'
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="懒加载和预加载"><a class="markdownIt-Anchor" href="#懒加载和预加载"></a> 懒加载和预加载</h2>
+<ul>
+<li>懒加载(webpackChunkName):当文件需要使用时才加载~</li>
+<li>预加载(webpackPrefetch):等其他资源加载完毕会在使用之前,提前加载js文件,慎用浏览器可能不支持</li>
+</ul>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'btn'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token comment">/* webpackChunkName: 'test', webpackPrefetch: true */</span><span class="token string">'./test'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">&#123;</span> mul <span class="token punctuation">&#125;</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token comment">//加载test.js模块</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">mul</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="排除模块"><a class="markdownIt-Anchor" href="#排除模块"></a> 排除模块</h2>
+<p>排除一些模块,通过CND,在html中手动导入</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token literal-property property">externals</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">jquery</span><span class="token operator">:</span> <span class="token string">'jQuery'</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/webpack%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" rel="prev" title="Webpack开发环境">
+                  <i class="fa fa-chevron-left"></i> Webpack开发环境
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/js_mudule/" rel="next" title="JS模块化">
+                  JS模块化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

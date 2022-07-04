@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Java Reflection 可以在runtime使用classes, interfaces, fields, methods, 而且是在不知道class, method名称的情况下. package com; import java.lang.reflect.Method; public class Demo &amp;#123;     public static void main(String[">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reflection">
+<meta property="og:url" content="https://claroja.github.io/Reflection/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="Java Reflection 可以在runtime使用classes, interfaces, fields, methods, 而且是在不知道class, method名称的情况下. package com; import java.lang.reflect.Method; public class Demo &amp;#123;     public static void main(String[">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-28T13:03:33.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.116Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/Reflection/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/Reflection/","path":"Reflection/","title":"Reflection"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Reflection | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#java-class-object"><span class="nav-number">1.</span> <span class="nav-text"> java class object</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#constructors"><span class="nav-number">2.</span> <span class="nav-text"> Constructors</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#field"><span class="nav-number">3.</span> <span class="nav-text"> Field</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97field-object"><span class="nav-number">3.1.</span> <span class="nav-text"> 获得Field object</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97field-%E7%9A%84%E5%90%8D%E7%A7%B0%E5%92%8C%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text"> 获得Field 的名称和类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getset-field"><span class="nav-number">3.3.</span> <span class="nav-text"> get&#x2F;set Field</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#methods"><span class="nav-number">4.</span> <span class="nav-text"> Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97method"><span class="nav-number">4.1.</span> <span class="nav-text"> 获得Method[]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97method-parameters%E5%92%8Creturn-types"><span class="nav-number">4.2.</span> <span class="nav-text"> 获得Method Parameters和Return Types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8methods"><span class="nav-number">4.3.</span> <span class="nav-text"> 调用Methods</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#getters-and-setters"><span class="nav-number">5.</span> <span class="nav-text"> Getters and Setters</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#private-fields-and-methods"><span class="nav-number">6.</span> <span class="nav-text"> Private Fields and Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#private-fields"><span class="nav-number">6.1.</span> <span class="nav-text"> Private Fields</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#private-methods"><span class="nav-number">6.2.</span> <span class="nav-text"> Private Methods</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#annotations"><span class="nav-number">7.</span> <span class="nav-text"> Annotations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97class-annotations"><span class="nav-number">7.1.</span> <span class="nav-text"> 获得Class Annotations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97-method-annotations"><span class="nav-number">7.2.</span> <span class="nav-text"> 获得 Method Annotations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97-parameter-annotations"><span class="nav-number">7.3.</span> <span class="nav-text"> 获得 Parameter Annotations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97-field-annotations"><span class="nav-number">7.4.</span> <span class="nav-text"> 获得 Field Annotations</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#generics"><span class="nav-number">8.</span> <span class="nav-text"> Generics</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#generic-method-return-types"><span class="nav-number">8.1.</span> <span class="nav-text"> Generic Method Return Types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generic-method-parameter-types"><span class="nav-number">8.2.</span> <span class="nav-text"> Generic Method Parameter Types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generic-field-types"><span class="nav-number">8.3.</span> <span class="nav-text"> Generic Field Types</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#arrays"><span class="nav-number">9.</span> <span class="nav-text"> Arrays</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAarrays"><span class="nav-number">9.1.</span> <span class="nav-text"> 创建Arrays</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9Carrays"><span class="nav-number">9.2.</span> <span class="nav-text"> 操作Arrays</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97array-class"><span class="nav-number">9.3.</span> <span class="nav-text"> 获得Array Class</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97array-element-class"><span class="nav-number">9.4.</span> <span class="nav-text"> 获得Array Element Class</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dynamic-proxies"><span class="nav-number">10.</span> <span class="nav-text"> Dynamic Proxies</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dynamic-class-loading-and-reloading"><span class="nav-number">11.</span> <span class="nav-text"> Dynamic Class Loading and Reloading</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/Reflection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Reflection | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Reflection
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-28 21:03:33" itemprop="dateCreated datePublished" datetime="2021-06-28T21:03:33+08:00">2021-06-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Java Reflection 可以在runtime使用classes, interfaces, fields, methods, 而且是在不知道class, method名称的情况下.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Method</span></span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Method</span><span class="token punctuation">[</span><span class="token punctuation">]</span> methods <span class="token operator">=</span> <span class="token class-name">Demo</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">Method</span> method <span class="token operator">:</span> methods<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"method = "</span> <span class="token operator">+</span> method<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="java-class-object"><a class="markdownIt-Anchor" href="#java-class-object"></a> java class object</h1>
+<p><a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html">官方文档</a></p>
+<p>通过<code>.class</code>获得<code>java.lang.Class</code> object.所有的types包含primitive types (int, long, float etc.)都有class object.只要知道compile time的class的名称, 就能获得该class的object.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span> myClass <span class="token operator">=</span> <span class="token class-name">Demo</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果在compile time不知道class的名称, 但是在runtime 获得了class name的字符串, 也可以获得该class的object:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span> <span class="token keyword">class</span> <span class="token operator">=</span> <span class="token class-name">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span>className<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>参数<code>className</code>必须包含package的全路径<br />
+如果通过类名找不到类, 则会抛出<code>ClassNotFoundException</code>.</p>
+<ul>
+<li>
+<p>获得class的名称</p>
+<ul>
+<li><code>String className = Class.getName()</code> 返回包含package全路径的class名称</li>
+<li><code>String className = Class.getSimpleName()</code> 仅返回class名称</li>
+</ul>
+</li>
+<li>
+<p>获得class的Modifiers</p>
+</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> modifiers <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getModifiers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>modifiers</code>使用<code>int</code>来代指, 通过<code>java.lang.reflect.Modifier</code>来获得具体的信息:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isAbstract</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span>
+<span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isFinal</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span>
+<span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isInterface</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span>
+<span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isNative</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span>
+<span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isPrivate</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span>
+<span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isProtected</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span>
+<span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isPublic</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span>
+<span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isStatic</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span>
+<span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isStrict</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span>
+<span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isSynchronized</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span>
+<span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isTransient</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span>
+<span class="token class-name">Modifier</span><span class="token punctuation">.</span><span class="token function">isVolatile</span><span class="token punctuation">(</span><span class="token keyword">int</span> modifiers<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>获得Package信息</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Package</span> <span class="token keyword">package</span> <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>获得Superclass</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span> superclass <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>获得实现的Interfaces</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span><span class="token punctuation">[</span><span class="token punctuation">]</span> interfaces <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getInterfaces</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>返回的类型是<code>Class[]</code>, 既Interfaces也是Class object.</p>
+<ul>
+<li>
+<p>获得Constructors</p>
+</li>
+<li>
+<p>Fields<br />
+<code>getFields()</code>方法来获得class的fields</p>
+</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span> myClass <span class="token operator">=</span> <span class="token class-name">Demo</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+<span class="token class-name">Field</span><span class="token punctuation">[</span><span class="token punctuation">]</span> fields   <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>Constructors</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Constructor</span><span class="token punctuation">[</span><span class="token punctuation">]</span> constructors <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getConstructors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>Methods</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span> myClass <span class="token operator">=</span> <span class="token class-name">Demo</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+<span class="token class-name">Method</span><span class="token punctuation">[</span><span class="token punctuation">]</span> methods <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>Fields</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Field</span><span class="token punctuation">[</span><span class="token punctuation">]</span> method <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>Annotations</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Annotation</span><span class="token punctuation">[</span><span class="token punctuation">]</span> annotations <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getAnnotations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="constructors"><a class="markdownIt-Anchor" href="#constructors"></a> Constructors</h1>
+<p>通过reflection, 查看class的constructor和实例化 objects.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Constructor</span><span class="token punctuation">[</span><span class="token punctuation">]</span> constructors <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getConstructors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果知道准确的constructor的parameter types, 则可获得指定的constructor</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Constructor</span> constructor <span class="token operator">=</span>myClass<span class="token punctuation">.</span><span class="token function">getConstructor</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Class</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">&#123;</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果找不到, 则会抛出<code>NoSuchMethodException</code>异常</p>
+<ul>
+<li>获得Constructor的Parameters</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span><span class="token punctuation">[</span><span class="token punctuation">]</span> parameterTypes <span class="token operator">=</span> constructor<span class="token punctuation">.</span><span class="token function">getParameterTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>实例化Objects</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Constructor</span> constructor <span class="token operator">=</span> <span class="token class-name">MyObject</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getConstructor</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">MyObject</span> myObject <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">MyObject</span><span class="token punctuation">)</span>constructor<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token string">"constructor-arg1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>Constructor.newInstance()</code>的参数既是constructor function的参数.</p>
+<h1 id="field"><a class="markdownIt-Anchor" href="#field"></a> Field</h1>
+<p>通过reflection, 可以获得fields(member variables), 并且在runtime来<code>get/set</code>他们.</p>
+<h2 id="获得field-object"><a class="markdownIt-Anchor" href="#获得field-object"></a> 获得Field object</h2>
+<p>获得<code>Field[]</code></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Field</span><span class="token punctuation">[</span><span class="token punctuation">]</span> fields <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果知道Field的名称, 则可获得指定的Field</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Field</span> field <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token string">"someField"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果找不到, 则会抛出<code>NoSuchFieldException</code></p>
+<h2 id="获得field-的名称和类型"><a class="markdownIt-Anchor" href="#获得field-的名称和类型"></a> 获得Field 的名称和类型</h2>
+<ul>
+<li><code>String fieldName = field.getName()</code> 获得名称</li>
+<li><code>Object fieldType = field.getType()</code> 获得类型</li>
+</ul>
+<h2 id="getset-field"><a class="markdownIt-Anchor" href="#getset-field"></a> get/set Field</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Field</span> field <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token string">"someField"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">MyObject</span> objectInstance <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Object</span> value <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>objectInstance<span class="token punctuation">)</span><span class="token punctuation">;</span>
+field<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>objetInstance<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>get()</code>方法, 传入指定的<code>instance</code><br />
+<code>set()</code>方法, 则要传入<code>instance</code>和<code>value</code><br />
+注意, Field是属于class的, 所以在设置值时, 要指定instance.</p>
+<h1 id="methods"><a class="markdownIt-Anchor" href="#methods"></a> Methods</h1>
+<h2 id="获得method"><a class="markdownIt-Anchor" href="#获得method"></a> 获得<code>Method[]</code></h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Method</span><span class="token punctuation">[</span><span class="token punctuation">]</span> methods <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果知道method的parameter types, 则可获得指定的method:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Method</span> method <span class="token operator">=</span>myClass<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token string">"doSomething"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Class</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">&#123;</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Method</span> method <span class="token operator">=</span>myClass<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token string">"doSomething"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>如果匹配不上则会抛出<code>NoSuchMethodException</code></p>
+<h2 id="获得method-parameters和return-types"><a class="markdownIt-Anchor" href="#获得method-parameters和return-types"></a> 获得Method Parameters和Return Types</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span><span class="token punctuation">[</span><span class="token punctuation">]</span> parameterTypes <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getParameterTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Class</span> returnType <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getReturnType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="调用methods"><a class="markdownIt-Anchor" href="#调用methods"></a> 调用Methods</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Method</span> method <span class="token operator">=</span> <span class="token class-name">MyObject</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token string">"doSomething"</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Object</span> returnValue <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token string">"parameter-value1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>invode()</code>第一个参数是对象, <code>null</code>表示没有instance, 既这是一个static method<br />
+`</p>
+<h1 id="getters-and-setters"><a class="markdownIt-Anchor" href="#getters-and-setters"></a> Getters and Setters</h1>
+<p>通过扫描所有method, 来获得getter和setter</p>
+<ul>
+<li>getter<br />
+以<code>get</code>开头, 没有parameters, 并且返回一个值</li>
+<li>setter<br />
+以<code>set</code>开头, 有一个parameter.</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">printGettersSetters</span><span class="token punctuation">(</span><span class="token class-name">Class</span> myClass<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token class-name">Method</span><span class="token punctuation">[</span><span class="token punctuation">]</span> methods <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">Method</span> method <span class="token operator">:</span> methods<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isGetter</span><span class="token punctuation">(</span>method<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"getter: "</span> <span class="token operator">+</span> method<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isSetter</span><span class="token punctuation">(</span>method<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"setter: "</span> <span class="token operator">+</span> method<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">isGetter</span><span class="token punctuation">(</span><span class="token class-name">Method</span> method<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>method<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span><span class="token string">"get"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>      <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>method<span class="token punctuation">.</span><span class="token function">getParameterTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>   <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>  
+  <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>method<span class="token punctuation">.</span><span class="token function">getReturnType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">isSetter</span><span class="token punctuation">(</span><span class="token class-name">Method</span> method<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>method<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span><span class="token string">"set"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>method<span class="token punctuation">.</span><span class="token function">getParameterTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length <span class="token operator">!=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="private-fields-and-methods"><a class="markdownIt-Anchor" href="#private-fields-and-methods"></a> Private Fields and Methods</h1>
+<h2 id="private-fields"><a class="markdownIt-Anchor" href="#private-fields"></a> Private Fields</h2>
+<p><code>Class.getField(String name)</code>和<code>Class.getFields()</code>是获得public field, private field要通过<code>Class.getDeclaredField(String name)</code>和<code>Class.getDeclaredFields()</code>来获得.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Field</span></span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">NoSuchFieldException</span><span class="token punctuation">,</span> <span class="token class-name">IllegalAccessException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Foo</span> foo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token string">"Private Value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Field</span> privateStringField <span class="token operator">=</span> <span class="token class-name">Foo</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        privateStringField<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> fieldValue <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> privateStringField<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>foo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"fieldValue = "</span> <span class="token operator">+</span> fieldValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Foo.class.getDeclaredField(&quot;name&quot;)</code>返回 private field, 仅返回该class的fields, 不会返回任何superclasses的field<br />
+<code>privateStringField.setAccessible(true)</code>关闭了<code>access checks</code>(仅在reflection生效), 所以可以更改private field.</p>
+<h2 id="private-methods"><a class="markdownIt-Anchor" href="#private-methods"></a> Private Methods</h2>
+<p>通过<code>Class.getDeclaredMethod(String name, Class[] parameterTypes)</code>或<code>Class.getDeclaredMethods()</code>获得private method.<br />
+<code> Class.getMethod(String name, Class[] parameterTypes)</code>或<code>Class.getMethods()</code>只会返回public methods.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">InvocationTargetException</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Method</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> bar <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">bar</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">NoSuchMethodException</span><span class="token punctuation">,</span> <span class="token class-name">InvocationTargetException</span><span class="token punctuation">,</span> <span class="token class-name">IllegalAccessException</span> <span class="token punctuation">&#123;</span>
+        bar privateObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">bar</span><span class="token punctuation">(</span><span class="token string">"Private Value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Method</span> privateStringMethod <span class="token operator">=</span> bar<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getDeclaredMethod</span><span class="token punctuation">(</span><span class="token string">"getName"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        privateStringMethod<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> returnValue <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> privateStringMethod<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>privateObject<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>returnValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>bar.class.getDeclaredMethod(&quot;getName&quot;, null)</code>返回 private method, 仅返回该class的methods, 不会返回任何superclasses的method<br />
+<code>privateStringMethod.setAccessible(true)</code>关闭了<code>access checks</code>(仅在reflection生效), 所以可以更改private method.</p>
+<h1 id="annotations"><a class="markdownIt-Anchor" href="#annotations"></a> Annotations</h1>
+<p>定义一个Annotations</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">ElementType</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Retention</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RetentionPolicy</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Target</span></span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">MyAnnotation</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="获得class-annotations"><a class="markdownIt-Anchor" href="#获得class-annotations"></a> 获得Class Annotations</h2>
+<ol>
+<li>获得所有annotation</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Annotation</span></span><span class="token punctuation">;</span>
+<span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"name"</span><span class="token punctuation">,</span>  value <span class="token operator">=</span> <span class="token string">"value"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo1</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Class</span> myClass <span class="token operator">=</span> <span class="token class-name">Demo1</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+        <span class="token class-name">Annotation</span><span class="token punctuation">[</span><span class="token punctuation">]</span> annotations <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getAnnotations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">Annotation</span> annotation <span class="token operator">:</span> annotations<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>annotation <span class="token keyword">instanceof</span> <span class="token class-name">MyAnnotation</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                <span class="token class-name">MyAnnotation</span> myAnnotation <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">MyAnnotation</span><span class="token punctuation">)</span> annotation<span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"name: "</span> <span class="token operator">+</span> myAnnotation<span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"value: "</span> <span class="token operator">+</span> myAnnotation<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>获得指定的annotation</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span> myClass <span class="token operator">=</span> <span class="token class-name">TheClass</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+<span class="token class-name">Annotation</span> annotation <span class="token operator">=</span> myClass<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span><span class="token class-name">MyAnnotation</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span>annotation <span class="token keyword">instanceof</span> <span class="token class-name">MyAnnotation</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token class-name">MyAnnotation</span> myAnnotation <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">MyAnnotation</span><span class="token punctuation">)</span> annotation<span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"name: "</span> <span class="token operator">+</span> myAnnotation<span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"value: "</span> <span class="token operator">+</span> myAnnotation<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="获得-method-annotations"><a class="markdownIt-Anchor" href="#获得-method-annotations"></a> 获得 Method Annotations</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TheClass</span> <span class="token punctuation">&#123;</span>
+  <span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"name"</span><span class="token punctuation">,</span>  value <span class="token operator">=</span> <span class="token string">"value"</span><span class="token punctuation">)</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>获得所有</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Method</span> method <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token class-name">Annotation</span><span class="token punctuation">[</span><span class="token punctuation">]</span> annotations <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getDeclaredAnnotations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>获得指定annotation</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Method</span> method <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token class-name">Annotation</span> annotation <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span><span class="token class-name">MyAnnotation</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="获得-parameter-annotations"><a class="markdownIt-Anchor" href="#获得-parameter-annotations"></a> 获得 Parameter Annotations</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TheClass</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span>
+        <span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"Name"</span><span class="token punctuation">,</span> value<span class="token operator">=</span><span class="token string">"Value"</span><span class="token punctuation">)</span> <span class="token class-name">String</span> parameter<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>获得注解</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Method</span> method <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token class-name">Annotation</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> parameterAnnotations <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getParameterAnnotations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Class</span><span class="token punctuation">[</span><span class="token punctuation">]</span> parameterTypes <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getParameterTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="获得-field-annotations"><a class="markdownIt-Anchor" href="#获得-field-annotations"></a> 获得 Field Annotations</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TheClass</span> <span class="token punctuation">&#123;</span>
+  <span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"name"</span><span class="token punctuation">,</span>  value <span class="token operator">=</span> <span class="token string">"value"</span><span class="token punctuation">)</span>
+  <span class="token keyword">public</span> <span class="token class-name">String</span> myField <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>获得所有annotation</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Field</span> field <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token class-name">Annotation</span><span class="token punctuation">[</span><span class="token punctuation">]</span> annotations <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getDeclaredAnnotations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>获得指定annotation</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Field</span> field <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token class-name">Annotation</span> annotation <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span><span class="token class-name">MyAnnotation</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="generics"><a class="markdownIt-Anchor" href="#generics"></a> Generics</h1>
+<p><code>Java Generics 在compile time被擦除, 所以在runtime不能获得其信息</code>这句话并不准确.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> myList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>当通过reflection在runtime查看<code>java.util.List</code>, 我们无法确定其Generic type. 但是<br />
+可以通过相关联的(fields, parameters, return types)声明, 来确定Generic type.</p>
+<h2 id="generic-method-return-types"><a class="markdownIt-Anchor" href="#generic-method-return-types"></a> Generic Method Return Types</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Method</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">ParameterizedType</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Type</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Arrays</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo2</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> stringList <span class="token operator">=</span> <span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">,</span><span class="token string">"2"</span><span class="token punctuation">,</span><span class="token string">"3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> <span class="token function">getStringList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>stringList<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">NoSuchMethodException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Method</span> method <span class="token operator">=</span> <span class="token class-name">Demo2</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token string">"getStringList"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Type</span> returnType <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getGenericReturnType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>returnType <span class="token keyword">instanceof</span> <span class="token class-name">ParameterizedType</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token class-name">ParameterizedType</span> type <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">ParameterizedType</span><span class="token punctuation">)</span> returnType<span class="token punctuation">;</span>
+            <span class="token class-name">Type</span><span class="token punctuation">[</span><span class="token punctuation">]</span> typeArguments <span class="token operator">=</span> type<span class="token punctuation">.</span><span class="token function">getActualTypeArguments</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">Type</span> typeArgument <span class="token operator">:</span> typeArguments<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                <span class="token class-name">Class</span> typeArgClass <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Class</span><span class="token punctuation">)</span> typeArgument<span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>typeArgClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>getStringList()</code> 返回 <code>List&lt;String&gt;</code>而不仅仅是<code>List</code>.</p>
+<h2 id="generic-method-parameter-types"><a class="markdownIt-Anchor" href="#generic-method-parameter-types"></a> Generic Method Parameter Types</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Method</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">ParameterizedType</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Type</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Arrays</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo3</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> stringList <span class="token operator">=</span> <span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">,</span><span class="token string">"2"</span><span class="token punctuation">,</span><span class="token string">"3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setStringList</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> list<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>stringList <span class="token operator">=</span> list<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">NoSuchMethodException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Method</span> method <span class="token operator">=</span> <span class="token class-name">Demo3</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token string">"setStringList"</span><span class="token punctuation">,</span> <span class="token class-name">List</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Type</span><span class="token punctuation">[</span><span class="token punctuation">]</span> genericParameterTypes <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getGenericParameterTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">Type</span> genericParameterType <span class="token operator">:</span> genericParameterTypes<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>genericParameterType <span class="token keyword">instanceof</span> <span class="token class-name">ParameterizedType</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                <span class="token class-name">ParameterizedType</span> aType <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">ParameterizedType</span><span class="token punctuation">)</span> genericParameterType<span class="token punctuation">;</span>
+                <span class="token class-name">Type</span><span class="token punctuation">[</span><span class="token punctuation">]</span> parameterArgTypes <span class="token operator">=</span> aType<span class="token punctuation">.</span><span class="token function">getActualTypeArguments</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">Type</span> parameterArgType <span class="token operator">:</span> parameterArgTypes<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                    <span class="token class-name">Class</span> parameterArgClass <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Class</span><span class="token punctuation">)</span> parameterArgType<span class="token punctuation">;</span>
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>parameterArgClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="generic-field-types"><a class="markdownIt-Anchor" href="#generic-field-types"></a> Generic Field Types</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Field</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">ParameterizedType</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Type</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Arrays</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo4</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> stringList <span class="token operator">=</span> <span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">,</span><span class="token string">"2"</span><span class="token punctuation">,</span><span class="token string">"3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">NoSuchMethodException</span><span class="token punctuation">,</span> <span class="token class-name">NoSuchFieldException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Field</span> field <span class="token operator">=</span> <span class="token class-name">Demo4</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token string">"stringList"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">Type</span> genericFieldType <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getGenericType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>genericFieldType <span class="token keyword">instanceof</span> <span class="token class-name">ParameterizedType</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token class-name">ParameterizedType</span> aType <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">ParameterizedType</span><span class="token punctuation">)</span> genericFieldType<span class="token punctuation">;</span>
+            <span class="token class-name">Type</span><span class="token punctuation">[</span><span class="token punctuation">]</span> fieldArgTypes <span class="token operator">=</span> aType<span class="token punctuation">.</span><span class="token function">getActualTypeArguments</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">Type</span> fieldArgType <span class="token operator">:</span> fieldArgTypes<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                <span class="token class-name">Class</span> fieldArgClass <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Class</span><span class="token punctuation">)</span> fieldArgType<span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>fieldArgClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="arrays"><a class="markdownIt-Anchor" href="#arrays"></a> Arrays</h1>
+<h2 id="创建arrays"><a class="markdownIt-Anchor" href="#创建arrays"></a> 创建Arrays</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> intArray <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token class-name">Array</span><span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>第一个参数<code>int.class</code>指明array中element的type<br />
+第二个参数<code>3</code>指明array的size</p>
+<h2 id="操作arrays"><a class="markdownIt-Anchor" href="#操作arrays"></a> 操作Arrays</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> intArray <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token class-name">Array</span><span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">Array</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>intArray<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Array</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>intArray<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">111</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Array</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>intArray<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">222</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="获得array-class"><a class="markdownIt-Anchor" href="#获得array-class"></a> 获得Array Class</h2>
+<ul>
+<li>通过类名引用直接获得</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span> intArray <span class="token operator">=</span> <span class="token class-name">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"[I"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>通过<code>forName</code>获得
+<ul>
+<li>获得基本类型Array</li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span> intArray <span class="token operator">=</span> <span class="token class-name">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"[I"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>获得int类型Array, <code>[</code>表示数组 <code>I</code>表示<code>Int</code>, 其他基本类型也是如此<br />
+- 获得任意类型Array</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span> stringArrayClass <span class="token operator">=</span> <span class="token class-name">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"[Ljava.lang.String;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>注意<code>[L</code>在最左侧,<code>;</code>在最右侧.</p>
+<h2 id="获得array-element-class"><a class="markdownIt-Anchor" href="#获得array-element-class"></a> 获得Array Element Class</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> strings <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token class-name">Class</span> stringArrayClass <span class="token operator">=</span> strings<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Class</span> stringArrayComponentType <span class="token operator">=</span> stringArrayClass<span class="token punctuation">.</span><span class="token function">getComponentType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>stringArrayComponentType<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="dynamic-proxies"><a class="markdownIt-Anchor" href="#dynamic-proxies"></a> Dynamic Proxies</h1>
+<h1 id="dynamic-class-loading-and-reloading"><a class="markdownIt-Anchor" href="#dynamic-class-loading-and-reloading"></a> Dynamic Class Loading and Reloading</h1>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-reflection/index.html">http://tutorials.jenkov.com/java-reflection/index.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Annotation/" rel="prev" title="Annotation">
+                  <i class="fa fa-chevron-left"></i> Annotation
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Collections/" rel="next" title="Collections">
+                  Collections <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="为什么使用定位, 标准流或浮动都无法实现:  某个元素可以自由的在一个盒子内移动位置，并且压住其他盒子. 当我们滚动窗口的时候，盒子是固定屏幕某个位置的。  总结:  浮动可以让多个块级盒子一行没有缝隙排列显示， 经常用于横向排列盒子。 定位则是可以让盒子自由的在某个盒子内移动位置或者固定屏幕中某个位置，并且可以压住其他盒子。  定义: 定位 &#x3D; 定位模式 + 边偏移  定位模式用于指定一个元素在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="css_position">
+<meta property="og:url" content="https://claroja.github.io/css_position/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="为什么使用定位, 标准流或浮动都无法实现:  某个元素可以自由的在一个盒子内移动位置，并且压住其他盒子. 当我们滚动窗口的时候，盒子是固定屏幕某个位置的。  总结:  浮动可以让多个块级盒子一行没有缝隙排列显示， 经常用于横向排列盒子。 定位则是可以让盒子自由的在某个盒子内移动位置或者固定屏幕中某个位置，并且可以压住其他盒子。  定义: 定位 &#x3D; 定位模式 + 边偏移  定位模式用于指定一个元素在">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-20T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.148Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/css_position/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/css_position/","path":"css_position/","title":"css_position"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>css_position | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E5%AE%9A%E4%BD%8D"><span class="nav-number">1.</span> <span class="nav-text"> 相对定位</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D"><span class="nav-number">2.</span> <span class="nav-text"> 绝对定位</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BA%E5%AE%9A%E5%AE%9A%E4%BD%8D"><span class="nav-number">3.</span> <span class="nav-text"> 固定定位</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8Dposition%E7%9A%84%E6%8B%93%E5%B1%95"><span class="nav-number">4.</span> <span class="nav-text"> 定位(position)的拓展</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D%E7%9A%84%E7%9B%92%E5%AD%90%E5%B1%85%E4%B8%AD"><span class="nav-number">4.1.</span> <span class="nav-text"> 绝对定位的盒子居中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E7%89%B9%E6%AE%8A%E7%89%B9%E6%80%A7"><span class="nav-number">4.2.</span> <span class="nav-text"> 定位特殊特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%B1%E6%A0%87%E7%9A%84%E7%9B%92%E5%AD%90%E4%B8%8D%E4%BC%9A%E8%A7%A6%E5%8F%91%E5%A4%96%E8%BE%B9%E8%B7%9D%E5%A1%8C%E9%99%B7"><span class="nav-number">4.3.</span> <span class="nav-text"> 脱标的盒子不会触发外边距塌陷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D%E5%9B%BA%E5%AE%9A%E5%AE%9A%E4%BD%8D%E4%BC%9A%E5%AE%8C%E5%85%A8%E5%8E%8B%E4%BD%8F%E7%9B%92%E5%AD%90"><span class="nav-number">4.4.</span> <span class="nav-text"> 绝对定位（固定定位）会完全压住盒子</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/css_position/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="css_position | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          css_position
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>为什么使用定位, 标准流或浮动都无法实现:</p>
+<ol>
+<li>某个元素可以自由的在一个盒子内移动位置，并且压住其他盒子.</li>
+<li>当我们滚动窗口的时候，盒子是固定屏幕某个位置的。</li>
+</ol>
+<p>总结:</p>
+<ol>
+<li>浮动可以让多个块级盒子一行没有缝隙排列显示， 经常用于横向排列盒子。</li>
+<li>定位则是可以让盒子自由的在某个盒子内移动位置或者固定屏幕中某个位置，并且可以压住其他盒子。</li>
+</ol>
+<p>定义:<br />
+定位 = 定位模式 + 边偏移</p>
+<ol>
+<li><strong>定位模式</strong>用于指定一个元素在文档中的定位方式。<br />
+在 CSS 中，通过 <code>position</code> 属性定义元素的<strong>定位模式</strong>，语法如下：<br />
+语法:</li>
+</ol>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">选择器</span> <span class="token punctuation">&#123;</span> 
+    <span class="token property">position</span><span class="token punctuation">:</span> 属性值<span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>属性值有四个:</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>语义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>static</code>   <strong>静态</strong>定位</td>
+<td>几乎不用, 标准流特性摆放位置,</td>
+</tr>
+<tr>
+<td><code>relative</code> <strong>相对</strong>定位</td>
+<td>相对于原来的位置</td>
+</tr>
+<tr>
+<td><code>absolute</code> <strong>绝对</strong>定位</td>
+<td>相对于祖先元素</td>
+</tr>
+<tr>
+<td><code>fixed</code>    <strong>固定</strong>定位</td>
+<td>相对于浏览器窗口</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li><strong>边偏移</strong>则决定了该元素的最终位置。</li>
+</ol>
+<p><strong>边偏移</strong> 就是定位的盒子移动到最终位置。有 top、bottom、left 和 right  4 个属性。</p>
+<table>
+<thead>
+<tr>
+<th>边偏移属性</th>
+<th style="text-align:left">示例</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>top</code></td>
+<td style="text-align:left"><code>top: 80px</code></td>
+<td><strong>顶端</strong>偏移量，定义元素相对于其父元素<strong>上边线的距离</strong>。</td>
+</tr>
+<tr>
+<td><code>bottom</code></td>
+<td style="text-align:left"><code>bottom: 80px</code></td>
+<td><strong>底部</strong>偏移量，定义元素相对于其父元素<strong>下边线的距离</strong>。</td>
+</tr>
+<tr>
+<td><code>left</code></td>
+<td style="text-align:left"><code>left: 80px</code></td>
+<td><strong>左侧</strong>偏移量，定义元素相对于其父元素<strong>左边线的距离</strong>。</td>
+</tr>
+<tr>
+<td><code>right</code></td>
+<td style="text-align:left"><code>right: 80px</code></td>
+<td><strong>右侧</strong>偏移量，定义元素相对于其父元素<strong>右边线的距离</strong></td>
+</tr>
+</tbody>
+</table>
+<h1 id="相对定位"><a class="markdownIt-Anchor" href="#相对定位"></a> 相对定位</h1>
+<p>相对于它自己原来的位置移动<br />
+语法：</p>
+<pre class="line-numbers language-none"><code class="language-none">选择器 &#123; 
+	position: relative; 
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>相对定位的特点：（务必记住）</p>
+<ul>
+<li>它是相对于自己原来的位置来移动的（移动位置的时候参照点是自己原来的位置）。</li>
+<li><strong>原来</strong>在标准流的<strong>位置</strong>继续占有，后面的盒子仍然以标准流的方式对待它。因此，<strong>相对定位并没有脱标</strong>。它最典型的应用是<strong>相对定位经常用来作为绝对定位的父级</strong>.</li>
+</ul>
+<p>例子:<br />
+下例中, <code>.box1</code>相对原来的位置(浏览器左上角), 距上边距移动100px, 左边距移动100px.<code>.box2</code>还是按照标准流来排列, 将<code>.box1</code>看成还在原来的位置(没有受<code>.box1</code>相对定位的影响)</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>相对定位<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">.box1</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
+            <span class="token property">top</span><span class="token punctuation">:</span> 100px<span class="token punctuation">;</span>
+            <span class="token property">left</span><span class="token punctuation">:</span> 100px<span class="token punctuation">;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token selector">.box2</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> deeppink<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>box1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>box2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="绝对定位"><a class="markdownIt-Anchor" href="#绝对定位"></a> 绝对定位</h1>
+<p><strong>绝对定位</strong>是是相对于它<strong>祖先元素</strong>来说的。<br />
+语法：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">选择器</span> <span class="token punctuation">&#123;</span> 
+<span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>特点:</p>
+<ol>
+<li><strong>完全脱标</strong> 完全不占位置；</li>
+<li>如果<strong>父元素没有定位</strong>, 则会跳过父元素,以**浏览器(document, 可以理解为body标签)**为准定位。下例中, 子元素<code>.son</code>是相对于浏览器定位的, 而不是相对于父元素<code>.father</code>定位, 因为父亲没有定位</li>
+</ol>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>绝对定位-无父亲或者父亲无定位<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">.father</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 500px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 500px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> skyblue<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token selector">.son</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>
+            <span class="token property">left</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span>
+            <span class="token property">bottom</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>father<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>son<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+   
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="3">
+<li>如果<code>父元素要有定位</code>, 元素将依据<code>最近</code>的已经定位（绝对、固定或相对定位）的祖先进行定位。下面的例子中, <code>.son</code>元素是根据<code>.yeye</code>元素进行定位的, 因为<code>.yeye</code>是距离它最近的有定位的祖先元素. 如果我们放开<code>.father</code>的<code>position: relative;</code>注释, 则<code>.son</code>会相对于<code>.father</code>来定位. 也就是说遵循就近原则.</li>
+</ol>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>绝对定位-父级有定位<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">.yeye</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 800px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 800px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> hotpink<span class="token punctuation">;</span>
+            <span class="token property">padding</span><span class="token punctuation">:</span> 50px<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token selector">.father</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">/* position: relative; */</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 500px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 500px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> skyblue<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token selector">.son</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>
+            <span class="token property">left</span><span class="token punctuation">:</span> 30px<span class="token punctuation">;</span>
+            <span class="token property">bottom</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>yeye<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>father<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>son<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意:</p>
+<ol>
+<li>子级绝对定位，不会占有位置，可以放到父盒子里面的任何一个地方，不会影响其他的兄弟盒子。</li>
+<li>父盒子需要加定位限制子盒子在父盒子内显示。</li>
+<li>父盒子布局时，需要占有位置，因此父亲只能是相对定位。<br />
+这就是子绝父相的由来，所以<strong>相对定位经常用来作为绝对定位的父级</strong>。</li>
+</ol>
+<h1 id="固定定位"><a class="markdownIt-Anchor" href="#固定定位"></a> 固定定位</h1>
+<p>元素<strong>固定于浏览器可视区的位置</strong>。主要使用场景: 可以在浏览器页面滚动时元素的位置不会改变。</p>
+<p>语法：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">选择器</span> <span class="token punctuation">&#123;</span> 
+<span class="token property">position</span><span class="token punctuation">:</span> fixed<span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>特点:</p>
+<ol>
+<li>以浏览器的可视窗口为参照点移动元素。
+<ul>
+<li>跟父元素没有任何关系</li>
+<li>不随滚动条滚动。</li>
+</ul>
+</li>
+<li>固定定位<strong>完全脱标</strong>—— 完全不占位置；</li>
+</ol>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>width=device-width, initial-scale=1.0<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">http-equiv</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>X-UA-Compatible<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>ie=edge<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>固定定位<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">.dj</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">position</span><span class="token punctuation">:</span> fixed<span class="token punctuation">;</span>
+            <span class="token property">top</span><span class="token punctuation">:</span> 100px<span class="token punctuation">;</span>
+            <span class="token property">right</span><span class="token punctuation">:</span> 40px<span class="token punctuation">;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 100px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 100px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> red<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dj<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>aaa<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>召唤下拉条<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+    <span class="token comment">&lt;!-- ....多复制`&lt;/p>`标签, 搞出下拉条 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="定位position的拓展"><a class="markdownIt-Anchor" href="#定位position的拓展"></a> 定位(position)的拓展</h1>
+<h2 id="绝对定位的盒子居中"><a class="markdownIt-Anchor" href="#绝对定位的盒子居中"></a> 绝对定位的盒子居中</h2>
+<p><strong>注意</strong>：加了<strong>绝对定位/固定定位的盒子</strong>不能通过设置 <code>margin: auto</code> 设置<strong>水平居中</strong>。<br />
+但是可以通过以下计算方法实现水平和垂直居中，可以按照下图的方法：</p>
+<ol>
+<li><code>left: 50%;</code>：让<strong>盒子的左侧</strong>移动到<strong>父级元素的水平中心位置</strong>；</li>
+<li><code>margin-left: -100px;</code>：让盒子<strong>向左</strong>移动<strong>自身宽度的一半</strong>。</li>
+</ol>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>绝对定位水平垂直居中<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">.box</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>
+            <span class="token comment">/* 1. left 走 50%  父容器宽度的一半 */</span>
+            <span class="token property">left</span><span class="token punctuation">:</span> 50%<span class="token punctuation">;</span>
+            <span class="token comment">/* 2. margin 负值 往左边走 自己盒子宽度的一半 */</span>
+            <span class="token property">margin-left</span><span class="token punctuation">:</span> -100px<span class="token punctuation">;</span>
+            <span class="token property">top</span><span class="token punctuation">:</span> 50%<span class="token punctuation">;</span>
+            <span class="token property">margin-top</span><span class="token punctuation">:</span> -100px<span class="token punctuation">;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+            <span class="token comment">/* margin: auto; */</span>
+        <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>box<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="定位特殊特性"><a class="markdownIt-Anchor" href="#定位特殊特性"></a> 定位特殊特性</h2>
+<p>绝对定位和固定定位也和浮动类似。</p>
+<p>1.行内元素添加绝对或者固定定位，可以直接设置高度和宽度。<br />
+2.块级元素添加绝对或者固定定位，如果不给宽度或者高度，默认大小是内容的大小。</p>
+<p>前面我们讲过， display 是 显示模式， 可以改变显示模式有以下方式:</p>
+<ul>
+<li>可以用inline-block  转换为行内块</li>
+<li>可以用浮动 float 默认转换为行内块（类似，并不完全一样，因为浮动是脱标的）</li>
+<li>绝对定位和固定定位也和浮动类似， 默认转换的特性 转换为行内块。<br />
+所以说， 一个行内的盒子，如果加了<strong>浮动</strong>、<strong>固定定位</strong>和<strong>绝对定位</strong>，不用转换，就可以给这个盒子直接设置宽度和高度等。</li>
+</ul>
+<h2 id="脱标的盒子不会触发外边距塌陷"><a class="markdownIt-Anchor" href="#脱标的盒子不会触发外边距塌陷"></a> 脱标的盒子不会触发外边距塌陷</h2>
+<p>浮动元素、<strong>绝对定位(固定定位）<strong>元素的都不会触发外边距合并的问题。 （我们以前是用padding border overflow解决的）<br />
+也就是说，我们给盒子改为了浮动或者定位，就不会有垂直</strong>外边距合并的问题</strong>了。</p>
+<h2 id="绝对定位固定定位会完全压住盒子"><a class="markdownIt-Anchor" href="#绝对定位固定定位会完全压住盒子"></a> 绝对定位（固定定位）会完全压住盒子</h2>
+<p>浮动元素不同，只会压住它下面标准流的盒子，但是不会压住下面标准流盒子里面的文字（图片）<br />
+但是绝对定位（固定定位） 会压住下面标准流所有的内容。<br />
+浮动之所以不会压住文字，因为浮动产生的目的最初是为了做文字环绕效果的。 文字会围绕浮动元素</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/css_overflow/" rel="prev" title="css_overflow">
+                  <i class="fa fa-chevron-left"></i> css_overflow
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/css_loadCSS/" rel="next" title="css_loadCSS">
+                  css_loadCSS <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

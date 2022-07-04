@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="数据准备 df1 &#x3D; pd.DataFrame(     &amp;#123;         &quot;A&quot;: [&quot;A0&quot;, &quot;A1&quot;, &quot;A2&quot;, &quot;A3&quot;],         &quot;B&quot;: [&quot;B0&quot;, &quot;B1&quot;, &quot;B2&quot;, &quot;B3&quot;],         &quot;C&quot;: [&quot;C0&quot;, &quot;C1&quot;, &quot;C2&quot;, &quot;C3&quot;],         &quot;D&quot;: [&quot;D0&quot;, &quot;D1&quot;, &quot;D2&quot;, &quot;D3&quot;],     &amp;#1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claroja">
+<meta property="og:url" content="https://claroja.github.io/pandas_concate/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="数据准备 df1 &#x3D; pd.DataFrame(     &amp;#123;         &quot;A&quot;: [&quot;A0&quot;, &quot;A1&quot;, &quot;A2&quot;, &quot;A3&quot;],         &quot;B&quot;: [&quot;B0&quot;, &quot;B1&quot;, &quot;B2&quot;, &quot;B3&quot;],         &quot;C&quot;: [&quot;C0&quot;, &quot;C1&quot;, &quot;C2&quot;, &quot;C3&quot;],         &quot;D&quot;: [&quot;D0&quot;, &quot;D1&quot;, &quot;D2&quot;, &quot;D3&quot;],     &amp;#1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-04T05:40:02.406Z">
+<meta property="article:modified_time" content="2022-07-04T07:51:51.133Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/pandas_concate/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/pandas_concate/","path":"pandas_concate/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text"> 数据准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%B5%E5%90%91%E6%8B%BC%E8%B4%B4-axis-0"><span class="nav-number">2.</span> <span class="nav-text"> 纵向拼贴 axis &#x3D; 0</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%AA%E5%90%91%E6%8B%BC%E8%B4%B4%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8join"><span class="nav-number">3.</span> <span class="nav-text"> 横向拼贴(推荐使用join)</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pandas_concate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-04 13:40:02 / 修改时间：15:51:51" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="数据准备"><a class="markdownIt-Anchor" href="#数据准备"></a> 数据准备</h1>
+<pre><code><pre class="line-numbers language-python" data-language="python"><code class="language-python">df1 <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"A"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"A0"</span><span class="token punctuation">,</span> <span class="token string">"A1"</span><span class="token punctuation">,</span> <span class="token string">"A2"</span><span class="token punctuation">,</span> <span class="token string">"A3"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"B"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"B0"</span><span class="token punctuation">,</span> <span class="token string">"B1"</span><span class="token punctuation">,</span> <span class="token string">"B2"</span><span class="token punctuation">,</span> <span class="token string">"B3"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"C"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"C0"</span><span class="token punctuation">,</span> <span class="token string">"C1"</span><span class="token punctuation">,</span> <span class="token string">"C2"</span><span class="token punctuation">,</span> <span class="token string">"C3"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"D"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"D0"</span><span class="token punctuation">,</span> <span class="token string">"D1"</span><span class="token punctuation">,</span> <span class="token string">"D2"</span><span class="token punctuation">,</span> <span class="token string">"D3"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    index<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+df2 <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"B"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"B2"</span><span class="token punctuation">,</span> <span class="token string">"B3"</span><span class="token punctuation">,</span> <span class="token string">"B6"</span><span class="token punctuation">,</span> <span class="token string">"B7"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"D"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"D2"</span><span class="token punctuation">,</span> <span class="token string">"D3"</span><span class="token punctuation">,</span> <span class="token string">"D6"</span><span class="token punctuation">,</span> <span class="token string">"D7"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"F"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"F2"</span><span class="token punctuation">,</span> <span class="token string">"F3"</span><span class="token punctuation">,</span> <span class="token string">"F6"</span><span class="token punctuation">,</span> <span class="token string">"F7"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    index<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+s <span class="token operator">=</span> pd<span class="token punctuation">.</span>Series<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"X0"</span><span class="token punctuation">,</span> <span class="token string">"X1"</span><span class="token punctuation">,</span> <span class="token string">"X2"</span><span class="token punctuation">,</span> <span class="token string">"X3"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> index<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"A"</span><span class="token punctuation">,</span> <span class="token string">"B"</span><span class="token punctuation">,</span> <span class="token string">"C"</span><span class="token punctuation">,</span> <span class="token string">"D"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">pd<span class="token punctuation">.</span>concat<span class="token punctuation">(</span>
+    objs<span class="token punctuation">,</span>
+    axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>
+    join<span class="token operator">=</span><span class="token string">"outer"</span><span class="token punctuation">,</span>
+    ignore_index<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    keys<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+    levels<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+    names<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+    verify_integrity<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    copy<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="纵向拼贴-axis-0"><a class="markdownIt-Anchor" href="#纵向拼贴-axis-0"></a> 纵向拼贴 axis = 0</h1>
+<ol>
+<li>
+<p>axis控制拼贴的方向</p>
+ <pre class="line-numbers language-python" data-language="python"><code class="language-python">pd<span class="token punctuation">.</span>concat<span class="token punctuation">(</span><span class="token punctuation">[</span>df1<span class="token punctuation">,</span> df2<span class="token punctuation">]</span><span class="token punctuation">,</span> ignore_index<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+    A   B    C   D    F
+0   A0  B0   C0  D0  NaN
+1   A1  B1   C1  D1  NaN
+2   A2  B2   C2  D2  NaN
+3   A3  B3   C3  D3  NaN
+2  NaN  B2  NaN  D2   F2
+3  NaN  B3  NaN  D3   F3
+4  NaN  B6  NaN  D6   F6
+5  NaN  B7  NaN  D7   F7
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>
+<p><code>ignore_index</code>相当于合并后进行<code>reset_index()</code>, 重新生成索引</p>
+ <pre class="line-numbers language-python" data-language="python"><code class="language-python">pd<span class="token punctuation">.</span>concat<span class="token punctuation">(</span><span class="token punctuation">[</span>df1<span class="token punctuation">,</span> df2<span class="token punctuation">]</span><span class="token punctuation">,</span> ignore_index<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+    A   B    C   D    F
+0   A0  B0   C0  D0  NaN
+1   A1  B1   C1  D1  NaN
+2   A2  B2   C2  D2  NaN
+3   A3  B3   C3  D3  NaN
+4  NaN  B2  NaN  D2   F2
+5  NaN  B3  NaN  D3   F3
+6  NaN  B6  NaN  D6   F6
+7  NaN  B7  NaN  D7   F7
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>
+<p><code>join</code>控制拼贴的方式,和<code>merge</code>一样</p>
+</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">pd<span class="token punctuation">.</span>concat<span class="token punctuation">(</span><span class="token punctuation">[</span>df1<span class="token punctuation">,</span> df2<span class="token punctuation">]</span><span class="token punctuation">,</span> ignore_index<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>join<span class="token operator">=</span><span class="token string">"inner"</span><span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+    B   D
+0  B0  D0
+1  B1  D1
+2  B2  D2
+3  B3  D3
+4  B2  D2
+5  B3  D3
+6  B6  D6
+7  B7  D7
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="4">
+<li>拼贴Series</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">s <span class="token operator">=</span> pd<span class="token punctuation">.</span>Series<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"X0"</span><span class="token punctuation">,</span> <span class="token string">"X1"</span><span class="token punctuation">,</span> <span class="token string">"X2"</span><span class="token punctuation">,</span> <span class="token string">"X3"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> index<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"A"</span><span class="token punctuation">,</span> <span class="token string">"B"</span><span class="token punctuation">,</span> <span class="token string">"C"</span><span class="token punctuation">,</span> <span class="token string">"D"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+A    X0
+B    X1
+C    X2
+D    X3
+"""</span>
+
+pd<span class="token punctuation">.</span>concat<span class="token punctuation">(</span><span class="token punctuation">[</span>df1<span class="token punctuation">,</span> s<span class="token punctuation">.</span>to_frame<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>T<span class="token punctuation">]</span><span class="token punctuation">,</span> ignore_index<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+    A   B   C   D
+0  A0  B0  C0  D0
+1  A1  B1  C1  D1
+2  A2  B2  C2  D2
+3  A3  B3  C3  D3
+4  X0  X1  X2  X3
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="横向拼贴推荐使用join"><a class="markdownIt-Anchor" href="#横向拼贴推荐使用join"></a> 横向拼贴(推荐使用join)</h1>
+<p><code>concate</code>只有<code>inner</code>和<code>outer</code>, 而<code>join</code>还可以实现<code>left</code>和<code>right</code></p>
+<ol>
+<li>
+<p>axis=1 横向拼贴</p>
+ <pre class="line-numbers language-python" data-language="python"><code class="language-python">pd<span class="token punctuation">.</span>concat<span class="token punctuation">(</span><span class="token punctuation">[</span>df1<span class="token punctuation">,</span> df2<span class="token punctuation">]</span><span class="token punctuation">,</span> ignore_index<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+    A    B    C    D    B    D    F
+0   A0   B0   C0   D0  NaN  NaN  NaN
+1   A1   B1   C1   D1  NaN  NaN  NaN
+2   A2   B2   C2   D2   B2   D2   F2
+3   A3   B3   C3   D3   B3   D3   F3
+4  NaN  NaN  NaN  NaN   B6   D6   F6
+5  NaN  NaN  NaN  NaN   B7   D7   F7
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>
+<p><code>ignore_index</code>相当于合并后进行<code>reset_index()</code>, 重新生成索引, coloum全部置换了</p>
+</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">"""
+     0    1    2    3    4    5    6
+0   A0   B0   C0   D0  NaN  NaN  NaN
+1   A1   B1   C1   D1  NaN  NaN  NaN
+2   A2   B2   C2   D2   B2   D2   F2
+3   A3   B3   C3   D3   B3   D3   F3
+4  NaN  NaN  NaN  NaN   B6   D6   F6
+5  NaN  NaN  NaN  NaN   B7   D7   F7
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3.<code>join</code>控制拼贴的方式,和<code>merge</code>一样</p>
+<pre class="highlight"><code class="python">pd.concat([df1, df2], ignore_index=<span class="hljs-literal">True</span>,join=<span class="hljs-string">&quot;inner&quot;</span>,axis=<span class="hljs-number">0</span>)
+
+<span class="hljs-string">&quot;&quot;&quot;
+    B   D
+0  B0  D0
+1  B1  D1
+2  B2  D2
+3  B3  D3
+4  B2  D2
+5  B3  D3
+6  B6  D6
+7  B7  D7
+&quot;&quot;&quot;</span>
+
+``
+
+参考:
+https://pandas.pydata.org/docs/user_guide/merging.html<span class="hljs-comment">#concatenating-objects</span></code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/npm/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/oscillator/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

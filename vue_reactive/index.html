@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基本使用 参考原文 reactive返回一个响应式的对象状态，  该响应式转换是“深度转换”——它会影响传递对象的所有嵌套property 响应式状态改变时视图会自动更新  &lt;script setup&gt; import &amp;#123;reactive, toRefs&amp;#125; from &quot;vue&quot; import _ from &quot;lodash&quot; l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue_reactive">
+<meta property="og:url" content="https://claroja.github.io/vue_reactive/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="基本使用 参考原文 reactive返回一个响应式的对象状态，  该响应式转换是“深度转换”——它会影响传递对象的所有嵌套property 响应式状态改变时视图会自动更新  &lt;script setup&gt; import &amp;#123;reactive, toRefs&amp;#125; from &quot;vue&quot; import _ from &quot;lodash&quot; l">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-05T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.502Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/vue_reactive/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/vue_reactive/","path":"vue_reactive/","title":"vue_reactive"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>vue_reactive | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text"> 基本使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref%E5%92%8Creactive%E8%BD%AC%E6%8D%A2"><span class="nav-number">2.</span> <span class="nav-text"> ref和reactive转换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lodash-%E7%BB%93%E5%90%88"><span class="nav-number">3.</span> <span class="nav-text"> lodash 结合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%98%93%E9%94%99%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text"> 易错点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reactive%E4%B8%8Eprops"><span class="nav-number">5.</span> <span class="nav-text"> reactive与props</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vue_reactive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="vue_reactive | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vue_reactive
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-05 22:03:54" itemprop="dateCreated datePublished" datetime="2021-12-05T22:03:54+08:00">2021-12-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="基本使用"><a class="markdownIt-Anchor" href="#基本使用"></a> 基本使用</h1>
+<p><a target="_blank" rel="noopener" href="https://v3.cn.vuejs.org/guide/reactivity-fundamentals.html">参考原文</a><br />
+<code>reactive</code>返回一个响应式的对象状态，</p>
+<ol>
+<li>该响应式转换是“深度转换”——它会影响传递对象的所有嵌套property</li>
+<li>响应式状态改变时视图会自动更新</li>
+</ol>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;script setup&gt;
+import &#123;reactive, toRefs&#125; from &quot;vue&quot;
+import _ from &quot;lodash&quot;
+let test &#x3D; reactive(&#123;
+    a: &quot;a&quot;,
+    b: &#123;bb: &quot;b&quot;&#125;,
+    c: [&quot;c&quot;, &quot;c&quot;],
+&#125;)
+&#x2F;&#x2F;&#x2F; 1. reactive中，当key对应的value是基本类型时， 直接变量赋值或解包都会失去响应式
+&#x2F;&#x2F; let a &#x3D; test.a
+let &#123;a&#125; &#x3D; test &#x2F;&#x2F;此时a是字符串，不再是响应式
+&#x2F;&#x2F; let &#123;a&#125; &#x3D; toRefs(test) &#x2F;&#x2F;此时a是RefImpl是响应式
+console.log(a, test.a, a &#x3D;&#x3D;&#x3D; test.a)
+a &#x3D; &quot;aa&quot;
+
+&#x2F;&#x2F;&#x2F; 2. reactive中，当key对应的value是对象时，变量赋值和解包都不会失去响应式
+&#x2F;&#x2F;&#x2F; 2.1 字典&#123;&#125;
+&#x2F;&#x2F; let b &#x3D; test.b
+let &#123;b&#125; &#x3D; test &#x2F;&#x2F; 和上一行是等价的
+console.log(b, test.b, b &#x3D;&#x3D;&#x3D; test.b) &#x2F;&#x2F; 地址引用, 所以b仍然是响应式
+b.bb &#x3D; &quot;bb&quot; &#x2F;&#x2F; 当改变b.bb的值时，也就是更改了test.b.bb
+
+&#x2F;&#x2F;&#x2F; 2.2 列表[]
+&#x2F;&#x2F; let c &#x3D; test.c
+let &#123;c&#125; &#x3D; test
+console.log(c, test.c, c &#x3D;&#x3D;&#x3D; test.c)
+c.push(&quot;c&quot;)
+setTimeout(() &#x3D;&gt; &#123;
+    a &#x3D; &quot;aaa&quot;
+    b.bb &#x3D; &quot;bbb&quot;
+    c.push(&quot;c&quot;)
+&#125;, 1000)
+setTimeout(() &#x3D;&gt; &#123;
+    b &#x3D; &#123;bbbb: &quot;bbbb&quot;&#125; &#x2F;&#x2F;直接赋值，普通对象，没有响应式
+&#125;, 2000)
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &#123;&#123; test.a &#125;&#125;
+    &lt;br &#x2F;&gt;
+    &#123;&#123; test.b &#125;&#125;
+    &lt;br &#x2F;&gt;
+    &#123;&#123; c &#125;&#125;
+&lt;&#x2F;template&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="ref和reactive转换"><a class="markdownIt-Anchor" href="#ref和reactive转换"></a> ref和reactive转换</h1>
+<p><a target="_blank" rel="noopener" href="https://vuejs.org/api/reactivity-core.html#reactive">参考原文</a></p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> obj <span class="token operator">=</span> <span class="token function">reactive</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> count <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+<span class="token comment">// ref will be unwrapped</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>count <span class="token operator">===</span> count<span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token comment">// true</span>
+
+<span class="token comment">// it will update `obj.count`</span>
+count<span class="token punctuation">.</span>value<span class="token operator">++</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>count<span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token comment">// 2</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>count<span class="token punctuation">)</span> <span class="token comment">// 2</span>
+
+<span class="token comment">// it will also update `count` ref</span>
+obj<span class="token punctuation">.</span>count<span class="token operator">++</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>count<span class="token punctuation">)</span> <span class="token comment">// 3</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>count<span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token comment">// 3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="lodash-结合"><a class="markdownIt-Anchor" href="#lodash-结合"></a> lodash 结合</h1>
+<p>lodash的`cloneDeep·可以用在watch里面</p>
+<p>现在还没搞清楚这些赋值操作之间的区别。</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span>reactive<span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"vue"</span>
+<span class="token keyword">import</span> _ <span class="token keyword">from</span> <span class="token string">"lodash"</span>
+<span class="token keyword">let</span> test <span class="token operator">=</span> <span class="token function">reactive</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">a</span><span class="token operator">:</span> <span class="token string">"a"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">b</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token literal-property property">c</span><span class="token operator">:</span> <span class="token string">"c"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>test<span class="token punctuation">,</span> test<span class="token punctuation">.</span>a<span class="token punctuation">,</span> test<span class="token punctuation">.</span>b<span class="token punctuation">)</span>
+<span class="token keyword">let</span> test2 <span class="token operator">=</span> _<span class="token punctuation">.</span><span class="token function">cloneDeep</span><span class="token punctuation">(</span>test<span class="token punctuation">)</span>
+<span class="token keyword">let</span> a2 <span class="token operator">=</span> _<span class="token punctuation">.</span><span class="token function">cloneDeep</span><span class="token punctuation">(</span>test<span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+<span class="token keyword">let</span> b2 <span class="token operator">=</span> _<span class="token punctuation">.</span><span class="token function">cloneDeep</span><span class="token punctuation">(</span>test<span class="token punctuation">.</span>b<span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>test2<span class="token punctuation">,</span> a2<span class="token punctuation">,</span> b2<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> test3 <span class="token operator">=</span> test
+<span class="token keyword">let</span> a3 <span class="token operator">=</span> test<span class="token punctuation">.</span>a
+<span class="token keyword">let</span> b3 <span class="token operator">=</span> test<span class="token punctuation">.</span>b
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>test3<span class="token punctuation">,</span> a3<span class="token punctuation">,</span> b3<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="易错点"><a class="markdownIt-Anchor" href="#易错点"></a> 易错点</h1>
+<p>基本常识：reactive中的最后一层，既基本类型，不是<code>reactive</code>对象<br />
+下例中:</p>
+<ol>
+<li><code>changeOne</code>方法证明，<code>reactive</code>中的成员作为参数传入仍然是<code>reactive</code>。</li>
+<li><code>changTwo</code>方法证明，<code>reactive</code>中的成员作为参数，仅更改其成员（不改变结构），则会继承响应式</li>
+<li><code>changeTwo</code>方法证明，如果改变<code>reactive</code>对象结构，比如直接赋值<code>&#123;&#125;</code>，则会失去响应式</li>
+<li><code>changeThree</code>方法证明，如果改变<code>reactive</code>成员的对象结构（直接赋值普通的object），比如直接赋值<code>[]</code>，不会失去响应式<br />
+总结起来：</li>
+<li>对<code>reactive</code>对象对应的变量直接赋值普通对象(非响应式对象)，则会失去响应式</li>
+<li>对<code>reactive</code>对象的成员变量直接赋值普通对象(非响应式对象)或做更改，不会失去响应式</li>
+</ol>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;script setup&gt;
+import &#123;reactive&#125; from &quot;vue&quot;
+let test &#x3D; reactive(&#123;
+    a: &quot;a&quot;,
+    b: [&quot;b&quot;, &quot;b&quot;],
+    c: &#123;cc: &quot;cc&quot;&#125;,
+&#125;)
+console.log(test) &#x2F;&#x2F;Proxy &#123;a: &#39;a&#39;&#125;
+
+function changeOne(n) &#123;
+    console.log(n) &#x2F;&#x2F; Proxy &#123;0: &#39;b&#39;, 1: &#39;b&#39;&#125;
+&#125;
+
+function changeTwo(m) &#123;
+    m.b.push(&quot;b&quot;)
+    console.log(m) &#x2F;&#x2F; Proxy &#123;a: &#39;a&#39;, b: Array(3), c: &#123;…&#125;&#125;
+    console.log(test) &#x2F;&#x2F; Proxy &#123;a: &#39;a&#39;, b: Array(3), c: &#123;…&#125;&#125;
+
+    m.c &#x3D; &#123;ccc: &quot;cccc&quot;&#125;
+    console.log(m) &#x2F;&#x2F; Proxy &#123;a: &#39;a&#39;, b: Array(3), c: &#123;…&#125;&#125;
+    console.log(test) &#x2F;&#x2F; Proxy &#123;a: &#39;a&#39;, b: Array(3), c: &#123;…&#125;&#125;
+
+    m &#x3D; &#123;
+        a: &quot;b&quot;,
+    &#125;
+    console.log(m) &#x2F;&#x2F; &#123;a: &#39;b&#39;&#125;
+    console.log(test) &#x2F;&#x2F; Proxy &#123;a: &#39;a&#39;&#125;
+&#125;
+
+function changeThree(m) &#123;
+    m.c &#x3D; [&quot;dddd&quot;]
+    console.log(m) &#x2F;&#x2F; Proxy &#123;a: &#39;a&#39;, b: Array(3), c: &#123;…&#125;&#125;
+    console.log(m.c) &#x2F;&#x2F;Proxy &#123;0: &#39;dddd&#39;&#125;
+    console.log(test) &#x2F;&#x2F; Proxy &#123;a: &#39;a&#39;, b: Array(3), c: &#123;…&#125;&#125;
+&#125;
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &lt;button @click&#x3D;&quot;changeOne(test.b)&quot;&gt;TestOne&lt;&#x2F;button&gt;
+    &lt;button @click&#x3D;&quot;changeTwo(test)&quot;&gt;TestTwo&lt;&#x2F;button&gt;
+    &lt;button @click&#x3D;&quot;changeThree(test)&quot;&gt;TestThree&lt;&#x2F;button&gt;
+    &#123;&#123; test &#125;&#125;
+&lt;&#x2F;template&gt;
+
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="reactive与props"><a class="markdownIt-Anchor" href="#reactive与props"></a> reactive与props</h1>
+<ol>
+<li>props向子组件传递<code>reactive</code>对象的成员是引用传递。</li>
+<li>下例中使用<code>push</code>更改<code>list</code>, Vue Devtools不会自动更新，需要自己手动点击强制更新按钮</li>
+</ol>
+<p>Parent.vue</p>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;script setup&gt;
+import &#123;reactive&#125; from &quot;vue&quot;
+import Child from &quot;.&#x2F;Child.vue&quot;
+
+let data &#x3D; reactive(&#123;
+    a: &quot;a&quot;,
+    b: &#123;bb: &quot;bb&quot;&#125;,
+    c: [&quot;c&quot;, &quot;c&quot;],
+&#125;)
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &lt;Child :parentProp&#x3D;&quot;data.c&quot;&gt;&lt;&#x2F;Child&gt;
+&lt;&#x2F;template&gt;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Child.vue</p>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;script setup&gt;
+let props &#x3D; defineProps([&quot;parentProp&quot;])
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &lt;button @click&#x3D;&quot;props.parentProp.push(&#39;c&#39;)&quot;&gt;Child&lt;&#x2F;button&gt;
+&lt;&#x2F;template&gt;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/vue_ref/" rel="prev" title="vue_ref">
+                  <i class="fa fa-chevron-left"></i> vue_ref
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/vue_raw/" rel="next" title="vue_raw">
+                  vue_raw <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

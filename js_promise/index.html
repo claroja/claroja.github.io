@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="简介  Promise 是一门新的技术(ES6 规范) Promise 是 JS 中进行异步编程的新解决方案, 旧方案是单纯使用回调函数 promise 对象用来封装一个异步操作并可以获取其成功&#x2F; 失败的结果值  补充1: 常见的异步操作  fs 文件操作  require(&#39;fs&#39;).readFile(&#39;.&#x2F;index.html&#39;, (err,data)&#x3D;&gt;&amp;#123;&amp;#125;)  数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js_promise">
+<meta property="og:url" content="https://claroja.github.io/js_promise/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="简介  Promise 是一门新的技术(ES6 规范) Promise 是 JS 中进行异步编程的新解决方案, 旧方案是单纯使用回调函数 promise 对象用来封装一个异步操作并可以获取其成功&#x2F; 失败的结果值  补充1: 常见的异步操作  fs 文件操作  require(&#39;fs&#39;).readFile(&#39;.&#x2F;index.html&#39;, (err,data)&#x3D;&gt;&amp;#123;&amp;#125;)  数据库">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-20T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.310Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/js_promise/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/js_promise/","path":"js_promise/","title":"js_promise"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>js_promise | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF"><span class="nav-number">2.</span> <span class="nav-text"> 优势</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8A%B6%E6%80%81"><span class="nav-number">3.</span> <span class="nav-text"> 状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%80%BC"><span class="nav-number">4.</span> <span class="nav-text"> 对象的值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">5.</span> <span class="nav-text"> 代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#async%E5%92%8Cawait"><span class="nav-number">6.</span> <span class="nav-text"> async和await</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#async%E5%87%BD%E6%95%B0"><span class="nav-number">6.1.</span> <span class="nav-text"> async函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#await%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">6.2.</span> <span class="nav-text"> await表达式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">7.</span> <span class="nav-text"> 应用</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/js_promise/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="js_promise | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js_promise
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h1>
+<ol>
+<li>Promise 是一门新的技术(ES6 规范)</li>
+<li>Promise 是 JS 中进行异步编程的新解决方案, 旧方案是单纯使用回调函数</li>
+<li>promise 对象用来封装一个异步操作并可以获取其成功/<br />
+失败的结果值</li>
+</ol>
+<p>补充1: 常见的异步操作</p>
+<ol>
+<li>fs 文件操作</li>
+</ol>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">readFile</span><span class="token punctuation">(</span><span class="token string">'./index.html'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">err<span class="token punctuation">,</span>data</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol start="2">
+<li>数据库操作, AJAX</li>
+</ol>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">$<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'/server'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol start="3">
+<li>定时器</li>
+</ol>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="优势"><a class="markdownIt-Anchor" href="#优势"></a> 优势</h1>
+<ol>
+<li>旧的:  必须在启动异步任务前指定回调函数</li>
+<li>promise:  启动异步任务  =&gt;  返回 promie 对象  =&gt;  给 promise 对象绑定回调函<br />
+数(甚至可以在异步任务结束后指定/多个)</li>
+</ol>
+<h1 id="状态"><a class="markdownIt-Anchor" href="#状态"></a> 状态</h1>
+<p>实例对象中的一个属性 『PromiseState』<br />
+<a href="1.png">1.png</a></p>
+<ol>
+<li>创建Promise对象(new Promise())时, 状态是pending</li>
+<li>执行异步操作,<br />
+2.1 成功的话pending 变为 resolved<br />
+2.2 失败的话pending 变为 rejected<br />
+一个 promise 对象只能改变一次<br />
+无论变为成功还是失败,  都会有一个结果数据 成功的结果数据一般称为 value,  失败的结果数据一般称为 reason</li>
+<li>最终返回一个新的Promise对象</li>
+</ol>
+<h1 id="对象的值"><a class="markdownIt-Anchor" href="#对象的值"></a> 对象的值</h1>
+<p>实例对象中的另一个属性 『PromiseResult』<br />
+保存着异步任务『成功/失败』的结果<br />
+<code>resolve()</code>和<code>reject()</code>对<code>PromiseResult</code>的值进行修改</p>
+<h1 id="代码"><a class="markdownIt-Anchor" href="#代码"></a> 代码</h1>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">  <span class="token comment">// 1. 创建 promise 对象(pending 状态), 指定执行器函数 </span>
+  <span class="token keyword">const</span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve<span class="token punctuation">,</span> reject</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> 
+  <span class="token comment">// 2. 在执行器函数中启动异步任务 </span>
+  <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> 
+      <span class="token keyword">const</span> time <span class="token operator">=</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+      <span class="token comment">// 3. 根据结果做不同处理 </span>
+      <span class="token comment">// 3.1 如果成功了, 调用 resolve(), 指定成功的 value(参数就是value), 对应.then方法的第一个参数, 变为 resolved 状态 </span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>time<span class="token operator">%</span><span class="token number">2</span><span class="token operator">===</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+      <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'成功的值 '</span><span class="token operator">+</span> time<span class="token punctuation">)</span> 
+  <span class="token comment">// 3.2 如果失败了, 调用 reject(), 指定失败的 reason(参数就是value)对应.then方法的第二个参数, 变为rejected 状态 </span>
+      <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span> 
+      <span class="token function">reject</span><span class="token punctuation">(</span><span class="token string">'失败的值'</span> <span class="token operator">+</span> time<span class="token punctuation">)</span> 
+      <span class="token punctuation">&#125;</span> 
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token number">2000</span><span class="token punctuation">)</span> 
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span> 
+  <span class="token comment">// 4. 能promise指定成功或失败的回调函数来获取成功的 vlaue 或失败的 reason </span>
+  p<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span> 
+  <span class="token parameter">value</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token comment">// 成功的回调函数 onResolved, 得到成功的 vlaue </span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'成功的 value: '</span><span class="token punctuation">,</span> value<span class="token punctuation">)</span> 
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> 
+  <span class="token parameter">reason</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> <span class="token comment">// 失败的回调函数 onRejected, 得到失败的 reason </span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'失败的 reason: '</span><span class="token punctuation">,</span> reason<span class="token punctuation">)</span> 
+  <span class="token punctuation">&#125;</span> 
+<span class="token punctuation">)</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="async和await"><a class="markdownIt-Anchor" href="#async和await"></a> async和await</h1>
+<h2 id="async函数"><a class="markdownIt-Anchor" href="#async函数"></a> async函数</h2>
+<p>函数的返回值为 promise 对象, 和<code>.then</code>很相似.</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//then</span>
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token comment">//1. 如果返回值是一个非Promise类型的数据, 结果是成功的promise对象</span>
+    <span class="token comment">// return 521;</span>
+    <span class="token comment">//2. 如果返回的是一个Promise对象, 结果是Promise对象</span>
+    <span class="token comment">// return new Promise((resolve, reject) => &#123;</span>
+    <span class="token comment">//     // resolve('OK');</span>
+    <span class="token comment">//     reject('Error');</span>
+    <span class="token comment">// &#125;);</span>
+    <span class="token comment">//3. 抛出异常, 结果是失败的promise对象</span>
+    <span class="token keyword">throw</span> <span class="token string">"Oh NO"</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="await表达式"><a class="markdownIt-Anchor" href="#await表达式"></a> await表达式</h2>
+<p>await 右侧的表达式一般为 promise 对象,  但也可以是其它的值</p>
+<ol>
+<li>如果表达式是 promise 对象, await 返回的是 promise 成功的值</li>
+<li>如果表达式是其它值,  直接将此值作为 await 的返回值<br />
+注意:</li>
+<li>await 必须写在 async 函数中,  但 async 函数中可以没有 await</li>
+<li>如果 await 的 promise 失败了,  就会抛出异常,  需要通过 try…catch 捕获处理</li>
+</ol>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve<span class="token punctuation">,</span> reject</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// resolve('OK');</span>
+        <span class="token function">reject</span><span class="token punctuation">(</span><span class="token string">'Error'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    <span class="token comment">//1. 右侧为promise的情况</span>
+    <span class="token comment">// let res = await p;</span>
+    <span class="token comment">//2. 右侧为其他类型的数据</span>
+    <span class="token comment">// let res2 = await 20;</span>
+    <span class="token comment">//3. 如果promise是失败的状态</span>
+    <span class="token keyword">try</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">let</span> res3 <span class="token operator">=</span> <span class="token keyword">await</span> p<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token keyword">catch</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">/**
+ * resource  1.html  2.html 3.html 文件内容
+ */</span>
+
+<span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> util <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'util'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> mineReadFile <span class="token operator">=</span> util<span class="token punctuation">.</span><span class="token function">promisify</span><span class="token punctuation">(</span>fs<span class="token punctuation">.</span>readFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//回调函数的方式</span>
+<span class="token comment">// fs.readFile('./resource/1.html', (err, data1) => &#123;</span>
+<span class="token comment">//     if(err) throw err;</span>
+<span class="token comment">//     fs.readFile('./resource/2.html', (err, data2) => &#123;</span>
+<span class="token comment">//         if(err) throw err;</span>
+<span class="token comment">//         fs.readFile('./resource/3.html', (err, data3) => &#123;</span>
+<span class="token comment">//             if(err) throw err;</span>
+<span class="token comment">//             console.log(data1 + data2 + data3);</span>
+<span class="token comment">//         &#125;);</span>
+<span class="token comment">//     &#125;);</span>
+<span class="token comment">// &#125;);</span>
+
+<span class="token comment">//async 与 await</span>
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">try</span><span class="token punctuation">&#123;</span>
+        <span class="token comment">//读取第一个文件的内容</span>
+        <span class="token keyword">let</span> data1 <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">mineReadFile</span><span class="token punctuation">(</span><span class="token string">'./resource/1x.html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">let</span> data2 <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">mineReadFile</span><span class="token punctuation">(</span><span class="token string">'./resource/2.html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">let</span> data3 <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">mineReadFile</span><span class="token punctuation">(</span><span class="token string">'./resource/3.html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data1 <span class="token operator">+</span> data2 <span class="token operator">+</span> data3<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token keyword">catch</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>code<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/js_promise_keypoint/" rel="prev" title="js_promise_keypoint">
+                  <i class="fa fa-chevron-left"></i> js_promise_keypoint
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/js_operator/" rel="next" title="js_operator">
+                  js_operator <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

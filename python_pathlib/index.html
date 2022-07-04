@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="获得路径 获得路径, 一般使用cwd获得绝对路径, 因为很多属性和方法都需要使用绝对路径 from pathlib import Path path &#x3D; Path.cwd()  # 当前绝对路径 path &#x3D; Path(&quot;.&#x2F;&quot;)  # 当前文件的相对路径 path.resolve()  # 相对路径转绝对路径  遍历 [x for x in path.iterdir() if x.is_dir">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python_pathlib">
+<meta property="og:url" content="https://claroja.github.io/python_pathlib/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="获得路径 获得路径, 一般使用cwd获得绝对路径, 因为很多属性和方法都需要使用绝对路径 from pathlib import Path path &#x3D; Path.cwd()  # 当前绝对路径 path &#x3D; Path(&quot;.&#x2F;&quot;)  # 当前文件的相对路径 path.resolve()  # 相对路径转绝对路径  遍历 [x for x in path.iterdir() if x.is_dir">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-29T00:14:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.455Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/python_pathlib/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/python_pathlib/","path":"python_pathlib/","title":"python_pathlib"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python_pathlib | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E8%B7%AF%E5%BE%84"><span class="nav-number">1.</span> <span class="nav-text"> 获得路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%81%8D%E5%8E%86"><span class="nav-number">2.</span> <span class="nav-text"> 遍历</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%AE%9E%E7%94%A8%E7%9A%84%E5%88%A4%E6%96%AD"><span class="nav-number">3.</span> <span class="nav-text"> 一些实用的判断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B9%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text"> 文件夹操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text"> 操作</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_pathlib/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="python_pathlib | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python_pathlib
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-29 08:14:54" itemprop="dateCreated datePublished" datetime="2021-10-29T08:14:54+08:00">2021-10-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="获得路径"><a class="markdownIt-Anchor" href="#获得路径"></a> 获得路径</h1>
+<p>获得路径, 一般使用<code>cwd</code>获得绝对路径, 因为很多属性和方法都需要使用绝对路径</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pathlib <span class="token keyword">import</span> Path
+path <span class="token operator">=</span> Path<span class="token punctuation">.</span>cwd<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 当前绝对路径</span>
+path <span class="token operator">=</span> Path<span class="token punctuation">(</span><span class="token string">"./"</span><span class="token punctuation">)</span>  <span class="token comment"># 当前文件的相对路径</span>
+path<span class="token punctuation">.</span>resolve<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 相对路径转绝对路径</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="遍历"><a class="markdownIt-Anchor" href="#遍历"></a> 遍历</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> path<span class="token punctuation">.</span>iterdir<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">.</span>is_dir<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>  <span class="token comment"># 目录下所有目录</span>
+<span class="token punctuation">[</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> path<span class="token punctuation">.</span>iterdir<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">.</span>is_file<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>  <span class="token comment"># 目录下所有文件</span>
+<span class="token builtin">list</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span>glob<span class="token punctuation">(</span><span class="token string">'**/*.py'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 目录及递归所有子目录下所有py文件, **代表递归所有子目录</span>
+<span class="token builtin">list</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span>glob<span class="token punctuation">(</span><span class="token string">'*/*.py'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 目录下所有一级子目录下所有py文件, *达标通配符</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="一些实用的判断"><a class="markdownIt-Anchor" href="#一些实用的判断"></a> 一些实用的判断</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span><span class="token punctuation">)</span>
+path<span class="token punctuation">.</span>is_dir<span class="token punctuation">(</span><span class="token punctuation">)</span>
+path<span class="token punctuation">.</span>is_file<span class="token punctuation">(</span><span class="token punctuation">)</span>
+path<span class="token punctuation">.</span>is_absolute<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="文件夹操作"><a class="markdownIt-Anchor" href="#文件夹操作"></a> 文件夹操作</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">path<span class="token punctuation">.</span>rmdir<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">#</span>
+path<span class="token punctuation">.</span>mkdir<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 创建</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="操作"><a class="markdownIt-Anchor" href="#操作"></a> 操作</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">path<span class="token punctuation">.</span>parts
+path<span class="token punctuation">.</span>drive <span class="token comment"># 获得盼复</span>
+path<span class="token punctuation">.</span>parents  <span class="token comment"># 获得父路径</span>
+<span class="token operator">>></span><span class="token operator">></span> p <span class="token operator">=</span> PureWindowsPath<span class="token punctuation">(</span><span class="token string">'c:/foo/bar/setup.py'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> p<span class="token punctuation">.</span>parents<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+PureWindowsPath<span class="token punctuation">(</span><span class="token string">'c:/foo/bar'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> p<span class="token punctuation">.</span>parents<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+PureWindowsPath<span class="token punctuation">(</span><span class="token string">'c:/foo'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> p<span class="token punctuation">.</span>parents<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
+PureWindowsPath<span class="token punctuation">(</span><span class="token string">'c:/'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/pathlib.html">https://docs.python.org/3/library/pathlib.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/python_semaphore/" rel="prev" title="python_semaphore">
+                  <i class="fa fa-chevron-left"></i> python_semaphore
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/python_io_%E5%8E%9F%E7%90%86/" rel="next" title="python_io_原理">
+                  python_io_原理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="flask_jwt_extended基础使用  python服务启动 from flask_jwt_extended import create_access_token, get_jwt, get_jwt_header, get_jwt_identity from flask_jwt_extended import jwt_required from flask_jwt_extended imp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flask_jwt">
+<meta property="og:url" content="https://claroja.github.io/flask_jwt/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="flask_jwt_extended基础使用  python服务启动 from flask_jwt_extended import create_access_token, get_jwt, get_jwt_header, get_jwt_identity from flask_jwt_extended import jwt_required from flask_jwt_extended imp">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-20T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.258Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/flask_jwt/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/flask_jwt/","path":"flask_jwt/","title":"flask_jwt"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>flask_jwt | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#python%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8"><span class="nav-number">1.</span> <span class="nav-text"> python服务启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B2%A1%E6%9C%89token%E8%AE%BF%E9%97%AE%E8%BF%94%E5%9B%9E%E6%9C%AA%E6%8E%88%E6%9D%83"><span class="nav-number">2.</span> <span class="nav-text"> 没有token,访问返回未授权</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E7%99%BB%E9%99%86%E8%B7%AF%E7%94%B1login-%E8%8E%B7%E5%BE%97token"><span class="nav-number">3.</span> <span class="nav-text"> 访问登陆路由&#x2F;login, 获得token</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-headeralgorithm-token-type-%E5%A4%B4%E9%83%A8"><span class="nav-number">3.1.</span> <span class="nav-text"> 第一部分: HEADER:ALGORITHM &amp; TOKEN TYPE, 头部</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86-payloaddata-%E6%95%B0%E6%8D%AE"><span class="nav-number">3.2.</span> <span class="nav-text"> 第二部分: PAYLOAD:DATA, 数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86-verify-signature%E7%AD%BE%E5%90%8D%E4%BF%A1%E6%81%AF"><span class="nav-number">3.3.</span> <span class="nav-text"> 第三部分, VERIFY SIGNATURE签名信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%A6%E7%9D%80token%E6%88%90%E5%8A%9F%E8%AE%BF%E9%97%AE%E8%A2%AB%E4%BF%9D%E6%8A%A4%E7%9A%84%E8%B7%AF%E7%94%B1index"><span class="nav-number">4.</span> <span class="nav-text"> 带着token成功访问被保护的路由&#x2F;index</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#token%E8%BF%87%E6%9C%9F"><span class="nav-number">5.</span> <span class="nav-text"> token过期</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/flask_jwt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="flask_jwt | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          flask_jwt
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>flask_jwt_extended基础使用</p>
+<h1 id="python服务启动"><a class="markdownIt-Anchor" href="#python服务启动"></a> python服务启动</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> flask_jwt_extended <span class="token keyword">import</span> create_access_token<span class="token punctuation">,</span> get_jwt<span class="token punctuation">,</span> get_jwt_header<span class="token punctuation">,</span> get_jwt_identity
+<span class="token keyword">from</span> flask_jwt_extended <span class="token keyword">import</span> jwt_required
+<span class="token keyword">from</span> flask_jwt_extended <span class="token keyword">import</span> JWTManager
+
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> Flask
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> jsonify
+<span class="token keyword">from</span> datetime <span class="token keyword">import</span> timedelta
+
+
+app <span class="token operator">=</span> Flask<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+jwt <span class="token operator">=</span> JWTManager<span class="token punctuation">(</span>app<span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span>config<span class="token punctuation">[</span><span class="token string">'JWT_SECRET_KEY'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'salt'</span>  <span class="token comment"># 加密盐值</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">'/login'</span><span class="token punctuation">,</span>methods<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'POST'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">login</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    access_token <span class="token operator">=</span> create_access_token<span class="token punctuation">(</span>
+        identity<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'id'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'username'</span><span class="token punctuation">:</span> <span class="token string">'wang'</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        fresh<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+        expires_delta<span class="token operator">=</span>timedelta<span class="token punctuation">(</span>seconds<span class="token operator">=</span><span class="token number">60</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        additional_claims<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'claims'</span><span class="token punctuation">:</span> <span class="token string">'claims'</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        additional_headers<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"header"</span><span class="token punctuation">:</span> <span class="token string">"header"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span>
+    <span class="token keyword">return</span> jsonify<span class="token punctuation">(</span>access_token<span class="token operator">=</span>access_token<span class="token punctuation">)</span>
+
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">'/index'</span><span class="token punctuation">,</span>methods<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'GET'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token decorator annotation punctuation">@jwt_required</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> jsonify<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        <span class="token string">"get_jwt()"</span><span class="token punctuation">:</span> get_jwt<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token string">"get_jwt_identity()"</span><span class="token punctuation">:</span> get_jwt_identity<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token string">"get_jwt_header()"</span><span class="token punctuation">:</span> get_jwt_header<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    app<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="没有token访问返回未授权"><a class="markdownIt-Anchor" href="#没有token访问返回未授权"></a> 没有token,访问返回未授权</h1>
+<p>直接访问被保护的路由<code>/index</code>, 返回401, UNAUTHORIZED.</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ http get :5000/index
+HTTP/1.0 <span class="token number">401</span> UNAUTHORIZED
+Content-Length: <span class="token number">44</span>
+Content-Type: application/json
+Date: Thu, 06 Jan <span class="token number">2022</span> 03:36:24 GMT
+Server: Werkzeug/2.0.2 Python/3.8.10
+
+<span class="token punctuation">&#123;</span>
+    <span class="token string">"msg"</span><span class="token builtin class-name">:</span> <span class="token string">"Missing Authorization Header"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="访问登陆路由login-获得token"><a class="markdownIt-Anchor" href="#访问登陆路由login-获得token"></a> 访问登陆路由<code>/login</code>, 获得token</h1>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ http post :5000/login
+HTTP/1.0 <span class="token number">200</span> OK
+Content-Length: <span class="token number">368</span>
+Content-Type: application/json
+Date: Thu, 06 Jan <span class="token number">2022</span> 06:46:52 GMT
+Server: Werkzeug/2.0.2 Python/3.8.10
+
+<span class="token punctuation">&#123;</span>
+    <span class="token string">"access_token"</span><span class="token builtin class-name">:</span> <span class="token string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImhlYWRlciI6ImhlYWRlciJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTQ1MTYxMiwianRpIjoiNGZkY2FhYWMtYmYzOC00MDBhLWExM2ItYjM4NWM3NDdlMGJiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwidXNlcm5hbWUiOiJ3YW5nIn0sIm5iZiI6MTY0MTQ1MTYxMiwiZXhwIjoxNjQxNDUxNjcyLCJjbGFpbXMiOiJjbGFpbXMifQ.OMDUxAUSY7DzFYdTBvLmotzAzHOJ9f3mDczXpBGxoYk"</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以去<code>https://jwt.io/</code>解析该token,结果为:</p>
+<h2 id="第一部分-headeralgorithm-token-type-头部"><a class="markdownIt-Anchor" href="#第一部分-headeralgorithm-token-type-头部"></a> 第一部分: HEADER:ALGORITHM &amp; TOKEN TYPE, 头部</h2>
+<p>表示该token的<code>type</code>为<code>JWT</code>, 签名算法<code>alg</code>为<code>HS256</code>, 这两个都是调用<code>create_access_token()</code>方法时自动生成, 另外我们可以传入参数<code>header</code>来增加额外的信息.</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"typ"</span><span class="token operator">:</span> <span class="token string">"JWT"</span><span class="token punctuation">,</span>
+  <span class="token property">"alg"</span><span class="token operator">:</span> <span class="token string">"HS256"</span><span class="token punctuation">,</span>
+  <span class="token property">"header"</span><span class="token operator">:</span> <span class="token string">"header"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="第二部分-payloaddata-数据"><a class="markdownIt-Anchor" href="#第二部分-payloaddata-数据"></a> 第二部分: PAYLOAD:DATA, 数据</h2>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fresh</td>
+<td>一个标记, 可以在验证的时候验证该标记. 调用<code>create_access_token()</code>手工传入</td>
+</tr>
+<tr>
+<td>iat(issued at)</td>
+<td>签发token的时间. 调用<code>create_access_token()</code>自动生成</td>
+</tr>
+<tr>
+<td>jti(jwt id)</td>
+<td>jwt的标志. 调用<code>create_access_token()</code>自动生成</td>
+</tr>
+<tr>
+<td>type</td>
+<td>jwt的类型, 调用<code>create_access_token()</code>为<code>access</code>, 调用<code>create_refresh_token()</code>为<code>refresh</code></td>
+</tr>
+<tr>
+<td>sub(The subject of the token)</td>
+<td>token的主题,一般将信息都写在此字段下, 调用<code>create_access_token()</code>时手动传入, <code>identity</code>参数对应的数据</td>
+</tr>
+<tr>
+<td>nbf(not before)</td>
+<td>token在此时间之前不能被接收处理, 和iat一样, 就是创建的时间.调用<code>create_access_token()</code>自动生成</td>
+</tr>
+<tr>
+<td>exp(expires)</td>
+<td>token失效的时间, 调用<code>create_access_token()</code>, 通过参数<code>expires_delta</code>来设置时间间隔, 会自动计算失效的时间点</td>
+</tr>
+<tr>
+<td>claims</td>
+<td>用户自己声明的一些数据, 调用<code>create_access_token()</code>, 通过参数<code>claim</code>来设置</td>
+</tr>
+</tbody>
+</table>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"fresh"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token property">"iat"</span><span class="token operator">:</span> <span class="token number">1641449139</span><span class="token punctuation">,</span>
+  <span class="token property">"jti"</span><span class="token operator">:</span> <span class="token string">"8cdd4bd6-26db-4eaa-bcc2-0b1e14a8c773"</span><span class="token punctuation">,</span>
+  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"access"</span><span class="token punctuation">,</span>
+  <span class="token property">"sub"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"username"</span><span class="token operator">:</span> <span class="token string">"wang"</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"nbf"</span><span class="token operator">:</span> <span class="token number">1641449139</span><span class="token punctuation">,</span>
+  <span class="token property">"exp"</span><span class="token operator">:</span> <span class="token number">1641452739</span><span class="token punctuation">,</span>
+  <span class="token property">"claims"</span><span class="token operator">:</span> <span class="token string">"claims"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="第三部分-verify-signature签名信息"><a class="markdownIt-Anchor" href="#第三部分-verify-signature签名信息"></a> 第三部分, VERIFY SIGNATURE签名信息</h2>
+<p>将header和payload组合起来, 并用HMACSHA256算法, 将其和自己设置的<code>盐</code>进行加密</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">HMACSHA256(
+  base64UrlEncode(header) + <span class="token string">"."</span> +
+  base64UrlEncode(payload)<span class="token punctuation">,</span>
+  
+your<span class="token number">-256</span>-bit-secret
+
+) secret base64 encoded<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="带着token成功访问被保护的路由index"><a class="markdownIt-Anchor" href="#带着token成功访问被保护的路由index"></a> 带着token成功访问被保护的路由<code>/index</code></h1>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token builtin class-name">export</span> <span class="token assign-left variable">JWT</span><span class="token operator">=</span><span class="token string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImhlYWRlciI6ImhlYWRlciJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTQ1MTYxMiwianRpIjoi
+NGZkY2FhYWMtYmYzOC00MDBhLWExM2ItYjM4NWM3NDdlMGJiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwidXNlcm5hbWUiOiJ3YW5nIn0sIm5iZiI6MTY
+0MTQ1MTYxMiwiZXhwIjoxNjQxNDUxNjcyLCJjbGFpbXMiOiJjbGFpbXMifQ.OMDUxAUSY7DzFYdTBvLmotzAzHOJ9f3mDczXpBGxoYk"</span>
+
+$ http get :5000/index Authorization:<span class="token string">"Bearer <span class="token variable">$JWT</span>"</span>
+HTTP/1.0 <span class="token number">200</span> OK
+Content-Length: <span class="token number">440</span>
+Content-Type: application/json
+Date: Thu, 06 Jan <span class="token number">2022</span> 06:47:19 GMT
+Server: Werkzeug/2.0.2 Python/3.8.10
+
+<span class="token punctuation">&#123;</span>
+    <span class="token string">"get_jwt()"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"claims"</span><span class="token builtin class-name">:</span> <span class="token string">"claims"</span>,
+        <span class="token string">"exp"</span><span class="token builtin class-name">:</span> <span class="token number">1641451672</span>,
+        <span class="token string">"fresh"</span><span class="token builtin class-name">:</span> false,
+        <span class="token string">"iat"</span><span class="token builtin class-name">:</span> <span class="token number">1641451612</span>,
+        <span class="token string">"jti"</span><span class="token builtin class-name">:</span> <span class="token string">"4fdcaaac-bf38-400a-a13b-b385c747e0bb"</span>,
+        <span class="token string">"nbf"</span><span class="token builtin class-name">:</span> <span class="token number">1641451612</span>,
+        <span class="token string">"sub"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"id"</span><span class="token builtin class-name">:</span> <span class="token number">1</span>,
+            <span class="token string">"username"</span><span class="token builtin class-name">:</span> <span class="token string">"wang"</span>
+        <span class="token punctuation">&#125;</span>,
+        <span class="token string">"type"</span><span class="token builtin class-name">:</span> <span class="token string">"access"</span>
+    <span class="token punctuation">&#125;</span>,
+    <span class="token string">"get_jwt_header()"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"alg"</span><span class="token builtin class-name">:</span> <span class="token string">"HS256"</span>,
+        <span class="token string">"header"</span><span class="token builtin class-name">:</span> <span class="token string">"header"</span>,
+        <span class="token string">"typ"</span><span class="token builtin class-name">:</span> <span class="token string">"JWT"</span>
+    <span class="token punctuation">&#125;</span>,
+    <span class="token string">"get_jwt_identity()"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"id"</span><span class="token builtin class-name">:</span> <span class="token number">1</span>,
+        <span class="token string">"username"</span><span class="token builtin class-name">:</span> <span class="token string">"wang"</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>get_jwt()</td>
+<td>返回payload</td>
+</tr>
+<tr>
+<td>get_jwt_header()</td>
+<td>获得头信息</td>
+</tr>
+<tr>
+<td>get_jwt_identity()</td>
+<td>获得payload的sub字段下的内容, 和<code>create_access_token()</code>中的<code>identity</code>参数对应</td>
+</tr>
+</tbody>
+</table>
+<h1 id="token过期"><a class="markdownIt-Anchor" href="#token过期"></a> token过期</h1>
+<p>因为我们设置<code>expires_delta</code>为1分钟,所以1分钟后, 再访问<code>/index</code>, 返回401未授权, 信息是token过时</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ http get :5000/index Authorization:<span class="token string">"Bearer <span class="token variable">$JWT</span>"</span>
+HTTP/1.0 <span class="token number">401</span> UNAUTHORIZED
+Content-Length: <span class="token number">33</span>
+Content-Type: application/json
+Date: Thu, 06 Jan <span class="token number">2022</span> 06:48:20 GMT
+Server: Werkzeug/2.0.2 Python/3.8.10
+
+<span class="token punctuation">&#123;</span>
+    <span class="token string">"msg"</span><span class="token builtin class-name">:</span> <span class="token string">"Token has expired"</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/flask_jwt_fresh/" rel="prev" title="flask_jwt_fresh">
+                  <i class="fa fa-chevron-left"></i> flask_jwt_fresh
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/flask_endpoint/" rel="next" title="flask_endpoint">
+                  flask_endpoint <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

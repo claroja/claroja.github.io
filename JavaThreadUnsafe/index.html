@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Race Conditions 段代码块内如果存在对共享资源的多线程读写操作，称这段代码块为Critical Section 多个线程在临界区内执行，由于代码的执行序列不同而导致结果无法预测，称之为发生了Race Condition  多个线程读共享资源没问题 在多个线程对共享资源读写操作时发生指令交错.   从java底层理解 一个陷阱进行++操作, 另一个进行–操作, 最后结果不为0 sta">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaThreadUnsafe">
+<meta property="og:url" content="https://claroja.github.io/JavaThreadUnsafe/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="Race Conditions 段代码块内如果存在对共享资源的多线程读写操作，称这段代码块为Critical Section 多个线程在临界区内执行，由于代码的执行序列不同而导致结果无法预测，称之为发生了Race Condition  多个线程读共享资源没问题 在多个线程对共享资源读写操作时发生指令交错.   从java底层理解 一个陷阱进行++操作, 另一个进行–操作, 最后结果不为0 sta">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-11T02:33:04.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.084Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/JavaThreadUnsafe/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/JavaThreadUnsafe/","path":"JavaThreadUnsafe/","title":"JavaThreadUnsafe"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaThreadUnsafe | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#race-conditions"><span class="nav-number">1.</span> <span class="nav-text"> Race Conditions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8Ejava%E5%BA%95%E5%B1%82%E7%90%86%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text"> 从java底层理解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8Ecpu%E5%BA%95%E5%B1%82%E7%90%86%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text"> 从CPU底层理解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%9D%E8%AF%81%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="nav-number">4.</span> <span class="nav-text"> 保证线程安全</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/JavaThreadUnsafe/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JavaThreadUnsafe | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaThreadUnsafe
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-11 10:33:04" itemprop="dateCreated datePublished" datetime="2021-07-11T10:33:04+08:00">2021-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="race-conditions"><a class="markdownIt-Anchor" href="#race-conditions"></a> Race Conditions</h1>
+<p>段代码块内如果存在对共享资源的多线程读写操作，称这段代码块为Critical Section<br />
+多个线程在临界区内执行，由于代码的执行序列不同而导致结果无法预测，称之为发生了Race Condition</p>
+<ul>
+<li>多个线程读共享资源没问题</li>
+<li>在多个线程对共享资源读写操作时发生指令交错.</li>
+</ul>
+<h1 id="从java底层理解"><a class="markdownIt-Anchor" href="#从java底层理解"></a> 从java底层理解</h1>
+<p>一个陷阱进行++操作, 另一个进行–操作, 最后结果不为0</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">InterruptedException</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Thread</span> t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token number">5000</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        counter<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">"t1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Thread</span> t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token number">5000</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        counter<span class="token operator">--</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">"t2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    log<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">"&#123;&#125;"</span><span class="token punctuation">,</span>counter<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//结果不为0</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>i++ 而言（i为静态变量），实际会产生如下的 JVM 字节码指令：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">getstatic i <span class="token comment">// 获取静态变量i值</span>
+iconst_1    <span class="token comment">// 准备常量1</span>
+iadd        <span class="token comment">// 自增</span>
+putstatic i <span class="token comment">// 将修改后的值存入静态变量i</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同理 i–</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">getstatic i <span class="token comment">// 获取静态变量i值</span>
+iconst_1    <span class="token comment">// 准备常量1</span>
+isub        <span class="token comment">// 自减</span>
+putstatic i <span class="token comment">// 将修改后的值存入静态变量i</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>应为i++和i–是在不同线程中执行, 则可能发生:</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Thread1</span><span class="token operator">:</span> getstatic i <span class="token comment">//i=0</span>
+<span class="token class-name">Thread2</span><span class="token operator">:</span> getstatic i <span class="token comment">//i=0</span>
+<span class="token class-name">Thread1</span><span class="token operator">:</span> iconst_1    <span class="token comment">// 准备常量1</span>
+<span class="token class-name">Thread1</span><span class="token operator">:</span> iadd        <span class="token comment">// +1</span>
+<span class="token class-name">Thread1</span><span class="token operator">:</span> putstatic i <span class="token comment">// i=1</span>
+<span class="token class-name">Thread2</span><span class="token operator">:</span> iconst_1    <span class="token comment">// 准备常量1</span>
+<span class="token class-name">Thread2</span><span class="token operator">:</span> isub        <span class="token comment">// -1</span>
+<span class="token class-name">Thread2</span><span class="token operator">:</span> putstatic i <span class="token comment">// i=-1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>虽然Thread1和Thread2都执行了一次i++和i–顺序实行, 结果应该为i=0. 但是由于两个线程同时执行, 发生了指令交错, 最终结果为-1.</p>
+<h1 id="从cpu底层理解"><a class="markdownIt-Anchor" href="#从cpu底层理解"></a> 从CPU底层理解</h1>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Counter</span> <span class="token punctuation">&#123;</span>
+   <span class="token keyword">protected</span> <span class="token keyword">long</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">long</span> value<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+       <span class="token keyword">this</span><span class="token punctuation">.</span>count <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>count <span class="token operator">+</span> value<span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>假设两个Thread A和B, 同时调用<code>add()</code>, 每个Thread都会执行:</p>
+<ol>
+<li>从memory中读取<code>this.count</code>到register</li>
+<li>在register中进行计算</li>
+<li>从register中将结果返回给memory<br />
+我们希望执行的方式如下:</li>
+</ol>
+<pre class="line-numbers language-s" data-language="s"><code class="language-s">    this.count &#x3D; 0;
+Thread A:  读取 this.count&#x3D;0 到 register.
+Thread A:  在register中, 调用 add(1)方法, this.count&#x3D;1.
+Thread A:  将this.count放回 memory, 结果为 1.
+Thread B:  读取 this.count&#x3D;1 到 register.
+Thread B:  在register中, 调用 add(1)方法, this.count&#x3D;2.
+Thread B:  将this.count 放回 memory, 最终结果为2.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>两个Thread同步执行, 最终结果为2.</p>
+<p>由于操作系统调度两个Thread, 所以可能会出现下面的情况:</p>
+<pre class="line-numbers language-s" data-language="s"><code class="language-s">    this.count &#x3D; 0;
+Thread A:  读取 this.count&#x3D;0 到 register.
+Thread B:  读取 this.count&#x3D;0 到 register.
+Thread B:  在register中, 调用 add(1)方法, this.count&#x3D;1.
+Thread B:  将this.count 放回 memory, 结果为 1.
+Thread A:  在register中, 调用 add(1)方法, this.count&#x3D;1.
+Thread A:  将this.count&#x3D;1 放回 memory, 最终结果为 1.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>两个Thread交叉执行, 最终结果为1.</p>
+<h1 id="保证线程安全"><a class="markdownIt-Anchor" href="#保证线程安全"></a> 保证线程安全</h1>
+<p>有多种手段保证线程安全</p>
+<ul>
+<li>阻塞式的解决方案：synchronized，Lock</li>
+<li>非阻塞式的解决方案：原子变量</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/JavaThreadCommand/" rel="prev" title="JavaThreadCommand">
+                  <i class="fa fa-chevron-left"></i> JavaThreadCommand
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/JavaSynchronized/" rel="next" title="JavaSynchronized">
+                  JavaSynchronized <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

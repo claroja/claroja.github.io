@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="下载&#x2F;更新&#x2F;上传  git clone  概述  git clone做了两件事:  把远程的所有分支复制下来, 使用git branch -r查看  remotes&#x2F;origin&#x2F;HEAD -&gt; origin&#x2F;master remotes&#x2F;origin&#x2F;dev  在本地新建master分支与origin&#x2F;master分支对应, 使用git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git">
+<meta property="og:url" content="https://claroja.github.io/Git/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="下载&#x2F;更新&#x2F;上传  git clone  概述  git clone做了两件事:  把远程的所有分支复制下来, 使用git branch -r查看  remotes&#x2F;origin&#x2F;HEAD -&gt; origin&#x2F;master remotes&#x2F;origin&#x2F;dev  在本地新建master分支与origin&#x2F;master分支对应, 使用git">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-26T04:54:06.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.049Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/Git/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/Git/","path":"Git/","title":"Git"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Git | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E6%9B%B4%E6%96%B0%E4%B8%8A%E4%BC%A0"><span class="nav-number">1.</span> <span class="nav-text"> 下载&#x2F;更新&#x2F;上传</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-clone"><span class="nav-number">1.1.</span> <span class="nav-text"> git clone</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-fetch"><span class="nav-number">1.2.</span> <span class="nav-text"> git fetch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-push"><span class="nav-number">1.3.</span> <span class="nav-text"> git push</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4"><span class="nav-number">2.</span> <span class="nav-text"> 提交</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-commit"><span class="nav-number">2.1.</span> <span class="nav-text"> git commit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-revert"><span class="nav-number">2.2.</span> <span class="nav-text"> git revert</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-cherry-pick"><span class="nav-number">2.3.</span> <span class="nav-text"> git cherry-pick</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8C%BA%E6%9A%82%E5%AD%98%E5%8C%BA%E7%B4%A2%E5%BC%95%E5%8C%BAadd-checkout-reset"><span class="nav-number">3.</span> <span class="nav-text"> 工作区&#x2F;暂存区&#x2F;索引区(add, checkout, reset)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%88%E5%B9%B6"><span class="nav-number">4.</span> <span class="nav-text"> 合并</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-switch"><span class="nav-number">5.</span> <span class="nav-text"> git switch</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-merge"><span class="nav-number">5.1.</span> <span class="nav-text"> git merge</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-rebase"><span class="nav-number">6.</span> <span class="nav-text"> git rebase</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">7.</span> <span class="nav-text"> 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-tag"><span class="nav-number">7.1.</span> <span class="nav-text"> git tag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-log"><span class="nav-number">7.2.</span> <span class="nav-text"> git log</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/Git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Git | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-26 12:54:06" itemprop="dateCreated datePublished" datetime="2021-06-26T12:54:06+08:00">2021-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="下载更新上传"><a class="markdownIt-Anchor" href="#下载更新上传"></a> 下载/更新/上传</h1>
+<h2 id="git-clone"><a class="markdownIt-Anchor" href="#git-clone"></a> git clone</h2>
+<ol>
+<li>概述</li>
+</ol>
+<p>git clone做了两件事:</p>
+<ol>
+<li>把远程的所有分支复制下来, 使用<code>git branch -r</code>查看</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">remotes&#x2F;origin&#x2F;HEAD -&gt; origin&#x2F;master
+remotes&#x2F;origin&#x2F;dev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>在本地新建<code>master</code>分支与<code>origin/master</code>分支对应, 使用<code>git branch -a</code>可以查看本地和远程素有分支.</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">* master
+remotes&#x2F;origin&#x2F;HEAD -&gt; origin&#x2F;master
+remotes&#x2F;origin&#x2F;dev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>如果想在本地创建<code>dev</code>分支与<code>origin/dev</code>对应, 使用<code>git checkout -b dev origin/dev</code></p>
+<p>常用命令:</p>
+<p><code>git clone [-b BRANCH] [-o ORIGIN] REMOTE_URL [LOCAL_DIR]</code></p>
+<ul>
+<li>REMOTE_URL: 支持多种协议</li>
+<li>LOCAL_DIR: 默认与远程仓库同名</li>
+<li>BRANCH: 指定要clone分支, 默认把整个仓库clone下来(但只会在本地创建一个master分支,<code>git branch -a</code>查看)</li>
+<li>ORIGIN: 指定remote名称, 默认origin</li>
+</ul>
+<ol start="2">
+<li>应用</li>
+</ol>
+<ul>
+<li>在实际开发中很少直接clone所有分支, 只需clone需要修改的分支即可, 这是git会在本地自动创建该分支的同名分支<br />
+使用<code>git clone -b REMOTE_URL</code></li>
+<li>如果clone的分支是<code>protected</code>, 既不能直接<code>push</code>. 则:
+<ol>
+<li>先创建一个分支 <code>git branch mydev</code></li>
+<li>跳到该分支上<code>git switch mydev</code></li>
+<li>修改完成, 推送到远程分支<code>git push</code>, 这时远程会多一个<code>origin/mydev</code>分支</li>
+<li>在远程进行<code>merge request</code>, 并选择merge后删除这个分支</li>
+</ol>
+</li>
+</ul>
+<h2 id="git-fetch"><a class="markdownIt-Anchor" href="#git-fetch"></a> git fetch</h2>
+<ol>
+<li>概述</li>
+</ol>
+<p>更新远程分支(origin/*)</p>
+<p><code>get fetch [ORIGIN] [R-BRANCH] [L-BRANCH]</code></p>
+<ul>
+<li><code>git fetch</code> 不带参数则是默认拉取远程ORIGIN仓库, 所有分支(origin/*)</li>
+<li><code>ORIGIN</code> 拉取远程仓库的名称, 默认origin</li>
+<li><code>R-BREANCH</code> 拉取远程仓库的分支名, 在本地的名称为(origin/R-BRANCH)</li>
+<li><code>L-BRANCH</code> 来取远程残酷的分支,并更新本地对应的分支</li>
+</ul>
+<h2 id="git-push"><a class="markdownIt-Anchor" href="#git-push"></a> git push</h2>
+<ol>
+<li>概述</li>
+</ol>
+<p><code>git push [ORIGIN] [L-BRANCH] [R-BRANCH]</code></p>
+<ul>
+<li><code>git push</code> 推送当前branch到origin远程仓库</li>
+<li><code>ORIGIN</code> 推送的远程仓库的名称, 默认origin</li>
+<li><code>L-BRANCH</code> 推送的 本地branch名称, 默认为当前分支</li>
+<li><code>R-BRANCH</code> 推送的 远程branch名称, 默认和本地branch</li>
+</ul>
+<h1 id="提交"><a class="markdownIt-Anchor" href="#提交"></a> 提交</h1>
+<h2 id="git-commit"><a class="markdownIt-Anchor" href="#git-commit"></a> git commit</h2>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git commit -m &quot;the commit message&quot; # 提交暂存区的文件
+git commit –amend #重新进行当前的提交<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="git-revert"><a class="markdownIt-Anchor" href="#git-revert"></a> git revert</h2>
+<p><code>git revert commitHash</code><br />
+提交<code>commitHash</code>之前的一次<code>commitHash</code></p>
+<h2 id="git-cherry-pick"><a class="markdownIt-Anchor" href="#git-cherry-pick"></a> git cherry-pick</h2>
+<p>将指定的<code>commit</code>提交到当前分支上<br />
+<code>git cherry-pick &lt;commitHash&gt;</code></p>
+<ol>
+<li><code>git checkout master</code><br />
+切换到Master分支</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">a - b - c  Master *
+   \
+   d - e - f Feature<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li><code>git cherry-pick e</code> 将Feature分支上的<code>commit e</code> 提交到Master分支上</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">a - b - c - e Master *
+   \
+   d - e - f Feature<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="工作区暂存区索引区add-checkout-reset"><a class="markdownIt-Anchor" href="#工作区暂存区索引区add-checkout-reset"></a> 工作区/暂存区/索引区(add, checkout, reset)</h1>
+<p>索引区index<br />
+暂存区stage<br />
+工作区workspace(local)</p>
+<p><code>git add</code> 将修改添加到stage<br />
+<code>git commit</code> 将stage提交为一个commit,且本次stage和本次commit保持一致</p>
+<p>撤销修改:<br />
+1.只在local修改(没有add操作) <code>git checkout ./</code>即可<br />
+2.local修改后,add到stage,且没有进一步修改(刚add没有继续修改)<br />
+1)<code>git reset HEAD --mix</code>(HEAD --mix可省略),撤销stage的修改(此时checkout 没用,因为stage和local一致)<br />
+2)<code>git checkout ./</code>撤销local的修改(checkout作用是用stage覆盖local,此时local和commit已经一致)</p>
+<p>3.local修改后,add到stage,并进行进一步修改<br />
+1)<code>git checkout ./</code> 撤销local的改动(既进一步的修改内容)<br />
+2)<code>git reset HEAD --mix</code>(HEAD --mix可省略),撤销stage的修改(此时checkout 没用,因为stage和local一致)<br />
+3)<code>git checkout ./</code>撤销local的修改(checkout作用是用stage覆盖local,此时local和commit已经一致)</p>
+<p>这三步可以合成一步<code>git reset HEAD --hard</code></p>
+<h1 id="合并"><a class="markdownIt-Anchor" href="#合并"></a> 合并</h1>
+<h1 id="git-switch"><a class="markdownIt-Anchor" href="#git-switch"></a> git switch</h1>
+<p>代替<code>git checkout &lt;BRANCH&gt;</code></p>
+<h2 id="git-merge"><a class="markdownIt-Anchor" href="#git-merge"></a> git merge</h2>
+<p>git merge执行了两个操作:</p>
+<ol>
+<li>将两个分支的代码合并, 既把目标的<code>commit</code>合并到当前分支的<code>commit</code></li>
+<li>
+<ul>
+<li>如果没有冲突, 则直接提交新的<code>commit</code></li>
+<li>如果有冲突, 则先解决冲突, 然后手动<code>commit</code></li>
+</ul>
+</li>
+</ol>
+<p>解决冲突:</p>
+<ol>
+<li>
+<p>merge合并之后，中会提示有冲突的文件(既同一文件，同一行做了不同的修改)<br />
+也可通过<code>git status</code>来进行查看</p>
+</li>
+<li>
+<p>找到有冲突的文件进行处理</p>
+</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">&lt;&lt;&lt;&lt;&lt; HEAD
+1
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+2
+&gt;&gt;&gt;&gt;&gt;&gt; branch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>HEAD</code>到<code>======</code>是当前的分支，该文件的内容，<code>branch</code>到<code>=====</code>是合并目标分支的内容，<code>merge</code>不知道用哪个，所以需要我们自己决定。加入我们想要其他分支的内容，则只需要将<code>&lt;&lt;&lt;&lt;&lt; HEAD 1 =====</code>和<code>&gt;&gt;&gt;&gt; branch</code>删除即可。</p>
+<ol start="3">
+<li>
+<p>解决完冲突后，需要重新add和commit</p>
+</li>
+<li>
+<p>如果发现冲突不想解决，则可以使用下面的命令取消。<br />
+<code>git merge --abort</code></p>
+</li>
+</ol>
+<h1 id="git-rebase"><a class="markdownIt-Anchor" href="#git-rebase"></a> git rebase</h1>
+<p><code>base</code>是根的意思, 所谓的根就是两个branch交叉点, 交叉点以下是两个branch共有的, (有个误区是,交叉点以下的部分只属于某一个branch)</p>
+<ol>
+<li>
+<p>git rebase -i upstream [branch]<br />
+upstream就是要移植到的base,可以是branch,也可以是commit id.<br />
+branch是要要移植的branch,默认是HEAD所在branch</p>
+</li>
+<li>
+<p>git reabse --continue --abort<br />
+在使用-i交互模式时,处理conflict会中断,要使用–continue来恢复交互模式</p>
+</li>
+</ol>
+<h1 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h1>
+<h2 id="git-tag"><a class="markdownIt-Anchor" href="#git-tag"></a> git tag</h2>
+<ul>
+<li>在当前<code>commit</code>上打标签 <code>git tag &lt;TAGNAME&gt;</code></li>
+<li>在指定<code>commit</code>上打标签 <code>git tag &lt;TAGNAME&gt; &lt;COMMITHASH&gt;</code></li>
+</ul>
+<h2 id="git-log"><a class="markdownIt-Anchor" href="#git-log"></a> git log</h2>
+<p><code>git log --oneline --decorate --graph --all</code></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/GitRevert/" rel="prev" title="GitRevert">
+                  <i class="fa fa-chevron-left"></i> GitRevert
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Git%E5%8E%9F%E7%90%86-%E5%AF%B9%E8%B1%A1/" rel="next" title="Git原理-对象">
+                  Git原理-对象 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

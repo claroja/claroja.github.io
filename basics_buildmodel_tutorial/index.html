@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="torch.nn包含了创建模型所有的组件.  Get Device for Training 如果有gpu则用gpu, 否则使用cpu. device &#x3D; &#39;cuda&#39; if torch.cuda.is_available() else &#39;cpu&#39; print(&#39;Using &amp;#123;&amp;#125; device&#39;.format(device))  Define the Class  自己创建的模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="basics_buildmodel_tutorial">
+<meta property="og:url" content="https://claroja.github.io/basics_buildmodel_tutorial/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="torch.nn包含了创建模型所有的组件.  Get Device for Training 如果有gpu则用gpu, 否则使用cpu. device &#x3D; &#39;cuda&#39; if torch.cuda.is_available() else &#39;cpu&#39; print(&#39;Using &amp;#123;&amp;#125; device&#39;.format(device))  Define the Class  自己创建的模">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-25T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.132Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/basics_buildmodel_tutorial/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/basics_buildmodel_tutorial/","path":"basics_buildmodel_tutorial/","title":"basics_buildmodel_tutorial"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>basics_buildmodel_tutorial | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#get-device-for-training"><span class="nav-number">1.</span> <span class="nav-text"> Get Device for Training</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-the-class"><span class="nav-number">2.</span> <span class="nav-text"> Define the Class</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#model-layers"><span class="nav-number">3.</span> <span class="nav-text"> Model Layers</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nnflatten"><span class="nav-number">3.1.</span> <span class="nav-text"> nn.Flatten</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nnlinear"><span class="nav-number">3.2.</span> <span class="nav-text"> nn.Linear</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nnrelu"><span class="nav-number">3.3.</span> <span class="nav-text"> nn.ReLU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nnsequential"><span class="nav-number">3.4.</span> <span class="nav-text"> nn.Sequential</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nnsoftmax"><span class="nav-number">3.5.</span> <span class="nav-text"> nn.Softmax</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#model-parameters"><span class="nav-number">4.</span> <span class="nav-text"> Model Parameters</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/basics_buildmodel_tutorial/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="basics_buildmodel_tutorial | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          basics_buildmodel_tutorial
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 22:03:54" itemprop="dateCreated datePublished" datetime="2021-10-25T22:03:54+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><code>torch.nn</code>包含了创建模型所有的组件.</p>
+<h1 id="get-device-for-training"><a class="markdownIt-Anchor" href="#get-device-for-training"></a> Get Device for Training</h1>
+<p>如果有gpu则用gpu, 否则使用cpu.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">device <span class="token operator">=</span> <span class="token string">'cuda'</span> <span class="token keyword">if</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>is_available<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">else</span> <span class="token string">'cpu'</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Using &#123;&#125; device'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>device<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="define-the-class"><a class="markdownIt-Anchor" href="#define-the-class"></a> Define the Class</h1>
+<ol>
+<li>自己创建的模型要继承<code>nn.Module</code></li>
+<li>在<code>__init__</code>方法中定义网络结构</li>
+<li>在<code>forward(self, x)</code>方法中, 定义数据如何通过网络</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">NeuralNetwork</span><span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token builtin">super</span><span class="token punctuation">(</span>NeuralNetwork<span class="token punctuation">,</span> self<span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>flatten <span class="token operator">=</span> nn<span class="token punctuation">.</span>Flatten<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>linear_relu_stack <span class="token operator">=</span> nn<span class="token punctuation">.</span>Sequential<span class="token punctuation">(</span>
+            nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">28</span><span class="token operator">*</span><span class="token number">28</span><span class="token punctuation">,</span> <span class="token number">512</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            nn<span class="token punctuation">.</span>ReLU<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">512</span><span class="token punctuation">,</span> <span class="token number">512</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            nn<span class="token punctuation">.</span>ReLU<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">512</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        x <span class="token operator">=</span> self<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        logits <span class="token operator">=</span> self<span class="token punctuation">.</span>linear_relu_stack<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> logits<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>创建实例, 并将其和cpu或gpu绑定.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> NeuralNetwork<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>使用模型进行预测</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">X <span class="token operator">=</span> torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">,</span> device<span class="token operator">=</span>device<span class="token punctuation">)</span>
+logits <span class="token operator">=</span> model<span class="token punctuation">(</span>X<span class="token punctuation">)</span>
+pred_probab <span class="token operator">=</span> nn<span class="token punctuation">.</span>Softmax<span class="token punctuation">(</span>dim<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span>logits<span class="token punctuation">)</span>
+y_pred <span class="token operator">=</span> pred_probab<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Predicted class: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>y_pred<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="model-layers"><a class="markdownIt-Anchor" href="#model-layers"></a> Model Layers</h1>
+<p>我们将<code>FashionMNIST</code>的模型进行拆解, 以minibatch=3, 图片大小为28*28来看数据通过每一层网络, 到底发生了什么.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">input_image <span class="token operator">=</span> torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">28</span><span class="token punctuation">,</span><span class="token number">28</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>input_image<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># torch.Size([3, 28, 28])</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="nnflatten"><a class="markdownIt-Anchor" href="#nnflatten"></a> nn.Flatten</h2>
+<p><code>nn.Flatten</code>层将2D的 28x28的图片转换为1D的784(28x28)数组</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">flatten <span class="token operator">=</span> nn<span class="token punctuation">.</span>Flatten<span class="token punctuation">(</span><span class="token punctuation">)</span>
+flat_image <span class="token operator">=</span> flatten<span class="token punctuation">(</span>input_image<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>flat_image<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># torch.Size([3, 784])</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="nnlinear"><a class="markdownIt-Anchor" href="#nnlinear"></a> nn.Linear</h2>
+<p><code>nn.Linear</code>会使用他自己的weights and biases, 将输入做线性变换</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">layer1 <span class="token operator">=</span> nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span>in_features<span class="token operator">=</span><span class="token number">28</span><span class="token operator">*</span><span class="token number">28</span><span class="token punctuation">,</span> out_features<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token comment">#in_f 决定了一组方程有多少个w, out_决定了有几组方程</span>
+hidden1 <span class="token operator">=</span> layer1<span class="token punctuation">(</span>flat_image<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>hidden1<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># torch.Size([3, 20])</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="nnrelu"><a class="markdownIt-Anchor" href="#nnrelu"></a> nn.ReLU</h2>
+<p><code>nn.ReLU</code>作用是将线性变换转换非线性变换</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Before ReLU: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>hidden1<span class="token punctuation">&#125;</span></span><span class="token string">\n\n"</span></span><span class="token punctuation">)</span>
+hidden1 <span class="token operator">=</span> nn<span class="token punctuation">.</span>ReLU<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span>hidden1<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"After ReLU: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>hidden1<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="nnsequential"><a class="markdownIt-Anchor" href="#nnsequential"></a> nn.Sequential</h2>
+<p><code>nn.Sequential</code>将各个layer按顺序组合起来</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">seq_modules <span class="token operator">=</span> nn<span class="token punctuation">.</span>Sequential<span class="token punctuation">(</span>
+    flatten<span class="token punctuation">,</span>
+    layer1<span class="token punctuation">,</span>
+    nn<span class="token punctuation">.</span>ReLU<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+input_image <span class="token operator">=</span> torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">28</span><span class="token punctuation">,</span><span class="token number">28</span><span class="token punctuation">)</span>
+logits <span class="token operator">=</span> seq_modules<span class="token punctuation">(</span>input_image<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="nnsoftmax"><a class="markdownIt-Anchor" href="#nnsoftmax"></a> nn.Softmax</h2>
+<ol>
+<li>最后的linear layer会返回logits(正无穷和负无穷之期间的自然数), 键入输入到<code>nn.Softmax</code>中.</li>
+<li><code>nn.Softmax</code>会将logits scale到[0,1], 来表示每个分类的可能性.</li>
+<li><code>dim=1</code>表示dimension为1的数字求和必须为1.</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">softmax <span class="token operator">=</span> nn<span class="token punctuation">.</span>Softmax<span class="token punctuation">(</span>dim<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+pred_probab <span class="token operator">=</span> softmax<span class="token punctuation">(</span>logits<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="model-parameters"><a class="markdownIt-Anchor" href="#model-parameters"></a> Model Parameters</h1>
+<p>模型中的每一层都有自己的weights 和 biases, 在训练的时候会被优化.<code>nn.Module</code>会跟踪这些参数, 使用<code>parameters()</code>或<code>named_parameters()</code>来访问他们.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Model structure: "</span><span class="token punctuation">,</span> model<span class="token punctuation">,</span> <span class="token string">"\n\n"</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> name<span class="token punctuation">,</span> param <span class="token keyword">in</span> model<span class="token punctuation">.</span>named_parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Layer: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>name<span class="token punctuation">&#125;</span></span><span class="token string"> | Size: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>param<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string"> | Values : </span><span class="token interpolation"><span class="token punctuation">&#123;</span>param<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token format-spec">2]</span><span class="token punctuation">&#125;</span></span><span class="token string"> \n"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html">https://pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/basics_data_tutorial/" rel="prev" title="basics_data_tutorial">
+                  <i class="fa fa-chevron-left"></i> basics_data_tutorial
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/basics_autogradqs_tutorial/" rel="next" title="basics_autogradqs_tutorial">
+                  basics_autogradqs_tutorial <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

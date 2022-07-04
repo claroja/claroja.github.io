@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="类属性方法&amp;实例属性方法    类型 描述     类变量(静态变量) 所有实例共有,每个实例可以不加self调用   类方法(静态方法) 所有实例共有,每个实例都可以调用   实例变量(非静态变量) 单个实例所有,需通过self调用   实例方法(非静态方法) 单个实例所有   下例中    class_name是类属性,所有的实例都具有该属性,而且任何一个实例修改都可以修改该属性,修">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python_classStaticMethod">
+<meta property="og:url" content="https://claroja.github.io/python_classStaticMethod/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="类属性方法&amp;实例属性方法    类型 描述     类变量(静态变量) 所有实例共有,每个实例可以不加self调用   类方法(静态方法) 所有实例共有,每个实例都可以调用   实例变量(非静态变量) 单个实例所有,需通过self调用   实例方法(非静态方法) 单个实例所有   下例中    class_name是类属性,所有的实例都具有该属性,而且任何一个实例修改都可以修改该属性,修">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-20T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.440Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/python_classStaticMethod/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/python_classStaticMethod/","path":"python_classStaticMethod/","title":"python_classStaticMethod"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python_classStaticMethod | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E5%B1%9E%E6%80%A7%E6%96%B9%E6%B3%95%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text"> 类属性方法&amp;实例属性方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#instancemethodclassmethod%E5%92%8Cstaticmethod"><span class="nav-number">2.</span> <span class="nav-text"> instancemethod,classmethod和staticmethod</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_classStaticMethod/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="python_classStaticMethod | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python_classStaticMethod
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="类属性方法实例属性方法"><a class="markdownIt-Anchor" href="#类属性方法实例属性方法"></a> 类属性方法&amp;实例属性方法</h1>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>类变量(静态变量)</td>
+<td>所有实例共有,每个实例可以不加<code>self</code>调用</td>
+</tr>
+<tr>
+<td>类方法(静态方法)</td>
+<td>所有实例共有,每个实例都可以调用</td>
+</tr>
+<tr>
+<td>实例变量(非静态变量)</td>
+<td>单个实例所有,需通过<code>self</code>调用</td>
+</tr>
+<tr>
+<td>实例方法(非静态方法)</td>
+<td>单个实例所有</td>
+</tr>
+<tr>
+<td>下例中</td>
+<td></td>
+</tr>
+<tr>
+<td><code>class_name</code>是类属性,所有的实例都具有该属性,而且任何一个实例修改都可以修改该属性,修改后,其他实例也会改变</td>
+<td></td>
+</tr>
+<tr>
+<td><code>object_name</code>是实例属性,只有实例具有,智能通过<code>__init__</code>来创建</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    class_name <span class="token operator">=</span> <span class="token string">'wang'</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>na<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>object_name <span class="token operator">=</span> <span class="token string">'wei'</span>
+
+<span class="token comment"># 查看类的成员,只有class_name,没有object_name</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>Foo<span class="token punctuation">.</span>__dict__<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">dir</span><span class="token punctuation">(</span>Foo<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 查看对象成员,既有class_name,又有object_name</span>
+obj <span class="token operator">=</span> Foo<span class="token punctuation">(</span><span class="token string">'zhao'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>__dict__<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">dir</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="instancemethodclassmethod和staticmethod"><a class="markdownIt-Anchor" href="#instancemethodclassmethod和staticmethod"></a> <code>instancemethod</code>,<code>classmethod</code>和<code>staticmethod</code></h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span> <span class="token string">"executing foo(%s, %s)"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+    <span class="token decorator annotation punctuation">@classmethod</span>
+    <span class="token keyword">def</span> <span class="token function">class_foo</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span> <span class="token string">"executing class_foo(%s, %s)"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>cls<span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+    <span class="token decorator annotation punctuation">@staticmethod</span>
+    <span class="token keyword">def</span> <span class="token function">static_foo</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span> <span class="token string">"executing static_foo(%s)"</span> <span class="token operator">%</span> x    
+a <span class="token operator">=</span> A<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>instancemethod</code><br />
+在定义<code>foo(self,x)</code>方法时，将<code>self</code>作为第一个参数，而调用时就隐式地将<code>a</code>作为第一个参数传入，而我们只要传一个参数即可。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">a<span class="token punctuation">.</span>foo<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token comment"># executing foo(&lt;__main__.A object at 0xb7dbef0c>,1)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>classmethod</code><br />
+类似instancemethod，只是第一个参数变成了<code>cls</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">a<span class="token punctuation">.</span>class_foo<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token comment"># executing class_foo(&lt;class '__main__.A'>,1)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>staticmethods</code><br />
+<code>slef</code>(the object instance)和<code>cls</code>(the class)都不会传入方法，这个和再类外定义一个函数没有区别，只是有些时候某些方法在逻辑上属于某个类的时候，才用。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">a<span class="token punctuation">.</span>static_foo<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token comment"># executing static_foo(1)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>总结:<br />
+<code>foo</code>只是一个方法，当使用<code>a.foo</code>时，将instance作为第一个参数与<code>foo</code>进行绑定。<br />
+当使用<code>A.class_foo</code>时，将类A作为第一个参数与之相绑定。<br />
+档使用<code>A.static_foo</code>时，没有与instance和class绑定，定义和调用时都只是一个参数。</p>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/136097/difference-between-staticmethod-and-classmethod?r=SearchResults">https://stackoverflow.com/questions/136097/difference-between-staticmethod-and-classmethod?r=SearchResults</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/python_cls/" rel="prev" title="python_cls">
+                  <i class="fa fa-chevron-left"></i> python_cls
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/python_class/" rel="next" title="python_class">
+                  python_class <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

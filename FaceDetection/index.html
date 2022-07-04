@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="人脸检测是计算机视觉一个问题：如何在图片中定位人脸。 传统算法已经很好的解决了这个问题，比如Opencv中提供的Cascade Classifier算法与Dlib提供的HOG算法。在深度学习领域，最先进的算法是MTCNN(Multi-task Cascade Convolutional Neural Network)，Dlib也提供了深度学习的模型，不过速度很慢。  opencv  传统方法 基于">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FaceDetection">
+<meta property="og:url" content="https://claroja.github.io/FaceDetection/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="人脸检测是计算机视觉一个问题：如何在图片中定位人脸。 传统算法已经很好的解决了这个问题，比如Opencv中提供的Cascade Classifier算法与Dlib提供的HOG算法。在深度学习领域，最先进的算法是MTCNN(Multi-task Cascade Convolutional Neural Network)，Dlib也提供了深度学习的模型，不过速度很慢。  opencv  传统方法 基于">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-20T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.046Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/FaceDetection/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/FaceDetection/","path":"FaceDetection/","title":"FaceDetection"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>FaceDetection | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#opencv"><span class="nav-number">1.</span> <span class="nav-text"> opencv</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text"> 传统方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text"> 深度学习方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dlib"><span class="nav-number">2.</span> <span class="nav-text"> Dlib</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E6%96%B9%E6%B3%95hog"><span class="nav-number">2.1.</span> <span class="nav-text"> 传统方法HOG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95-2"><span class="nav-number">2.2.</span> <span class="nav-text"> 深度学习方法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/FaceDetection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="FaceDetection | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FaceDetection
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>人脸检测是计算机视觉一个问题：如何在图片中定位人脸。<br />
+传统算法已经很好的解决了这个问题，比如Opencv中提供的Cascade Classifier算法与Dlib提供的HOG算法。在深度学习领域，最先进的算法是MTCNN(Multi-task Cascade Convolutional Neural Network)，Dlib也提供了深度学习的模型，不过速度很慢。</p>
+<h1 id="opencv"><a class="markdownIt-Anchor" href="#opencv"></a> opencv</h1>
+<h2 id="传统方法"><a class="markdownIt-Anchor" href="#传统方法"></a> 传统方法</h2>
+<p>基于特征的（Feature-based）人脸检测算法是快速和有效的，在过去的几十年应用比较多。最成功的的算法就是<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/990517">Rapid object detection using a boosted cascade of simple features</a>，在Opencv的(python库)[<a target="_blank" rel="noopener" href="https://pypi.org/project/opencv-python/">https://pypi.org/project/opencv-python/</a>]中实现了<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cascading_classifiers">Cascading classifiers</a>。</p>
+<p>安装opencv-python：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">pip install opencv<span class="token operator">-</span>python<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Opencv中的<a target="_blank" rel="noopener" href="https://docs.opencv.org/3.4.3/d1/de5/classcv_1_1CascadeClassifier.html">CascadeClassifier class</a>进行人脸检测。在进行人脸检测之前需要首先进行模型载入的初始化。模型可以到<a target="_blank" rel="noopener" href="https://github.com/opencv/opencv/tree/master/data/haarcascades">OpenCV GitHub project</a>下载。这里使用前脸(frontalaface)检测。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
+classifier <span class="token operator">=</span> cv<span class="token punctuation">.</span>CascadeClassifier<span class="token punctuation">(</span><span class="token string">'haarcascade_frontalface_default.xml'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>检测输入图片中的人脸</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">pixels <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'weihai.png'</span><span class="token punctuation">)</span>
+bboxes <span class="token operator">=</span> classifier<span class="token punctuation">.</span>detectMultiScale<span class="token punctuation">(</span>pixels<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>bboxes<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>detectMultiScale</code>方法会返回一组人脸的盒型边界(bounding boxes), 每个盒子包含了人脸左下角的坐标(x,y), 以及人脸的宽度和高度(width,height). 我们可以使用opencv的<code>rectangle()</code>方法绘制出盒子边界.<br />
+参数<code>scaleFactor</code>该值越高能检测到的人脸越少, 默认为1.1<br />
+参数<code>minNeighbors</code>该值越搞能检测到的人脸越少, 默认为 3<br />
+一个调整的策略是先降低<code>scaleFactor</code>直到所有的人脸都被检测出来, 然后增加<code>minNeighbors</code>直到所有的FP(False Positive)人脸消失.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">drawBB</span><span class="token punctuation">(</span>bboxes<span class="token punctuation">,</span> img<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> bbox <span class="token keyword">in</span> bboxes<span class="token punctuation">:</span>
+        x0<span class="token punctuation">,</span> y0<span class="token punctuation">,</span> width<span class="token punctuation">,</span> height <span class="token operator">=</span> bbox
+        x1<span class="token punctuation">,</span> y1 <span class="token operator">=</span> x0 <span class="token operator">+</span> width<span class="token punctuation">,</span> y0 <span class="token operator">+</span> height
+        cv<span class="token punctuation">.</span>rectangle<span class="token punctuation">(</span>img<span class="token punctuation">,</span> <span class="token punctuation">(</span>x0<span class="token punctuation">,</span> y0<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> img<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">img <span class="token operator">=</span> drawBB<span class="token punctuation">(</span>bboxes<span class="token punctuation">,</span> pixels<span class="token punctuation">)</span>
+<span class="token comment"># show the image</span>
+cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> img<span class="token punctuation">)</span>
+<span class="token comment"># keep the window open until we press a key</span>
+cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment"># close the window</span>
+cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="深度学习方法"><a class="markdownIt-Anchor" href="#深度学习方法"></a> 深度学习方法</h2>
+<p>目前最前沿的技术是<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1604.02878">Joint Face Detection and Alignment Using Multitask Cascaded Convolutional Networks</a>. 级联结构(cascade structure)神经网络包含三个部分:</p>
+<ol>
+<li>Proposal Network or P-Net: 建议候选的人脸区域</li>
+<li>Refine Network or R-Net: 过滤边界盒子</li>
+<li>Output Network or O-Net: 输出人脸标志(facial landmarks)</li>
+</ol>
+<p>当然在输入网络首先要进行图片的缩放(image pyramid).<br />
+<a href="1.png">1.png</a></p>
+<p>之所以叫做多任务网络(multi-task network), 是因为每个模型对应了不同的任务:</p>
+<ol>
+<li>P-Net -&gt; 人脸分类(face classification)</li>
+<li>R-Net -&gt; 边界盒子退化(bounding box regression)</li>
+<li>O-Net -&gt; 人脸标志定位(facial landmark localization)</li>
+</ol>
+<p>这三个模型不是直接相连, 而是前一个的输出, 作为后一个输入. 模型可以在<a target="_blank" rel="noopener" href="https://github.com/kpzhang93/MTCNN_face_detection_alignment">官方下载</a>, 这里面就是论文里面用到的代码和模型. python中也有<a target="_blank" rel="noopener" href="https://github.com/ipazc/mtcnn">实现</a></p>
+<p>MTCNN返回的一个字典,包含:<br />
+‘box’: 人脸左下角的坐标(x,y), 以及宽和高, 既(x,y,width,height)<br />
+‘confidence’: 置信度<br />
+‘keypoints’: 人脸标志(landmark), 包含了:‘left_eye‘, ‘right_eye‘, ‘nose‘, ‘mouth_left‘, and ‘mouth_right‘</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
+
+<span class="token keyword">def</span> <span class="token function">drawBound</span><span class="token punctuation">(</span>bboxes<span class="token punctuation">,</span> img<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> bbox <span class="token keyword">in</span> bboxes<span class="token punctuation">:</span>
+        x0<span class="token punctuation">,</span> y0<span class="token punctuation">,</span> width<span class="token punctuation">,</span> height <span class="token operator">=</span> bbox
+        x1<span class="token punctuation">,</span> y1 <span class="token operator">=</span> x0 <span class="token operator">+</span> width<span class="token punctuation">,</span> y0 <span class="token operator">+</span> height
+        cv<span class="token punctuation">.</span>rectangle<span class="token punctuation">(</span>img<span class="token punctuation">,</span> <span class="token punctuation">(</span>x0<span class="token punctuation">,</span> y0<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> img
+
+<span class="token keyword">from</span> mtcnn<span class="token punctuation">.</span>mtcnn <span class="token keyword">import</span> MTCNN
+pixels <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'weihai.png'</span><span class="token punctuation">)</span>
+detector <span class="token operator">=</span> MTCNN<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+faces <span class="token operator">=</span> detector<span class="token punctuation">.</span>detect_faces<span class="token punctuation">(</span>pixels<span class="token punctuation">)</span>
+bboxes <span class="token operator">=</span> <span class="token punctuation">[</span>x<span class="token punctuation">[</span><span class="token string">"box"</span><span class="token punctuation">]</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> faces<span class="token punctuation">]</span>
+img <span class="token operator">=</span> drawBound<span class="token punctuation">(</span>bboxes<span class="token punctuation">,</span> pixels<span class="token punctuation">)</span>
+
+cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> pixels<span class="token punctuation">)</span>
+cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="dlib"><a class="markdownIt-Anchor" href="#dlib"></a> Dlib</h1>
+<h2 id="传统方法hog"><a class="markdownIt-Anchor" href="#传统方法hog"></a> 传统方法HOG</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> dlib
+<span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
+
+image <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'weihai.png'</span><span class="token punctuation">)</span>
+<span class="token comment"># Create a HOG face detector using the built-in dlib class</span>
+face_detector <span class="token operator">=</span> dlib<span class="token punctuation">.</span>get_frontal_face_detector<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># The result will be the bounding boxes of the faces in our image.</span>
+detected_faces <span class="token operator">=</span> face_detector<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> face_rect <span class="token keyword">in</span> detected_faces<span class="token punctuation">:</span>
+    x0<span class="token punctuation">,</span>y0<span class="token punctuation">,</span>x1<span class="token punctuation">,</span>y1 <span class="token operator">=</span>  face_rect<span class="token punctuation">.</span>left<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>top<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>right<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>bottom<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    cv<span class="token punctuation">.</span>rectangle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span>x0<span class="token punctuation">,</span> y0<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token comment"># show the image</span>
+cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> image<span class="token punctuation">)</span>
+<span class="token comment"># keep the window open until we press a key</span>
+cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment"># close the window</span>
+cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="深度学习方法-2"><a class="markdownIt-Anchor" href="#深度学习方法-2"></a> 深度学习方法</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> dlib
+<span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
+
+img <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'weihai.png'</span><span class="token punctuation">)</span>
+
+
+<span class="token comment"># face_detector = dlib.get_frontal_face_detector()</span>
+<span class="token comment"># detected_faces = face_detector(img, 1)</span>
+
+<span class="token comment"># 参考http://dlib.net/cnn_face_detector.py.html</span>
+cnn_face_detector <span class="token operator">=</span> dlib<span class="token punctuation">.</span>cnn_face_detection_model_v1<span class="token punctuation">(</span><span class="token string">"mmod_human_face_detector.dat"</span><span class="token punctuation">)</span>
+detected_faces <span class="token operator">=</span> cnn_face_detector<span class="token punctuation">(</span>img<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> face_rect <span class="token keyword">in</span> detected_faces<span class="token punctuation">:</span>
+    face_rect <span class="token operator">=</span> face_rect<span class="token punctuation">.</span>rect
+    x0<span class="token punctuation">,</span>y0<span class="token punctuation">,</span>x1<span class="token punctuation">,</span>y1 <span class="token operator">=</span> face_rect<span class="token punctuation">.</span>left<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>top<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>right<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>bottom<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    cv<span class="token punctuation">.</span>rectangle<span class="token punctuation">(</span>img<span class="token punctuation">,</span> <span class="token punctuation">(</span>x0<span class="token punctuation">,</span> y0<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token comment"># show the image</span>
+cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> img<span class="token punctuation">)</span>
+<span class="token comment"># keep the window open until we press a key</span>
+cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment"># close the window</span>
+cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://machinelearningmastery.com/how-to-perform-face-detection-with-classical-and-deep-learning-methods-in-python-with-keras/">https://machinelearningmastery.com/how-to-perform-face-detection-with-classical-and-deep-learning-methods-in-python-with-keras/</a><br />
+<a target="_blank" rel="noopener" href="https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78">https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78</a></p>
+<p>中英翻译对照：<br />
+人脸检测(face detection)<br />
+基于特征的(Feature-based)<br />
+边界盒子(bounding boxes)<br />
+级联结构(cascade structure)<br />
+人脸标志(facial landmarks)<br />
+多任务网络(multi-task network)</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/FaceEncoding/" rel="prev" title="FaceEncoding">
+                  <i class="fa fa-chevron-left"></i> FaceEncoding
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/FaceAlign/" rel="next" title="FaceAlign">
+                  FaceAlign <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

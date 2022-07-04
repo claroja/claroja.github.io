@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="安装&amp;官网  配置文件  .prettierrc.cjs自定义配置文件, 自己经常使用的配置  module.exports &#x3D; &amp;#123;     printWidth: 180, &#x2F;&#x2F;单行长度     tabWidth: 4, &#x2F;&#x2F;缩进长度     semi: false, &#x2F;&#x2F;句末使用分号     singleQuote: false, &#x2F;&#x2F;使用单引号     bracketSp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claroja">
+<meta property="og:url" content="https://claroja.github.io/prettier/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="安装&amp;官网  配置文件  .prettierrc.cjs自定义配置文件, 自己经常使用的配置  module.exports &#x3D; &amp;#123;     printWidth: 180, &#x2F;&#x2F;单行长度     tabWidth: 4, &#x2F;&#x2F;缩进长度     semi: false, &#x2F;&#x2F;句末使用分号     singleQuote: false, &#x2F;&#x2F;使用单引号     bracketSp">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-04T05:40:02.430Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.430Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/prettier/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/prettier/","path":"prettier/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text"> 安装&amp;官网</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text"> 配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%80%89%E9%A1%B9"><span class="nav-number">2.1.</span> <span class="nav-text"> 配置选项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E"><span class="nav-number">2.2.</span> <span class="nav-text"> 对于printWidth和proseWrap的理解:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%92%8Clinters%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text"> 和Linters一起使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vscode%E9%9B%86%E6%88%90"><span class="nav-number">4.</span> <span class="nav-text"> vscode集成</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/prettier/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> <a target="_blank" rel="noopener" href="https://prettier.io/docs/en/install.html">安装</a>&amp;<a target="_blank" rel="noopener" href="https://prettier.io/docs/en/index.html">官网</a></h1>
+<h1 id="配置文件"><a class="markdownIt-Anchor" href="#配置文件"></a> <a target="_blank" rel="noopener" href="https://prettier.io/docs/en/configuration.html">配置文件</a></h1>
+<ol>
+<li><code>.prettierrc.cjs</code>自定义配置文件, 自己经常使用的配置</li>
+</ol>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">printWidth</span><span class="token operator">:</span> <span class="token number">180</span><span class="token punctuation">,</span> <span class="token comment">//单行长度</span>
+    <span class="token literal-property property">tabWidth</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token comment">//缩进长度</span>
+    <span class="token literal-property property">semi</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">//句末使用分号</span>
+    <span class="token literal-property property">singleQuote</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">//使用单引号</span>
+    <span class="token literal-property property">bracketSpacing</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">//在对象前后添加空格-eg: &#123; foo: bar &#125;</span>
+    <span class="token literal-property property">quoteProps</span><span class="token operator">:</span> <span class="token string">"preserve"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">proseWrap</span><span class="token operator">:</span> <span class="token string">'preserve'</span><span class="token punctuation">,</span> <span class="token comment">//不知道怎么翻译</span>
+    <span class="token literal-property property">endOfLine</span><span class="token operator">:</span> <span class="token string">'auto'</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li><code>.prettierignore</code> 不需要prettier处理的文件(类似<code>.gitignore</code>)</li>
+</ol>
+<h2 id="配置选项"><a class="markdownIt-Anchor" href="#配置选项"></a> <a target="_blank" rel="noopener" href="https://prettier.io/docs/en/options.html">配置选项</a></h2>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>默认值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>printWidth</td>
+<td>80</td>
+<td>默认的行长度</td>
+</tr>
+<tr>
+<td>tabWidth</td>
+<td>2</td>
+<td>tab转换为space的个数</td>
+</tr>
+<tr>
+<td>rangeStart</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td>rangeEnd</td>
+<td>Infinity</td>
+<td></td>
+</tr>
+<tr>
+<td>useTabs</td>
+<td>false</td>
+<td>将tab转换为space</td>
+</tr>
+<tr>
+<td>semi</td>
+<td>true</td>
+<td>行尾加上分号</td>
+</tr>
+<tr>
+<td>singleQuote</td>
+<td>false</td>
+<td>使用单引号代替双引号</td>
+</tr>
+<tr>
+<td>quoteProps</td>
+<td>“as-needed”</td>
+<td>可选值&quot;&lt;as-needed</td>
+</tr>
+<tr>
+<td>jsxSingleQuote</td>
+<td>false</td>
+<td>jsx中使用单引号代替双引号</td>
+</tr>
+<tr>
+<td>trailingComma</td>
+<td>“es5”</td>
+<td>可选值&quot;&lt;es5</td>
+</tr>
+<tr>
+<td>bracketSpacing</td>
+<td>true</td>
+<td>对象字面量增加空格, true示例结果{ foo: bar }, false示例结果{foo: bar}</td>
+</tr>
+<tr>
+<td>jsxBracketSameLine</td>
+<td>false</td>
+<td>JSX里多行元素的最后一行使用<code>&gt;</code>闭合元素</td>
+</tr>
+<tr>
+<td>arrowParens</td>
+<td>“always”</td>
+<td>箭头函数, 单参数时是否使用括号包裹.“always”:(x) =&gt; x, “avoid”:x =&gt; x</td>
+</tr>
+<tr>
+<td>parser</td>
+<td>None</td>
+<td>指定解析器, prettier自动根据文件名识别, 不需要设置</td>
+</tr>
+<tr>
+<td>filepath</td>
+<td>None</td>
+<td>同上, 指定解析器文件</td>
+</tr>
+<tr>
+<td>requirePragma</td>
+<td>false</td>
+<td>只格式化头部包含特殊注释的文件, 比如<code>/** \n* @prettier \n*/</code></td>
+</tr>
+<tr>
+<td>insertPragma</td>
+<td>false</td>
+<td>格式化文件后, 在头部添上<code>@format</code></td>
+</tr>
+<tr>
+<td>proseWrap</td>
+<td>“preserve”</td>
+<td>&quot;always&quot;当大于printwith时折叠,&quot;never&quot;不进行折叠,&quot;preserve&quot;不进行任何处理</td>
+</tr>
+<tr>
+<td>htmlWhitespaceSensitivity</td>
+<td>“css”</td>
+<td><a target="_blank" rel="noopener" href="https://prettier.io/blog/2018/11/07/1.15.0.html#whitespace-sensitive-formatting">理解</a></td>
+</tr>
+<tr>
+<td>vueIndentScriptAndStyle</td>
+<td>false</td>
+<td>是否对vue的<code>&lt;script&gt;</code>和<code>&lt;style&gt;</code>执行缩进,<a target="_blank" rel="noopener" href="https://github.com/prettier/prettier/issues/3888#issuecomment-459521863">参考</a></td>
+</tr>
+<tr>
+<td>endOfLine</td>
+<td>“lf”</td>
+<td>可选择值&quot;&lt;lf</td>
+</tr>
+<tr>
+<td>embeddedLanguageFormatting</td>
+<td>“auto”</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="对于"><a class="markdownIt-Anchor" href="#对于"></a> <a target="_blank" rel="noopener" href="https://github.com/prettier/prettier/issues/6488">对于<code>printWidth</code>和<code>proseWrap</code>的理解</a>:</h2>
+<p>假设有一下文本:<br />
+第一行56个字符, 第二行69个字符</p>
+<pre class="line-numbers language-none"><code class="language-none">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Curabitur consectetur maximus risus, sed maximus tellus tincidunt et.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>使用<code>--prose-wrap always</code>配置, 第一行被补充到80个字符(printWidth)输出:</p>
+<pre class="line-numbers language-none"><code class="language-none">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur
+maximus risus, sed maximus tellus tincidunt et.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>使用<code>--prose-wrap never</code>配置, 合并成一行</p>
+<pre class="line-numbers language-none"><code class="language-none">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur maximus risus, sed maximus tellus tincidunt et.<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用<code>--prose-wrap preserve</code>, 则不进行任何修改</p>
+<pre class="line-numbers language-none"><code class="language-none">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Curabitur consectetur maximus risus, sed maximus tellus tincidunt et.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="和linters一起使用"><a class="markdownIt-Anchor" href="#和linters一起使用"></a> <a target="_blank" rel="noopener" href="https://prettier.io/docs/en/integrating-with-linters.html">和Linters一起使用</a></h1>
+<p>单独安装Linters和Prettier会产生冲突, 因为Linters也会有代码规范, 所以可以将二者结合起来, 就有了:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/prettier/eslint-config-prettier">eslint-config-prettier</a>, js规范<br />
+如果我们仅需要开发js代码, 则需要安装<code>eslinte</code>, <code>prettier</code>, 和<code>eslint-config-prettier</code>.</li>
+<li><code>@vue/eslint-config-prettier&quot;: &quot;^7.0.0&quot;</code></li>
+<li><code>eslint&quot;: &quot;^8.5.0&quot;</code></li>
+<li><code>prettier&quot;: &quot;^2.5.1&quot;</code></li>
+</ul>
+<p>在<code>.eslintrc.cjs</code>中继承<code>@vue/eslint-config-prettier</code>即可, 既将<code>prettier</code>的规则加入到了<code>eslint</code>中, 并且解决了冲突</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token string-property property">"extends"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+<span class="token comment">// "plugin:vue/vue3-essential", //vue3的语法规则</span>
+<span class="token comment">// "eslint:recommended", // eslint的语法规则</span>
+<span class="token string">"@vue/eslint-config-prettier"</span> <span class="token comment">//处理和prettier的冲突</span>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="vscode集成"><a class="markdownIt-Anchor" href="#vscode集成"></a> <a target="_blank" rel="noopener" href="https://github.com/prettier/prettier-vscode">vscode集成</a></h1>
+<p>vscode已经默认安装了<code>prettier</code>, 可以在Extensions选项的ENABLED栏中查看</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/pandas_update/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/pinia/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

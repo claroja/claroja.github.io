@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="socket(简称 套接字) 是进程间通信的一种方式，实现不同主机间的进程间通信，比如QQ socket.socket(AddressFamily, Type) Address Family：可以选择 AF_INET（用于 Internet 进程间通信） 或者 AF_UNIX（用于同一台机器进程间通信）,实际工作中常用AF_INET Type：套接字类型，可以是 SOCK_STREAM（流式套接字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python_socket">
+<meta property="og:url" content="https://claroja.github.io/python_socket/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="socket(简称 套接字) 是进程间通信的一种方式，实现不同主机间的进程间通信，比如QQ socket.socket(AddressFamily, Type) Address Family：可以选择 AF_INET（用于 Internet 进程间通信） 或者 AF_UNIX（用于同一台机器进程间通信）,实际工作中常用AF_INET Type：套接字类型，可以是 SOCK_STREAM（流式套接字">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-02T00:14:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.465Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/python_socket/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/python_socket/","path":"python_socket/","title":"python_socket"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python_socket | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#udp%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE"><span class="nav-number">1.</span> <span class="nav-text"> UDP发送数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#udp%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="nav-number">2.</span> <span class="nav-text"> UDP接收数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#udp%E5%B9%BF%E6%92%AD"><span class="nav-number">3.</span> <span class="nav-text"> udp广播</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tcp"><span class="nav-number">4.</span> <span class="nav-text"> TCP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tcp%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">5.</span> <span class="nav-text"> TCP服务端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tcp%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">6.</span> <span class="nav-text"> TCP客户端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81tcp%E6%94%BB%E5%87%BB"><span class="nav-number">7.</span> <span class="nav-text"> 常见TCP攻击</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#api"><span class="nav-number">8.</span> <span class="nav-text"> API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#socket%E7%B1%BB"><span class="nav-number">8.1.</span> <span class="nav-text"> socket类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#socket-families%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="nav-number">8.2.</span> <span class="nav-text"> Socket Families(网络层)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#socket-types%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="nav-number">8.3.</span> <span class="nav-text"> Socket Types(传输层)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#socket%E5%AF%B9%E8%B1%A1"><span class="nav-number">8.4.</span> <span class="nav-text"> socket对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%A5%97%E6%8E%A5%E5%AD%97%E6%96%B9%E6%B3%95"><span class="nav-number">8.4.1.</span> <span class="nav-text"> 服务端套接字方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%A5%97%E6%8E%A5%E5%AD%97%E6%96%B9%E6%B3%95"><span class="nav-number">8.4.2.</span> <span class="nav-text"> 客户端套接字方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E5%85%B1%E7%94%A8%E9%80%94%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="nav-number">8.4.3.</span> <span class="nav-text"> 公共用途套接字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E9%94%81%E7%9A%84%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="nav-number">8.4.4.</span> <span class="nav-text"> 面向锁的套接字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E6%96%87%E4%BB%B6%E7%9A%84%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="nav-number">8.4.5.</span> <span class="nav-text"> 面向文件的套接字</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_socket/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="python_socket | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python_socket
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>socket(简称 套接字) 是进程间通信的一种方式，实现不同主机间的进程间通信，比如QQ</p>
+<pre class="line-numbers language-none"><code class="language-none">socket.socket(AddressFamily, Type)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Address Family：可以选择 AF_INET（用于 Internet 进程间通信） 或者 AF_UNIX（用于同一台机器进程间通信）,实际工作中常用AF_INET<br />
+Type：套接字类型，可以是 SOCK_STREAM（流式套接字，主要用于 TCP 协议）或者 SOCK_DGRAM（数据报套接字，主要用于 UDP 协议）</p>
+<h1 id="udp发送数据"><a class="markdownIt-Anchor" href="#udp发送数据"></a> UDP发送数据</h1>
+<pre class="line-numbers language-none"><code class="language-none">from socket import *
+udpSocket &#x3D; socket(AF_INET, SOCK_DGRAM)# 创建套接字
+sendAddr &#x3D; (&#39;192.168.1.1&#39;, 8080)# 发送到的ip和端口
+sendData &#x3D; &quot;hello&quot; # 发送的内容
+udpSocket.sendto(sendData, sendAddr) #发送
+udpSocket.close() # 关闭套接字<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="udp接收数据"><a class="markdownIt-Anchor" href="#udp接收数据"></a> UDP接收数据</h1>
+<pre class="line-numbers language-none"><code class="language-none">from socket import *
+udpSocket &#x3D; socket(AF_INET, SOCK_DGRAM)# 创建套接字
+bindAddr &#x3D; (&#39;&#39;, 7788)# 绑定本机的端口，ip地址为空表示本机的任何一个ip
+udpSocket.bind(bindAddr)#绑定本机的端口
+recvData &#x3D; udpSocket.recvfrom(1024)# 等待接收的数据，1024表示本次接收的最大字节数
+print(recvData)
+udpSocket.close()# 关闭套接字<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="udp广播"><a class="markdownIt-Anchor" href="#udp广播"></a> udp广播</h1>
+<pre class="line-numbers language-none"><code class="language-none">import socket, sys
+dest &#x3D; (&#39;&lt;broadcast&gt;&#39;, 7788)# 这里&lt;broadcst&gt;可以写成当前网段的广播地址
+s &#x3D; socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # 创建udp套接字
+s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST,1)# 设置成能发送广播数据
+s.sendto(&quot;Hi&quot;, dest)# 发送广播<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>TCP：传输控制协议，稳定，慢一些，web服务器（HTTP）使用tcp<br />
+UDP：用户数据包协议，不稳定，快一些<br />
+TCP三次握手，四次挥手<br />
+TCP十种状态<br />
+TTL是指经过路由器的个数<br />
+MSL数据包在网络上存活的最长时间</p>
+<h1 id="tcp"><a class="markdownIt-Anchor" href="#tcp"></a> TCP</h1>
+<p>socket默认是TCP</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> family<span class="token operator">=</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span> <span class="token builtin">type</span><span class="token operator">=</span>socket<span class="token punctuation">.</span>SOCK_STREAM<span class="token punctuation">,</span>
+             proto<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="tcp服务端"><a class="markdownIt-Anchor" href="#tcp服务端"></a> TCP服务端</h1>
+<p>1.socket创建一个套接字<br />
+2.bind绑定ip和port<br />
+3.listen使套接字变为监听状态<br />
+4.accept等待客户端的信息<br />
+5.recv/send接收发送数据</p>
+<pre class="line-numbers language-none"><code class="language-none">from socket import *
+tcpSerSocket &#x3D; socket(AF_INET, SOCK_STREAM) # 创建TCPsocket
+address &#x3D; (&#39;&#39;, 7788) #绑定本地的ip和端口
+tcpSerSocket.bind(address) 
+tcpSerSocket.listen(5)# 将socket变为监听状态，listen是建立连接的**队列**的个数，linux之中这个值是默认的，更改无效，阻塞
+newSocket, clientAddr &#x3D; tcpSerSocket.accept()#如果有客户端连接，则生成一个专门的套接字进行通讯，阻塞
+recvData &#x3D; newSocket.recv(1024) #获得客户端发送过来的消息
+newSocket.send(&quot;thank you !&quot;)# 向客户端发送消息
+newSocket.close() #关闭该客户端的套接字
+tcpSerSocket.close() #关闭监听的套接字<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="tcp客户端"><a class="markdownIt-Anchor" href="#tcp客户端"></a> TCP客户端</h1>
+<pre class="line-numbers language-none"><code class="language-none">from socket import *
+tcpClientSocket &#x3D; socket(AF_INET, SOCK_STREAM)# 创建TCP socket
+serAddr &#x3D; (&#39;192.168.1.102&#39;, 7788)
+tcpClientSocket.connect(serAddr) #连接服务器
+tcpClientSocket.send(&quot;hello&quot;) #向服务器发送消息
+recvData &#x3D; tcpClientSocket.recv(1024) # 接收消息
+tcpClientSocket.close() # 关闭套接字<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="常见tcp攻击"><a class="markdownIt-Anchor" href="#常见tcp攻击"></a> 常见TCP攻击</h1>
+<p>DDOS SYN洪水攻击<br />
+客户端发完SYN，不发ACK<br />
+DNS攻击<br />
+DNS服务器劫持，换域名对应的IP<br />
+arp 中间人攻击</p>
+<h1 id="api"><a class="markdownIt-Anchor" href="#api"></a> API</h1>
+<h2 id="socket类"><a class="markdownIt-Anchor" href="#socket类"></a> socket类</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>family<span class="token operator">=</span>AF_INET<span class="token punctuation">,</span> <span class="token builtin">type</span><span class="token operator">=</span>SOCK_STREAM<span class="token punctuation">,</span> proto<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> fileno<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span> <span class="token comment"># 返回socket对象</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>family</td>
+<td>AF_INET(默认值),AF_INET6,AF_UNIX,AF_CAN</td>
+</tr>
+<tr>
+<td>type</td>
+<td>SOCK_STREAM(默认值),SOCK_DGRAM,SOCK_RAW</td>
+</tr>
+<tr>
+<td>proto</td>
+<td>默认为0,只有在AF_CAN的情况下,协议应为CAN_RAW或CAN_BCM之一</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/socket.html#socket.socket">fileno</a></td>
+<td>如果指定了fileno,则其他参数将被忽略,导致带有指定文件描述符的套接字返回</td>
+</tr>
+</tbody>
+</table>
+<h2 id="socket-families网络层"><a class="markdownIt-Anchor" href="#socket-families网络层"></a> Socket Families(网络层)</h2>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>socket.AF_INET</td>
+<td>IPV4</td>
+</tr>
+<tr>
+<td>socket.AF_INET6</td>
+<td>IPV6</td>
+</tr>
+<tr>
+<td>socket.AF_UNIX</td>
+<td>unix本地通信(多进程通信)</td>
+</tr>
+<tr>
+<td>socket.AF_CAN</td>
+<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/FZLGYZ/p/11750462.html">总线套接</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="socket-types传输层"><a class="markdownIt-Anchor" href="#socket-types传输层"></a> Socket Types(传输层)</h2>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SOCK_STREAM</td>
+<td>使用TCP(Transmission Control Protocol)</td>
+</tr>
+<tr>
+<td>SOCK_DGRAM</td>
+<td>使用UDP(User Datagram Protocol)</td>
+</tr>
+<tr>
+<td>SOCK_RAW</td>
+<td>未处理的IP数据包, 而流套接字只能读取TCP协议的数据, 数据报套接字只能读取UDP协议的数据</td>
+</tr>
+<tr>
+<td>SOCK_RAW可以处理ICMP/IGMP,可以通过DP_HDRIMCL选项构造IP头,模拟洪水攻击,伪装大量源地址</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="socket对象"><a class="markdownIt-Anchor" href="#socket对象"></a> socket对象</h2>
+<h3 id="服务端套接字方法"><a class="markdownIt-Anchor" href="#服务端套接字方法"></a> 服务端套接字方法</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bind(address)</td>
+<td><code>('0.0.0.0', 8001)</code>,绑定主机和端口,并占用,传入主机,端口号</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/gaohuayan/p/11139397.html">listen([backlog])</a></td>
+<td>默认空,建立连接池,没有一个连接就放入队列中,参数是限制可连接的个数,如果不填会默认合理值</td>
+</tr>
+<tr>
+<td>accept()</td>
+<td>默认空,从<code>listen</code>连接池中顺序取出连接,阻塞等待消息,返回(conn, address),conn是连接对象，可以用来接收和发送数据。address是连接客户端的地址。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="客户端套接字方法"><a class="markdownIt-Anchor" href="#客户端套接字方法"></a> 客户端套接字方法</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>connect(address)</td>
+<td>连接远程服务端socket,可能抛出socket.timeout</td>
+</tr>
+<tr>
+<td>connect_ex(address)</td>
+<td>客户端连接,出错返回错误码</td>
+</tr>
+</tbody>
+</table>
+<h3 id="公共用途套接字"><a class="markdownIt-Anchor" href="#公共用途套接字"></a> 公共用途套接字</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>send(bytes[,flags])</td>
+<td>发送数据,返回值是发送数据的量</td>
+</tr>
+<tr>
+<td>sendall(bytes[,flags])</td>
+<td>它会一直发送完为止,发送成功返回None,否则报错</td>
+</tr>
+<tr>
+<td>sendto(bytes, flags, address)</td>
+<td>和send相同</td>
+</tr>
+<tr>
+<td>sendmsg(buffers[, ancdata[, flags[, address]]])</td>
+<td></td>
+</tr>
+<tr>
+<td>sendfile(file, offset=0, count=None)</td>
+<td></td>
+</tr>
+<tr>
+<td>recv(bufsize[, flags])</td>
+<td>接收数据,byte类型,bufsize指定最多可以接收的数量</td>
+</tr>
+<tr>
+<td>recvfrom(bufsize[, flags])</td>
+<td>除了接收数据,还有发送的地址(data,address)</td>
+</tr>
+<tr>
+<td>recvmsg(bufsize[, ancbufsize[, flags]])</td>
+<td>接收文件，附件,ancbufsize设定附件接收缓冲区类似于bufsize.,返回<code>(data, ancdata, msg_flags, address)</code></td>
+</tr>
+<tr>
+<td>close()</td>
+<td>底层操作也会关闭(如文件描述符)</td>
+</tr>
+<tr>
+<td>getpeername()</td>
+<td>连接到当前套接字的远端的地址</td>
+</tr>
+<tr>
+<td>getsockname()</td>
+<td>当前套接字的地址</td>
+</tr>
+<tr>
+<td>detach()</td>
+<td>关闭,但底层的文件描述符并没关,返回文件描述符</td>
+</tr>
+<tr>
+<td>dup()</td>
+<td>复制socket</td>
+</tr>
+<tr>
+<td>fileno()</td>
+<td>返回文件描述符</td>
+</tr>
+<tr>
+<td>makefile()</td>
+<td>返回文件对象和<code>open()</code>函数一样</td>
+</tr>
+</tbody>
+</table>
+<h3 id="面向锁的套接字"><a class="markdownIt-Anchor" href="#面向锁的套接字"></a> 面向锁的套接字</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>s.setblocking()</td>
+<td>设置套接字的阻塞与非阻塞模式</td>
+</tr>
+<tr>
+<td>s.settimeout()</td>
+<td>设置阻塞套接字操作的超时时间</td>
+</tr>
+<tr>
+<td>s.gettimeout()</td>
+<td>得到阻塞套接字操作的超时时间</td>
+</tr>
+</tbody>
+</table>
+<h3 id="面向文件的套接字"><a class="markdownIt-Anchor" href="#面向文件的套接字"></a> 面向文件的套接字</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>s.fileno()</td>
+<td>套接字的文件描述符</td>
+</tr>
+<tr>
+<td>s.makefile()</td>
+<td>创建一个与该套接字相关的文件</td>
+</tr>
+</tbody>
+</table>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Xuuuuuu/p/10321696.html">https://www.cnblogs.com/Xuuuuuu/p/10321696.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/python_socket_tcp/" rel="prev" title="python_socket_tcp">
+                  <i class="fa fa-chevron-left"></i> python_socket_tcp
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/python_process_subprocess/" rel="next" title="python_process_subprocess">
+                  python_process_subprocess <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

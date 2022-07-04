@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="权重的初始值设置非常重要, 决定了学习能否成功.  可以设置为0嘛 权重衰减是一种以减小权重参数的值为目的进行学习的方法. 通过减小权重参数的值来抑制过拟合的发生. 为什么不能将权重值设置为0呢? 严格地来说, 为什么不能将权重初始值设成一样的值呢? 因为在误差反向传播过程中, 所有的权重值都会进行相同的更新. 权重被更新为相同的值, 并拥有了重复的值, 这使得神经网络拥有许多不同的权重的意义丧失">
+<meta property="og:type" content="article">
+<meta property="og:title" content="deeplearn_initweight">
+<meta property="og:url" content="https://claroja.github.io/deeplearn_initweight/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="权重的初始值设置非常重要, 决定了学习能否成功.  可以设置为0嘛 权重衰减是一种以减小权重参数的值为目的进行学习的方法. 通过减小权重参数的值来抑制过拟合的发生. 为什么不能将权重值设置为0呢? 严格地来说, 为什么不能将权重初始值设成一样的值呢? 因为在误差反向传播过程中, 所有的权重值都会进行相同的更新. 权重被更新为相同的值, 并拥有了重复的值, 这使得神经网络拥有许多不同的权重的意义丧失">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://claroja.github.io/deeplearn_initweight/1.png">
+<meta property="og:image" content="https://claroja.github.io/deeplearn_initweight/2.png">
+<meta property="og:image" content="https://claroja.github.io/deeplearn_initweight/3.png">
+<meta property="og:image" content="https://claroja.github.io/deeplearn_initweight/4.png">
+<meta property="og:image" content="https://claroja.github.io/deeplearn_initweight/5.png">
+<meta property="article:published_time" content="2021-11-13T13:01:11.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.169Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://claroja.github.io/deeplearn_initweight/1.png">
+
+
+<link rel="canonical" href="https://claroja.github.io/deeplearn_initweight/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/deeplearn_initweight/","path":"deeplearn_initweight/","title":"deeplearn_initweight"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>deeplearn_initweight | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E8%AE%BE%E7%BD%AE%E4%B8%BA0%E5%98%9B"><span class="nav-number">1.</span> <span class="nav-text"> 可以设置为0嘛</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sigmoid%E7%9A%84%E6%9D%83%E9%87%8D%E5%88%9D%E5%A7%8B%E5%80%BC"><span class="nav-number">2.</span> <span class="nav-text"> sigmoid的权重初始值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tanh"><span class="nav-number">3.</span> <span class="nav-text"> tanh</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#relu%E7%9A%84%E6%9D%83%E9%87%8D%E5%88%9D%E5%A7%8B%E5%80%BC"><span class="nav-number">4.</span> <span class="nav-text"> ReLU的权重初始值</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/deeplearn_initweight/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="deeplearn_initweight | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          deeplearn_initweight
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-13 21:01:11" itemprop="dateCreated datePublished" datetime="2021-11-13T21:01:11+08:00">2021-11-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>权重的初始值设置非常重要, 决定了学习能否成功.</p>
+<h1 id="可以设置为0嘛"><a class="markdownIt-Anchor" href="#可以设置为0嘛"></a> 可以设置为0嘛</h1>
+<p>权重衰减是一种以减小权重参数的值为目的进行学习的方法. 通过减小权重参数的值来抑制过拟合的发生.</p>
+<p>为什么不能将权重值设置为0呢? 严格地来说, 为什么不能将权重初始值设成一样的值呢?</p>
+<p>因为在误差反向传播过程中, 所有的权重值都会进行相同的更新. 权重被更新为相同的值, 并拥有了重复的值, 这使得神经网络拥有许多不同的权重的意义丧失了. 为了防止&quot;权重均一化&quot;, 必须随机生成初始值.</p>
+<h1 id="sigmoid的权重初始值"><a class="markdownIt-Anchor" href="#sigmoid的权重初始值"></a> sigmoid的权重初始值</h1>
+<p>向一个层神经网络(激活函数使用sigmoid函数)传入随机数据, 用直方图绘制各层激活值的数据分布.</p>
+<p>python实现:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<span class="token keyword">def</span> <span class="token function">sigmoid</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token number">1</span> <span class="token operator">/</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">+</span> np<span class="token punctuation">.</span>exp<span class="token punctuation">(</span><span class="token operator">-</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+x <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token comment"># 1000个数据</span>
+node_num <span class="token operator">=</span> <span class="token number">100</span>        <span class="token comment"># 各隐藏层的节点（神经元）数</span>
+hidden_layer_size <span class="token operator">=</span> <span class="token number">5</span> <span class="token comment"># 隐藏层有5层</span>
+activations <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>      <span class="token comment"># 激活值的结果保存在这里</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>hidden_layer_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> i <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">:</span>
+        x <span class="token operator">=</span> activations<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+    w <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span>node_num<span class="token punctuation">,</span> node_num<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">1</span>
+    z <span class="token operator">=</span> np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>x<span class="token punctuation">,</span> w<span class="token punctuation">)</span>
+    a <span class="token operator">=</span> sigmoid<span class="token punctuation">(</span>z<span class="token punctuation">)</span>   <span class="token comment"># sigmoid函数</span>
+    activations<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> a<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>假设神经网络有5层, 每层有100个神经元, 激活函数使用sigmoid. 然后用高斯分布随机生成1000个数据(每个数据有5个特征)作为输入数据. 各层的激活值的结果保存在activations变量中.<br />
+绘制直方图:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 绘制直方图</span>
+<span class="token keyword">for</span> i<span class="token punctuation">,</span> a <span class="token keyword">in</span> activations<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    plt<span class="token punctuation">.</span>subplot<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>activations<span class="token punctuation">)</span><span class="token punctuation">,</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
+    plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"-layer"</span><span class="token punctuation">)</span>
+    plt<span class="token punctuation">.</span>hist<span class="token punctuation">(</span>a<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="1.png" alt="1.png" /></p>
+<p>上图中, 可以看到各层的激活值偏向(0,1)分布. 这里使用的sigmoid函数式S型函数, 醉着输出不断的靠近0或1, 它的导数值逐渐接近0. 因此, 偏向0和1的数据分布会造成反向传播中梯度值不断变小, 最后消失. 这个问题称为梯度消失(gradient vanishing).</p>
+<p>将权重的标准差设为0.01, 进行相同的实验. 只需替代一下代码:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># w = np.random.randn(node_num, node_num) * 1</span>
+w <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span>node_num<span class="token punctuation">,</span> node_num<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.01</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="2.png" alt="2.png" /></p>
+<p>这次呈集中在0.5附近的分布. 因为不像刚才的例子那样偏向0和1, 所以不会发生梯度消失的问题.</p>
+<p>但是又出现了另外一个问题:激活值的分布有所偏向, 说明在表现力上会有很大的问题. 因为如果有多个神经元都输出几乎相同的值, 那它们就没有存在的意义了. 比如, 如果100个神经元都输出几乎相同的值, 那么也可以由1个神经元来表达基本相同的事情. 因此, 激活值在分布上有所偏向会出现&quot;表现力受限&quot;的问题.</p>
+<p>各层的激活值的分布都要求有适当的广度, 因为通过在各层间传递多样性的数据, 神经网络可以进行高效的学习. 反过来, 如果传递的是由所偏向的数据, 就会出现梯度消失或者&quot;表现力受限&quot;的问题, 导致学习可能无法顺利的进行.</p>
+<p>推荐使用&quot;Xavier初始值&quot;来初始化参数, Xavier的论文中, 为了使各层的激活值呈现出具有相同广度的分布, 推导了合适的权重尺度. 结论是如果前一层的节点数为n, 则初始值使用标准差为$\frac{1}{\sqrt n}的分布.</p>
+<p><img src="3.png" alt="3.png" /></p>
+<p>前一层的节点数越多, 设定为目标节点的初始值的权重尺度就越小.<br />
+使用Xavier初始值进行实验, 只需替换如下代码即可:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">node_num <span class="token operator">=</span> <span class="token number">100</span> <span class="token comment"># 前一层的节点数</span>
+w <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span>node_num<span class="token punctuation">,</span> node_num<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>node_num<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="4.png" alt="4.png" /></p>
+<p>呈现了比之前更广度的分布, 所以sigmoid函数的表现力不受限制.</p>
+<h1 id="tanh"><a class="markdownIt-Anchor" href="#tanh"></a> tanh</h1>
+<p>后面的层的分布呈稍微歪斜的形状, 如果用tanh函数代替 sigmoid 函数, 稍微歪斜的问题就能得到改善.</p>
+<h1 id="relu的权重初始值"><a class="markdownIt-Anchor" href="#relu的权重初始值"></a> ReLU的权重初始值</h1>
+<p>Xavier 初始值是以激活函数是线性函数为前提而推导出来的, sigmoid 函数和tanh 函数左右对称，且中央附近可以视作线性函数. 但当激活函数使用ReLU时, 一般推荐ReLU专用的初始值, 由Kaiming He推荐的, 称为&quot;He初始值&quot;:<br />
+当前一层的节点为n时, He初始值使用标准差为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mfrac><mn>2</mn><mi>n</mi></mfrac></msqrt></mrow><annotation encoding="application/x-tex">\sqrt \frac{2}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.84em;vertical-align:-0.604946em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.235054em;"><span class="svg-align" style="top:-3.8em;"><span class="pstrut" style="height:3.8em;"></span><span class="mord" style="padding-left:1em;"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span><span style="top:-3.195054em;"><span class="pstrut" style="height:3.8em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.8800000000000001em;"><svg width='400em' height='1.8800000000000001em' viewBox='0 0 400000 1944' preserveAspectRatio='xMinYMin slice'><path d='M983 90
+l0 -0
+c4,-6.7,10,-10,18,-10 H400000v40
+H1013.1s-83.4,268,-264.1,840c-180.7,572,-277,876.3,-289,913c-4.7,4.7,-12.7,7,-24,7
+s-12,0,-12,0c-1.3,-3.3,-3.7,-11.7,-7,-25c-35.3,-125.3,-106.7,-373.3,-214,-744
+c-10,12,-21,25,-33,39s-32,39,-32,39c-6,-5.3,-15,-14,-27,-26s25,-30,25,-30
+c26.7,-32.7,52,-63,76,-91s52,-60,52,-60s208,722,208,722
+c56,-175.3,126.3,-397.3,211,-666c84.7,-268.7,153.8,-488.2,207.5,-658.5
+c53.7,-170.3,84.5,-266.8,92.5,-289.5z
+M1001 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.604946em;"><span></span></span></span></span></span></span></span></span>的高斯分布, 直观上可以理解: 因为ReLU的负值区域的值为0, 为了使它更有广度, 所以需要2倍的系数.<br />
+不同初始值的比较:<br />
+<img src="5.png" alt="5.png" /></p>
+<ul>
+<li>当&quot;std=0.01&quot;时, 各层的激活值非常小, 神经网络上传递的是非常小的值, 说明逆向传播时权重的梯度也同样很小. 实际上学习基本上没有进展.</li>
+<li>当初始值为Xavier时, 随着层的加深, 偏向一点点变大. 实际身上, 层加深后, 激活值的偏向变大, 学习时会出现梯度消失的问题.</li>
+<li>当初始值为He时, 各层中分布的广度相同. 由于即使层加深, 数据的广度也能保持不变, 逆向传播时, 也会传递合适的值.</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/deeplearn_gradproblem/" rel="prev" title="deeplearn_gradproblem">
+                  <i class="fa fa-chevron-left"></i> deeplearn_gradproblem
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/deeplearn_cnn/" rel="next" title="deeplearn_cnn">
+                  deeplearn_cnn <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

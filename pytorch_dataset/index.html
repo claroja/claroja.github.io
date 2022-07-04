@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="torch.utils.data.Dataset 代表这一数据的抽象类, 使用时需要继承Dataset并重写__len__和__getitem__这个两个函数. # 导入需要的包 import torch import torch.utils.data.dataset as Dataset import numpy as np  Data &#x3D; np.asarray([[1, 2], [3, 4]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch_dataset">
+<meta property="og:url" content="https://claroja.github.io/pytorch_dataset/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="torch.utils.data.Dataset 代表这一数据的抽象类, 使用时需要继承Dataset并重写__len__和__getitem__这个两个函数. # 导入需要的包 import torch import torch.utils.data.dataset as Dataset import numpy as np  Data &#x3D; np.asarray([[1, 2], [3, 4]">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-26T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.475Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/pytorch_dataset/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/pytorch_dataset/","path":"pytorch_dataset/","title":"pytorch_dataset"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>pytorch_dataset | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#torchutilsdatadataset"><span class="nav-number">1.</span> <span class="nav-text"> torch.utils.data.Dataset</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#torchutilsdatatensordataset"><span class="nav-number">2.</span> <span class="nav-text"> torch.utils.data.TensorDataset</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#torchvisiondatasetsimagefolder"><span class="nav-number">3.</span> <span class="nav-text"> torchvision.datasets.ImageFolder</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5"><span class="nav-number">3.1.</span> <span class="nav-text"> 输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA"><span class="nav-number">3.2.</span> <span class="nav-text"> 输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B7%E4%BE%8B"><span class="nav-number">3.3.</span> <span class="nav-text"> 样例</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pytorch_dataset/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="pytorch_dataset | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pytorch_dataset
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-26 22:03:54" itemprop="dateCreated datePublished" datetime="2021-11-26T22:03:54+08:00">2021-11-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="torchutilsdatadataset"><a class="markdownIt-Anchor" href="#torchutilsdatadataset"></a> torch.utils.data.Dataset</h1>
+<p>代表这一数据的抽象类, 使用时需要继承<code>Dataset</code>并重写<code>__len__</code>和<code>__getitem__</code>这个两个函数.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 导入需要的包</span>
+<span class="token keyword">import</span> torch
+<span class="token keyword">import</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data<span class="token punctuation">.</span>dataset <span class="token keyword">as</span> Dataset
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+
+Data <span class="token operator">=</span> np<span class="token punctuation">.</span>asarray<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+Label <span class="token operator">=</span> np<span class="token punctuation">.</span>asarray<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment">#创建子类</span>
+<span class="token keyword">class</span> <span class="token class-name">subDataset</span><span class="token punctuation">(</span>Dataset<span class="token punctuation">.</span>Dataset<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment">#初始化，定义数据内容和标签</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> Data<span class="token punctuation">,</span> Label<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>Data <span class="token operator">=</span> Data
+        self<span class="token punctuation">.</span>Label <span class="token operator">=</span> Label
+    <span class="token comment">#返回数据集大小</span>
+    <span class="token keyword">def</span> <span class="token function">__len__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>Data<span class="token punctuation">)</span>
+    <span class="token comment">#得到数据内容和标签</span>
+    <span class="token keyword">def</span> <span class="token function">__getitem__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        data <span class="token operator">=</span> torch<span class="token punctuation">.</span>Tensor<span class="token punctuation">(</span>self<span class="token punctuation">.</span>Data<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        label <span class="token operator">=</span> torch<span class="token punctuation">.</span>IntTensor<span class="token punctuation">(</span>self<span class="token punctuation">.</span>Label<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> data<span class="token punctuation">,</span> label
+data <span class="token operator">=</span> subDataset<span class="token punctuation">(</span>Data<span class="token punctuation">,</span>Label<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>__init__</code>方法用来载入数据</li>
+<li><code>__len__</code>方法返回数据的长度</li>
+<li><code>__getitem__</code>方法接收下标index, 并返回相应的数据, 注意是tuple类型, 元素是tensor类型</li>
+</ul>
+<h1 id="torchutilsdatatensordataset"><a class="markdownIt-Anchor" href="#torchutilsdatatensordataset"></a> torch.utils.data.TensorDataset</h1>
+<p><code>torch.utils.data.TensorDataset</code> 继承自 <code>torch.utils.data.dataset</code>, 参数直接输入即可.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch
+<span class="token keyword">import</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data <span class="token keyword">as</span> Data
+Data <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+Label <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+torch_dataset <span class="token operator">=</span> Data<span class="token punctuation">.</span>TensorDataset<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="torchvisiondatasetsimagefolder"><a class="markdownIt-Anchor" href="#torchvisiondatasetsimagefolder"></a> torchvision.datasets.ImageFolder</h1>
+<p>另外在<code>torchvison</code>这个包中还有一个更高级的有关于计算机视觉的数据读取类：<code>ImageFolder</code>，主要功能是处理图片，且要求图片是下面这种存放形式：<br />
+<a target="_blank" rel="noopener" href="https://pytorch.org/vision/stable/datasets.html#torchvision.datasets.ImageFolder">官网API解释</a><br />
+按照以下的方式来组织训练集和测试集:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">root&#x2F;dog&#x2F;xxx.png
+root&#x2F;dog&#x2F;xxy.png
+root&#x2F;dog&#x2F;[...]&#x2F;xxz.png
+
+root&#x2F;cat&#x2F;123.png
+root&#x2F;cat&#x2F;nsdf3.png
+root&#x2F;cat&#x2F;[...]&#x2F;asd932_.png<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="输入"><a class="markdownIt-Anchor" href="#输入"></a> 输入</h2>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>root</td>
+<td>图片存储的根目录</td>
+</tr>
+<tr>
+<td>transform</td>
+<td>对图片类别进行预处理的操作</td>
+</tr>
+<tr>
+<td>loader</td>
+<td>表示数据集加载方式，通常默认加载方式即可。</td>
+</tr>
+<tr>
+<td>is_valid_file</td>
+<td>获取图像文件的路径并检查该文件是否为有效文件的函数(用于检查损坏文件)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="输出"><a class="markdownIt-Anchor" href="#输出"></a> 输出</h2>
+<p>参数|描述<br />
+self.classes|用一个 list 保存类别名称<br />
+self.class_to_idx|类别对应的索引，与不做任何转换返回的 target 对应<br />
+self.imgs|保存(img-path, class) tuple的 list</p>
+<h2 id="样例"><a class="markdownIt-Anchor" href="#样例"></a> 样例</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> torchvision<span class="token punctuation">.</span>datasets <span class="token keyword">import</span> ImageFolder
+dataset<span class="token operator">=</span>ImageFolder<span class="token punctuation">(</span><span class="token string">'./data'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>dataset<span class="token punctuation">.</span>classes<span class="token punctuation">)</span>  <span class="token comment">#根据分的文件夹的名字来确定的类别</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>dataset<span class="token punctuation">.</span>class_to_idx<span class="token punctuation">)</span> <span class="token comment">#按顺序为这些类别定义索引为0,1...</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>dataset<span class="token punctuation">.</span>imgs<span class="token punctuation">)</span> <span class="token comment">#返回从所有文件夹中得到的图片的路径以及其类别</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>‘’’<br />
+输出：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span><span class="token string">'cat'</span><span class="token punctuation">,</span> <span class="token string">'dog'</span><span class="token punctuation">]</span>
+<span class="token punctuation">&#123;</span><span class="token string">'cat'</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'dog'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'./data\\cat\\1.jpg'</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+ <span class="token punctuation">(</span><span class="token string">'./data\\cat\\2.jpg'</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+ <span class="token punctuation">(</span><span class="token string">'./data\\dog\\1.jpg'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+ <span class="token punctuation">(</span><span class="token string">'./data\\dog\\2.jpg'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/pytorch_nn_linear/" rel="prev" title="pytorch_nn_linear">
+                  <i class="fa fa-chevron-left"></i> pytorch_nn_linear
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/pytorch_gpu/" rel="next" title="pytorch_gpu">
+                  pytorch_gpu <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

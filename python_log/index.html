@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="应用  通过配置文件 import logging import logging.config import yaml  with open(&#39;logging.yml&#39;, &#39;r&#39;) as f_conf:     dict_conf &#x3D; yaml.load(f_conf) logging.config.dictConfig(dict_conf)  logger &#x3D; logging.getLogge">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python_log">
+<meta property="og:url" content="https://claroja.github.io/python_log/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="应用  通过配置文件 import logging import logging.config import yaml  with open(&#39;logging.yml&#39;, &#39;r&#39;) as f_conf:     dict_conf &#x3D; yaml.load(f_conf) logging.config.dictConfig(dict_conf)  logger &#x3D; logging.getLogge">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-25T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.454Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/python_log/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/python_log/","path":"python_log/","title":"python_log"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python_log | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text"> 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text"> 通过配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text"> 直接配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#logging"><span class="nav-number">2.</span> <span class="nav-text"> logging</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%84%E4%BB%B61-logger"><span class="nav-number">3.</span> <span class="nav-text"> 组件1-Logger</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text"> 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB"><span class="nav-number">3.2.</span> <span class="nav-text"> 继承关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%84%E4%BB%B62-handler"><span class="nav-number">4.</span> <span class="nav-text"> 组件2-handler</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95-2"><span class="nav-number">4.1.</span> <span class="nav-text"> 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hander%E5%88%86%E7%B1%BB"><span class="nav-number">4.2.</span> <span class="nav-text"> hander分类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%84%E4%BB%B63-formatter"><span class="nav-number">5.</span> <span class="nav-text"> 组件3-formatter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%84%E4%BB%B64-filter"><span class="nav-number">6.</span> <span class="nav-text"> 组件4-filter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#level"><span class="nav-number">7.</span> <span class="nav-text"> level</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#record"><span class="nav-number">8.</span> <span class="nav-text"> record</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#loggingbasicconfig"><span class="nav-number">9.</span> <span class="nav-text"> logging.basicConfig()</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">10.</span> <span class="nav-text"> 配置文件</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_log/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="python_log | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python_log
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 22:03:54" itemprop="dateCreated datePublished" datetime="2021-10-25T22:03:54+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
+<h2 id="通过配置文件"><a class="markdownIt-Anchor" href="#通过配置文件"></a> 通过配置文件</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> logging
+<span class="token keyword">import</span> logging<span class="token punctuation">.</span>config
+<span class="token keyword">import</span> yaml
+
+<span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'logging.yml'</span><span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f_conf<span class="token punctuation">:</span>
+    dict_conf <span class="token operator">=</span> yaml<span class="token punctuation">.</span>load<span class="token punctuation">(</span>f_conf<span class="token punctuation">)</span>
+logging<span class="token punctuation">.</span>config<span class="token punctuation">.</span>dictConfig<span class="token punctuation">(</span>dict_conf<span class="token punctuation">)</span>
+
+logger <span class="token operator">=</span> logging<span class="token punctuation">.</span>getLogger<span class="token punctuation">(</span><span class="token string">'simpleExample'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>debug<span class="token punctuation">(</span><span class="token string">'debug message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">'info message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>warn<span class="token punctuation">(</span><span class="token string">'warn message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>error<span class="token punctuation">(</span><span class="token string">'error message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>critical<span class="token punctuation">(</span><span class="token string">'critical message'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token key atrule">formatters</span><span class="token punctuation">:</span>
+  <span class="token key atrule">simple</span><span class="token punctuation">:</span>
+    <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">'%(asctime)s - %(name)s - %(levelname)s - %(message)s'</span>
+<span class="token key atrule">handlers</span><span class="token punctuation">:</span>
+  <span class="token key atrule">console</span><span class="token punctuation">:</span>
+    <span class="token key atrule">class</span><span class="token punctuation">:</span> logging.StreamHandler
+    <span class="token key atrule">level</span><span class="token punctuation">:</span> DEBUG
+    <span class="token key atrule">formatter</span><span class="token punctuation">:</span> simple
+    <span class="token key atrule">stream</span><span class="token punctuation">:</span> ext<span class="token punctuation">:</span>//sys.stdout
+  <span class="token key atrule">console_err</span><span class="token punctuation">:</span>
+    <span class="token key atrule">class</span><span class="token punctuation">:</span> logging.StreamHandler
+    <span class="token key atrule">level</span><span class="token punctuation">:</span> ERROR
+    <span class="token key atrule">formatter</span><span class="token punctuation">:</span> simple
+    <span class="token key atrule">stream</span><span class="token punctuation">:</span> ext<span class="token punctuation">:</span>//sys.stderr
+<span class="token key atrule">loggers</span><span class="token punctuation">:</span>
+  <span class="token key atrule">simpleExample</span><span class="token punctuation">:</span>
+    <span class="token key atrule">level</span><span class="token punctuation">:</span> DEBUG
+    <span class="token key atrule">handlers</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>console<span class="token punctuation">]</span>
+    <span class="token key atrule">propagate</span><span class="token punctuation">:</span> yes
+<span class="token key atrule">root</span><span class="token punctuation">:</span>
+  <span class="token key atrule">level</span><span class="token punctuation">:</span> DEBUG
+  <span class="token key atrule">handlers</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>console_err<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="直接配置"><a class="markdownIt-Anchor" href="#直接配置"></a> 直接配置</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> logging
+logger <span class="token operator">=</span> logging<span class="token punctuation">.</span>getLogger<span class="token punctuation">(</span><span class="token punctuation">)</span>
+fileHandler <span class="token operator">=</span> logging<span class="token punctuation">.</span>FileHandler<span class="token punctuation">(</span><span class="token string">'test.log'</span><span class="token punctuation">,</span>encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span><span class="token comment"># 创建一个handler，用于写入日志文件</span>
+formatter <span class="token operator">=</span> logging<span class="token punctuation">.</span>Formatter<span class="token punctuation">(</span><span class="token string">'%(asctime)s - %(name)s - %(levelname)s - %(message)s'</span><span class="token punctuation">)</span>
+fileHandler<span class="token punctuation">.</span>setLevel<span class="token punctuation">(</span>logging<span class="token punctuation">.</span>DEBUG<span class="token punctuation">)</span>
+fileHandler<span class="token punctuation">.</span>setFormatter<span class="token punctuation">(</span>formatter<span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>addHandler<span class="token punctuation">(</span>fileHandler<span class="token punctuation">)</span>
+
+streamHandler <span class="token operator">=</span> logging<span class="token punctuation">.</span>StreamHandler<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment"># 创建一个handler，用于写入日志文件</span>
+streamHandler<span class="token punctuation">.</span>setLevel<span class="token punctuation">(</span>logging<span class="token punctuation">.</span>ERROR<span class="token punctuation">)</span>
+streamHandler<span class="token punctuation">.</span>setFormatter<span class="token punctuation">(</span>formatter<span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>addHandler<span class="token punctuation">(</span>streamHandler<span class="token punctuation">)</span>
+
+logger<span class="token punctuation">.</span>debug<span class="token punctuation">(</span><span class="token string">'logger debug message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">'logger info message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>warning<span class="token punctuation">(</span><span class="token string">'logger warning message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>error<span class="token punctuation">(</span><span class="token string">'logger error message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>critical<span class="token punctuation">(</span><span class="token string">'logger critical message'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="logging"><a class="markdownIt-Anchor" href="#logging"></a> logging</h1>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/3.10/library/logging.html#module-level-functions">logging</a></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> logging
+logging<span class="token punctuation">.</span>basicConfig<span class="token punctuation">(</span>filename<span class="token operator">=</span><span class="token string">'example.log'</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">,</span> level<span class="token operator">=</span>logging<span class="token punctuation">.</span>DEBUG<span class="token punctuation">)</span>
+logging<span class="token punctuation">.</span>debug<span class="token punctuation">(</span><span class="token string">'This message should go to the log file'</span><span class="token punctuation">)</span>
+logging<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">'So should this'</span><span class="token punctuation">)</span>
+logging<span class="token punctuation">.</span>warning<span class="token punctuation">(</span><span class="token string">'And this, too'</span><span class="token punctuation">)</span>
+logging<span class="token punctuation">.</span>error<span class="token punctuation">(</span><span class="token string">'And non-ASCII stuff, too, like Øresund and Malmö'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>logging模块有四大组件:</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logger</td>
+<td>一个日志对象, 在Logger对象中输出具体信息<code>message</code></td>
+</tr>
+<tr>
+<td>Handler</td>
+<td>控制Logger日志输出的目的地, 一个Logger可以有多个Handler, 分别输出到不同的地方</td>
+</tr>
+<tr>
+<td>Formatter</td>
+<td>控制Handler输出的格式, 可以添加日志其他相关信息, 比如<code>name</code>(Logger的名称)<code>asctime</code>(时间)</td>
+</tr>
+<tr>
+<td>Filter</td>
+<td>过滤Handler的日志信息</td>
+</tr>
+</tbody>
+</table>
+<h1 id="组件1-logger"><a class="markdownIt-Anchor" href="#组件1-logger"></a> 组件1-Logger</h1>
+<p>Logger从来不直接实例化，通过logging.getLogger(name)来获得. name默认是root, 对同一个名字的多个调用logging.getLogger()方法会返回同一个logger对象。</p>
+<p>Logger对象有3个任务要做：</p>
+<ul>
+<li>向应用程序代码暴露几个方法，使应用程序可以在运行时记录日志消息</li>
+<li>基于日志严重等级level或filter对象来决定要对哪些日志进行后续处理<br />
+例如setLevel(<a target="_blank" rel="noopener" href="http://logging.INFO">logging.INFO</a>), 那么该logger将只会处理INFO、WARNING、ERROR和CRITICAL级别的日志,而DEBUG级别的消息将会被忽略</li>
+<li>将日志消息传送给所有感兴趣的日志handlers。</li>
+</ul>
+<h2 id="方法"><a class="markdownIt-Anchor" href="#方法"></a> 方法</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logger.setLevel()</td>
+<td>设置level过滤</td>
+</tr>
+<tr>
+<td>Logger.addHandler()或Logger.removeHandler()</td>
+<td>添加或移除Handler对象</td>
+</tr>
+<tr>
+<td>Logger.addFilter() 和 Logger.removeFilter()</td>
+<td>添加或移除Filter对象</td>
+</tr>
+<tr>
+<td>Logger.debug(),<a target="_blank" rel="noopener" href="http://Logger.info">Logger.info</a>(),Logger.warning(),Logger.error(),Logger.critical()</td>
+<td>根据对应等级记录日志</td>
+</tr>
+<tr>
+<td>Logger.exception()</td>
+<td>创建一个类似于Logger.error()的日志消息, 区别在于<code>exception()</code>输出堆栈追踪信息, 通常在exception handler调用该方法</td>
+</tr>
+<tr>
+<td>Logger.log()</td>
+<td>需要添加一个等级level参数, 不方便, 直接使用Logger.debug()这样的方法</td>
+</tr>
+</tbody>
+</table>
+<p><code>logger.error</code>通过<code>exec_info</code>在记录下一行打印<code>exception</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">try</span><span class="token punctuation">:</span>
+    xxxx
+<span class="token keyword">except</span> Exception<span class="token punctuation">:</span>
+    logger<span class="token punctuation">.</span>error<span class="token punctuation">(</span><span class="token string">"报错了"</span><span class="token punctuation">,</span>exc_info <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>另外以上代码, 可用<code>logger.exception</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">try</span><span class="token punctuation">:</span>
+    xxxx
+<span class="token keyword">except</span> Exception<span class="token punctuation">:</span>
+    logger<span class="token punctuation">.</span>exception<span class="token punctuation">(</span><span class="token string">"报错了"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="继承关系"><a class="markdownIt-Anchor" href="#继承关系"></a> 继承关系</h2>
+<p>名字是以点号分割的命名方式命名的(a.b.c)。这种命名方式里面，后面的loggers是前面logger的子logger，自动继承父loggers的log信息.例如:有一个名称为 foo 的logger，其它名称分别为 foo.bar, foo.bar.baz 和 foo.bam都是 foo 的后代。</p>
+<ul>
+<li>
+<p>level的继承:<br />
+如果一个logger上没有被明确设置一个level，那么该logger就是使用它parent的level;如果它的parent也没有明确设置level则继续向上查找parent的parent的有效level，依次类推，直到找到个一个明确设置了level的祖先为止。需要说明的是，root logger总是会有一个明确的level设置（默认为 WARNING）</p>
+</li>
+<li>
+<p>handler的继承<br />
+child loggers在完成对日志消息的处理后，默认会将日志消息传递给与它们的祖先loggers相关的handlers。因此，我们不必为一个应用程序中所使用的所有loggers定义和配置handlers，只需要为一个顶层的logger配置handlers，然后按照需要创建child loggers就可足够了。我们也可以通过将一个logger的propagate属性设置为False来关闭这种传递机制。</p>
+</li>
+</ul>
+<h1 id="组件2-handler"><a class="markdownIt-Anchor" href="#组件2-handler"></a> 组件2-handler</h1>
+<p>Handler对象的作用是将Logger的消息分发到指定的位置(文件,网络,邮件). 一个Logger对象可以添加多个Handler对象, 例如:</p>
+<ul>
+<li>把所有日志都发送到一个日志文件中</li>
+<li>把所有严重级别大于等于error的日志发送到stdout（标准输出）；</li>
+<li>把所有严重级别为critical的日志发送到一个email邮件地址。<br />
+这种场景就需要3个不同的handlers.</li>
+</ul>
+<h2 id="方法-2"><a class="markdownIt-Anchor" href="#方法-2"></a> 方法</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Handler.setLevel()</td>
+<td>设置handler将会处理的日志消息的最低严重级别</td>
+</tr>
+<tr>
+<td>Handler.setFormatter()</td>
+<td>为handler设置一个Formatter对象</td>
+</tr>
+<tr>
+<td>Handler.addFilter() Handler.removeFilter()</td>
+<td>为handler添加或删除一个Filter对象</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hander分类"><a class="markdownIt-Anchor" href="#hander分类"></a> hander分类</h2>
+<ul>
+<li>StreamHandler: 输出到sys.stdout, sys.stderr 或者类文件对象如果stream为空则默认输出到sys.stderr。</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">logging</span><span class="token punctuation">.</span>StreamHandler<span class="token punctuation">(</span>stream<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>FileHandler<br />
+将日志信息输出到磁盘文件上。<br />
+默认为append，delay为true时，文件直到emit方法被执行才会打开。默认情况下，日志文件可以无限增大。</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">logging</span><span class="token punctuation">.</span>FileHandler<span class="token punctuation">(</span>filename<span class="token punctuation">,</span> mode<span class="token operator">=</span><span class="token string">'a'</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> delay<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>RotatingFileHandler<br />
+参数maxBytes和backupCount允许日志文件在达到maxBytes时rollover.当文件大小达到或者超过maxBytes时，就会新创建一个日志文件。</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">logging</span><span class="token punctuation">.</span>handlers<span class="token punctuation">.</span>RotatingFileHandler<span class="token punctuation">(</span>filename<span class="token punctuation">,</span> mode<span class="token operator">=</span><span class="token string">'a'</span><span class="token punctuation">,</span> maxBytes<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> backupCount<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> delay<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>TimedRotatingFileHandler<br />
+参数when决定了时间间隔的类型，参数interval决定了多少的时间间隔。如when=‘D’，interval=2，就是指两天的时间间隔，backupCount决定了能留几个日志文件。超过数量就会丢弃掉老的日志文件。</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">logging</span><span class="token punctuation">.</span>handlers<span class="token punctuation">.</span>TimedRotatingFileHandler<span class="token punctuation">(</span>filename<span class="token punctuation">,</span> when<span class="token operator">=</span><span class="token string">'h'</span><span class="token punctuation">,</span> interval<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> backupCount<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> delay<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> utc<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>SocketHandler       日志通过TCP协议发送</li>
+<li>DatagramHandler   日志通过UDP协议发送</li>
+<li>SysLogHandler      发送日志到UNIX syslog服务，并支持远程syslog服务</li>
+<li>NTEventLogHandler   发送日志到WindowsNT/2000/XP事件日志</li>
+<li>SMTPHandler         通过SMTP协议发送日志</li>
+<li>MemoryHandler     发送日志到内存中的缓冲区，并在达到特定条件时清空</li>
+<li>HTTPHandler         通过GET或POST方法发送日志到HTTP服务器</li>
+</ul>
+<h1 id="组件3-formatter"><a class="markdownIt-Anchor" href="#组件3-formatter"></a> 组件3-formatter</h1>
+<p>一条日志信息对应一个发生的事件，通常需要包含一下信息：</p>
+<ul>
+<li>事件发生的时间，%(asctime)s</li>
+<li>事件发生的位置，%(pathname)s、%(module)s、%(funcName)s，%(lineno)d</li>
+<li>事件的严重程度，%(levelname)s</li>
+<li>事件的内容，%(message)s</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>格式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>message</td>
+<td>%(message)s</td>
+<td>日志记录的文本内容, 既Logger对象传入的参数<code>logger.debug(&quot;message&quot;)</code></td>
+</tr>
+<tr>
+<td>name</td>
+<td>%(name)s</td>
+<td>日志的名称, 默认是’root’，因为默认使用的是 rootLogger</td>
+</tr>
+<tr>
+<td>asctime</td>
+<td>%(asctime)s</td>
+<td>可读时间，默认格式‘2003-07-08 16:49:45,896’，逗号之后是毫秒</td>
+</tr>
+<tr>
+<td>levelname</td>
+<td>%(levelname)s</td>
+<td>日志的等级, 如’DEBUG’, 'INFO’等</td>
+</tr>
+<tr>
+<td>levelno</td>
+<td>%(levelno)s</td>
+<td>数字化的日志等级, 如10, 20等</td>
+</tr>
+<tr>
+<td>pathname</td>
+<td>%(pathname)s</td>
+<td>文件的全路径名称, 包含文件后缀</td>
+</tr>
+<tr>
+<td>filename</td>
+<td>%(filename)s</td>
+<td>文件名，pathname的一部分</td>
+</tr>
+<tr>
+<td>module</td>
+<td>%(module)s</td>
+<td>filename的名称部分，不包含后缀</td>
+</tr>
+<tr>
+<td>funcName</td>
+<td>%(funcName)s</td>
+<td>调用日志多对应的方法名</td>
+</tr>
+<tr>
+<td>lineno</td>
+<td>%(lineno)d</td>
+<td>被记录日志在源码中的行数</td>
+</tr>
+<tr>
+<td>msecs</td>
+<td>%(msecs)d</td>
+<td>时间中的毫秒部分</td>
+</tr>
+<tr>
+<td>process</td>
+<td>%(process)d</td>
+<td>进程的ID</td>
+</tr>
+<tr>
+<td>processName</td>
+<td>%(processName)s</td>
+<td>进程的名称</td>
+</tr>
+<tr>
+<td>thread</td>
+<td>%(thread)d</td>
+<td>线程的ID</td>
+</tr>
+<tr>
+<td>threadName</td>
+<td>%(threadName)s</td>
+<td>线程的名称</td>
+</tr>
+<tr>
+<td>relativeCreated</td>
+<td>%(relativeCreated)d</td>
+<td>日志被创建的相对时间，以毫秒为单位</td>
+</tr>
+</tbody>
+</table>
+<h1 id="组件4-filter"><a class="markdownIt-Anchor" href="#组件4-filter"></a> 组件4-filter</h1>
+<p>Filters能够用在Loggers和Handlers上，可以实现比level更复杂的过滤。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">NoParsingFilter</span><span class="token punctuation">(</span>logging<span class="token punctuation">.</span>Filter<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">filter</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> record<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> record<span class="token punctuation">.</span>levelno <span class="token operator">==</span> <span class="token number">20</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token boolean">False</span>
+        <span class="token keyword">return</span> <span class="token boolean">True</span>
+logobj <span class="token operator">=</span> logging<span class="token punctuation">.</span>getLogger<span class="token punctuation">(</span><span class="token string">'server'</span><span class="token punctuation">)</span>
+logobj<span class="token punctuation">.</span>addFilter<span class="token punctuation">(</span>NoParsingFilter<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="level"><a class="markdownIt-Anchor" href="#level"></a> level</h1>
+<p>在软件开发、测试、部署阶段，把所有的运行日志全部记录下来，方便排查bug。<br />
+在生产阶段，只需要记录异常和错误信息，减少I/O压力，减少日志数量，方便排查。</p>
+<p>默认<code>logging.INFO</code>及以上等级的日志都会被打印, 以下是等级排序:<br />
+CRITICAL: 50<br />
+ERROR: 40<br />
+WARNING: 30 //默认<br />
+INFO: 20<br />
+DEBUG: 10<br />
+NOTSET: 0</p>
+<p>在开发环境时, 使用<code>DEBUG</code>或<code>INFO</code>级别的日志, 获取尽可能详细的信息来进行开发部署调试<br />
+在生产环境时, 使用<code>WARNING</code>或<code>ERROR</code>级别的日志, 降低I/O压力, 提升获取错误日志信息的效率</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">logger<span class="token punctuation">.</span>setLevel<span class="token punctuation">(</span><span class="token punctuation">)</span>
+handler<span class="token punctuation">.</span>setLevel<span class="token punctuation">(</span>logging<span class="token punctuation">.</span>INFO<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>为什么有两个setLevel()呢？<br />
+logger的严重等级用于决定那个级别的log信息可以分发到它的handlers。handler里面的level设置用于控制哪些个log信息是handler需要转寄的。<br />
+logger调用方法(如info等)记录日志信息, 首先被logger的setLevel过滤, 然后发送给handler, handler再根据自己的setLevel来过滤. 坑: handler的level级别低于logger的级别时, handler将不会输出</p>
+<h1 id="record"><a class="markdownIt-Anchor" href="#record"></a> record</h1>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/3.10/library/logging.html#logrecord-objects">LogRecord</a><br />
+record也是logging的一个类LogRecord,常用的属性有name, level, pathname, lineno,msg, args, exc_info name 就是初始化logger对象时传入的名字 level 是级别 pathname 是哪个文件输出的这行日志 lineno 是行号 msg 是日志本身</p>
+<h1 id="loggingbasicconfig"><a class="markdownIt-Anchor" href="#loggingbasicconfig"></a> logging.basicConfig()</h1>
+<p>logging中的快捷配置方法, 自动创建Logger类, 适用于单文件, 简单的项目.</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>filename</td>
+<td>指定输出的文件名, 设置后日志信息就不会被输出到控制台了</td>
+</tr>
+<tr>
+<td>filemod</td>
+<td>输出文件的打开方式, 默认为<code>a</code>, 只有在<code>filename</code>指定时生效</td>
+</tr>
+<tr>
+<td>format</td>
+<td>日志输出时格式及包含的信息</td>
+</tr>
+<tr>
+<td>datefmt</td>
+<td>日期和事件的格式, 在<code>format</code>中指定<code>%(asctime)s</code>时才生效</td>
+</tr>
+<tr>
+<td>level</td>
+<td>指定日志的级别</td>
+</tr>
+<tr>
+<td>stream</td>
+<td>指定日志输出的流目的地, 比如sys.stdout,sys.stderr,网络stream. 不能和filename共存, 报错</td>
+</tr>
+<tr>
+<td>handler</td>
+<td>多个Handler的可迭代对象, 将会被添加到rootlogger.filename, stream和handlers只能允许一个存在</td>
+</tr>
+</tbody>
+</table>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">LOG_FORMAT <span class="token operator">=</span> <span class="token string">"%(asctime)s - %(levelname)s - %(message)s"</span>
+DATE_FORMAT <span class="token operator">=</span> <span class="token string">"%m/%d/%Y %H:%M:%S %p"</span>
+logging<span class="token punctuation">.</span>basicConfig<span class="token punctuation">(</span>filename<span class="token operator">=</span><span class="token string">'my.log'</span><span class="token punctuation">,</span> level<span class="token operator">=</span>logging<span class="token punctuation">.</span>DEBUG<span class="token punctuation">,</span> <span class="token builtin">format</span><span class="token operator">=</span>LOG_FORMAT<span class="token punctuation">,</span> datefmt<span class="token operator">=</span>DATE_FORMAT<span class="token punctuation">)</span>
+logging<span class="token punctuation">.</span>debug<span class="token punctuation">(</span><span class="token string">"This is a debug log."</span><span class="token punctuation">)</span>
+logging<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">"This is a info log."</span><span class="token punctuation">)</span>
+logging<span class="token punctuation">.</span>warning<span class="token punctuation">(</span><span class="token string">"This is a warning log."</span><span class="token punctuation">)</span>
+logging<span class="token punctuation">.</span>error<span class="token punctuation">(</span><span class="token string">"This is a error log."</span><span class="token punctuation">)</span>
+logging<span class="token punctuation">.</span>critical<span class="token punctuation">(</span><span class="token string">"This is a critical log."</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="配置文件"><a class="markdownIt-Anchor" href="#配置文件"></a> 配置文件</h1>
+<p>根据dict来配置logging, 比如可以先读取json, yaml等格式的文件, 然后将他们转换为dict.</p>
+<p>yml中主要配置的是各个组件之间的关系, 比如可以先创建一个名为’simple’的<code>formatters</code>, 然后创建名为’console’和’console_err’的<code>handlers</code>, 然后再创建名为’simpleExample’的<code>loggers</code>.</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token key atrule">formatters</span><span class="token punctuation">:</span>
+    <span class="token key atrule">simple</span><span class="token punctuation">:</span>
+        <span class="token key atrule">format</span><span class="token punctuation">:</span> <span class="token string">'%(asctime)s - %(name)s - %(levelname)s - %(message)s'</span>
+<span class="token key atrule">handlers</span><span class="token punctuation">:</span>
+    <span class="token key atrule">console</span><span class="token punctuation">:</span>
+        <span class="token key atrule">class</span><span class="token punctuation">:</span> logging.StreamHandler
+        <span class="token key atrule">level</span><span class="token punctuation">:</span> DEBUG
+        <span class="token key atrule">formatter</span><span class="token punctuation">:</span> simple
+        <span class="token key atrule">stream</span><span class="token punctuation">:</span> ext<span class="token punctuation">:</span>//sys.stdout
+    <span class="token key atrule">console_err</span><span class="token punctuation">:</span>
+        <span class="token key atrule">class</span><span class="token punctuation">:</span> logging.StreamHandler
+        <span class="token key atrule">level</span><span class="token punctuation">:</span> ERROR
+        <span class="token key atrule">formatter</span><span class="token punctuation">:</span> simple
+        <span class="token key atrule">stream</span><span class="token punctuation">:</span> ext<span class="token punctuation">:</span>//sys.stderr
+    <span class="token key atrule">file</span><span class="token punctuation">:</span>
+        <span class="token key atrule">class</span><span class="token punctuation">:</span> logging.FileHandler
+        <span class="token key atrule">level</span><span class="token punctuation">:</span> DEBUG
+        <span class="token key atrule">formatter</span><span class="token punctuation">:</span> simple
+        <span class="token key atrule">filename</span><span class="token punctuation">:</span> ./test.log
+<span class="token key atrule">loggers</span><span class="token punctuation">:</span>
+    <span class="token key atrule">simpleExample</span><span class="token punctuation">:</span>
+        <span class="token key atrule">level</span><span class="token punctuation">:</span> DEBUG
+        <span class="token key atrule">handlers</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>console<span class="token punctuation">,</span> file<span class="token punctuation">]</span>
+        <span class="token key atrule">propagate</span><span class="token punctuation">:</span> yes
+<span class="token key atrule">root</span><span class="token punctuation">:</span>
+    <span class="token key atrule">level</span><span class="token punctuation">:</span> DEBUG
+    <span class="token key atrule">handlers</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>console_err<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>配置文件中要包含loggers、handlers、formatters这些keys, 表示响应的组件配置</li>
+<li>另外loggers这个section中的keys默认要包含了root这个值, 表示root logger. 由于logging模块中继承的性质, 可以在root这里整体调整日志的level, 因为root先用较高级别后, 相当于在root这个入口先过滤掉了低级别的日志</li>
+<li>logger key必须指定 level和handlers组件</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> logging
+<span class="token keyword">import</span> logging<span class="token punctuation">.</span>config
+<span class="token keyword">import</span> yaml
+
+<span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'logging.yml'</span><span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f_conf<span class="token punctuation">:</span>
+    dict_conf <span class="token operator">=</span> yaml<span class="token punctuation">.</span>load<span class="token punctuation">(</span>f_conf<span class="token punctuation">)</span>
+logging<span class="token punctuation">.</span>config<span class="token punctuation">.</span>dictConfig<span class="token punctuation">(</span>dict_conf<span class="token punctuation">)</span>
+
+logger <span class="token operator">=</span> logging<span class="token punctuation">.</span>getLogger<span class="token punctuation">(</span><span class="token string">'simpleExample'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>debug<span class="token punctuation">(</span><span class="token string">'debug message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">'info message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>warning<span class="token punctuation">(</span><span class="token string">'warning message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>error<span class="token punctuation">(</span><span class="token string">'error message'</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>critical<span class="token punctuation">(</span><span class="token string">'critical message'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 2021-11-30 14:31:28,133 - simpleExample - DEBUG - debug message</span>
+<span class="token comment"># 2021-11-30 14:31:28,133 - simpleExample - INFO - info message</span>
+<span class="token comment"># 2021-11-30 14:31:28,133 - simpleExample - WARNING - warning message</span>
+<span class="token comment"># 2021-11-30 14:31:28,133 - simpleExample - ERROR - error message</span>
+<span class="token comment"># 2021-11-30 14:31:28,133 - simpleExample - ERROR - error message  # root logger生成 红色, 因为是std_err</span>
+<span class="token comment"># 2021-11-30 14:31:28,134 - simpleExample - CRITICAL - critical message  # root logger生成 红色, 因为是std_err</span>
+<span class="token comment"># 2021-11-30 14:31:28,134 - simpleExample - CRITICAL - critical message</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://www.iteye.com/blog/wjdadi-gmail-com-1984354">https://www.iteye.com/blog/wjdadi-gmail-com-1984354</a><br />
+<a target="_blank" rel="noopener" href="https://docs.python.org/3.10/library/logging.handlers.html">https://docs.python.org/3.10/library/logging.handlers.html</a><br />
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/yypsober/article/details/51800120">https://blog.csdn.net/yypsober/article/details/51800120</a><br />
+<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yyds/p/6901864.html">https://www.cnblogs.com/yyds/p/6901864.html</a><br />
+<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yyds/p/6885182.html">https://www.cnblogs.com/yyds/p/6885182.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/python_pip/" rel="prev" title="python_pip">
+                  <i class="fa fa-chevron-left"></i> python_pip
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/pgmpy%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C/" rel="next" title="pgmpy创建网络">
+                  pgmpy创建网络 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

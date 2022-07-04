@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="service 问题:  pod 重启后其IP会更改 pod IP仅可在集群内部访问 解决: service可以为一组pod提供统一的入口地址，并且将请求负载分发到后端的各个pod上。 服务发现, 当pod重启后, 会自动注册 本质: kube-proxy服务, 运行在每个Node节点上.当创建Service时, 向etcd写入信息, 由kube-proxy来解析   命令控制  创建servi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8sService">
+<meta property="og:url" content="https://claroja.github.io/k8sService/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="service 问题:  pod 重启后其IP会更改 pod IP仅可在集群内部访问 解决: service可以为一组pod提供统一的入口地址，并且将请求负载分发到后端的各个pod上。 服务发现, 当pod重启后, 会自动注册 本质: kube-proxy服务, 运行在每个Node节点上.当创建Service时, 向etcd写入信息, 由kube-proxy来解析   命令控制  创建servi">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-01T14:31:28.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.318Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/k8sService/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/k8sService/","path":"k8sService/","title":"k8sService"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>k8sService | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#service"><span class="nav-number">1.</span> <span class="nav-text"> service</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%8E%A7%E5%88%B6"><span class="nav-number">1.1.</span> <span class="nav-text"> 命令控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%8E%A7%E5%88%B6"><span class="nav-number">1.2.</span> <span class="nav-text"> 配置文件控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#clusteripheadliness"><span class="nav-number">1.2.1.</span> <span class="nav-text"> ClusterIP&#x2F;HeadLiness</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nodeport"><span class="nav-number">1.2.2.</span> <span class="nav-text"> NodePort</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ingress"><span class="nav-number">1.2.3.</span> <span class="nav-text"> Ingress</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/k8sService/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="k8sService | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          k8sService
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-01 22:31:28" itemprop="dateCreated datePublished" datetime="2021-07-01T22:31:28+08:00">2021-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="service"><a class="markdownIt-Anchor" href="#service"></a> service</h1>
+<p>问题:</p>
+<ul>
+<li>pod 重启后其IP会更改</li>
+<li>pod IP仅可在集群内部访问<br />
+解决:</li>
+<li>service可以为一组pod提供统一的入口地址，并且将请求负载分发到后端的各个pod上。</li>
+<li>服务发现, 当pod重启后, 会自动注册<br />
+本质:<br />
+kube-proxy服务, 运行在每个Node节点上.当创建Service时, 向etcd写入信息, 由kube-proxy来解析</li>
+</ul>
+<h2 id="命令控制"><a class="markdownIt-Anchor" href="#命令控制"></a> 命令控制</h2>
+<ul>
+<li>创建service <code>kubectl expose deployment [NAME] --name=[NAME] --type=[ClusterIP] --port=[NUM] --target-port=[NUM]</code>
+<ul>
+<li>type:<br />
+ClusterIP在集群内访问,<br />
+NodePort在集群外访问, 会先创建ClusterIP, 并设置<code>target-port=port</code></li>
+<li>port:每个pod暴露的端口</li>
+<li>target-port: pod组对应service暴露的端口</li>
+</ul>
+</li>
+<li>获得service <code>kubectl get/describe svc</code></li>
+<li>删除service <code>kubectl delte svc</code></li>
+</ul>
+<h2 id="配置文件控制"><a class="markdownIt-Anchor" href="#配置文件控制"></a> 配置文件控制</h2>
+<p><code>kubectl create/apply -f [YAML_PATH]</code></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ClusterIP</td>
+<td>默认, 只能集群内部访问</td>
+</tr>
+<tr>
+<td>HeadLiness</td>
+<td>不分配Cluster IP, 通过service域名查询</td>
+</tr>
+<tr>
+<td>NodePort</td>
+<td>集群内部访问外部访问</td>
+</tr>
+<tr>
+<td>LoadBalancer</td>
+<td>外界负载均衡服务</td>
+</tr>
+<tr>
+<td>ExternalName</td>
+<td>将外部IP引入</td>
+</tr>
+</tbody>
+</table>
+<h3 id="clusteripheadliness"><a class="markdownIt-Anchor" href="#clusteripheadliness"></a> ClusterIP/HeadLiness</h3>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Service
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> my<span class="token punctuation">-</span>service
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span> <span class="token comment"># 选择指定标签的Pod</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> MyApp
+  <span class="token key atrule">clusterIP</span><span class="token punctuation">:</span> 10.74.44.22 <span class="token comment"># serviceIP地址, 默认自动生成, 设置为None则为HeadLiness</span>
+  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">protocol</span><span class="token punctuation">:</span> TCP <span class="token comment"># 默认协议是TCP, 可以不写</span>
+      <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">80</span> <span class="token comment"># service的端口</span>
+      <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> <span class="token number">9376</span> <span class="token comment"># 一组或一个pod, 集群内部暴露</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="nodeport"><a class="markdownIt-Anchor" href="#nodeport"></a> NodePort</h3>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Service
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> my<span class="token punctuation">-</span>service
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> NodePort
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> MyApp
+  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token comment"># 默认情况下，为了方便起见，`targetPort` 被设置为与 `port` 字段相同的值。</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> <span class="token number">80</span> <span class="token comment"># pod端口</span>
+      <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">80</span> <span class="token comment"># service端口</span>
+      <span class="token key atrule">nodePort</span><span class="token punctuation">:</span> <span class="token number">30007</span> <span class="token comment"># 主机端口（默认：30000-32767）</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="ingress"><a class="markdownIt-Anchor" href="#ingress"></a> Ingress</h3>
+<p>NodePort 在每个节点都会启动端口, 所以每个端口只能使用1次, 而实际访问中根据不同域名跳转到不同端口服务中.<br />
+Ingress 公开了从集群外部到集群内服务的 HTTP 和 HTTPS 路由.<br />
+相当于Nginx 7层的负载均衡器.<br />
+<code>kubectl get/describe ing</code>查看负载均衡器</p>
+<ol>
+<li>http</li>
+</ol>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> networking.k8s.io/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Ingress
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> minimal<span class="token punctuation">-</span>ingress
+  <span class="token key atrule">annotations</span><span class="token punctuation">:</span>
+    <span class="token key atrule">nginx.ingress.kubernetes.io/rewrite-target</span><span class="token punctuation">:</span> /
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">rules</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">host</span><span class="token punctuation">:</span> xxx.com 访问该域名<span class="token punctuation">,</span> 转到下面定义的test service 80端口上去(需要解析域名<span class="token punctuation">,</span> 测试用hosts文件即可).另外记得加NodePort端口号
+    <span class="token key atrule">http</span><span class="token punctuation">:</span>
+      <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">path</span><span class="token punctuation">:</span> /
+        <span class="token key atrule">backend</span><span class="token punctuation">:</span>
+          <span class="token key atrule">serviceName</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>service
+          <span class="token key atrule">servicePort</span><span class="token punctuation">:</span> <span class="token number">80</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>https<br />
+要添加证书文件</li>
+</ol>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">tls</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">hosts</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> xxx.com
+      <span class="token key atrule">secretName</span><span class="token punctuation">:</span> tls<span class="token punctuation">-</span>secret <span class="token comment"># 指定秘钥</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/k8sJob/" rel="prev" title="k8sJob">
+                  <i class="fa fa-chevron-left"></i> k8sJob
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/k8sPersistence/" rel="next" title="k8sPersistence">
+                  k8sPersistence <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

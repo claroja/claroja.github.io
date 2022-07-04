@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="python格式化字符串有三种方法:  string.Template 参考 前两种方式是python2时代的产物, 而f-string则是3.6之后加入的. name &#x3D; &quot;wang&quot; age &#x3D; 18 s &#x3D; f&quot;&amp;#123;name&amp;#125;\t&amp;#123;age&amp;#125;&quot; print(s)  # wang	18  str.format() 参考 s &#x3D; &quot;&amp;#123;&amp;#125;\t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python_stringformat">
+<meta property="og:url" content="https://claroja.github.io/python_stringformat/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="python格式化字符串有三种方法:  string.Template 参考 前两种方式是python2时代的产物, 而f-string则是3.6之后加入的. name &#x3D; &quot;wang&quot; age &#x3D; 18 s &#x3D; f&quot;&amp;#123;name&amp;#125;\t&amp;#123;age&amp;#125;&quot; print(s)  # wang	18  str.format() 参考 s &#x3D; &quot;&amp;#123;&amp;#125;\t">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-30T13:01:11.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.469Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/python_stringformat/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/python_stringformat/","path":"python_stringformat/","title":"python_stringformat"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python_stringformat | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#stringtemplate"><span class="nav-number">1.</span> <span class="nav-text"> string.Template</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#strformat"><span class="nav-number">2.</span> <span class="nav-text"> str.format()</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#format-specification"><span class="nav-number">3.</span> <span class="nav-text"> Format Specification</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#fill"><span class="nav-number">3.1.</span> <span class="nav-text"> fill</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#align"><span class="nav-number">3.2.</span> <span class="nav-text"> align</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sign"><span class="nav-number">3.2.1.</span> <span class="nav-text"> sign</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.2.2.</span> <span class="nav-text"> </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0"><span class="nav-number">3.2.3.</span> <span class="nav-text"> 0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#minimumwidth"><span class="nav-number">3.2.4.</span> <span class="nav-text"> minimumwidth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#precision"><span class="nav-number">3.2.5.</span> <span class="nav-text"> .precision</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type"><span class="nav-number">3.2.6.</span> <span class="nav-text"> type</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A9%E6%9C%9F%E7%9A%84-formatting%E4%B8%8D%E5%BB%BA%E8%AE%AE%E4%BD%BF%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text"> 早期的%-formatting(不建议使用)</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_stringformat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="python_stringformat | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python_stringformat
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-30 21:01:11" itemprop="dateCreated datePublished" datetime="2021-11-30T21:01:11+08:00">2021-11-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>python格式化字符串有三种方法:</p>
+<h1 id="stringtemplate"><a class="markdownIt-Anchor" href="#stringtemplate"></a> string.Template</h1>
+<p><a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0498/">参考</a><br />
+前两种方式是python2时代的产物, 而<code>f-string</code>则是3.6之后加入的.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">name <span class="token operator">=</span> <span class="token string">"wang"</span>
+age <span class="token operator">=</span> <span class="token number">18</span>
+s <span class="token operator">=</span> <span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>name<span class="token punctuation">&#125;</span></span><span class="token string">\t</span><span class="token interpolation"><span class="token punctuation">&#123;</span>age<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>  <span class="token comment"># wang	18</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="strformat"><a class="markdownIt-Anchor" href="#strformat"></a> <code>str.format()</code></h1>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/string.html#formatstrings">参考</a></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">s <span class="token operator">=</span> <span class="token string">"&#123;&#125;\t&#123;age&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token string">"wang"</span><span class="token punctuation">,</span> age<span class="token operator">=</span><span class="token number">18</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>  <span class="token comment"># wang	18</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>format</code>函数中前面可以以<code>*arg</code>列表形式填充值, 后面可以以<code>**kwargs</code>来填充值</p>
+<h1 id="format-specification"><a class="markdownIt-Anchor" href="#format-specification"></a> Format Specification</h1>
+<p>常用的就是<code>[width][.precision][type]</code>三者</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># [[fill]align][sign][width][.precision][type]</span>
+
+<span class="token string">"%#&lt;+06.1f"</span> <span class="token operator">%</span> <span class="token number">5</span>  <span class="token comment"># 不支持左右对齐, unsupported format character '>' (0x3e) at index 2</span>
+<span class="token string">"&#123;:#&lt;+06.1f&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>  <span class="token comment"># '+5.0##'</span>
+num <span class="token operator">=</span> <span class="token number">5</span>
+<span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>num<span class="token punctuation">:</span><span class="token format-spec">#&lt;+06.1f</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span>  <span class="token comment"># '+5.0##'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">format_spec     <span class="token punctuation">:</span><span class="token operator">:=</span>  <span class="token punctuation">[</span><span class="token punctuation">[</span>fill<span class="token punctuation">]</span>align<span class="token punctuation">]</span><span class="token punctuation">[</span>sign<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token comment">#][0][width][grouping_option][.precision][type]</span>
+fill            <span class="token punctuation">:</span><span class="token operator">:=</span>  <span class="token operator">&lt;</span><span class="token builtin">any</span> character<span class="token operator">></span>
+align           <span class="token punctuation">:</span><span class="token operator">:=</span>  <span class="token string">"&lt;"</span> <span class="token operator">|</span> <span class="token string">">"</span> <span class="token operator">|</span> <span class="token string">"="</span> <span class="token operator">|</span> <span class="token string">"^"</span>
+sign            <span class="token punctuation">:</span><span class="token operator">:=</span>  <span class="token string">"+"</span> <span class="token operator">|</span> <span class="token string">"-"</span> <span class="token operator">|</span> <span class="token string">" "</span>
+width           <span class="token punctuation">:</span><span class="token operator">:=</span>  digit<span class="token operator">+</span>
+precision       <span class="token punctuation">:</span><span class="token operator">:=</span>  digit<span class="token operator">+</span>
+<span class="token builtin">type</span>            <span class="token punctuation">:</span><span class="token operator">:=</span>  <span class="token string">"b"</span> <span class="token operator">|</span> <span class="token string">"c"</span> <span class="token operator">|</span> <span class="token string">"d"</span> <span class="token operator">|</span> <span class="token string">"e"</span> <span class="token operator">|</span> <span class="token string">"E"</span> <span class="token operator">|</span> <span class="token string">"f"</span> <span class="token operator">|</span> <span class="token string">"F"</span> <span class="token operator">|</span> <span class="token string">"g"</span> <span class="token operator">|</span> <span class="token string">"G"</span> <span class="token operator">|</span> <span class="token string">"n"</span> <span class="token operator">|</span> <span class="token string">"o"</span> <span class="token operator">|</span> <span class="token string">"s"</span> <span class="token operator">|</span> <span class="token string">"x"</span> <span class="token operator">|</span> <span class="token string">"X"</span> <span class="token operator">|</span> <span class="token string">"%"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="fill"><a class="markdownIt-Anchor" href="#fill"></a> fill</h2>
+<p>指定左对齐和右对齐空白填充的字符</p>
+<h2 id="align"><a class="markdownIt-Anchor" href="#align"></a> align</h2>
+<p>只有在指定最小宽度<code>minimumwidth</code>大于字符串本来宽度才生效.</p>
+<p><code>&lt;</code> 左对齐, 默认<br />
+<code>&gt;</code> 右对齐<br />
+<code>^</code> 中对齐<br />
+<code>=</code> 正负号对齐, 如’+000000120’</p>
+<h3 id="sign"><a class="markdownIt-Anchor" href="#sign"></a> sign</h3>
+<p><code>+</code> 表示正负值都要有符号<br />
+<code>-</code> 表示只有负值有符号, 默认<br />
+<code> </code> 表示正值前面使用空格</p>
+<h3 id=""><a class="markdownIt-Anchor" href="#"></a> </h3>
+<p><code>#</code>表示 将binary, octal, and hexadecimal需要使用前缀’0b’, ‘0o’, and ‘0x’</p>
+<h3 id="0"><a class="markdownIt-Anchor" href="#0"></a> 0</h3>
+<p><code>0</code>表示填充,二进制,八进制,十六进制开头的数字, 默认为0</p>
+<h3 id="minimumwidth"><a class="markdownIt-Anchor" href="#minimumwidth"></a> minimumwidth</h3>
+<p>指定宽度, 如果不指定, 则使用字符串本身的宽度</p>
+<h3 id="precision"><a class="markdownIt-Anchor" href="#precision"></a> .precision</h3>
+<p>小数点后面保存的维数</p>
+<h3 id="type"><a class="markdownIt-Anchor" href="#type"></a> type</h3>
+<p><code>b</code> 表示二进制, binary<br />
+<code>c</code> 表示字符, Character<br />
+<code>d</code> 表示整型, Decimal Integer<br />
+<code>o</code> 表示八进制, Octal<br />
+<code>x</code> 表示小写十六进制, Hex<br />
+<code>X</code> 表示大写十六进制, Hex</p>
+<h1 id="早期的-formatting不建议使用"><a class="markdownIt-Anchor" href="#早期的-formatting不建议使用"></a> 早期的<code>%-formatting</code>(不建议使用)</h1>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting">参考</a></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">s <span class="token operator">=</span> <span class="token string">"%s\t%d"</span> <span class="token operator">%</span> <span class="token punctuation">(</span><span class="token string">"wang"</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>  <span class="token comment"># wang	18</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>其中<code>%s</code>是字符串占位符, 另外还有<code>%d</code>整型占位符. <code>%</code>是固定语法. <code>(value1,value2)</code>是要填充的值,这里是元组形式<code>()</code></p>
+<p><code>%</code>后面也可以跟字典<code>&#123;&#125;</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">s <span class="token operator">=</span> <span class="token string">"%(name)s\t%(age)d"</span> <span class="token operator">%</span> <span class="token punctuation">&#123;</span><span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"wang"</span><span class="token punctuation">,</span> <span class="token string">"age"</span><span class="token punctuation">:</span><span class="token number">18</span><span class="token punctuation">&#125;</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>  <span class="token comment"># wang	18</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>%[(name)][flags][width].[precision]typecode</code></p>
+<ul>
+<li>(name)为命名</li>
+<li>flags可以有+,-,’ ‘或0。+表示右对齐。-表示左对齐。’ '为一个空格，表示在正数的左侧填充一个空格，从而与负数对齐。0表示使用0填充。</li>
+<li>width表示显示宽度</li>
+<li>precision表示小数点后精度</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"%05.2f"</span> <span class="token operator">%</span> <span class="token number">5</span><span class="token punctuation">)</span>  <span class="token comment"># 05.00</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>flags = 0, 表示多余的位使用0填充</li>
+<li>width = 5, 表示数字整体宽度是5(包含小数点),</li>
+<li>precision = 2, 表示小数点后面保留2位, 因为width=5, 所以小数点前面也是2位</li>
+</ul>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0498/">https://www.python.org/dev/peps/pep-0498/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/pytorch_save/" rel="prev" title="pytorch_save">
+                  <i class="fa fa-chevron-left"></i> pytorch_save
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/python_max_min/" rel="next" title="python_max_min">
+                  python_max_min <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

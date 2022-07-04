@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="算法  理论    主题 一 二 三 四 五     基础 distance covariance derivative     线性代数 matrix_dot       统计分析 hypothesis_test gaussian_processes Mann_Whitney_U     deeplearn perceptron neuralnet propagation     ↑常见网络">
+<meta property="og:type" content="website">
+<meta property="og:title" content="知识库">
+<meta property="og:url" content="https://claroja.github.io/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="算法  理论    主题 一 二 三 四 五     基础 distance covariance derivative     线性代数 matrix_dot       统计分析 hypothesis_test gaussian_processes Mann_Whitney_U     deeplearn perceptron neuralnet propagation     ↑常见网络">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-14T14:03:49.000Z">
+<meta property="article:modified_time" content="2022-07-04T10:38:24.620Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/index.html","path":"index.html","title":"知识库"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>知识库 | Claroja
+</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text"> 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%AE%BA"><span class="nav-number">1.1.</span> <span class="nav-text"> 理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">1.2.</span> <span class="nav-text"> 工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text"> 应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python"><span class="nav-number">2.</span> <span class="nav-text"> python</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#flask"><span class="nav-number">3.</span> <span class="nav-text"> flask</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#html"><span class="nav-number">4.</span> <span class="nav-text"> html</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#javascript"><span class="nav-number">5.</span> <span class="nav-text"> JavaScript</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#css"><span class="nav-number">6.</span> <span class="nav-text"> CSS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vue"><span class="nav-number">7.</span> <span class="nav-text"> Vue</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shell"><span class="nav-number">8.</span> <span class="nav-text"> Shell</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git"><span class="nav-number">9.</span> <span class="nav-text"> git</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#docker"><span class="nav-number">10.</span> <span class="nav-text"> Docker</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#java"><span class="nav-number">11.</span> <span class="nav-text"> Java</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#spring"><span class="nav-number">12.</span> <span class="nav-text"> Spring</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hexo"><span class="nav-number">13.</span> <span class="nav-text"> Hexo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6"><span class="nav-number">14.</span> <span class="nav-text"> 软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9F%B3%E4%B9%90"><span class="nav-number">15.</span> <span class="nav-text"> 音乐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%9C%AA%E5%BD%92%E7%B1%BB"><span class="nav-number">16.</span> <span class="nav-text"> 其他未归类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%A1%E7%90%86"><span class="nav-number">17.</span> <span class="nav-text"> 管理</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">知识库
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <h1 id="算法"><a class="markdownIt-Anchor" href="#算法"></a> 算法</h1>
+<h2 id="理论"><a class="markdownIt-Anchor" href="#理论"></a> 理论</h2>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>基础</strong></td>
+<td><a href="/distance/">distance</a></td>
+<td><a href="/covariance/">covariance</a></td>
+<td><a href="/derivative/">derivative</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>线性代数</strong></td>
+<td><a href="/matrix_dot/">matrix_dot</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>统计分析</strong></td>
+<td><a href="/hypothesis_test/">hypothesis_test</a></td>
+<td><a href="/gaussian_processes/">gaussian_processes</a></td>
+<td><a href="/Mann_Whitney_U/">Mann_Whitney_U</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/deeplearn/"><strong>deeplearn</strong></a></td>
+<td><a href="/deeplearn_perceptron/">perceptron</a></td>
+<td><a href="/deeplearn_neuralnet/">neuralnet</a></td>
+<td><a href="/deeplearn_propagation/">propagation</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑常见网络</td>
+<td><a href="/deeplearn_cnn/">cnn</a></td>
+<td><a href="/deeplearn_rnn/">rnn</a></td>
+<td><a href="/deeplearn_rnnlm/">rnnlm</a></td>
+<td><a href="/deeplearn_lstm/">lstm</a></td>
+<td><a href="/deeplearn_lstmlm/">lstmlm</a></td>
+</tr>
+<tr>
+<td>↑优化相关</td>
+<td><a href="/deeplearn_optimizer/">optimizer</a></td>
+<td><a href="/deeplearn_learning/">learning</a></td>
+<td><a href="/deeplearn_regularization/">regularization</a></td>
+<td><a href="/deeplearn_hyperpara/">hyperpara</a></td>
+<td><a href="/deeplearn_initweight/">initweight</a></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/deeplearn_batchnorm/">batchnorm</a></td>
+<td><a href="/deeplearn_gradproblem/">gradproblem</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>nlp</strong></td>
+<td><a href="/nlp_statistic/">statistic</a></td>
+<td><a href="/nlp_word2vector/">word2vector</a></td>
+<td><a href="/nlp_seq2seq/">seq2seq</a></td>
+<td><a href="/nlp_attention/">attention</a></td>
+<td><a href="/%E6%95%8F%E6%84%9F%E8%AF%8D%E8%BF%87%E6%BB%A4/">敏感词过滤</a></td>
+</tr>
+<tr>
+<td><strong>结构与算法</strong></td>
+<td><a href="/python_treelib/">python_treelib</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="工具"><a class="markdownIt-Anchor" href="#工具"></a> 工具</h2>
+<ol>
+<li>基础工具</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/numpy/"><strong>numpy</strong></a></td>
+<td><a href="/numpy_create/">create</a></td>
+<td><a href="/numpy_shape/">shape</a></td>
+<td><a href="/numpy_element/">element</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/numpy_math/">math</a></td>
+<td><a href="/numpy_random/">random</a></td>
+<td><a href="/numpy_linalg/">linalg</a></td>
+<td><a href="/numpy_statistics/">statistics</a></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>pandas</strong></td>
+<td><a href="/pandas_select/">pandas_select</a></td>
+<td><a href="/pandas_update/">pandas_update</a></td>
+<td><a href="/pandas_insert&amp;del/">pandas_insert&amp;del</a></td>
+<td><a href="/pandas_sort/">pandas_sort</a></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/pandas_groupby/">pandas_groupby</a></td>
+<td><a href="/pandas_concate/">pandas_concate</a></td>
+<td><a href="/pandas_merge/">pandas_merge</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/pandas_string/">pandas_string</a></td>
+<td><a href="/pandas_datetime/">pandas_datetime</a></td>
+<td><a href="/pandas_index/">pandas_index</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/matplotlib/"><strong>matplotlib</strong></a></td>
+<td><a href="/matplolib_plot/">plot</a></td>
+<td><a href="/matplotlib_subplot/">subplot</a></td>
+<td><a href="/matplotlib_hist/">hist</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>scikit</strong></td>
+<td><a href="/scikit_processing/">processing</a></td>
+<td><a href="/statistic_kstest/">kstest</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>贝叶斯网络</strong></td>
+<td><a href="/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/">理论知识</a></td>
+<td><a href="/pgmpy_MontyHallProblem/">pgmpy_MontyHallProblem</a></td>
+<td><a href="/pgmpy%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C/">pgmpy创建网络</a></td>
+<td><a href="/pgmpy%E6%8E%A8%E7%90%86/">pgmpy推理</a></td>
+<td><a href="/pgmpy%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/">pgmpy模型训练</a></td>
+</tr>
+<tr>
+<td><a href="/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/">模型评估</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><a href="/scikit_train_test_split/">scikit_train_test_split</a></p>
+<ol start="2">
+<li><strong>Pytorch</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>张量</strong></td>
+<td><a href="/tensor/">tensor</a></td>
+<td><a href="/tensor_create/">create</a></td>
+<td><a href="/tensor_element/">element</a></td>
+<td><a href="/tensor_shape/">shape</a></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/tensor_storage/">storage</a></td>
+<td><a href="/tensor_requiresgrad/">requiresgrad</a></td>
+<td><a href="/tensor_zerograd/">zerograd</a></td>
+<td><a href="/tensor_item/">item</a></td>
+<td><a href="/tensor_detach/">detach</a></td>
+</tr>
+<tr>
+<td><strong>数据处理</strong></td>
+<td><a href="/pytorch_dataloader/">dataloader</a></td>
+<td><a href="/pytorch_dataset/">dataset</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>模型保存</strong></td>
+<td><a href="/pytorch_save/">save</a></td>
+<td><a href="/pytorch_netron/">netron</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>训练相关</strong></td>
+<td><a href="/pytorch_gpu/">gpu</a></td>
+<td><a href="/pytorch_train_eval/">train_eval</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>nn</strong></td>
+<td><a href="/pytorch_nn_linear/">linear</a></td>
+<td><a href="/pytorch_nn_loss/">loss</a></td>
+<td><a href="/pytorch_nn_lstm/">lstm</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>应用案例</strong></td>
+<td><a href="/lstm_regression/">lstm_regression</a></td>
+<td><a href="/lstm_regression2/">lstm_regression2</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>官网翻译</strong></td>
+<td><a href="/basics_transforms_tutorial/">transforms</a></td>
+<td><a href="/basics_saveloadrun_tutorial/">saveloadrun</a></td>
+<td><a href="/basics_quickstart_tutorial/">quickstart</a></td>
+<td><a href="/basics_optimization_tutorial/">optimization</a></td>
+<td><a href="/basics_optimization_tutorial/">optimization</a></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/basics_data_tutorial/">data</a></td>
+<td><a href="/basics_buildmodel_tutorial/">buildmodel</a></td>
+<td><a href="/basics_autogradqs_tutorial/">autogradqs</a></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><a href="/%E8%A1%A5%E5%85%85/">补充</a></p>
+<h2 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h2>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB%E7%BB%BC%E8%BF%B0/"><strong>人脸识别综述</strong></a></td>
+<td><a href="/FaceAlign/">FaceAlign</a></td>
+<td><a href="/FaceDetection/">FaceDetection</a></td>
+<td><a href="/FaceEncoding/">FaceEncoding</a></td>
+<td><a href="/ImageSimilarity/">ImageSimilarity</a></td>
+<td><a href="/landmark/">landmark</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="python"><a class="markdownIt-Anchor" href="#python"></a> python</h1>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>安装与配置</strong></td>
+<td><a href="/Python%E5%AE%89%E8%A3%85/">安装</a></td>
+<td><a href="/python%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/">虚拟环境</a></td>
+<td><a href="/python_pip/">pip</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>模块与包</strong></td>
+<td><a href="/python_import/">import</a></td>
+<td><a href="/python_importlib/">importlib</a></td>
+<td><a href="/python___import__/">__import__</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>基本类型</strong></td>
+<td><a href="/python_stringformat/">stringformat</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>集合类型</strong></td>
+<td><a href="/python_dict/">dict</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>函数方法</strong></td>
+<td><a href="/python_dec/">dec</a></td>
+<td><a href="/python_funcName/">funcName</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>内置功能</strong></td>
+<td><a href="/python_max_min/">max_min</a></td>
+<td><a href="/python_global/">global</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>面向对象</strong></td>
+<td><a href="/python_class/">class</a></td>
+<td><a href="/python_metaclass/">metaclass</a></td>
+<td><a href="/python_property/">property</a></td>
+<td><a href="/python_classStaticMethod/">StaticMethod</a></td>
+<td><a href="/python_cls/">cls</a></td>
+</tr>
+<tr>
+<td>↑生命周期</td>
+<td><a href="/python___new__/">__new__</a></td>
+<td><a href="/python___init__/">__init__</a></td>
+<td><a href="/python___del__/">__del__</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑继承</td>
+<td><a href="/python_inherit/">inherit</a></td>
+<td><a href="/python_super/">super</a></td>
+<td><a href="/python___mro__/">__mro__</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑抽象与接口</td>
+<td><a href="/python_abstractClass/">abstractClass</a></td>
+<td><a href="/python_interface/">interface</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑成员操作</td>
+<td><a href="/python___dict__/">__dict__</a></td>
+<td><a href="/python___dir__/">__dir__</a></td>
+<td><a href="/python___slots__/">__slots__</a></td>
+<td><a href="/python___xxxitem__/">__xxxitem__</a></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/python_reflection/">reflection</a></td>
+<td><a href="/python___getattr__/">__getattr__</a></td>
+<td><a href="/python___setattr__/">__setattr__</a></td>
+<td><a href="/python___delattr__/">__delattr__</a></td>
+<td><a href="/python____getattribute__/">__getattribute__</a></td>
+</tr>
+<tr>
+<td>↑迭代</td>
+<td><a href="/python___iter__/">__iter__</a></td>
+<td><a href="/python_iterable&amp;iterator/">iterable&amp;iterator</a></td>
+<td><a href="/python_yield/">yield</a></td>
+<td><a href="/python_generator/">generator</a></td>
+<td></td>
+</tr>
+<tr>
+<td>↑descriptor</td>
+<td><a href="/python___get__/">__get__</a></td>
+<td><a href="/python___delete__/">__delete__</a></td>
+<td><a href="/python___set__/">__set__</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑标准方法</td>
+<td><a href="/python___call__/">__call__</a></td>
+<td><a href="/python___len__/">__len__</a></td>
+<td><a href="/python___repr__/">__repr__</a></td>
+<td><a href="/python___str__/">__str__</a></td>
+<td><a href="/python__bool">__bool__</a></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/python_with/">with</a></td>
+<td><a href="/python_contextlib/">contextlib</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑运算符重载</td>
+<td><a href="/python_operatorsOverload/">operatorsOverload</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>IO</strong></td>
+<td><a href="/python_io_%E5%8E%9F%E7%90%86/">原理</a></td>
+<td><a href="/python_io_binaryio/">binaryio</a></td>
+<td><a href="/python_io_textio/">textio</a></td>
+<td><a href="/python_io_rawio/">rawio</a></td>
+<td><a href="/python_io_stdio/">stdio</a></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/python_io_poll/">poll</a></td>
+<td><a href="/python_io_epoll/">epoll</a></td>
+<td><a href="/python_io_select/">select</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑<a href="/python_socket/">socket</a></td>
+<td><a href="/python_socket_tcp/">socket_tcp</a></td>
+<td><a href="/python_socket_udp/">socket_udp</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑coroutines</td>
+<td><a href="/python_coroutines_asyncio/">asyncio</a></td>
+<td><a href="/python_coroutines_gevent/">gevent</a></td>
+<td><a href="/python_coroutines_yield/">yield</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/python_pathlib/">python_pathlib</a></td>
+<td><a href="/python_json/">python_json</a></td>
+<td><a href="/python_pickle/">python_pickle</a></td>
+<td><a href="/python_log/">python_log</a></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>多线程</strong></td>
+<td><a href="/python_thread/">thread</a></td>
+<td><a href="/python_threading&amp;Thread&amp;timer/">threading&amp;Thread&amp;timer</a></td>
+<td><a href="/python_thread_pool/">pool</a></td>
+<td><a href="/python_threadlocal/">threadlocal</a></td>
+<td></td>
+</tr>
+<tr>
+<td>↑<a href="/python_Lock%E4%B8%8ERLock/">Lock与RLock</a></td>
+<td><a href="/python_semaphore/">semaphore</a></td>
+<td><a href="/python_barrier/">barrier</a></td>
+<td><a href="/python_condition/">condition</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/python_event/">event</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>多进程</strong></td>
+<td><a href="/python_process/">process</a></td>
+<td><a href="/python_process_multiprocessing/">multiprocessing</a></td>
+<td><a href="/python_process_pool/">pool</a></td>
+<td><a href="/python_process_forkspaw/">forkspaw</a></td>
+<td></td>
+</tr>
+<tr>
+<td>↑<a href="/python_process_communication/">communication</a></td>
+<td><a href="/python_process_shareval/">shareval</a></td>
+<td><a href="/python_process_fifo/">fifo</a></td>
+<td><a href="/python_process_mmap/">mmap</a></td>
+<td><a href="/python_process_pipes&amp;queues/">pipes&amp;queues</a></td>
+<td><a href="/python_process_event/">event</a></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/python_process_signal/">signal</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑<a href="/python_process_lock/">lock</a></td>
+<td><a href="/python_process_semaphore/">semaphore</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑其他</td>
+<td><a href="/python_process_subprocess/">subprocess</a></td>
+<td><a href="/python_process_apscheduler/">apscheduler</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>尚未归类</strong></td>
+<td><a href="/python_typehint/">python_typehint</a></td>
+<td><a href="/python_thrift/">python_thrift</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><a href="/python_wheel/">python_wheel</a></p>
+<h1 id="flask"><a class="markdownIt-Anchor" href="#flask"></a> flask</h1>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>flask</strong></td>
+<td><a href="/flask_project/">project</a></td>
+<td><a href="/flask_endpoint/">endpoint</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/flask_jwt/"><strong>flask_jwt</strong></a></td>
+<td><a href="/flask_jwt_fresh/">fresh</a></td>
+<td><a href="/flask_jwt_optional/">optional</a></td>
+<td><a href="/flask_jwt_permission/">permission</a></td>
+<td><a href="/flask_jwt_refresh/">refresh</a></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>flask_sql</strong></td>
+<td><a href="/flask_migrate/">migrate</a></td>
+<td><a href="/flask_sql_context/">sql_context</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/flask_api/"><strong>flask_api</strong></a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="html"><a class="markdownIt-Anchor" href="#html"></a> html</h1>
+<p><a href="/html_svg/">html_svg</a></p>
+<h1 id="javascript"><a class="markdownIt-Anchor" href="#javascript"></a> JavaScript</h1>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>安装配置</strong></td>
+<td><a href="/js_loadjs/">loadjs</a></td>
+<td><a href="/js_mudule/">mudule</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/ts_intro/"><strong>TypeScript</strong></a></td>
+<td><a href="/ts_init/">init</a></td>
+<td><a href="/ts_type/">type</a></td>
+<td><a href="/ts_class/">class</a></td>
+<td><a href="/ts_babel/">babel</a></td>
+<td><a href="/ts_webpack/">webpack</a></td>
+</tr>
+<tr>
+<td><strong>数据类型</strong></td>
+<td><a href="/js_literal/">literal</a></td>
+<td><a href="/js_variable/">variable</a></td>
+<td><a href="/js_changeVar/">changeVar</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/js_string/">string</a></td>
+<td><a href="/js_number/">number</a></td>
+<td><a href="/js_boolean/">boolean</a></td>
+<td><a href="/js_nullUndefined/">nullUndefined</a></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/js_date/">date</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>容器类型</strong></td>
+<td><a href="/js_array/">array</a></td>
+<td><a href="/js_arrayBuffer/">arrayBuffer</a></td>
+<td><a href="/js_typedArray/">typedArray</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>文件读写</strong></td>
+<td><a href="/js_encode/">encode</a></td>
+<td><a href="/js_blob/">blob</a></td>
+<td><a href="/js_json/">json</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>操作符</strong></td>
+<td><a href="/js_operator/">operator</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>控制流</strong></td>
+<td><a href="/js_flowControl/">flowControl</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>方法</strong></td>
+<td><a href="/js_function/">function</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>对象</strong></td>
+<td><a href="/js_object/">object</a></td>
+<td><a href="/js_this/">this</a></td>
+<td><a href="/js_class/">class</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/js_%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5/"><strong>同步异步</strong></a></td>
+<td><a href="/eventLoop_callBacks_promise/">eventLoop_callBacks_promise</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>promise</strong></td>
+<td><a href="/js_promise/">promise</a></td>
+<td><a href="/js_promise_api/">api</a></td>
+<td><a href="/js_promise_keypoint/">keypoint</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/dom_intro/"><strong>DOM</strong></a></td>
+<td><a href="/dom_domTree/">domTree</a></td>
+<td><a href="/dom_getElement/">getElement</a></td>
+<td><a href="/dom_handleElement/">handleElement</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑<a href="/dom_elementPos/">elementPos</a></td>
+<td><a href="/dom_offset/">offset</a></td>
+<td><a href="/dom_client/">client</a></td>
+<td><a href="/dom_scroll/">scroll</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑<a href="/dom_event/">event</a></td>
+<td><a href="/dom_keyboardEvent/">keyboardEvent</a></td>
+<td><a href="/dom_mouseEvent/">mouseEvent</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑<a href="/dom_animation/">animation</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑<a href="/js_audio/">audio</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/bom_intro/"><strong>BOM</strong></a></td>
+<td><a href="/bom_this/">this</a></td>
+<td><a href="/bom_time/">time</a></td>
+<td><a href="/bom_storage/">storage</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/bom_onload/">onload</a></td>
+<td><a href="/bom_resize/">resize</a></td>
+<td><a href="/bom_location/">location</a></td>
+<td><a href="/bom_history/">history</a></td>
+<td><a href="/bom_navigator/">navigator</a></td>
+</tr>
+<tr>
+<td><a href="/Webpack%E5%85%A5%E9%97%A8/"><strong>Webpack入门</strong></a></td>
+<td><a href="/Webpack%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a></td>
+<td><a href="/Webpack%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83/">生产环境</a></td>
+<td><a href="/Webpack%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>三方包</strong></td>
+<td><a href="/js_debounceAndthrottle/">debounceAndthrottle</a></td>
+<td><a href="/axios/">axios</a></td>
+<td><a href="/Three-js%E5%85%A5%E9%97%A8/">Three-js入门</a></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>[js_requestAnimationFrame]<br />
+<a href="/javascript_bind/">javascript_bind</a><br />
+<a href="/js_keycode/">js_keycode</a></p>
+<h1 id="css"><a class="markdownIt-Anchor" href="#css"></a> CSS</h1>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CSS</strong><a href="/css_intro/"><strong>intro</strong></a></td>
+<td><a href="/css_loadCSS/">loadCSS</a></td>
+<td><a href="/css_selector/">selector</a></td>
+<td><a href="/css_feature/">feature</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>标准流</strong></td>
+<td><a href="/css_boxModel/">boxModel</a></td>
+<td><a href="/css_inlineOrBlock/">inlineOrBlock</a></td>
+<td><a href="/css_display/">display</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>浮动流</strong></td>
+<td><a href="/css_float/">float</a>**</td>
+<td><a href="/css_overflow/">overflow</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>定位流</strong></td>
+<td><a href="/css_position/">position</a></td>
+<td><a href="/css_zindex/">zindex</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>字体与图片</strong></td>
+<td><a href="/css_font/">font</a></td>
+<td><a href="/css_fontface/">fontface</a></td>
+<td><a href="/css_spirit/">spirit</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>动画</strong></td>
+<td><a href="/css_transition/">transition</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>背景</strong></td>
+<td><a href="/css_background/">background</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="vue"><a class="markdownIt-Anchor" href="#vue"></a> Vue</h1>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/vue_%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">vue_安装配置</a></td>
+<td><a href="/vue_intro/">intro</a></td>
+<td><a href="/vue_createApp/">createApp</a></td>
+<td><a href="/vue_setup/">setup</a></td>
+<td><a href="/vue_script/">vue_script</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/vue_cli/"><strong>vue_cli</strong></a></td>
+<td><a href="/vuecli_project/">project</a></td>
+<td><a href="/vuecli_component/">component</a></td>
+<td><a href="/vuecli_jsconfigjson/">jsconfigjson</a></td>
+<td><a href="/vuecli_vueconfigjs/">vueconfigjs</a></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/vuecli_router/">router</a></td>
+<td><a href="/vuecli_vuex/">vuex</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>vue对象</strong></td>
+<td><a href="/vue_ref/">ref</a></td>
+<td><a href="/vue_customRef/">customRef</a></td>
+<td><a href="/vue_$ref/">$ref</a></td>
+<td><a href="/vue_reactive/">reactive</a></td>
+<td><a href="/vue_toRefs/">toRefs</a></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/vue_raw/">raw</a></td>
+<td><a href="/vue_readonly/">readonly</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/vue_emits/">emits</a><a href="/vue_eventBus/">eventBus</a><a href="/vue_provide&amp;inject/">provide&amp;inject</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/vue_computed/">computed</a></td>
+<td><a href="/vue_watch/">watch</a></td>
+<td><a href="/vue_watchEffect/">watchEffect</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>生命周期</strong></td>
+<td><a href="/vue_lifecycle/">vue_lifecycle</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>数据交互</strong></td>
+<td><a href="/vue_v-bind/">v-bind</a></td>
+<td><a href="/vue_v-model/">v-model</a></td>
+<td><a href="/vue_v-on/">v-on</a></td>
+<td><a href="/vue_$ref/">$ref</a></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>指令渲染</strong></td>
+<td><a href="/vue_v-for/">v-for</a></td>
+<td><a href="/vue_v-if_show/">v-if_show</a></td>
+<td><a href="/vue_v-text/">v-text</a></td>
+<td><a href="/vue_v-html/">v-html</a></td>
+<td><a href="/vue_v-cloak/">v-cloak</a></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/vue_v-once/">v-once</a></td>
+<td><a href="/vue_v-pre/">v-pre</a></td>
+<td><a href="/vue-directive/">directive</a></td>
+<td><a href="/vue_teleport/">teleport</a></td>
+<td><a href="/vue_suspense/">suspense</a></td>
+</tr>
+<tr>
+<td><strong>组件</strong></td>
+<td><a href="/vue-component/">component</a></td>
+<td><a href="/vue_hook/">hook</a></td>
+<td><a href="/vue_slot/">slot</a></td>
+<td><a href="/vue_props/">props</a></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>插件</strong></td>
+<td><a href="/vue_plugin/">plugin</a></td>
+<td><a href="/vue_vuex/">vuex</a></td>
+<td><a href="/vue_router/">router</a></td>
+<td><a href="/vuecli_axios/">axios</a></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>应用</strong></td>
+<td><a href="/vue3_readfile/">readfile</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<!-- 小黑屋
+[vue_$set](/vue_$set/)  //vue2 扔进小黑屋
+[vue_methods](/vue_methods/) // vue2 扔进小黑屋
+[vue-filter](/vue-filter/)// vue2 扔进小黑屋
+[vue_mixin](/vue_mixin/) -->
+<p><a href="/pinia/">pinia</a></p>
+<h1 id="shell"><a class="markdownIt-Anchor" href="#shell"></a> Shell</h1>
+<p><a href="/shell/">shell</a></p>
+<h1 id="git"><a class="markdownIt-Anchor" href="#git"></a> git</h1>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>安装与配置</strong></td>
+<td><a href="/Git%E5%AE%89%E8%A3%85/">Git安装</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/git/"><strong>Git命令</strong></a></td>
+<td><a href="/GitClone/">Clone</a></td>
+<td><a href="/git_fetch/">fetch</a></td>
+<td><a href="/GitRebase/">Rebase</a></td>
+<td><a href="/GitRevert/">Revert</a></td>
+<td><a href="/git_stash/">stash</a></td>
+</tr>
+<tr>
+<td><strong>Git原理</strong></td>
+<td><a href="/Git%E5%8E%9F%E7%90%86-%E5%AF%B9%E8%B1%A1/">对象</a></td>
+<td><a href="/Git%E5%8E%9F%E7%90%86-%E5%BC%95%E7%94%A8/">引用</a></td>
+<td><a href="/Git%E5%8E%9F%E7%90%86-%E6%89%93%E5%8C%85/">打包</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Git实战</strong></td>
+<td><a href="/git%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/">git多人协作</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>GitLab</strong></td>
+<td><a href="/gitlab_CICD/">CICD</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/git_branch/">git_branch</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/git_pull/">git_pull</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/git_rebase/">git_rebase</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/git_HEAD/">git_HEAD</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/git_commit/">git_commit</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="docker"><a class="markdownIt-Anchor" href="#docker"></a> Docker</h1>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>docker</strong></td>
+<td><a href="/docker%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C/">docker基础操作</a></td>
+<td><a href="/Docker%E9%95%9C%E5%83%8F%E6%89%93%E5%8C%85/">Docker镜像打包</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/kebernetes/"><strong>kebernetes</strong></a></td>
+<td><a href="/k8sNameSpace/">NameSpace</a></td>
+<td><a href="/k8sController/">Controller</a></td>
+<td><a href="/k8sJob/">Job</a></td>
+<td><a href="/k8sPods/">Pods</a></td>
+<td><a href="/k8sService/">Service</a></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/k8sLabel/">Label</a></td>
+<td><a href="/k8sHelm/">Helm</a></td>
+<td><a href="/k8sPersistence/">Persistence</a></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="java"><a class="markdownIt-Anchor" href="#java"></a> Java</h1>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/javaConcurrency/"><strong>Concurrency</strong></a></td>
+<td><a href="/JavaThreadUnsafe">Unsafe</a></td>
+<td><a href="/JavaThread/">Thread</a></td>
+<td><a href="/JavaThreadCommand/">Command</a></td>
+<td><a href="/JavaThreadPool/">Pool</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/JavaSynchronized/"><strong>Synchronized</strong></a></td>
+<td><a href="/JavaWaitNotify/">WaitNotiry</a></td>
+<td><a href="/JavaThreadActivity/">Activity</a></td>
+<td><a href="/JavaCAS/">CAS</a></td>
+<td><a href="/JavaJMM/">JMM</a></td>
+<td><a href="/JavaJUC/">JUC</a></td>
+</tr>
+<tr>
+<td><strong>lock</strong></td>
+<td><a href="/JavaParkUnpark/">Park</a></td>
+<td><a href="/JavaReentrantLock/">ReentrantLock</a></td>
+<td><a href="/JavaRWLock/">RWLock</a></td>
+<td><a href="/JavaSemaphore/">Semaphore</a></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>线程安全</strong></td>
+<td><a href="/JavaUtilConcurrent/">UtilConcurrent</a></td>
+<td><a href="/JavaImmutableObject">Immutable</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><a href="/JavaLog/">Log</a></strong></td>
+<td><a href="/JavaLogger/">Logger</a></td>
+<td><a href="/javaLog4j/">Log4j</a></td>
+<td><a href="/JavaLog4j2">Log4j2</a></td>
+<td><a href="/JavaLogback/">Logback</a></td>
+<td><a href="/JavaSlf4j/">Slf4j</a></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/JavaSpringBootLog/">SpringBootLog</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>↑</td>
+<td><a href="/Reflection/">Reflection</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>其他</strong></td>
+<td><a href="/Jackson/">Jackson</a></td>
+<td><a href="/JWT/">JWT</a></td>
+<td><a href="/Annotation/">Annotation</a></td>
+<td><a href="/Collections/">Collections</a></td>
+<td><a href="/Generics/">Generics</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="spring"><a class="markdownIt-Anchor" href="#spring"></a> Spring</h1>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>JavaWeb基础</strong></td>
+<td><a href="/Tomcat/">Tomcat</a></td>
+<td><a href="/Servlet/">Servlet</a></td>
+<td><a href="/Filter/">Filter</a></td>
+<td><a href="/Listener/">Listener</a></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Spring</strong><a href="/Spring/">Spring</a></td>
+<td><a href="/AOP/">AOP</a></td>
+<td><a href="/SpringBoot/">springboot</a></td>
+<td><a href="/SpringSecurity/">SpringSecurity</a></td>
+<td><a href="/SpringSecurity%E5%8A%A0%E5%AF%86%E5%8E%9F%E7%90%86/">SpringSecurity加密原理</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/MyBatisPlus/"><strong>MyBatisPlus</strong></a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="/Nacos/">Nacos</a></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="hexo"><a class="markdownIt-Anchor" href="#hexo"></a> Hexo</h1>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>配置</strong></td>
+<td><a href="/Hexo_config/">Hexo_config</a></td>
+<td><a href="/Hexo_vscode/">Hexo_vscode</a></td>
+<td><a href="/Hexo_deploy/">Hexo_deploy</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>主题</strong><a href="/next/">next</a></td>
+<td><a href="/Hexo_NexT%E4%B8%BB%E9%A2%98/">Hexo_NexT主题</a></td>
+<td><a href="/NexT%E9%85%8D%E7%BD%AE/">NexT配置</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="软件"><a class="markdownIt-Anchor" href="#软件"></a> 软件</h1>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>一</th>
+<th>二</th>
+<th>三</th>
+<th>四</th>
+<th>五</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/"><strong>常用软件</strong></a></td>
+<td><a href="/vscode/">vscode</a></td>
+<td><a href="/idea/">idea</a></td>
+<td><a href="/VirtualBox%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/">VirtualBox网络配置</a></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><a href="/vscode%E5%BF%AB%E6%8D%B7%E9%94%AE/">vscode快捷键</a><br />
+<a href="/vscode%E6%8F%92%E4%BB%B6/">vscode插件</a></p>
+<p><a href="/google/">google</a></p>
+<p><a href="/prettier/">prettier</a><br />
+<a href="/eslint/">eslint</a><br />
+<a href="/vite/">vite</a><br />
+<a href="/npm/">npm</a></p>
+<h1 id="音乐"><a class="markdownIt-Anchor" href="#音乐"></a> 音乐</h1>
+<p><a href="/melodyne/">melodyne</a><br />
+<a href="/audition/">audition</a><br />
+<a href="/GuitarAndVocals/">GuitarAndVocals</a></p>
+<h1 id="其他未归类"><a class="markdownIt-Anchor" href="#其他未归类"></a> 其他未归类</h1>
+<p><a href="/aws/">aws</a><br />
+<a href="/datawarehouse/">datawarehouse</a><br />
+<a href="/alg_modelEvalue/">alg_modelEvalue</a><br />
+<a href="/%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6/">算法复杂度</a><br />
+<a href="/LaTex/">LaTex</a></p>
+<p><a href="/oscillator/">oscillator</a><br />
+<a href="/vim/">vim</a></p>
+<p><a href="/redux/">redux</a></p>
+<h1 id="管理"><a class="markdownIt-Anchor" href="#管理"></a> 管理</h1>
+<p><a href="/management/">management</a></p>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

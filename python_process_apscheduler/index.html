@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="APScheduler （advanceded python scheduler） 特点： 1.不依赖于Linux系统的crontab系统定时，独立运行 2.可以动态添加新的定时任务，如 下单后30分钟内必须支付，否则取消订单，就可以借助此工具（每下一单就要添加此订单的定时任务） 3.对添加的定时任务可以做持久保存  基础概念 触发器(trigger)和保存调度逻辑. 作业存储(job store">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python_process_apscheduler">
+<meta property="og:url" content="https://claroja.github.io/python_process_apscheduler/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="APScheduler （advanceded python scheduler） 特点： 1.不依赖于Linux系统的crontab系统定时，独立运行 2.可以动态添加新的定时任务，如 下单后30分钟内必须支付，否则取消订单，就可以借助此工具（每下一单就要添加此订单的定时任务） 3.对添加的定时任务可以做持久保存  基础概念 触发器(trigger)和保存调度逻辑. 作业存储(job store">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-02T00:14:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.456Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/python_process_apscheduler/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/python_process_apscheduler/","path":"python_process_apscheduler/","title":"python_process_apscheduler"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python_process_apscheduler | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text"> 基础概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#api"><span class="nav-number">2.</span> <span class="nav-text"> API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#scheduler"><span class="nav-number">2.1.</span> <span class="nav-text"> Scheduler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trigger"><span class="nav-number">2.2.</span> <span class="nav-text"> trigger</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E5%9C%A8%E7%89%B9%E5%AE%9A%E6%97%B6%E9%97%B4%E6%89%A7%E8%A1%8Crun_date"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 1.在特定时间执行：run_date</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E9%97%B4%E9%9A%94%E6%89%A7%E8%A1%8Cinterval"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 2.间隔执行：interval</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E5%91%A8%E6%9C%9F%E6%89%A7%E8%A1%8Ccron"><span class="nav-number">2.2.2.1.</span> <span class="nav-text"> 3.周期执行：cron</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#executors"><span class="nav-number">2.3.</span> <span class="nav-text"> executors</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E4%BB%A5%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.3.1.</span> <span class="nav-text"> 1.以线程执行任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E4%BB%A5%E8%BF%9B%E7%A8%8B%E6%96%B9%E5%BC%8F%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.3.2.</span> <span class="nav-text"> 2.以进程方式执行任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#job"><span class="nav-number">2.4.</span> <span class="nav-text"> job</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1%E9%80%9A%E8%BF%87%E5%90%8D%E7%A7%B0"><span class="nav-number">3.</span> <span class="nav-text"> 1.通过名称</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%E9%80%9A%E8%BF%87%E5%AF%B9%E8%B1%A1"><span class="nav-number">4.</span> <span class="nav-text"> 2.通过对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3%E5%81%9C%E6%AD%A2%E6%89%80%E6%9C%89%E4%BB%BB%E5%8A%A1"><span class="nav-number">5.</span> <span class="nav-text"> 3.停止所有任务</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_process_apscheduler/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="python_process_apscheduler | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python_process_apscheduler
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>APScheduler （advanceded python scheduler）<br />
+特点：<br />
+1.不依赖于Linux系统的crontab系统定时，独立运行<br />
+2.可以动态添加新的定时任务，如<br />
+下单后30分钟内必须支付，否则取消订单，就可以借助此工具（每下一单就要添加此订单的定时任务）<br />
+3.对添加的定时任务可以做持久保存</p>
+<h1 id="基础概念"><a class="markdownIt-Anchor" href="#基础概念"></a> 基础概念</h1>
+<p>触发器(trigger)和保存调度逻辑.<br />
+作业存储(job store),默认存储在内存中,也可以保存在数据库中(使用序列化和反序列化实现)<br />
+执行器(executor)控制执行的作业<br />
+调度器(scheduler)包含以上三者<br />
+<strong>选择合适的调度器,存储,执行和触发器</strong></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BlockingScheduler</td>
+<td>当在进程中使用时</td>
+</tr>
+<tr>
+<td>BackgroundScheduler</td>
+<td>后台运行,不影响当前系统</td>
+</tr>
+<tr>
+<td>AsyncIOScheduler</td>
+<td>async module</td>
+</tr>
+<tr>
+<td>GeventScheduler</td>
+<td>gevent</td>
+</tr>
+<tr>
+<td>TornadoScheduler</td>
+<td>Tornado</td>
+</tr>
+<tr>
+<td>TwistedScheduler</td>
+<td>Twister</td>
+</tr>
+<tr>
+<td>QtScheduler</td>
+<td>Qt</td>
+</tr>
+<tr>
+<td><strong>选择合适的作业存储</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>默认作业存储(MemoryJobStore),宕机会丢失作业</td>
+<td></td>
+</tr>
+<tr>
+<td>数据库(Mongo SQLAlchemy JobStore),宕机后仍然保留作业</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>选择合适的执行器</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>(ThreadPoolExecutor)默认的执行器,多线程</td>
+<td></td>
+</tr>
+<tr>
+<td>(ProcessPoolExecutor)多进程</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>选择合适的触发器</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>名称</td>
+<td>描述</td>
+</tr>
+<tr>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>date</td>
+<td>作业执行一次,指定时间</td>
+</tr>
+<tr>
+<td>interval</td>
+<td>间隔执行,多次</td>
+</tr>
+<tr>
+<td>cron</td>
+<td>和linuxcrontab格式兼容</td>
+</tr>
+</tbody>
+</table>
+<p><strong>触发器一般参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>job_function</td>
+<td>调用的函数</td>
+</tr>
+<tr>
+<td>trigger</td>
+<td>触发类型</td>
+</tr>
+</tbody>
+</table>
+<p><strong>date触发器</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>run_date</td>
+<td>作业运行的时间</td>
+</tr>
+<tr>
+<td>timezone</td>
+<td>时区</td>
+</tr>
+</tbody>
+</table>
+<p>interval触发器</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>weeks(int)</td>
+<td>间隔周数</td>
+</tr>
+<tr>
+<td>days(int)</td>
+<td>间隔天数</td>
+</tr>
+<tr>
+<td>hours(int)</td>
+<td>间隔小时</td>
+</tr>
+<tr>
+<td>minutes(int)</td>
+<td>间隔分钟</td>
+</tr>
+<tr>
+<td>seconds(int)</td>
+<td>间隔秒数</td>
+</tr>
+<tr>
+<td>start_date(datetime|str)</td>
+<td>开始日期</td>
+</tr>
+<tr>
+<td>end_date(datetime|str)</td>
+<td>结束日期</td>
+</tr>
+<tr>
+<td>timezone(datetime|str)</td>
+<td>时区</td>
+</tr>
+</tbody>
+</table>
+<p>cron触发器</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>year(int</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>month (int|str)</td>
+<td>月 (范围1-12)</td>
+</tr>
+<tr>
+<td>day (int|str)</td>
+<td>日 (范围1-31)</td>
+</tr>
+<tr>
+<td>week (int|str)</td>
+<td>周 (范围1-53)</td>
+</tr>
+<tr>
+<td>day_of_week (int|str)</td>
+<td>周内第几天或者星期几 (范围0-6 或者 mon,tue,wed,thu,fri,sat,sun)</td>
+</tr>
+<tr>
+<td>hour (int|str)</td>
+<td>时 (范围0-23)</td>
+</tr>
+<tr>
+<td>minute (int|str)</td>
+<td>分 (范围0-59)</td>
+</tr>
+<tr>
+<td>second (int|str)</td>
+<td>秒 (范围0-59)</td>
+</tr>
+<tr>
+<td>start_date (datetime|str)</td>
+<td>最早开始日期(包含)</td>
+</tr>
+<tr>
+<td>end_date (datetime|str)</td>
+<td>最晚结束时间(包含)</td>
+</tr>
+<tr>
+<td>timezone (datetime.tzinfo|str)</td>
+<td>指定时区</td>
+</tr>
+</tbody>
+</table>
+<p><strong>取值格式</strong></p>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*</td>
+<td>any</td>
+<td>每个值触发发</td>
+</tr>
+<tr>
+<td>*/a</td>
+<td>any</td>
+<td>每个间隔值出发, 并从最小的值出发</td>
+</tr>
+<tr>
+<td>a-b</td>
+<td>范围内每个值出发</td>
+<td></td>
+</tr>
+<tr>
+<td>a-b/c</td>
+<td>在a-b之间的间隔c值出发</td>
+<td></td>
+</tr>
+<tr>
+<td>xth y</td>
+<td>day</td>
+<td>在每月x周的y天触发</td>
+</tr>
+<tr>
+<td>last x</td>
+<td>day</td>
+<td>在每月的x周触发</td>
+</tr>
+<tr>
+<td>last</td>
+<td>day</td>
+<td>在每月的x天触发</td>
+</tr>
+<tr>
+<td>x,y,z</td>
+<td>day</td>
+<td>Fire on any matching expression; can combine any number of any of the above expressions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>例子</strong><br />
+second=“5”|每分钟第5秒执行一次<br />
+second=“1,3,5”|每分钟1,3,5秒执行一次<br />
+second=“*”|每秒执行一次<br />
+second=“5/2”|每分钟的第5秒开始,间隔两2秒执行一次<br />
+second=“5-10/2”|每分钟的第5-10秒,间隔2秒执行一次</p>
+<p><strong>contab格式说明</strong><br />
+用户所建立的crontab文件中，每一行都代表一项任务，每行的每个字段代表一项设置，它的格式共分为六个字段，前五段是时间设定段，第六段是要执行的命令段，格式如下：</p>
+<p>minute hour day month week command</p>
+<p>其中：</p>
+<p>minute： 表示分钟，可以是从0到59之间的任何整数。<br />
+hour：表示小时，可以是从0到23之间的任何整数。<br />
+day：表示日期，可以是从1到31之间的任何整数。<br />
+month：表示月份，可以是从1到12之间的任何整数。<br />
+week：表示星期几，可以是从0到7之间的任何整数，这里的0或7代表星期日。<br />
+command：要执行的命令，可以是系统命令，也可以是自己编写的脚本文件。</p>
+<p>在以上各个字段中，还可以使用以下特殊字符：<br />
+星号（<em>）：代表所有可能的值，例如month字段如果是星号，则表示在满足其它字段的制约条件后每月都执行该命令操作。<br />
+逗号（,）：表示并列,例如，“1,2,5,7,8,9”<br />
+中杠（-）：表示整数范围，例如“2-6”表示“2,3,4,5,6”<br />
+正斜线（/）：可以用正斜线指定时间的间隔频率，例如“0-23/2”表示每两小时执行一次。同时正斜线可以和星号一起使用，例如</em>/10，如果用在minute字段，表示每十分钟执行一次。</p>
+<p><strong>操作</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">from apscheduler.schedulers.blocking import BlockingScheduler
+sched &#x3D; BlockingScheduler()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>1.添加作业</p>
+<pre class="line-numbers language-none"><code class="language-none">sched.add_job(my_job1, &#39;interval&#39;, seconds&#x3D;5,id&#x3D;&#39;my_job1&#39;)
+sched.start()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>也可以通过装饰器的形式来实现</p>
+<pre class="line-numbers language-none"><code class="language-none">@sched.scheduled_job(&#39;cron&#39;,second&#x3D;&#39;*&#x2F;5&#39;,id&#x3D;&#39;my_job2&#39;)
+sched.start()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>2.作业删除,暂停,恢复</p>
+<pre class="line-numbers language-none"><code class="language-none">job.remove()
+sched.remove_job(&#39;my_job_id&#39;)
+Job.pause()
+sched.pause_job()
+Job.resume()
+sched.resume_job()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3.作业更新</p>
+<pre class="line-numbers language-none"><code class="language-none">job.modify(max_instances&#x3D;6, name&#x3D;&#39;Alternate name&#39;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>4.获得job列表</p>
+<pre class="line-numbers language-none"><code class="language-none">sched.get_job(job_id&#x3D;&#39;123&#39;)
+job.get_jobs()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>5.关闭调度器</p>
+<pre class="line-numbers language-none"><code class="language-none">sched.shutdown()
+sched.shutdown(wait&#x3D;False)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong>实例</strong></p>
+<p>apscheduler添加任务的时候都是并发执行的，但是有些任务并发可能冲突，或者几个任务要先后执行。这个时候就要对这些任务先进行一次封装。</p>
+<pre class="line-numbers language-none"><code class="language-none">from apscheduler.schedulers.blocking import BlockingScheduler
+def job1():
+	print(&quot;job1&quot;)
+def job2():
+	print(&quot;job2&quot;)
+
+def all():
+	job1()
+	job2()
+
+hour &#x3D; 9
+minute &#x3D; 10
+sched &#x3D; BlockingScheduler()
+sched.add_job(all(),&#39;cron&#39;,hour &#x3D; hour,minute&#x3D;minute)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="api"><a class="markdownIt-Anchor" href="#api"></a> API</h1>
+<h2 id="scheduler"><a class="markdownIt-Anchor" href="#scheduler"></a> Scheduler</h2>
+<p>负责管理定时任务<br />
+对于BlockingScheduler ，程序会阻塞在这，防止退出<br />
+对于BackgroundScheduler，程序会立即返回，后台运行</p>
+<p>BlockingScheduler: 作为独立进程时使用</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> apscheduler<span class="token punctuation">.</span>schedulers<span class="token punctuation">.</span>blocking <span class="token keyword">import</span> BlockingScheduler
+scheduler <span class="token operator">=</span> BlockingScheduler<span class="token punctuation">(</span><span class="token punctuation">)</span>
+scheduler<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 此处程序会发生阻塞</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>BackgroundScheduler: 在框架程序（如Django、Flask）中使用</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> apscheduler<span class="token punctuation">.</span>schedulers<span class="token punctuation">.</span>background <span class="token keyword">import</span> BackgroundScheduler
+scheduler <span class="token operator">=</span> BackgroundScheduler<span class="token punctuation">(</span><span class="token punctuation">)</span>
+scheduler<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 此处程序不会发生阻塞</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="trigger"><a class="markdownIt-Anchor" href="#trigger"></a> trigger</h2>
+<p>指定定时任务执行的时机</p>
+<h3 id="1在特定时间执行run_date"><a class="markdownIt-Anchor" href="#1在特定时间执行run_date"></a> 1.在特定时间执行：run_date</h3>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> date
+
+
+sched<span class="token punctuation">.</span>add_job<span class="token punctuation">(</span>my_job<span class="token punctuation">,</span> <span class="token string">'date'</span><span class="token punctuation">,</span> run_date<span class="token operator">=</span>date<span class="token punctuation">(</span><span class="token number">2009</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 在2019年11月6日00:00:00执行，date格式</span>
+sched<span class="token punctuation">.</span>add_job<span class="token punctuation">(</span>my_job<span class="token punctuation">,</span> <span class="token string">'date'</span><span class="token punctuation">,</span> run_date<span class="token operator">=</span><span class="token string">'2009-11-06'</span><span class="token punctuation">)</span> <span class="token comment"># 在2019年11月6日00:00:00执行,字符串</span>
+
+
+sched<span class="token punctuation">.</span>add_job<span class="token punctuation">(</span>my_job<span class="token punctuation">,</span> <span class="token string">'date'</span><span class="token punctuation">)</span>  <span class="token comment"># 立即执行</span>
+sched<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2间隔执行interval"><a class="markdownIt-Anchor" href="#2间隔执行interval"></a> 2.间隔执行：interval</h3>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime
+sched<span class="token punctuation">.</span>add_job<span class="token punctuation">(</span>job_function<span class="token punctuation">,</span> <span class="token string">'interval'</span><span class="token punctuation">,</span> hours<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment"># 每两小时执行一次</span>
+sched<span class="token punctuation">.</span>add_job<span class="token punctuation">(</span>job_function<span class="token punctuation">,</span> <span class="token string">'interval'</span><span class="token punctuation">,</span> hours<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> start_date<span class="token operator">=</span><span class="token string">'2010-10-10 09:30:00'</span><span class="token punctuation">,</span> end_date<span class="token operator">=</span><span class="token string">'2014-06-15 11:00:00'</span><span class="token punctuation">)</span><span class="token comment"># 在2010年10月10日09:30:00 到2014年6月15日的时间内，每两小时执行一次</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>weeks (int)</td>
+<td>number of weeks to wait</td>
+</tr>
+<tr>
+<td>days (int)</td>
+<td>number of days to wait</td>
+</tr>
+<tr>
+<td>hours (int)</td>
+<td>number of hours to wait</td>
+</tr>
+<tr>
+<td>minutes (int)</td>
+<td>number of minutes to wait</td>
+</tr>
+<tr>
+<td>seconds (int)</td>
+<td>number of seconds to wait</td>
+</tr>
+<tr>
+<td>start_date (datetime</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>end_date (datetime</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>timezone (datetime.tzinfo</td>
+<td>str)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3周期执行cron"><a class="markdownIt-Anchor" href="#3周期执行cron"></a> 3.周期执行：cron</h4>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 在6、7、8、11、12月的第三个周五的00:00, 01:00, 02:00和03:00 执行</span>
+sched<span class="token punctuation">.</span>add_job<span class="token punctuation">(</span>job_function<span class="token punctuation">,</span> <span class="token string">'cron'</span><span class="token punctuation">,</span> month<span class="token operator">=</span><span class="token string">'6-8,11-12'</span><span class="token punctuation">,</span> day<span class="token operator">=</span><span class="token string">'3rd fri'</span><span class="token punctuation">,</span> hour<span class="token operator">=</span><span class="token string">'0-3'</span><span class="token punctuation">)</span>
+<span class="token comment"># 在2014年5月30日前的周一到周五的5:30执行</span>
+sched<span class="token punctuation">.</span>add_job<span class="token punctuation">(</span>job_function<span class="token punctuation">,</span> <span class="token string">'cron'</span><span class="token punctuation">,</span> day_of_week<span class="token operator">=</span><span class="token string">'mon-fri'</span><span class="token punctuation">,</span> hour<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span> minute<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">,</span> end_date<span class="token operator">=</span><span class="token string">'2014-05-30'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>year (int</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>month (int</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>day (int</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>week (int</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>day_of_week (int</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>hour (int</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>minute (int</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>second (int</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>start_date (datetime</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>end_date (datetime</td>
+<td>str)</td>
+</tr>
+<tr>
+<td>timezone (datetime.tzinfo</td>
+<td>str)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="executors"><a class="markdownIt-Anchor" href="#executors"></a> executors</h2>
+<p>配置：以进程或线程方式执行任务</p>
+<h3 id="1以线程执行任务"><a class="markdownIt-Anchor" href="#1以线程执行任务"></a> 1.以线程执行任务</h3>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> apscheduler<span class="token punctuation">.</span>executors<span class="token punctuation">.</span>pool <span class="token keyword">import</span> ThreadPoolExecutor
+
+executors <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">'default'</span><span class="token punctuation">:</span> ThreadPoolExecutor<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token comment">#最多20个线程同时执行</span>
+<span class="token punctuation">&#125;</span>
+scheduler <span class="token operator">=</span> BackgroundScheduler<span class="token punctuation">(</span>executors<span class="token operator">=</span>executors<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2以进程方式执行任务"><a class="markdownIt-Anchor" href="#2以进程方式执行任务"></a> 2.以进程方式执行任务</h3>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> apscheduler<span class="token punctuation">.</span>executors<span class="token punctuation">.</span>pool <span class="token keyword">import</span> ProcessPoolExecutor
+executors <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">'default'</span><span class="token punctuation">:</span> ProcessPoolExecutor<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment">#最多3个进程同时执行</span>
+<span class="token punctuation">&#125;</span>
+scheduler <span class="token operator">=</span> BackgroundScheduler<span class="token punctuation">(</span>executors<span class="token operator">=</span>executors<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="job"><a class="markdownIt-Anchor" href="#job"></a> job</h2>
+<h1 id="1通过名称"><a class="markdownIt-Anchor" href="#1通过名称"></a> 1.通过名称</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">scheduler<span class="token punctuation">.</span>add_job<span class="token punctuation">(</span>myfunc<span class="token punctuation">,</span> <span class="token string">'interval'</span><span class="token punctuation">,</span> minutes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token builtin">id</span><span class="token operator">=</span><span class="token string">'my_job_id'</span><span class="token punctuation">)</span>  <span class="token comment"># 添加任务    </span>
+scheduler<span class="token punctuation">.</span>remove_job<span class="token punctuation">(</span><span class="token string">'my_job_id'</span><span class="token punctuation">)</span>  <span class="token comment"># 删除任务</span>
+scheduler<span class="token punctuation">.</span>pause_job<span class="token punctuation">(</span><span class="token string">'my_job_id'</span><span class="token punctuation">)</span>  <span class="token comment"># 暂定任务</span>
+scheduler<span class="token punctuation">.</span>resume_job<span class="token punctuation">(</span><span class="token string">'my_job_id'</span><span class="token punctuation">)</span>  <span class="token comment"># 恢复任务</span>
+scheduler<span class="token punctuation">.</span>reschedule_job<span class="token punctuation">(</span><span class="token string">'my_job_id'</span><span class="token punctuation">,</span> trigger<span class="token operator">=</span><span class="token string">'cron'</span><span class="token punctuation">,</span> minute<span class="token operator">=</span><span class="token string">'*/5'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="2通过对象"><a class="markdownIt-Anchor" href="#2通过对象"></a> 2.通过对象</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">job <span class="token operator">=</span> scheduler<span class="token punctuation">.</span>add_job<span class="token punctuation">(</span>myfunc<span class="token punctuation">,</span> <span class="token string">'interval'</span><span class="token punctuation">,</span> minutes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>  <span class="token comment"># 添加任务</span>
+job<span class="token punctuation">.</span>remove<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 删除任务</span>
+job<span class="token punctuation">.</span>pause<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 暂定任务</span>
+job<span class="token punctuation">.</span>resume<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 恢复任务</span>
+job<span class="token punctuation">.</span>modify<span class="token punctuation">(</span>max_instances<span class="token operator">=</span><span class="token number">6</span><span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">'Alternate name'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="3停止所有任务"><a class="markdownIt-Anchor" href="#3停止所有任务"></a> 3.停止所有任务</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">scheduler<span class="token punctuation">.</span>shutdown<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>参考文献:<br />
+<a target="_blank" rel="noopener" href="http://apscheduler.readthedocs.io/en/latest/py-modindex.html">http://apscheduler.readthedocs.io/en/latest/py-modindex.html</a><br />
+<a target="_blank" rel="noopener" href="https://www.cnblogs.com/luxiaojun/p/6567132.html">https://www.cnblogs.com/luxiaojun/p/6567132.html</a><br />
+<a target="_blank" rel="noopener" href="http://www.jb51.net/article/117989.htm">http://www.jb51.net/article/117989.htm</a><br />
+<a target="_blank" rel="noopener" href="http://jinbitou.net/2016/12/19/2263.html">http://jinbitou.net/2016/12/19/2263.html</a><br />
+<a target="_blank" rel="noopener" href="https://www.cnblogs.com/intval/p/5763929.html">https://www.cnblogs.com/intval/p/5763929.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/python_process_communication/" rel="prev" title="python_process_communication">
+                  <i class="fa fa-chevron-left"></i> python_process_communication
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/python_process/" rel="next" title="python_process">
+                  python_process <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

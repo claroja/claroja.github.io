@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="常规创建多个子进程的方式是通过循环, 但这种方式有个缺点是: 每次都要申请进程的资源, 比如内存空间 import multiprocessing import time from multiprocessing import Process  def func():    print(&quot;线程 %d执行&quot; % multiprocessing.current_process().pid )    t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python_process_pool">
+<meta property="og:url" content="https://claroja.github.io/python_process_pool/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="常规创建多个子进程的方式是通过循环, 但这种方式有个缺点是: 每次都要申请进程的资源, 比如内存空间 import multiprocessing import time from multiprocessing import Process  def func():    print(&quot;线程 %d执行&quot; % multiprocessing.current_process().pid )    t">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-02T00:14:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.462Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/python_process_pool/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/python_process_pool/","path":"python_process_pool/","title":"python_process_pool"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python_process_pool | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#apply%E4%B8%8Eapply_async"><span class="nav-number">1.</span> <span class="nav-text"> apply与apply_async</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map-%E4%B8%8E-map_async"><span class="nav-number">2.</span> <span class="nav-text"> map 与 map_async</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%97%E5%AD%90%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C"><span class="nav-number">3.</span> <span class="nav-text"> 接受子进程的返回结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#apply_async"><span class="nav-number">3.1.</span> <span class="nav-text"> apply_async</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#map"><span class="nav-number">3.2.</span> <span class="nav-text"> map</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text"> 回调函数</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_process_pool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="python_process_pool | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python_process_pool
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>常规创建多个子进程的方式是通过循环, 但这种方式有个缺点是: 每次都要申请进程的资源, 比如内存空间</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> multiprocessing
+<span class="token keyword">import</span> time
+<span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Process
+
+<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+   <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"线程 %d执行"</span> <span class="token operator">%</span> multiprocessing<span class="token punctuation">.</span>current_process<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>pid <span class="token punctuation">)</span>
+   time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+   t_lst <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+   <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+       t <span class="token operator">=</span> Process<span class="token punctuation">(</span>target<span class="token operator">=</span>func<span class="token punctuation">)</span>
+       t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+       t_lst<span class="token punctuation">.</span>append<span class="token punctuation">(</span>t<span class="token punctuation">)</span>
+   <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"父线程结束"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过线程池<code>multiprocessing.Pool</code>, 可以预先创建几个进程, 复用, 省去了反复创建的时间.</p>
+<h2 id="apply与apply_async"><a class="markdownIt-Anchor" href="#apply与apply_async"></a> apply与apply_async</h2>
+<p>apply:同步, 立刻阻塞主进程, 每次从线程池取一个进程<br />
+apply_async: 异步, 不阻塞主进程, 每次从线程池取所有进程</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
+<span class="token keyword">import</span> multiprocessing
+<span class="token keyword">import</span> time
+<span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token keyword">print</span><span class="token punctuation">(</span>multiprocessing<span class="token punctuation">.</span>current_process<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>pid <span class="token punctuation">,</span>p<span class="token punctuation">)</span>
+      time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">"__main__"</span><span class="token punctuation">:</span>
+   pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span>processes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+   <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+       pool<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span>test<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 同步, 每次从池子里取出一个进程, 执行结束后, 再取另一个进程, 不需要阻塞主进程.</span>
+   <span class="token comment">#    pool.apply_async(test, args=(i,)) # 异步, 每次从池子里把可用进程全部取出</span>
+   <span class="token comment"># pool.close() # apply_async时, join前必须先close(停止向池子中继续添加任务)</span>
+   <span class="token comment"># pool.join() # apply_async时, 如果没有join则子进程会立刻结束</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="map-与-map_async"><a class="markdownIt-Anchor" href="#map-与-map_async"></a> map 与 map_async</h2>
+<p>map: 同步, 立刻阻塞主进程, 每次从线程池取所有进程(区别于apply, 每次只取一个进程)<br />
+map_async: 异步, 不阻塞主进程, 每次从线程池取所有进程</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
+<span class="token keyword">import</span> time
+<span class="token keyword">import</span> multiprocessing
+<span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
+   <span class="token keyword">print</span><span class="token punctuation">(</span>multiprocessing<span class="token punctuation">.</span>current_process<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>pid<span class="token punctuation">,</span>i<span class="token punctuation">)</span>
+   time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+   lists <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
+   pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span>processes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+   <span class="token comment"># pool.map(test, lists)</span>
+   pool<span class="token punctuation">.</span>map_async<span class="token punctuation">(</span>target<span class="token operator">=</span>test<span class="token punctuation">,</span> lists<span class="token punctuation">)</span>
+   pool<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+   pool<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="接受子进程的返回结果"><a class="markdownIt-Anchor" href="#接受子进程的返回结果"></a> 接受子进程的返回结果</h2>
+<h3 id="apply_async"><a class="markdownIt-Anchor" href="#apply_async"></a> <code>apply_async</code></h3>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
+<span class="token keyword">import</span> time
+<span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+   time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+   <span class="token keyword">return</span> p<span class="token operator">*</span>p
+<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">"__main__"</span><span class="token punctuation">:</span>
+   res_lst <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+   pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span>processes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+   <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+       res <span class="token operator">=</span> pool<span class="token punctuation">.</span>apply_async<span class="token punctuation">(</span>test<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+       res_lst<span class="token punctuation">.</span>append<span class="token punctuation">(</span>res<span class="token punctuation">)</span>
+   pool<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+   pool<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">[</span><span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> result <span class="token keyword">in</span> res_lst<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="map"><a class="markdownIt-Anchor" href="#map"></a> map</h3>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
+<span class="token keyword">import</span> time
+<span class="token keyword">import</span> multiprocessing
+<span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
+   <span class="token keyword">print</span><span class="token punctuation">(</span>multiprocessing<span class="token punctuation">.</span>current_process<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>pid<span class="token punctuation">,</span>i<span class="token punctuation">)</span>
+   time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+   <span class="token keyword">return</span> i<span class="token operator">*</span>i
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+   lists <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
+   pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span>processes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+   res <span class="token operator">=</span> pool<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>test<span class="token punctuation">,</span> lists<span class="token punctuation">)</span> <span class="token comment"># 列表对应位置</span>
+   <span class="token keyword">print</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="回调函数"><a class="markdownIt-Anchor" href="#回调函数"></a> 回调函数</h2>
+<p>进程池中一个进程处理完任务之后，这进程可以调用一个函数去处理该进程返回的结果，这个函数就是回调函数。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
+<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span>info<span class="token punctuation">)</span><span class="token punctuation">:</span>
+   <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"回调加工subp方法的返回结果:"</span><span class="token operator">+</span><span class="token builtin">str</span><span class="token punctuation">(</span>info<span class="token operator">/</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">subp</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
+   <span class="token keyword">return</span> i <span class="token operator">*</span> i
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+   pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+       res <span class="token operator">=</span> pool<span class="token punctuation">.</span>apply_async<span class="token punctuation">(</span>subp<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> <span class="token punctuation">)</span><span class="token punctuation">,</span> callback<span class="token operator">=</span>func<span class="token punctuation">)</span> <span class="token comment"># subp的返回值作为func的参数传递</span>
+   pool<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+   pool<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/python_process_signal/" rel="prev" title="python_process_signal">
+                  <i class="fa fa-chevron-left"></i> python_process_signal
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/python_process_semaphore/" rel="next" title="python_process_semaphore">
+                  python_process_semaphore <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

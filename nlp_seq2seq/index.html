@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="seq2seq模型也称为Encoder-Decoder模型, 既该模型包含了Encoder(编码器)和Decoder(解码器). 考虑将日语翻译成英语, 如下图:  首先对&quot;吾輩は猫である&quot;这句话进行编码, 然后将编码好的信息传递给解码器, 由解码器生成目标文本.  编码器利用LSTM将时序数据转换为隐状态hhh.隐状态hhh是LSTM层的最后一个隐状态, 其中编码了翻译输入文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nlp_seq2seq">
+<meta property="og:url" content="https://claroja.github.io/nlp_seq2seq/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="seq2seq模型也称为Encoder-Decoder模型, 既该模型包含了Encoder(编码器)和Decoder(解码器). 考虑将日语翻译成英语, 如下图:  首先对&quot;吾輩は猫である&quot;这句话进行编码, 然后将编码好的信息传递给解码器, 由解码器生成目标文本.  编码器利用LSTM将时序数据转换为隐状态hhh.隐状态hhh是LSTM层的最后一个隐状态, 其中编码了翻译输入文">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/1.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/2.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/3.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/4.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/5.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/6.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/7.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/8.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/9.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/10.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/11.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/12.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_seq2seq/13.png">
+<meta property="article:published_time" content="2021-11-26T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.367Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://claroja.github.io/nlp_seq2seq/1.png">
+
+
+<link rel="canonical" href="https://claroja.github.io/nlp_seq2seq/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/nlp_seq2seq/","path":"nlp_seq2seq/","title":"nlp_seq2seq"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>nlp_seq2seq | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text"> 应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#seq2seq%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text"> seq2seq的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#encoder%E7%B1%BB"><span class="nav-number">2.1.</span> <span class="nav-text"> Encoder类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#decoder%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text"> Decoder类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8D%E8%BD%AC%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AEreverse"><span class="nav-number">4.</span> <span class="nav-text"> 反转输入数据(Reverse)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%81%B7%E7%AA%A5peeky"><span class="nav-number">5.</span> <span class="nav-text"> 偷窥(Peeky)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#seq2seq%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text"> seq2seq的应用</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/nlp_seq2seq/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="nlp_seq2seq | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nlp_seq2seq
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-26 22:03:54" itemprop="dateCreated datePublished" datetime="2021-11-26T22:03:54+08:00">2021-11-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>seq2seq模型也称为Encoder-Decoder模型, 既该模型包含了Encoder(编码器)和Decoder(解码器).</p>
+<p>考虑将日语翻译成英语, 如下图:<br />
+<img src="1.png" alt="1.png" /><br />
+首先对&quot;吾輩は猫である&quot;这句话进行编码, 然后将编码好的信息传递给解码器, 由解码器生成目标文本.<br />
+<img src="2.png" alt="2.png" /><br />
+编码器利用LSTM将时序数据转换为隐状态<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>.隐状态<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>是LSTM层的最后一个隐状态, 其中编码了翻译输入文本所需的信息.隐状态<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>是一个固定长度的向量.<br />
+<img src="3.png" alt="3.png" /><br />
+解码器的结构和前面的神经网络相同, 不过也有稍许的差异, 就是LSTM会接收向量<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>. 在前面的神经网络中, LSTM层不接收任何信息(接收初始化为0的向量).</p>
+<p><code>&lt;eos&gt;</code>在编码器中是生成文本的信号, 在解码器中是结束的信号. 在其他文献中也有使用<code>&lt;go&gt;</code>,<code>&lt;start&gt;</code>或者<code>_</code>作为分隔符的例子.<br />
+<img src="4.png" alt="4.png" /><br />
+上图是seq2seq完整的结构, 由两个LSTM层构成. LSTM层的隐状态是编码器和解码器的&quot;桥梁&quot;.</p>
+<h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
+<p>将&quot;加法&quot;视为一个时序转换的问题, 具体来说, 在seq2seq学习后, 在输入&quot;57+5&quot;字符串后, 能正确回答&quot;62&quot;.</p>
+<p>之前的word2vec中, 我们把文本以单词为单位进行分割. 而本节, 我们将不以单词为单位, 而是以字符为单位进行分割, 例如&quot;57+5&quot;会被处理为<code>['5','7','+','5']</code>.</p>
+<p>注意不同的加法问题(“57+5&quot;或&quot;628+521”)及其回答(“62&quot;或者&quot;1149”)的字符数是不相同的. 在使用批数据进行学习时, 需要保证一个批次内各个样本的数形状是一致的. 在处理可变长数据时, 最简单的方法是使用padding.<br />
+<img src="5.png" alt="5.png" /><br />
+本次将处理的问题限制在0~999的两个数的加法. 因此, 包括&quot;+“在内, 输入的最大字符数是7. 另外, 加法的结果最大的是4个字符(最大为&quot;999+999=1998”).</p>
+<p>在输出的开始处加上了分隔符&quot;_&quot;, 使得输出数据的字符统一为5. 这个分隔符作为通知解码器开始生成文本的信号使用. 对于解码器的输出, 可在监督标签中插入表示字符输出结束的分隔符(“<em>63</em>”).</p>
+<p>通过填充对齐数据的大小,可以处理可变长度的时序数据. 但是, 因为使用了填充, seq2seq需要处理原本不存在的填充用字符, 所以如果追求严谨, 使用填充时需要向seq2seq添加一些填充专用的处理, 比如: 在解码器中输入填充时, 不应计算其损失(向Softmax with loss添加mask功能来解决). 再比如: 在编码器中输入填充时, LSTM层应按原样输出上一时刻的输入.</p>
+<h1 id="seq2seq的实现"><a class="markdownIt-Anchor" href="#seq2seq的实现"></a> seq2seq的实现</h1>
+<h2 id="encoder类"><a class="markdownIt-Anchor" href="#encoder类"></a> Encoder类</h2>
+<p>Encoder类接收字符串, 将其转换为向量<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>.</p>
+<p><img src="6.png" alt="6.png" /></p>
+<p>Encoder类由Embedding层和LSTM层组成. Embedding层将字符ID转化为字符向量, 然后将字符向量输入LSTM层.</p>
+<p>LSTM层向右输出隐藏状态和记忆单元, 向上输出隐状态. 这里因为上方不存在层, 所以丢弃LSTM层向上的输出. 在编码器处理完最后一个字符后, 输出LSTM层的隐状态<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>. 然后, 这个隐藏状态<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>被传递给解码器.</p>
+<p>编码器只将LSTM的隐状态传递给解码器. 尽管也可以把LSTM的记忆单元传递给解码器, 但我们通常不太会把LSTM的记忆单元传递给其他层. 这是因为, LSTM的记忆单元被设计为只给自身使用.</p>
+<p>python实现:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Encoder</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> vocab_size<span class="token punctuation">,</span> wordvec_size<span class="token punctuation">,</span> hidden_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        V<span class="token punctuation">,</span> D<span class="token punctuation">,</span> H <span class="token operator">=</span> vocab_size<span class="token punctuation">,</span> wordvec_size<span class="token punctuation">,</span> hidden_size
+        rn <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn
+        embed_W <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>V<span class="token punctuation">,</span> D<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        lstm_Wx <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>D<span class="token punctuation">,</span> <span class="token number">4</span> <span class="token operator">*</span> H<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        lstm_Wh <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>H<span class="token punctuation">,</span> <span class="token number">4</span> <span class="token operator">*</span> H<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        lstm_b <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token number">4</span> <span class="token operator">*</span> H<span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>embed <span class="token operator">=</span> TimeEmbedding<span class="token punctuation">(</span>embed_W<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>lstm <span class="token operator">=</span> TimeLSTM<span class="token punctuation">(</span>lstm_Wx<span class="token punctuation">,</span> lstm_Wh<span class="token punctuation">,</span> lstm_b<span class="token punctuation">,</span> stateful<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>params <span class="token operator">=</span> self<span class="token punctuation">.</span>embed<span class="token punctuation">.</span>params <span class="token operator">+</span> self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>params
+        self<span class="token punctuation">.</span>grads <span class="token operator">=</span> self<span class="token punctuation">.</span>embed<span class="token punctuation">.</span>grads <span class="token operator">+</span> self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>grads
+        self<span class="token punctuation">.</span>hs <span class="token operator">=</span> <span class="token boolean">None</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>初始化方法接收vocab_size, wordvec_size, hidden_size这3个参数.vocab_size是词汇量, 字符的种类. 这里总共有13种字符(数字0~9,“+”,&quot; “,”_&quot;). wordvec_size对应字符向量的维数, hidden_size对应于LSTM层的隐状态的维数.</p>
+<p>这个初始化方法进行权重参数的初始化和层的生成. 最后, 将权重参数和梯度分别归纳在成员变量params和grads的列表中. 因为这次并不保持Time LSTM层的状态, 所以设定stateful=False.</p>
+<p>在之前的语言模型处理的是只有一个长时序数据的问题. 那时我们设定Time LSTM层的参数stateful=True, 以在保持隐状态的同时, 处理长时序数据. 而这次是由多个短时序数据的问题. 因此, 针对每个问题重设LSTM的隐状态(0向量).</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> xs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    xs <span class="token operator">=</span> self<span class="token punctuation">.</span>embed<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>xs<span class="token punctuation">)</span>
+    hs <span class="token operator">=</span> self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>xs<span class="token punctuation">)</span>
+    self<span class="token punctuation">.</span>hs <span class="token operator">=</span> hs
+    <span class="token keyword">return</span> hs<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span>
+<span class="token keyword">def</span> <span class="token function">backward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> dh<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    dhs <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros_like<span class="token punctuation">(</span>self<span class="token punctuation">.</span>hs<span class="token punctuation">)</span>
+    dhs<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">=</span> dh
+    dout <span class="token operator">=</span> self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>dhs<span class="token punctuation">)</span>
+    dout <span class="token operator">=</span> self<span class="token punctuation">.</span>embed<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>dout<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> dout<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>编码器的正向传播调佣Time Embedding层和Time LSTM层的<code>forward()</code>方法, 然后取出Time LSTM层的最后一个时刻的隐状态, 将它作为编码器的<code>forward()</code>方法的输出.</p>
+<p>在编码器的反向传播中, LSTM层的最后一个隐状态的梯度是<code>dh</code>, 这个<code>dh</code>是从解码器传来的梯度. 在反向传播的实现中, 先生成元素为0的张量<code>dhs</code>, 再将<code>dh</code>存放放到这个<code>dhs</code>中的对应位置. 剩下的就是调用Time Embedding层和TIme LSTM层的<code>backward()</code>方法.</p>
+<h1 id="decoder类"><a class="markdownIt-Anchor" href="#decoder类"></a> Decoder类</h1>
+<p>Decoder类接收Encoder类输出的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>, 输出目标字符串.<br />
+<img src="7.png" alt="7.png" /><br />
+这里使用了监督数据&quot;_62&quot;进行学习, 输入的数据是<code>['_','6','2',' ']</code>, 对应的输出是<code>['6','2',' ',' ']</code>.</p>
+<p>在使用RNN进行文本生成时, 学习时和生成时的数据输入方法不同.</p>
+<ul>
+<li>在学习时, 因为已经知道正确解, 所以可以整体地输入时序方向上的数据.</li>
+<li>相对地, 在推理时(生成新字符串时), 则只能输入第1个通知开始的分隔符(本次为&quot;_&quot;).然后, 输出1个字符, 并将这个字符作为下一个输入, 如此重复该过程.</li>
+</ul>
+<p>另外, 因为和生成文本不同, 我们需要确定性的文字, 所以使用argmax, 另外没有使用Softmax层, 而是从Affine层中选择最大的作为最终结果, 如下图:<br />
+<img src="8.png" alt="8.png" /></p>
+<p>在解码器中, 学习和生成时处理Softmax层的方式是不一样的. 因此, Softmax with loss层交给伺候实现的seq2seq类处理, Decoder类仅承担Time Softmax with loss层之前的部分.<br />
+<img src="9.png" alt="9.png" /><br />
+python实现:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Decoder</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> vocab_size<span class="token punctuation">,</span> wordvec_size<span class="token punctuation">,</span> hidden_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        V<span class="token punctuation">,</span> D<span class="token punctuation">,</span> H <span class="token operator">=</span> vocab_size<span class="token punctuation">,</span> wordvec_size<span class="token punctuation">,</span> hidden_size
+        rn <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn
+        embed_W <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>V<span class="token punctuation">,</span> D<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        lstm_Wx <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>D<span class="token punctuation">,</span> <span class="token number">4</span> <span class="token operator">*</span> H<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        lstm_Wh <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>H<span class="token punctuation">,</span> <span class="token number">4</span> <span class="token operator">*</span> H<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        lstm_b <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token number">4</span> <span class="token operator">*</span> H<span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        affine_W <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>H<span class="token punctuation">,</span> V<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        affine_b <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>V<span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>embed <span class="token operator">=</span> TimeEmbedding<span class="token punctuation">(</span>embed_W<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>lstm <span class="token operator">=</span> TimeLSTM<span class="token punctuation">(</span>lstm_Wx<span class="token punctuation">,</span> lstm_Wh<span class="token punctuation">,</span> lstm_b<span class="token punctuation">,</span> stateful<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>affine <span class="token operator">=</span> TimeAffine<span class="token punctuation">(</span>affine_W<span class="token punctuation">,</span> affine_b<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>params<span class="token punctuation">,</span> self<span class="token punctuation">.</span>grads <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> layer <span class="token keyword">in</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>embed<span class="token punctuation">,</span> self<span class="token punctuation">.</span>lstm<span class="token punctuation">,</span> self<span class="token punctuation">.</span>affine<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>params <span class="token operator">+=</span> layer<span class="token punctuation">.</span>params
+            self<span class="token punctuation">.</span>grads <span class="token operator">+=</span> layer<span class="token punctuation">.</span>grads
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> xs<span class="token punctuation">,</span> h<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>set_state<span class="token punctuation">(</span>h<span class="token punctuation">)</span>
+        out <span class="token operator">=</span> self<span class="token punctuation">.</span>embed<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>xs<span class="token punctuation">)</span>
+        out <span class="token operator">=</span> self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>out<span class="token punctuation">)</span>
+        score <span class="token operator">=</span> self<span class="token punctuation">.</span>affine<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>out<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> score
+    <span class="token keyword">def</span> <span class="token function">backward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> dscore<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        dout <span class="token operator">=</span> self<span class="token punctuation">.</span>affine<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>dscore<span class="token punctuation">)</span>
+        dout <span class="token operator">=</span> self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>dout<span class="token punctuation">)</span>
+        dout <span class="token operator">=</span> self<span class="token punctuation">.</span>embed<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>dout<span class="token punctuation">)</span>
+        dh <span class="token operator">=</span> self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>dh
+        <span class="token keyword">return</span> dh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Decoder类在学习时和在生成文本时的行为不同. 上面的<code>forward()</code>方法是假定在学习时使用的.将生成文本的方法实现为<code>generate()</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">generate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> h<span class="token punctuation">,</span> start_id<span class="token punctuation">,</span> sample_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    sampled <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    sample_id <span class="token operator">=</span> start_id
+    self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>set_state<span class="token punctuation">(</span>h<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>sample_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        x <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>sample_id<span class="token punctuation">)</span><span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        out <span class="token operator">=</span> self<span class="token punctuation">.</span>embed<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        out <span class="token operator">=</span> self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>out<span class="token punctuation">)</span>
+        score <span class="token operator">=</span> self<span class="token punctuation">.</span>affine<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>out<span class="token punctuation">)</span>
+        sample_id <span class="token operator">=</span> np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>score<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        sampled<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>sample_id<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> sampled<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>generate()</code>方法有三个参数:</p>
+<ul>
+<li>隐状态h</li>
+<li>最开始输入的字符串ID start_id</li>
+<li>生成的字符数量sample_size<br />
+这里重复如下操作: 输入一个字符, 选择Affine层输出的得分中最大值的字符ID.</li>
+</ul>
+<p>这次问题中, 需要将编码器的输出<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>设定给解码器的Time LSTM.此时, 通过设置TIme LSTM层为stateful, 可以不重设隐藏状态, 在保持编码器的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>同时, 进行正向传播.</p>
+<p>python实现完整的seq2seq:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Seq2seq</span><span class="token punctuation">(</span>BaseModel<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> vocab_size<span class="token punctuation">,</span> wordvec_size<span class="token punctuation">,</span> hidden_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        V<span class="token punctuation">,</span> D<span class="token punctuation">,</span> H <span class="token operator">=</span> vocab_size<span class="token punctuation">,</span> wordvec_size<span class="token punctuation">,</span> hidden_size
+        self<span class="token punctuation">.</span>encoder <span class="token operator">=</span> Encoder<span class="token punctuation">(</span>V<span class="token punctuation">,</span> D<span class="token punctuation">,</span> H<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>decoder <span class="token operator">=</span> Decoder<span class="token punctuation">(</span>V<span class="token punctuation">,</span> D<span class="token punctuation">,</span> H<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>softmax <span class="token operator">=</span> TimeSoftmaxWithLoss<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>params <span class="token operator">=</span> self<span class="token punctuation">.</span>encoder<span class="token punctuation">.</span>params <span class="token operator">+</span> self<span class="token punctuation">.</span>decoder<span class="token punctuation">.</span>params
+        self<span class="token punctuation">.</span>grads <span class="token operator">=</span> self<span class="token punctuation">.</span>encoder<span class="token punctuation">.</span>grads <span class="token operator">+</span> self<span class="token punctuation">.</span>decoder<span class="token punctuation">.</span>grads
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> xs<span class="token punctuation">,</span> ts<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        decoder_xs<span class="token punctuation">,</span> decoder_ts <span class="token operator">=</span> ts<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> ts<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+        h <span class="token operator">=</span> self<span class="token punctuation">.</span>encoder<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>xs<span class="token punctuation">)</span>
+        score <span class="token operator">=</span> self<span class="token punctuation">.</span>decoder<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>decoder_xs<span class="token punctuation">,</span> h<span class="token punctuation">)</span>
+        loss <span class="token operator">=</span> self<span class="token punctuation">.</span>softmax<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>score<span class="token punctuation">,</span> decoder_ts<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> loss
+    <span class="token keyword">def</span> <span class="token function">backward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> dout<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        dout <span class="token operator">=</span> self<span class="token punctuation">.</span>softmax<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>dout<span class="token punctuation">)</span>
+        dh <span class="token operator">=</span> self<span class="token punctuation">.</span>decoder<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>dout<span class="token punctuation">)</span>
+        dout <span class="token operator">=</span> self<span class="token punctuation">.</span>encoder<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>dh<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> dout
+    <span class="token keyword">def</span> <span class="token function">generate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> xs<span class="token punctuation">,</span> start_id<span class="token punctuation">,</span> sample_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        h <span class="token operator">=</span> self<span class="token punctuation">.</span>encoder<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>xs<span class="token punctuation">)</span>
+        sampled <span class="token operator">=</span> self<span class="token punctuation">.</span>decoder<span class="token punctuation">.</span>generate<span class="token punctuation">(</span>h<span class="token punctuation">,</span> start_id<span class="token punctuation">,</span> sample_size<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> sampled<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="反转输入数据reverse"><a class="markdownIt-Anchor" href="#反转输入数据reverse"></a> 反转输入数据(Reverse)</h1>
+<p><img src="10.png" alt="10.png" /><br />
+注意这里是直接反转, 而不是将之前的数据和反转的数据同时作为输入.</p>
+<p>为什么反转数据后, 学习进展快, 精度提高了呢?直观上的解释是:</p>
+<p>吾輩 は 猫 で ある  到 I am a cat 这个问题中:</p>
+<p>“吾輩&quot;和&quot;单词I&quot;之间有转换关系, 此时从&quot;吾輩&quot;到&quot;I&quot;的路程必须经过&quot;は”“猫”“で”“ある&quot;这4个单词的LSTM层. 因此在反向传播时, 梯度从&quot;I&quot;抵达&quot;吾輩”, 也要受到这个距离的影响.</p>
+<p>反转输入语句, 也就是变成&quot;ある で 猫 は  吾輩&quot;, 此时&quot;吾輩&quot;和&quot;单词I&quot;彼此相邻, 梯度可以直接传递, 传播变得更容易. 不过, 单词之间的&quot;平均&quot;距离并不会发生改变.</p>
+<h1 id="偷窥peeky"><a class="markdownIt-Anchor" href="#偷窥peeky"></a> 偷窥(Peeky)</h1>
+<p>当前的seq2seq只有最开始时刻的LSTM层利用了<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span></p>
+<p><img src="11.png" alt="11.png" /></p>
+<p>通过偷窥(Peeky)改进后, 将<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>分配给解码器的其它层.</p>
+<p><img src="12.png" alt="12.png" /></p>
+<p>如上图, 编码器的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span>分配给所有时刻的Affine层和LSTM层. 即是其他层也能&quot;偷窥&quot;到编码信息, 这个改进的解码器称为Peeky Decoder. 称使用了Peeky Decoder的seq2seq为 Peeky seq2seq。</p>
+<p>有两个向量同时被输入到了LSTM层和Affine层, 这实际上表示两个向量的拼贴(concatenate), 如下图:</p>
+<p><img src="13.png" alt="13.png" /></p>
+<p>python实现如下:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">PeekyDecoder</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> vocab_size<span class="token punctuation">,</span> wordvec_size<span class="token punctuation">,</span> hidden_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        V<span class="token punctuation">,</span> D<span class="token punctuation">,</span> H <span class="token operator">=</span> vocab_size<span class="token punctuation">,</span> wordvec_size<span class="token punctuation">,</span> hidden_size
+        rn <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn
+        embed_W <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>V<span class="token punctuation">,</span> D<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        lstm_Wx <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span> H <span class="token operator">+</span> D <span class="token punctuation">,</span> <span class="token number">4</span> <span class="token operator">*</span> H<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>H <span class="token operator">+</span> D<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        lstm_Wh <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>H<span class="token punctuation">,</span> <span class="token number">4</span> <span class="token operator">*</span> H<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        lstm_b <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token number">4</span> <span class="token operator">*</span> H<span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        affine_W <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span> H <span class="token operator">+</span> H <span class="token punctuation">,</span> V<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>H <span class="token operator">+</span> H<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        affine_b <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>V<span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>embed <span class="token operator">=</span> TimeEmbedding<span class="token punctuation">(</span>embed_W<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>lstm <span class="token operator">=</span> TimeLSTM<span class="token punctuation">(</span>lstm_Wx<span class="token punctuation">,</span> lstm_Wh<span class="token punctuation">,</span> lstm_b<span class="token punctuation">,</span> stateful<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>affine <span class="token operator">=</span> TimeAffine<span class="token punctuation">(</span>affine_W<span class="token punctuation">,</span> affine_b<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>params<span class="token punctuation">,</span> self<span class="token punctuation">.</span>grads <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> layer <span class="token keyword">in</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>embed<span class="token punctuation">,</span> self<span class="token punctuation">.</span>lstm<span class="token punctuation">,</span> self<span class="token punctuation">.</span>affine<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>params <span class="token operator">+=</span> layer<span class="token punctuation">.</span>params
+            self<span class="token punctuation">.</span>grads <span class="token operator">+=</span> layer<span class="token punctuation">.</span>grads
+        self<span class="token punctuation">.</span>cache <span class="token operator">=</span> <span class="token boolean">None</span>
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> xs<span class="token punctuation">,</span> h<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        N<span class="token punctuation">,</span> T <span class="token operator">=</span> xs<span class="token punctuation">.</span>shape
+        N<span class="token punctuation">,</span> H <span class="token operator">=</span> h<span class="token punctuation">.</span>shape
+        self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>set_state<span class="token punctuation">(</span>h<span class="token punctuation">)</span>
+        out <span class="token operator">=</span> self<span class="token punctuation">.</span>embed<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>xs<span class="token punctuation">)</span>
+        hs <span class="token operator">=</span> np<span class="token punctuation">.</span>repeat<span class="token punctuation">(</span>h<span class="token punctuation">,</span> T<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reshape<span class="token punctuation">(</span>N<span class="token punctuation">,</span> T<span class="token punctuation">,</span> H<span class="token punctuation">)</span>
+        out <span class="token operator">=</span> np<span class="token punctuation">.</span>concatenate<span class="token punctuation">(</span><span class="token punctuation">(</span>hs<span class="token punctuation">,</span> out<span class="token punctuation">)</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+        out <span class="token operator">=</span> self<span class="token punctuation">.</span>lstm<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>out<span class="token punctuation">)</span>
+        out <span class="token operator">=</span> np<span class="token punctuation">.</span>concatenate<span class="token punctuation">(</span><span class="token punctuation">(</span>hs<span class="token punctuation">,</span> out<span class="token punctuation">)</span><span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+        score <span class="token operator">=</span> self<span class="token punctuation">.</span>affine<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>out<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>cache <span class="token operator">=</span> H
+        <span class="token keyword">return</span> score<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="seq2seq的应用"><a class="markdownIt-Anchor" href="#seq2seq的应用"></a> seq2seq的应用</h1>
+<ul>
+<li>机器翻译：将“一种语言的文本”转换为“另一种语言的文本”</li>
+<li>自动摘要：将“一个长文本”转换为“短摘要”</li>
+<li>问答系统：将“问题”转换为“答案”</li>
+<li>邮件自动回复：将“接收到的邮件文本”转换为“回复文本”</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/nlp_statistic/" rel="prev" title="nlp_statistic">
+                  <i class="fa fa-chevron-left"></i> nlp_statistic
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/nlp_attention/" rel="next" title="nlp_attention">
+                  nlp_attention <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

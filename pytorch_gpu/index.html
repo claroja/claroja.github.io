@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="CPU和GPU交换tensor pytorch中的Tensor和nn.Module(layer,loss function等)分为CPU和GPU两个版本. 都带有.to()和.cuda()方法.  tensor.cuda()会拷贝CPU上的数据到GPU上, 并返回(之前CPU上的tensor不变).  import torch a &#x3D; torch.Tensor(3, 4) b &#x3D; a.cuda(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch_gpu">
+<meta property="og:url" content="https://claroja.github.io/pytorch_gpu/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="CPU和GPU交换tensor pytorch中的Tensor和nn.Module(layer,loss function等)分为CPU和GPU两个版本. 都带有.to()和.cuda()方法.  tensor.cuda()会拷贝CPU上的数据到GPU上, 并返回(之前CPU上的tensor不变).  import torch a &#x3D; torch.Tensor(3, 4) b &#x3D; a.cuda(">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-26T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.478Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/pytorch_gpu/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/pytorch_gpu/","path":"pytorch_gpu/","title":"pytorch_gpu"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>pytorch_gpu | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cpu%E5%92%8Cgpu%E4%BA%A4%E6%8D%A2tensor"><span class="nav-number">1.</span> <span class="nav-text"> CPU和GPU交换tensor</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text"> 转换方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text"> 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8dataloader%E5%8F%96%E5%87%BA%E6%97%B6-%E8%BD%AC%E5%88%B0gpu"><span class="nav-number">3.1.</span> <span class="nav-text"> 在DataLoader取出时, 转到GPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E6%97%B6%E5%B0%B1%E8%BD%AC%E5%88%B0gpu"><span class="nav-number">3.2.</span> <span class="nav-text"> 在创建数据时就转到GPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9Agpu%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97"><span class="nav-number">3.3.</span> <span class="nav-text"> 多GPU并行运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E6%9C%BA%E5%A4%9A%E5%8D%A1"><span class="nav-number">3.3.1.</span> <span class="nav-text"> 单机多卡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E6%9C%BA%E5%A4%9A%E5%8D%A1"><span class="nav-number">3.3.2.</span> <span class="nav-text"> 多机多卡</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sava-%E4%B8%8E-load"><span class="nav-number">3.4.</span> <span class="nav-text"> sava 与 load</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pytorch_gpu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="pytorch_gpu | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pytorch_gpu
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-26 22:03:54" itemprop="dateCreated datePublished" datetime="2021-11-26T22:03:54+08:00">2021-11-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="cpu和gpu交换tensor"><a class="markdownIt-Anchor" href="#cpu和gpu交换tensor"></a> CPU和GPU交换tensor</h1>
+<p><code>pytorch</code>中的<code>Tensor</code>和<code>nn.Module</code>(<code>layer</code>,<code>loss function</code>等)分为<code>CPU</code>和<code>GPU</code>两个版本. 都带有<code>.to()</code>和<code>.cuda()</code>方法.</p>
+<ul>
+<li><code>tensor.cuda()</code>会拷贝<code>CPU</code>上的数据到<code>GPU</code>上, 并返回(之前<code>CPU</code>上的<code>tensor</code>不变).</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch
+a <span class="token operator">=</span> torch<span class="token punctuation">.</span>Tensor<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> a<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>  <span class="token comment"># 将CPU上a的数据拷贝到b上, 此时a在CPU上, b在GPU上</span>
+a<span class="token punctuation">.</span>is_cuda  <span class="token comment"># False</span>
+b<span class="token punctuation">.</span>is_cuda  <span class="token comment"># True</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>nn.module.cuda()</code>则会剪切<code>CPU</code>上的数据到<code>GPU</code>上, 并返回自己(之前<code>CPU</code>上的<code>tensor</code>没了), 所以<code>module = module.cuda()</code>和<code>module.cuda()</code>所起的作用是一致的.</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> torch <span class="token keyword">import</span> nn
+module <span class="token operator">=</span> nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+module<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span><span class="token punctuation">)</span>
+module<span class="token punctuation">.</span>weight<span class="token punctuation">.</span>is_cuda <span class="token comment"># True</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>本质是将<code>nn.Module</code>下所有的<code>parameter</code>转移到<code>GPU</code>(<code>parameter</code>本质是<code>tensor</code>).</p>
+<h1 id="转换方法"><a class="markdownIt-Anchor" href="#转换方法"></a> 转换方法</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">a <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+
+t1 <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+t1 <span class="token operator">=</span> t3<span class="token punctuation">.</span>to<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">'cuda'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+t2 <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+t2 <span class="token operator">=</span> t2<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span><span class="token punctuation">)</span> 
+
+t3 <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>a<span class="token punctuation">,</span> device<span class="token operator">=</span>torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">'cuda'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>t1和t2 都是在CPU创建tensor, 然后将它移动到GPU<br />
+<code>.to(device)</code>使用起来更方便, 因为可以在开头设定好</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">device <span class="token operator">=</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">"cuda:&lt;id>"</span><span class="token punctuation">)</span> <span class="token keyword">if</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>is_available<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">else</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">"cpu"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>然后再任何地方使用, <code>.cuda(&lt;id&gt;)</code>则需要每次都进行验证, 比较麻烦</p>
+<ul>
+<li>t3是直接在GPU上创建tensor, 所以更高效</li>
+</ul>
+<p>如果想把GPU的tensor转换成Numpy的array时, 需要先将tensor转换到CPU中区, 因为Numpy是CPU-only. 另外需要根据是不是需要求导(<code>requires_grad=True</code>), 而选择使用<code>detach()</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">x  <span class="token operator">=</span> torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> device<span class="token operator">=</span><span class="token string">'cuda'</span><span class="token punctuation">)</span>
+x_ <span class="token operator">=</span> x<span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+y  <span class="token operator">=</span> torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> requires_grad<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> device<span class="token operator">=</span><span class="token string">'cuda'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
+y_ <span class="token operator">=</span> y<span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>detach<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
+<h2 id="在dataloader取出时-转到gpu"><a class="markdownIt-Anchor" href="#在dataloader取出时-转到gpu"></a> 在<code>DataLoader</code>取出时, 转到<code>GPU</code></h2>
+<p>这个是主流的方法</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data
+Data <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+Label <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+torch_dataset <span class="token operator">=</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data<span class="token punctuation">.</span>TensorDataset<span class="token punctuation">(</span>Data<span class="token punctuation">,</span> Label<span class="token punctuation">)</span>
+torch_dataloader <span class="token operator">=</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data<span class="token punctuation">.</span>DataLoader<span class="token punctuation">(</span>
+    dataset<span class="token operator">=</span>torch_dataset<span class="token punctuation">,</span>
+    batch_size<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+    shuffle<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    num_workers<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+    pin_memory<span class="token operator">=</span><span class="token boolean">True</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> step<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>torch_dataloader<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span>to<span class="token punctuation">(</span><span class="token string">"cuda"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>y<span class="token punctuation">.</span>to<span class="token punctuation">(</span><span class="token string">"cuda"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="在创建数据时就转到gpu"><a class="markdownIt-Anchor" href="#在创建数据时就转到gpu"></a> 在创建数据时就转到<code>GPU</code></h2>
+<p>在这种情况下, <code>DataLoader</code>不能开启多进程, 不建议使用, 因为将batch传给GPU并不是<code>DataLoader</code>的作用.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data
+
+Data <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+Label <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+Data <span class="token operator">=</span> Data<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Label <span class="token operator">=</span> Label<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+torch_dataset <span class="token operator">=</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data<span class="token punctuation">.</span>TensorDataset<span class="token punctuation">(</span>Data<span class="token punctuation">,</span> Label<span class="token punctuation">)</span>
+torch_dataloader <span class="token operator">=</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data<span class="token punctuation">.</span>DataLoader<span class="token punctuation">(</span>
+    dataset<span class="token operator">=</span>torch_dataset<span class="token punctuation">,</span>
+    batch_size<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+    shuffle<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    num_workers<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">for</span> step<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>torch_dataloader<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="多gpu并行运算"><a class="markdownIt-Anchor" href="#多gpu并行运算"></a> 多GPU并行运算</h2>
+<h3 id="单机多卡"><a class="markdownIt-Anchor" href="#单机多卡"></a> 单机多卡</h3>
+<p>比如有4块GPU, 其中一个是主GPU, 当其拿到数据后, 假设为16个样本. 那么它会把数据分成4份, 16/4=4, 自己留一份, 其余3分分发到另外3块GPU上进行计算. 等其他GPU计算完成后, 主GPU把结果回收并进行整合.<br />
+pytorch中主要通过<code>torch.nn.DataParallel(module, device_ids=None, output_device=None, dim=0)</code>模块, 实现并行计算.</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>module: 需要并行计算的模型</td>
+<td></td>
+</tr>
+<tr>
+<td>device_ids: 可使用的GPU们</td>
+<td></td>
+</tr>
+<tr>
+<td>output_device: 结果输出设备, 默认就是在device_ids[0]，也就是第一块卡上, 因此它的显存会占用的多一些</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">if</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>device_count<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">:</span><span class="token comment">#判断是不是有多个GPU</span>
+    model <span class="token operator">=</span> nn<span class="token punctuation">.</span>DataParallel<span class="token punctuation">(</span>model<span class="token punctuation">,</span>device_ids<span class="token operator">=</span><span class="token builtin">range</span><span class="token punctuation">(</span>torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>device_count<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="多机多卡"><a class="markdownIt-Anchor" href="#多机多卡"></a> 多机多卡</h3>
+<h2 id="sava-与-load"><a class="markdownIt-Anchor" href="#sava-与-load"></a> sava 与 load</h2>
+<ol>
+<li>GPU上保存, CPU上加载</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model<span class="token punctuation">.</span>to<span class="token punctuation">(</span><span class="token string">"cuda:0"</span><span class="token punctuation">)</span>
+torch<span class="token punctuation">.</span>save<span class="token punctuation">(</span>model<span class="token punctuation">.</span>state_dict<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> PATH<span class="token punctuation">)</span> <span class="token comment"># 保存</span>
+model<span class="token punctuation">.</span>load_state_dict<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>load<span class="token punctuation">(</span>PATH<span class="token punctuation">,</span> map_location<span class="token operator">=</span><span class="token string">"cpu"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>CPU上保存, GPU上加载</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model<span class="token punctuation">.</span>to<span class="token punctuation">(</span><span class="token string">"cpu"</span><span class="token punctuation">)</span>
+torch<span class="token punctuation">.</span>save<span class="token punctuation">(</span>model<span class="token punctuation">.</span>state_dict<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> PATH<span class="token punctuation">)</span> <span class="token comment"># 保存</span>
+model<span class="token punctuation">.</span>load_state_dict<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>load<span class="token punctuation">(</span>PATH<span class="token punctuation">,</span> map_location<span class="token operator">=</span><span class="token string">"cuda:0"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol start="3">
+<li>多GPU<br />
+使用上述方法会报错:<code>KeyError: ‘unexpected key “module.conv1.weight” in state_dict’</code>, 原因是使用多GPU时, 会使用<code>torch.nn.DataParallel</code>, 所以checkpoint中有module字样<br />
+解决方法1:</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 保存checkpoint时不保存module</span>
+torch<span class="token punctuation">.</span>save<span class="token punctuation">(</span>model<span class="token punctuation">.</span>module<span class="token punctuation">.</span>state_dict<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> PATH<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>解决方法2:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 创建一个不包含`module.`的新OrderedDict</span>
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> OrderedDict
+new_state_dict <span class="token operator">=</span> OrderedDict<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> state_dict<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    name <span class="token operator">=</span> k<span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token comment"># 去掉 `module.`</span>
+    new_state_dict<span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token operator">=</span> v
+<span class="token comment"># 加载参数</span>
+model<span class="token punctuation">.</span>load_state_dict<span class="token punctuation">(</span>new_state_dict<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/53331247/pytorch-0-4-0-there-are-three-ways-to-create-tensors-on-cuda-device-is-there-s">https://stackoverflow.com/questions/53331247/pytorch-0-4-0-there-are-three-ways-to-create-tensors-on-cuda-device-is-there-s</a><br />
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39533659/article/details/111173642">https://blog.csdn.net/weixin_39533659/article/details/111173642</a><br />
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/joyce_peng/article/details/104133594">https://blog.csdn.net/joyce_peng/article/details/104133594</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/pytorch_dataset/" rel="prev" title="pytorch_dataset">
+                  <i class="fa fa-chevron-left"></i> pytorch_dataset
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/pytorch_dataloader/" rel="next" title="pytorch_dataloader">
+                  pytorch_dataloader <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

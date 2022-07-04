@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概念理解 一个饼干店老板声称他家的饼干一袋的平均重量($$\mu$$)是500g. 由于是流水线生产, 所以袋装饼干的normally distributed的standard deviation($$\sigma$$)为30g. 所以可得如下的分布:  这个店的老板会不会撒谎?我们如何确定平均重量是不是500g呢?这就需要“hypothesis testing”出场了.  null hypot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hypothesis_test">
+<meta property="og:url" content="https://claroja.github.io/hypothesis_test/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="概念理解 一个饼干店老板声称他家的饼干一袋的平均重量($$\mu$$)是500g. 由于是流水线生产, 所以袋装饼干的normally distributed的standard deviation($$\sigma$$)为30g. 所以可得如下的分布:  这个店的老板会不会撒谎?我们如何确定平均重量是不是500g呢?这就需要“hypothesis testing”出场了.  null hypot">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/1.png">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/2.png">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/3.png">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/4.png">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/5.png">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/6.png">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/7.png">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/8.png">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/9.png">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/10.png">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/11.png">
+<meta property="og:image" content="https://claroja.github.io/hypothesis_test/12.png">
+<meta property="article:published_time" content="2021-10-25T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.280Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://claroja.github.io/hypothesis_test/1.png">
+
+
+<link rel="canonical" href="https://claroja.github.io/hypothesis_test/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/hypothesis_test/","path":"hypothesis_test/","title":"hypothesis_test"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>hypothesis_test | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5%E7%90%86%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text"> 概念理解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#null-hypothesis-alternative-hypothesis"><span class="nav-number">1.1.</span> <span class="nav-text"> null hypothesis &amp; alternative hypothesis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#inferential-statistics"><span class="nav-number">1.2.</span> <span class="nav-text"> Inferential Statistics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sampling-distribution-review"><span class="nav-number">1.3.</span> <span class="nav-text"> Sampling Distribution Review</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#testing-hypothesis-statements"><span class="nav-number">1.4.</span> <span class="nav-text"> Testing Hypothesis Statements</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#normality-tests"><span class="nav-number">2.</span> <span class="nav-text"> Normality Tests</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#shapiro-wilk-test"><span class="nav-number">2.1.</span> <span class="nav-text"> Shapiro-Wilk Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions"><span class="nav-number">2.1.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation"><span class="nav-number">2.1.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dagostinos-k2-test"><span class="nav-number">2.2.</span> <span class="nav-text"> D’Agostino’s K^2 Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-2"><span class="nav-number">2.2.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-2"><span class="nav-number">2.2.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#anderson-darling-test"><span class="nav-number">2.3.</span> <span class="nav-text"> Anderson-Darling Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-3"><span class="nav-number">2.3.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-3"><span class="nav-number">2.3.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#correlation-tests"><span class="nav-number">3.</span> <span class="nav-text"> Correlation Tests</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pearsons-correlation-coefficient"><span class="nav-number">3.1.</span> <span class="nav-text"> Pearson’s Correlation Coefficient</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-4"><span class="nav-number">3.1.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-4"><span class="nav-number">3.1.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spearmans-rank-correlation"><span class="nav-number">3.2.</span> <span class="nav-text"> Spearman’s Rank Correlation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-5"><span class="nav-number">3.2.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-5"><span class="nav-number">3.2.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kendalls-rank-correlation"><span class="nav-number">3.3.</span> <span class="nav-text"> Kendall’s Rank Correlation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-6"><span class="nav-number">3.3.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-6"><span class="nav-number">3.3.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chi-squared-test"><span class="nav-number">3.4.</span> <span class="nav-text"> Chi-Squared Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-7"><span class="nav-number">3.4.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-7"><span class="nav-number">3.4.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#stationary-tests"><span class="nav-number">4.</span> <span class="nav-text"> Stationary Tests</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#augmented-dickey-fuller-unit-root-test"><span class="nav-number">4.1.</span> <span class="nav-text"> Augmented Dickey-Fuller Unit Root Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-8"><span class="nav-number">4.1.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-8"><span class="nav-number">4.1.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kwiatkowski-phillips-schmidt-shin"><span class="nav-number">4.2.</span> <span class="nav-text"> Kwiatkowski-Phillips-Schmidt-Shin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-9"><span class="nav-number">4.2.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-9"><span class="nav-number">4.2.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#parametric-statistical-hypothesis-tests"><span class="nav-number">5.</span> <span class="nav-text"> Parametric Statistical Hypothesis Tests</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#students-t-test"><span class="nav-number">5.1.</span> <span class="nav-text"> Student’s t-test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-10"><span class="nav-number">5.1.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-10"><span class="nav-number">5.1.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#paired-students-t-test"><span class="nav-number">5.2.</span> <span class="nav-text"> Paired Student’s t-test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-11"><span class="nav-number">5.2.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-11"><span class="nav-number">5.2.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#analysis-of-variance-test-anova"><span class="nav-number">5.3.</span> <span class="nav-text"> Analysis of Variance Test (ANOVA)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-12"><span class="nav-number">5.3.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-12"><span class="nav-number">5.3.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#repeated-measures-anova-test"><span class="nav-number">5.4.</span> <span class="nav-text"> Repeated Measures ANOVA Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-13"><span class="nav-number">5.4.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-13"><span class="nav-number">5.4.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nonparametric-statistical-hypothesis-tests"><span class="nav-number">6.</span> <span class="nav-text"> Nonparametric Statistical Hypothesis Tests</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mann-whitney-u-test"><span class="nav-number">6.1.</span> <span class="nav-text"> Mann-Whitney U Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-14"><span class="nav-number">6.1.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-14"><span class="nav-number">6.1.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wilcoxon-signed-rank-test"><span class="nav-number">6.2.</span> <span class="nav-text"> Wilcoxon Signed-Rank Test</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#assumptions-15"><span class="nav-number">6.3.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#interpretation-15"><span class="nav-number">6.4.</span> <span class="nav-text"> Interpretation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kruskal-wallis-h-test"><span class="nav-number">6.5.</span> <span class="nav-text"> Kruskal-Wallis H Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-16"><span class="nav-number">6.5.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-16"><span class="nav-number">6.5.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#friedman-test"><span class="nav-number">6.6.</span> <span class="nav-text"> Friedman Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#assumptions-17"><span class="nav-number">6.6.1.</span> <span class="nav-text"> Assumptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interpretation-17"><span class="nav-number">6.6.2.</span> <span class="nav-text"> Interpretation</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/hypothesis_test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="hypothesis_test | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hypothesis_test
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 22:03:54" itemprop="dateCreated datePublished" datetime="2021-10-25T22:03:54+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="概念理解"><a class="markdownIt-Anchor" href="#概念理解"></a> 概念理解</h1>
+<p>一个饼干店老板声称他家的饼干一袋的平均重量($$\mu$$)是500g. 由于是流水线生产, 所以袋装饼干的normally distributed的standard deviation($$\sigma$$)为30g.<br />
+所以可得如下的分布:<br />
+<img src="1.png" alt="1.png" /></p>
+<p>这个店的老板会不会撒谎?我们如何确定平均重量是不是500g呢?这就需要“hypothesis testing”出场了.</p>
+<h2 id="null-hypothesis-alternative-hypothesis"><a class="markdownIt-Anchor" href="#null-hypothesis-alternative-hypothesis"></a> null hypothesis &amp; alternative hypothesis</h2>
+<ol>
+<li>我们设置null hypothesis(H0)和alternative hypothesis(H1). 作为一个理性的人, 我们不能在没有证据的情况下怀疑别人.所以我们假设店老板是诚实的(H0), 如果我们想检查他的饼干是不是少于500g, 我们需要搜集证据来支持我们的猜测(H1):<br />
+H0: 每袋的重量$$\mu$$=500g<br />
+H1: 每袋的重量$$\mu$$&lt;500g</li>
+</ol>
+<p><img src="2.png" alt="2.png" /><br />
+由于我们不知道population distribution, 所以使用虚线来表示. 如果店老板是诚实的, 那么分布就应该是左边的图片. 如果是小于500g, 则是右边的图片任何一个.</p>
+<h2 id="inferential-statistics"><a class="markdownIt-Anchor" href="#inferential-statistics"></a> Inferential Statistics</h2>
+<p>我们无法得到所有饼干的重量, 既无法估算population distribution. 所以我们可以通过抽样来计算parameters(attributes of the population).</p>
+<ol>
+<li>首先我们从population中抽样得到sample data</li>
+<li>然后计算attributes of the sample, 进一步推算attributes of the population</li>
+</ol>
+<p>Examples of parameters and statistics:</p>
+<ul>
+<li>parameters: population mean (μ), population standard deviation (σ) …</li>
+<li>statistics: sample mean (x̄), sample standard deviation (s) …</li>
+</ul>
+<p><img src="3.png" alt="3.png" /></p>
+<p>我们关心的不是单个的未知的parameter, 而是“whether we can reject the null hypothesis?”<br />
+同样的, 我们也是先计算样本数据的统计量, 来回答这个问题.我们称之为Test Statistics</p>
+<p><img src="4.png" alt="4.png" /></p>
+<h2 id="sampling-distribution-review"><a class="markdownIt-Anchor" href="#sampling-distribution-review"></a> Sampling Distribution Review</h2>
+<p>如果我们多次从population中抽样, 我们可以获得多个sample datasets. 我们计算每个sample dataset的mean (x̄),  通过这些mean可以画出distribution of sample mean (x̄).由于这个distribution, 是由 sample statistic得来, 所以我们称之为: Sampling Distribution of sample mean (x̄).</p>
+<p><img src="5.png" alt="5.png" /><br />
+使用brown color来代表sampling distribution curve</p>
+<h2 id="testing-hypothesis-statements"><a class="markdownIt-Anchor" href="#testing-hypothesis-statements"></a> Testing Hypothesis Statements</h2>
+<ol>
+<li>获得样本数据集, 我们获得25袋饼干, 计算其mean weight (x̄)=485g</li>
+<li>假设null hypothesis is true, 既一袋饼干的population distribution为500g<br />
+根据Central Limit Theorem, 我们可以得到sample mean (x̄)的sampling distribution.</li>
+</ol>
+<p><img src="6.png" alt="6.png" /></p>
+<p>如果, 我们假设null hypothesis is true, 则我们sample mean相对于expected mean value (500g)低了15g(485-500=-15).<br />
+<img src="7.png" alt="7.png" /></p>
+<p>但是&quot;15g&quot;只是一个数字, 并不能作为解释. 另外我们想计算曲线下方的概率, 但是直接计算会非常的低效, 因为不通的曲线对应了不通的值.<br />
+所以我们要对其进行standardize, 这样distribution的mean为0.</p>
+<p><img src="8.png" alt="8.png" /></p>
+<p>如果Hypothesis H0成立, 则population mean =500g, sample mean = 500g.<br />
+在这次抽样中, 我们的sample mean = 485g, 计算后的test statistic = -2.5. 表示sample data有2.5个standard errors相对于expected value.</p>
+<p>不通的场景(categorical? quantitative?)对应了不通的test statistic, 其他还有z-test, t-test, chi-square test. 在这个场景中, 由于我们感兴趣的是mean value, 而且假设population data是已知tandard deviation (σ)的normally distributed. 根据这些前提, 我们选择了z-test.</p>
+<p>那么在null hypothesis为真时, 获得这样的样本数据集的概率是多少呢?<br />
+sampling distribution curve下两点之间的概率是两点之间的面积.这个值就是p-value<br />
+<img src="9.png" alt="9.png" /></p>
+<p>通过查询z-table, 得到p-value为0.0062<br />
+<img src="10.png" alt="10.png" /><br />
+这是一个非常小的值, 它意味着在 null hypothesis 为真的条件下(population mean really equals 500g), 如果我们从population distribution中采样1000次, 有6.2次的机会获得这个样本集合(sample mean = 485g), 或者sample mean &lt; 485g.</p>
+<p>换句话说:<br />
+如果我们获得一个mean=485g的采样数据集, 他们的解释有两个:</p>
+<ol>
+<li>population mean=500g(H0是正确的), 我们很&quot;幸运&quot;的获得了这个rare采样的数据集(P=0.0062)</li>
+<li>H0是错误的, 这个mean=485g的采样数据集可能来自于其他的population distribution, 当然很可能是来自于mean = 485g 的population distribution.<br />
+<img src="11.png" alt="11.png" /></li>
+</ol>
+<p>至于是使用第一个解释还是第二个解释,需要引入新的概念-significant level (α).这个值是再假设检验之前设置的, 它就是评判p-value的阈值, This criterion is:</p>
+<ol>
+<li>if p-value ≤ significant level (α), we reject the null hypothesis (H0).</li>
+<li>if p-value &gt; significant level (α), we fail to reject the null hypothesis (H0).</li>
+</ol>
+<p>我们设置significant level为0.05.如果p-value在红色区域, 我们就拒绝H0的假设;如果p-value大于红色区域, 我们就接收H0的假设.<br />
+significant level (α)还indicates,maximum risk we are acceptable for type I error (type I error means we reject H0 when H0 is actually true).</p>
+<p><img src="12.png" alt="12.png" /><br />
+在这个场景中, 我们的p-value=0.0062, 小于significant level (α)=0.05. 所以我们就拒绝了假设H0, 而接受了H1.</p>
+<h1 id="normality-tests"><a class="markdownIt-Anchor" href="#normality-tests"></a> Normality Tests</h1>
+<p>用来检测数据集是否是Gaussian distribution.</p>
+<h2 id="shapiro-wilk-test"><a class="markdownIt-Anchor" href="#shapiro-wilk-test"></a> Shapiro-Wilk Test</h2>
+<p>数据集是否是Gaussian distribution.</p>
+<h3 id="assumptions"><a class="markdownIt-Anchor" href="#assumptions"></a> Assumptions</h3>
+<p>independent and identically distributed (iid).独立同分布</p>
+<h3 id="interpretation"><a class="markdownIt-Anchor" href="#interpretation"></a> Interpretation</h3>
+<p>H0: 数据集是Gaussian distribution.<br />
+H1: 数据集不是Gaussian distribution.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> shapiro
+data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> shapiro<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably Gaussian'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably not Gaussian'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="dagostinos-k2-test"><a class="markdownIt-Anchor" href="#dagostinos-k2-test"></a> D’Agostino’s K^2 Test</h2>
+<h3 id="assumptions-2"><a class="markdownIt-Anchor" href="#assumptions-2"></a> Assumptions</h3>
+<p>independent and identically distributed (iid).独立同分布</p>
+<h3 id="interpretation-2"><a class="markdownIt-Anchor" href="#interpretation-2"></a> Interpretation</h3>
+<p>H0: 数据集是Gaussian distribution.<br />
+H1: 数据集不是Gaussian distribution.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> normaltest
+data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> normaltest<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably Gaussian'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably not Gaussian'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="anderson-darling-test"><a class="markdownIt-Anchor" href="#anderson-darling-test"></a> Anderson-Darling Test</h2>
+<h3 id="assumptions-3"><a class="markdownIt-Anchor" href="#assumptions-3"></a> Assumptions</h3>
+<p>independent and identically distributed (iid).独立同分布</p>
+<h3 id="interpretation-3"><a class="markdownIt-Anchor" href="#interpretation-3"></a> Interpretation</h3>
+<p>H0: 数据集是Gaussian distribution.<br />
+H1: 数据集不是Gaussian distribution.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> anderson
+data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+result <span class="token operator">=</span> anderson<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>result<span class="token punctuation">.</span>statistic<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>critical_values<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+	sl<span class="token punctuation">,</span> cv <span class="token operator">=</span> result<span class="token punctuation">.</span>significance_level<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> result<span class="token punctuation">.</span>critical_values<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+	<span class="token keyword">if</span> result<span class="token punctuation">.</span>statistic <span class="token operator">&lt;</span> cv<span class="token punctuation">:</span>
+		<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably Gaussian at the %.1f%% level'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>sl<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token keyword">else</span><span class="token punctuation">:</span>
+		<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably not Gaussian at the %.1f%% level'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>sl<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="correlation-tests"><a class="markdownIt-Anchor" href="#correlation-tests"></a> Correlation Tests</h1>
+<p>测试两个样本集是否是相关的(related)</p>
+<h2 id="pearsons-correlation-coefficient"><a class="markdownIt-Anchor" href="#pearsons-correlation-coefficient"></a> Pearson’s Correlation Coefficient</h2>
+<p>测试两个样本集是否是线性关系(linear relationship)</p>
+<h3 id="assumptions-4"><a class="markdownIt-Anchor" href="#assumptions-4"></a> Assumptions</h3>
+<ol>
+<li>independent and identically distributed (iid). 独立同分布</li>
+<li>normally distributed. 正太分布</li>
+<li>same variance. 相同的方差</li>
+</ol>
+<h3 id="interpretation-4"><a class="markdownIt-Anchor" href="#interpretation-4"></a> Interpretation</h3>
+<p>H0: the two samples are independent.<br />
+H1: there is a dependency between the samples.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> pearsonr
+data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+data2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.353</span><span class="token punctuation">,</span> <span class="token number">3.517</span><span class="token punctuation">,</span> <span class="token number">0.125</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">7.545</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.555</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.536</span><span class="token punctuation">,</span> <span class="token number">3.350</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.578</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">3.537</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.579</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> pearsonr<span class="token punctuation">(</span>data1<span class="token punctuation">,</span> data2<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably independent'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably dependent'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="spearmans-rank-correlation"><a class="markdownIt-Anchor" href="#spearmans-rank-correlation"></a> Spearman’s Rank Correlation</h2>
+<p>测试两个样本集是否是monotonic relationship.</p>
+<h3 id="assumptions-5"><a class="markdownIt-Anchor" href="#assumptions-5"></a> Assumptions</h3>
+<ol>
+<li>independent and identically distributed (iid). 独立同分布</li>
+<li>sample can be ranked. 样本可排序</li>
+</ol>
+<h3 id="interpretation-5"><a class="markdownIt-Anchor" href="#interpretation-5"></a> Interpretation</h3>
+<p>H0: the two samples are independent.<br />
+H1: there is a dependency between the samples.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> spearmanr
+data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+data2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.353</span><span class="token punctuation">,</span> <span class="token number">3.517</span><span class="token punctuation">,</span> <span class="token number">0.125</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">7.545</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.555</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.536</span><span class="token punctuation">,</span> <span class="token number">3.350</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.578</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">3.537</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.579</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> spearmanr<span class="token punctuation">(</span>data1<span class="token punctuation">,</span> data2<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably independent'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably dependent'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="kendalls-rank-correlation"><a class="markdownIt-Anchor" href="#kendalls-rank-correlation"></a> Kendall’s Rank Correlation</h2>
+<p>测试两个样本集是否是monotonic relationship.</p>
+<h3 id="assumptions-6"><a class="markdownIt-Anchor" href="#assumptions-6"></a> Assumptions</h3>
+<ol>
+<li>independent and identically distributed (iid). 独立同分布</li>
+<li>sample can be ranked. 样本可排序</li>
+</ol>
+<h3 id="interpretation-6"><a class="markdownIt-Anchor" href="#interpretation-6"></a> Interpretation</h3>
+<p>H0: the two samples are independent.<br />
+H1: there is a dependency between the samples.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> kendalltau
+data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+data2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.353</span><span class="token punctuation">,</span> <span class="token number">3.517</span><span class="token punctuation">,</span> <span class="token number">0.125</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">7.545</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.555</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.536</span><span class="token punctuation">,</span> <span class="token number">3.350</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.578</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">3.537</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.579</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> kendalltau<span class="token punctuation">(</span>data1<span class="token punctuation">,</span> data2<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably independent'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably dependent'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="chi-squared-test"><a class="markdownIt-Anchor" href="#chi-squared-test"></a> Chi-Squared Test</h2>
+<p>测试两个categorical variables是related or independent</p>
+<h3 id="assumptions-7"><a class="markdownIt-Anchor" href="#assumptions-7"></a> Assumptions</h3>
+<p>Observations used in the calculation of the contingency table are independent.<br />
+25 or more examples in each cell of the contingency table.</p>
+<h3 id="interpretation-7"><a class="markdownIt-Anchor" href="#interpretation-7"></a> Interpretation</h3>
+<p>H0: the two samples are independent.<br />
+H1: there is a dependency between the samples.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Example of the Chi-Squared Test</span>
+<span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> chi2_contingency
+table <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">,</span>  <span class="token number">9</span><span class="token punctuation">,</span>  <span class="token number">17</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p<span class="token punctuation">,</span> dof<span class="token punctuation">,</span> expected <span class="token operator">=</span> chi2_contingency<span class="token punctuation">(</span>table<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably independent'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably dependent'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="stationary-tests"><a class="markdownIt-Anchor" href="#stationary-tests"></a> Stationary Tests</h1>
+<p>测试时间序列是stationary or not.</p>
+<h2 id="augmented-dickey-fuller-unit-root-test"><a class="markdownIt-Anchor" href="#augmented-dickey-fuller-unit-root-test"></a> Augmented Dickey-Fuller Unit Root Test</h2>
+<p>测试一个time series是否有一个unit root.例如是否有某个趋势,更简单点是否是autoregressive.</p>
+<h3 id="assumptions-8"><a class="markdownIt-Anchor" href="#assumptions-8"></a> Assumptions</h3>
+<p>Observations in are temporally ordered.</p>
+<h3 id="interpretation-8"><a class="markdownIt-Anchor" href="#interpretation-8"></a> Interpretation</h3>
+<p>H0: a unit root is present (series is non-stationary).<br />
+H1: a unit root is not present (series is stationary).</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> statsmodels<span class="token punctuation">.</span>tsa<span class="token punctuation">.</span>stattools <span class="token keyword">import</span> adfuller
+data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p<span class="token punctuation">,</span> lags<span class="token punctuation">,</span> obs<span class="token punctuation">,</span> crit<span class="token punctuation">,</span> t <span class="token operator">=</span> adfuller<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably not Stationary'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably Stationary'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="kwiatkowski-phillips-schmidt-shin"><a class="markdownIt-Anchor" href="#kwiatkowski-phillips-schmidt-shin"></a> Kwiatkowski-Phillips-Schmidt-Shin</h2>
+<p>测试时间序列是stationary or not.</p>
+<h3 id="assumptions-9"><a class="markdownIt-Anchor" href="#assumptions-9"></a> Assumptions</h3>
+<p>Observations in are temporally ordered.</p>
+<h3 id="interpretation-9"><a class="markdownIt-Anchor" href="#interpretation-9"></a> Interpretation</h3>
+<p>H0: a unit root is present (series is non-stationary).<br />
+H1: a unit root is not present (series is stationary).</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> statsmodels<span class="token punctuation">.</span>tsa<span class="token punctuation">.</span>stattools <span class="token keyword">import</span> kpss
+data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p<span class="token punctuation">,</span> lags<span class="token punctuation">,</span> crit <span class="token operator">=</span> kpss<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably not Stationary'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably Stationary'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="parametric-statistical-hypothesis-tests"><a class="markdownIt-Anchor" href="#parametric-statistical-hypothesis-tests"></a> Parametric Statistical Hypothesis Tests</h1>
+<p>用来比较两个数据样本的statistical tests</p>
+<h2 id="students-t-test"><a class="markdownIt-Anchor" href="#students-t-test"></a> Student’s t-test</h2>
+<p>比较两个独立的样本集的均值是显著不同的</p>
+<h3 id="assumptions-10"><a class="markdownIt-Anchor" href="#assumptions-10"></a> Assumptions</h3>
+<ol>
+<li>independent and identically distributed (iid). 独立同分布</li>
+<li>normally distributed. 正态分布</li>
+<li>same variance. 相同的方差</li>
+</ol>
+<h3 id="interpretation-10"><a class="markdownIt-Anchor" href="#interpretation-10"></a> Interpretation</h3>
+<p>H0: the means of the samples are equal.<br />
+H1: the means of the samples are unequal.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> ttest_ind
+data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+data2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1.142</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.432</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.938</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.729</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.846</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.157</span><span class="token punctuation">,</span> <span class="token number">0.500</span><span class="token punctuation">,</span> <span class="token number">1.183</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.075</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.169</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> ttest_ind<span class="token punctuation">(</span>data1<span class="token punctuation">,</span> data2<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably the same distribution'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably different distributions'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="paired-students-t-test"><a class="markdownIt-Anchor" href="#paired-students-t-test"></a> Paired Student’s t-test</h2>
+<p>Tests whether the means of two paired samples are significantly different.</p>
+<h3 id="assumptions-11"><a class="markdownIt-Anchor" href="#assumptions-11"></a> Assumptions</h3>
+<ol>
+<li>independent and identically distributed (iid).</li>
+<li>normally distributed.</li>
+<li>same variance.</li>
+<li>Observations across each sample are paired. 连个样本集的数据可以两两配对</li>
+</ol>
+<h3 id="interpretation-11"><a class="markdownIt-Anchor" href="#interpretation-11"></a> Interpretation</h3>
+<p>H0: the means of the samples are equal.<br />
+H1: the means of the samples are unequal.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> ttest_rel
+data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+data2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1.142</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.432</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.938</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.729</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.846</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.157</span><span class="token punctuation">,</span> <span class="token number">0.500</span><span class="token punctuation">,</span> <span class="token number">1.183</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.075</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.169</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> ttest_rel<span class="token punctuation">(</span>data1<span class="token punctuation">,</span> data2<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably the same distribution'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably different distributions'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="analysis-of-variance-test-anova"><a class="markdownIt-Anchor" href="#analysis-of-variance-test-anova"></a> Analysis of Variance Test (ANOVA)</h2>
+<p>两个或多个独立样本是否显著不同</p>
+<h3 id="assumptions-12"><a class="markdownIt-Anchor" href="#assumptions-12"></a> Assumptions</h3>
+<p>Observations in each sample are independent and identically distributed (iid).<br />
+Observations in each sample are normally distributed.<br />
+Observations in each sample have the same variance.</p>
+<h3 id="interpretation-12"><a class="markdownIt-Anchor" href="#interpretation-12"></a> Interpretation</h3>
+<p>H0: the means of the samples are equal.<br />
+H1: one or more of the means of the samples are unequal.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Example of the Analysis of Variance Test</span>
+<span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> f_oneway
+data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+data2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1.142</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.432</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.938</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.729</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.846</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.157</span><span class="token punctuation">,</span> <span class="token number">0.500</span><span class="token punctuation">,</span> <span class="token number">1.183</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.075</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.169</span><span class="token punctuation">]</span>
+data3 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">0.208</span><span class="token punctuation">,</span> <span class="token number">0.696</span><span class="token punctuation">,</span> <span class="token number">0.928</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.148</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.213</span><span class="token punctuation">,</span> <span class="token number">0.229</span><span class="token punctuation">,</span> <span class="token number">0.137</span><span class="token punctuation">,</span> <span class="token number">0.269</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.870</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.204</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> f_oneway<span class="token punctuation">(</span>data1<span class="token punctuation">,</span> data2<span class="token punctuation">,</span> data3<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably the same distribution'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably different distributions'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="repeated-measures-anova-test"><a class="markdownIt-Anchor" href="#repeated-measures-anova-test"></a> Repeated Measures ANOVA Test</h2>
+<p>两个或多个成对的独立样本是否显著不同</p>
+<h3 id="assumptions-13"><a class="markdownIt-Anchor" href="#assumptions-13"></a> Assumptions</h3>
+<p>Observations in each sample are independent and identically distributed (iid).<br />
+Observations in each sample are normally distributed.<br />
+Observations in each sample have the same variance.<br />
+Observations across each sample are paired.</p>
+<h3 id="interpretation-13"><a class="markdownIt-Anchor" href="#interpretation-13"></a> Interpretation</h3>
+<p>H0: the means of the samples are equal.<br />
+H1: one or more of the means of the samples are unequal.</p>
+<h1 id="nonparametric-statistical-hypothesis-tests"><a class="markdownIt-Anchor" href="#nonparametric-statistical-hypothesis-tests"></a> Nonparametric Statistical Hypothesis Tests</h1>
+<p>两个独立样本分布是否相同</p>
+<h2 id="mann-whitney-u-test"><a class="markdownIt-Anchor" href="#mann-whitney-u-test"></a> Mann-Whitney U Test</h2>
+<p>两个独立样本分布是否相同</p>
+<h3 id="assumptions-14"><a class="markdownIt-Anchor" href="#assumptions-14"></a> Assumptions</h3>
+<ol>
+<li>independent and identically distributed (iid). 独立同分布</li>
+<li>Observations in each sample can be ranked. 可以排序</li>
+</ol>
+<h3 id="interpretation-14"><a class="markdownIt-Anchor" href="#interpretation-14"></a> Interpretation</h3>
+<p>H0: the distributions of both samples are equal.<br />
+H1: the distributions of both samples are not equal.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> mannwhitneyu
+data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+data2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1.142</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.432</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.938</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.729</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.846</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.157</span><span class="token punctuation">,</span> <span class="token number">0.500</span><span class="token punctuation">,</span> <span class="token number">1.183</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.075</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.169</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> mannwhitneyu<span class="token punctuation">(</span>data1<span class="token punctuation">,</span> data2<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably the same distribution'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably different distributions'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="wilcoxon-signed-rank-test"><a class="markdownIt-Anchor" href="#wilcoxon-signed-rank-test"></a> Wilcoxon Signed-Rank Test</h2>
+<p>两个成对的独立样本集分布是否相同</p>
+<h2 id="assumptions-15"><a class="markdownIt-Anchor" href="#assumptions-15"></a> Assumptions</h2>
+<ol>
+<li>independent and identically distributed (iid).</li>
+<li>Observations in each sample can be ranked.</li>
+<li>Observations across each sample are paired.</li>
+</ol>
+<h2 id="interpretation-15"><a class="markdownIt-Anchor" href="#interpretation-15"></a> Interpretation</h2>
+<p>H0: the distributions of both samples are equal.<br />
+H1: the distributions of both samples are not equal.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">
+<span class="token comment"># Example of the Wilcoxon Signed-Rank Test</span>
+<span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> wilcoxon
+data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+data2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1.142</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.432</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.938</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.729</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.846</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.157</span><span class="token punctuation">,</span> <span class="token number">0.500</span><span class="token punctuation">,</span> <span class="token number">1.183</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.075</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.169</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> wilcoxon<span class="token punctuation">(</span>data1<span class="token punctuation">,</span> data2<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably the same distribution'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably different distributions'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="kruskal-wallis-h-test"><a class="markdownIt-Anchor" href="#kruskal-wallis-h-test"></a> Kruskal-Wallis H Test</h2>
+<p>两个或更多的独立样本集分布是否相同</p>
+<h3 id="assumptions-16"><a class="markdownIt-Anchor" href="#assumptions-16"></a> Assumptions</h3>
+<p>Observations in each sample are independent and identically distributed (iid).<br />
+Observations in each sample can be ranked.</p>
+<h3 id="interpretation-16"><a class="markdownIt-Anchor" href="#interpretation-16"></a> Interpretation</h3>
+<p>H0: the distributions of all samples are equal.<br />
+H1: the distributions of one or more samples are not equal.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">
+<span class="token comment"># Example of the Kruskal-Wallis H Test</span>
+<span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> kruskal
+data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+data2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1.142</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.432</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.938</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.729</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.846</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.157</span><span class="token punctuation">,</span> <span class="token number">0.500</span><span class="token punctuation">,</span> <span class="token number">1.183</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.075</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.169</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> kruskal<span class="token punctuation">(</span>data1<span class="token punctuation">,</span> data2<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably the same distribution'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably different distributions'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="friedman-test"><a class="markdownIt-Anchor" href="#friedman-test"></a> Friedman Test</h2>
+<p>两个或更多的成对的独立样本集分布是否相同</p>
+<h3 id="assumptions-17"><a class="markdownIt-Anchor" href="#assumptions-17"></a> Assumptions</h3>
+<ol>
+<li>independent and identically distributed (iid).</li>
+<li>Observations in each sample can be ranked.</li>
+<li>Observations across each sample are paired.</li>
+</ol>
+<h3 id="interpretation-17"><a class="markdownIt-Anchor" href="#interpretation-17"></a> Interpretation</h3>
+<p>H0: the distributions of all samples are equal.<br />
+H1: the distributions of one or more samples are not equal.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Example of the Friedman Test</span>
+<span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> friedmanchisquare
+data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.873</span><span class="token punctuation">,</span> <span class="token number">2.817</span><span class="token punctuation">,</span> <span class="token number">0.121</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.945</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.055</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.436</span><span class="token punctuation">,</span> <span class="token number">0.360</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.478</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.637</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.869</span><span class="token punctuation">]</span>
+data2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1.142</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.432</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.938</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.729</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.846</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.157</span><span class="token punctuation">,</span> <span class="token number">0.500</span><span class="token punctuation">,</span> <span class="token number">1.183</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.075</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.169</span><span class="token punctuation">]</span>
+data3 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">0.208</span><span class="token punctuation">,</span> <span class="token number">0.696</span><span class="token punctuation">,</span> <span class="token number">0.928</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.148</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.213</span><span class="token punctuation">,</span> <span class="token number">0.229</span><span class="token punctuation">,</span> <span class="token number">0.137</span><span class="token punctuation">,</span> <span class="token number">0.269</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.870</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1.204</span><span class="token punctuation">]</span>
+stat<span class="token punctuation">,</span> p <span class="token operator">=</span> friedmanchisquare<span class="token punctuation">(</span>data1<span class="token punctuation">,</span> data2<span class="token punctuation">,</span> data3<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stat=%.3f, p=%.3f'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>stat<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> p <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably the same distribution'</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Probably different distributions'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://machinelearningmastery.com/statistical-hypothesis-tests-in-python-cheat-sheet/">https://machinelearningmastery.com/statistical-hypothesis-tests-in-python-cheat-sheet/</a><br />
+<a target="_blank" rel="noopener" href="https://www.kaggle.com/hamelg/python-for-data-24-hypothesis-testing">https://www.kaggle.com/hamelg/python-for-data-24-hypothesis-testing</a><br />
+<a target="_blank" rel="noopener" href="https://analyticsindiamag.com/10-most-popular-statistical-hypothesis-testing-methods-using-python/">https://analyticsindiamag.com/10-most-popular-statistical-hypothesis-testing-methods-using-python/</a><br />
+<a target="_blank" rel="noopener" href="https://inblog.in/Hypothesis-Testing-using-Python-RqrE4uDqMe">https://inblog.in/Hypothesis-Testing-using-Python-RqrE4uDqMe</a><br />
+<a target="_blank" rel="noopener" href="https://towardsdatascience.com/what-is-p-value-370056b8244d">https://towardsdatascience.com/what-is-p-value-370056b8244d</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/pgmpyEg/" rel="prev" title="pgmpyEg">
+                  <i class="fa fa-chevron-left"></i> pgmpyEg
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/" rel="next" title="贝叶斯网络理论知识">
+                  贝叶斯网络理论知识 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="执行git init后, 自动创建.git文件夹, 包含一下内容: config description HEAD hooks&#x2F; info&#x2F; objects&#x2F; refs&#x2F; config 文件包含项目特有的配置选项 description 文件仅供 GitWeb 程序使用无需关心 *HEAD: 指向目前被检出的分支 info 目录包含一个全局性排除（globa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git原理-对象">
+<meta property="og:url" content="https://claroja.github.io/Git%E5%8E%9F%E7%90%86-%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="执行git init后, 自动创建.git文件夹, 包含一下内容: config description HEAD hooks&#x2F; info&#x2F; objects&#x2F; refs&#x2F; config 文件包含项目特有的配置选项 description 文件仅供 GitWeb 程序使用无需关心 *HEAD: 指向目前被检出的分支 info 目录包含一个全局性排除（globa">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-26T04:55:57.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.065Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/Git%E5%8E%9F%E7%90%86-%E5%AF%B9%E8%B1%A1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/Git%E5%8E%9F%E7%90%86-%E5%AF%B9%E8%B1%A1/","path":"Git原理-对象/","title":"Git原理-对象"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Git原理-对象 | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%98%E5%8F%96%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.</span> <span class="nav-text"> 存取字符串</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%98%E5%8F%96%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text"> 存取文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.</span> <span class="nav-text"> 树对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E6%A0%91%E5%AF%B9%E8%B1%A1"><span class="nav-number">4.</span> <span class="nav-text"> 提交树对象</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/Git%E5%8E%9F%E7%90%86-%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Git原理-对象 | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git原理-对象
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-26 12:55:57" itemprop="dateCreated datePublished" datetime="2021-06-26T12:55:57+08:00">2021-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>执行<code>git init</code>后, 自动创建<code>.git</code>文件夹, 包含一下内容:</p>
+<pre class="line-numbers language-s" data-language="s"><code class="language-s">config
+description
+HEAD
+hooks&#x2F;
+info&#x2F;
+objects&#x2F;
+refs&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>config</code> 文件包含项目特有的配置选项<br />
+<code>description</code> 文件仅供 GitWeb 程序使用无需关心<br />
+*<code>HEAD</code>: 指向目前被检出的分支<br />
+<code>info</code> 目录包含一个全局性排除（global exclude）文件, 对应<code>.gitignore</code><br />
+*<code>objects</code>: 存放所有的数据内容<br />
+<code>hooks</code> 包含客户端或服务端的钩子脚本<br />
+*<code>refs</code> 存储指向数据的指针(分支, 标签等)<br />
+*<code>index</code> 暂存区信息(尚未创建)</p>
+<p>Git 是一个内容寻址文件系统, 键值对数据库（key-value data store）, 向 Git 仓库中插入任意类型的内容，它会返回一个唯一的键，通过该键可以在任意时刻再次取回该内容. 通过<code>git hash-object</code>命令将value保存在<code>.git/objects</code>目录中, 并返回唯一的<code>key</code></p>
+<h1 id="存取字符串"><a class="markdownIt-Anchor" href="#存取字符串"></a> 存取字符串</h1>
+<ol>
+<li>初始化仓库<code>git init test </code><br />
+初始化仓库, 创建<code>.git/objects/info</code>和<code>.git/objects/pack</code>空文件夹</li>
+<li>存放内容<br />
+将<code>test content</code>存放在仓库中, 执行<code>git hash-object</code>, 返回<code>key</code></li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">echo &#39;test content&#39; &quot; git hash-object -w --stdin
+d670460b4b4aece5915caf5c68d12f560a9fe3e4<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>git hash-object</code> 将内容存入数据库, 并返回唯一的key<br />
+<code>-w</code>: write, 将’test content’写入文件中<br />
+<code>--stdin</code>: 标准输入读取内容<br />
+上述返回的结果key, 在object文件夹下, 前两位对应了目录名, 后面对应了文件名</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">find .git&#x2F;objects -type f
+.git&#x2F;objects&#x2F;d6&#x2F;70460b4b4aece5915caf5c68d12f560a9fe3e4<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ol start="3">
+<li>取出内容<br />
+使用<code>cat-file</code>根据key取出内容, <code>-p</code>可以自动判断内容的类型</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">git cat-file -p d670460b4b4aece5915caf5c68d12f560a9fe3e4
+test content<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="存取文件"><a class="markdownIt-Anchor" href="#存取文件"></a> 存取文件</h1>
+<ol>
+<li>存入文件</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ echo &#39;version 1&#39; &gt; test.txt
+$ git hash-object -w test.txt
+83baae61804e65cc73a7201a7252750c76066a30<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>存入文件</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ echo &#39;version 2&#39; &gt; test.txt
+$ git hash-object -w test.txt
+1f7a7a472abf3dd9643fd615f6da379c4acb3e3a<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol start="3">
+<li>查看所有key</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ find .git&#x2F;objects -type f
+.git&#x2F;objects&#x2F;1f&#x2F;7a7a472abf3dd9643fd615f6da379c4acb3e3a
+.git&#x2F;objects&#x2F;83&#x2F;baae61804e65cc73a7201a7252750c76066a30<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol start="4">
+<li>取出第一个文件内容</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git cat-file -p 83baae61804e65cc73a7201a7252750c76066a30 &gt; test.txt
+$ cat test.txt
+version 1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>文件名并没有被保存, 仅保存了文件的内容, 我们称之为 数据对象（blob object）,可以用<code>git cat-file -t</code>来查看</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git cat-file -t 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a
+blob<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="树对象"><a class="markdownIt-Anchor" href="#树对象"></a> 树对象</h1>
+<p>对象（tree object），它能解决文件名保存的问题，也允许我们将多个文件组织到一起。</p>
+<ol>
+<li>添加文件到暂存区<br />
+Git 根据某一时刻暂存区（即 index 区域）所表示的状态创建并记录一个对应的树对象, 因此，为创建一个树对象，首先需要通过暂存一些文件来创建一个暂存区。</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git update-index --add --cacheinfo 100644 83baae61804e65cc73a7201a7252750c76066a30 test.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>--add</code>: 将文件加入缓存区<br />
+<code>--cacheinfo</code>: 添加的文件在git数据库中(而不是在当前目录下)<br />
+<code>100644</code>: 文件类型为普通文本(100755:可执行文件, 12000:符号链接)</p>
+<ol start="2">
+<li>将暂存区写入树对象<br />
+<code>git write-tree</code> 命令将暂存区内容写入一个树对象</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git write-tree # 写入树对象
+d8329fc1cc938780ffdd9f94e0d364e0ea74f579
+$ git cat-file -p d8329fc1cc938780ffdd9f94e0d364e0ea74f579 # 查看树对象, -p自动判断为树对象
+100644 blob 83baae61804e65cc73a7201a7252750c76066a30     test.txt
+$ git cat-file -t d8329fc1cc938780ffdd9f94e0d364e0ea74f579 # 查看类型
+tree<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>创建更多的树对象</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git update-index --add --cacheinfo 100644 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a test.txt # test.txt version2版本加入暂存区
+$ echo &#39;new file&#39; &gt; new.txt # 创建新文件
+$ git update-index --add new.txt # 将新文件new.txt加入暂存区<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>将当前暂存区记录为以个新树对象, 这个树对象包含了两个文件:1,新版本的test.txt 2,new.txt</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git write-tree
+0155eb4229851634a0f03eb265b69f5a2d56f341
+$ git cat-file -p 0155eb4229851634a0f03eb265b69f5a2d56f341
+100644 blob fa49b077972391ad58037050f2a75f74e3671e92     new.txt
+100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a     test.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以将第一个树对象加入到第二个树对象中:<br />
+<code>git read-tree</code> 可以把书对象放入暂存区, <code>--prefix</code> 给树对象添加一个前缀</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git read-tree --prefix&#x3D;bak d8329fc1cc938780ffdd9f94e0d364e0ea74f579
+$ git write-tree
+3c4e9cd789d88d8d89c1073707c3585e41b0e614
+$ git cat-file -p 3c4e9cd789d88d8d89c1073707c3585e41b0e614
+040000 tree d8329fc1cc938780ffdd9f94e0d364e0ea74f579     bak
+100644 blob fa49b077972391ad58037050f2a75f74e3671e92     new.txt
+100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a     test.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当前工作目录, 类似于这样<br />
+<img src="" alt="https://git-scm.com/book/en/v2/images/data-model-2.png" /></p>
+<h1 id="提交树对象"><a class="markdownIt-Anchor" href="#提交树对象"></a> 提交树对象</h1>
+<p>目前已经有了三个树对象:</p>
+<p>调用 <code>commit-tree</code> 命令创建一个提交对象，为此需要指定一个树对象的 SHA-1 值，以及该提交的父提交对象（如果有的话）,<br />
+创建时间和作者数据不同，你现在会得到一个不同的散列值。<br />
+提交第一棵树</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ echo &#39;first commit&#39; &quot; git commit-tree d8329f
+fdf4fc3344e67ab068f836878b6c4951e3b15f3d<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>查看当前commit object</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git cat-file -p fdf4fc3<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>第一行: 它先指定一个顶层树对象，代表当前项目快照</li>
+<li>第二行: 可能存在的父提交</li>
+<li>第三行: 作者信息</li>
+<li>第四行: 提交者信息</li>
+<li>第五行: 留空</li>
+<li>第六行: 提交注释</li>
+</ul>
+<p>继续提交另外两棵树</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ echo &#39;second commit&#39; &quot; git commit-tree 0155eb -p fdf4fc3
+cac0cab538b970a37ea1e769cbbde608743bc96d
+$ echo &#39;third commit&#39; &quot; git commit-tree 3c4e9c -p cac0cab
+1a410efbd13591db07496601ebc7a059dd55cfe9<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对最后一个commit SHA值, 使用<code>git log</code>, 既可以显示提交的历史.<br />
+以上的过程, 就是我们使用<code>git add</code>和<code>git commit</code>命令时, 所运行的底层的所做的:</p>
+<ol>
+<li>将被改写文件保存为数据对象</li>
+<li>更新暂存区, 记录树对象</li>
+<li>创建提交对象, 指明顶层树对象和父提交对象<br />
+这三个对象都会被保存在<code>.git/objects</code>目录下</li>
+</ol>
+<p>图像 如下:<br />
+<a target="_blank" rel="noopener" href="https://git-scm.com/book/en/v2/images/data-model-3.png">https://git-scm.com/book/en/v2/images/data-model-3.png</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Git/" rel="prev" title="Git">
+                  <i class="fa fa-chevron-left"></i> Git
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Git%E5%8E%9F%E7%90%86-%E5%BC%95%E7%94%A8/" rel="next" title="Git原理-引用">
+                  Git原理-引用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="获得数据和创建网络 import torch from torch import nn from torch.utils.data import DataLoader from torchvision import datasets from torchvision.transforms import ToTensor, Lambda  training_data &#x3D; datasets.Fash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="basics_optimization_tutorial">
+<meta property="og:url" content="https://claroja.github.io/basics_optimization_tutorial/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="获得数据和创建网络 import torch from torch import nn from torch.utils.data import DataLoader from torchvision import datasets from torchvision.transforms import ToTensor, Lambda  training_data &#x3D; datasets.Fash">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-25T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.133Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/basics_optimization_tutorial/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/basics_optimization_tutorial/","path":"basics_optimization_tutorial/","title":"basics_optimization_tutorial"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>basics_optimization_tutorial | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E6%95%B0%E6%8D%AE%E5%92%8C%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C"><span class="nav-number">1.</span> <span class="nav-text"> 获得数据和创建网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hyperparameters"><span class="nav-number">2.</span> <span class="nav-text"> Hyperparameters</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#optimization-loop"><span class="nav-number">3.</span> <span class="nav-text"> Optimization Loop</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#loss-function"><span class="nav-number">4.</span> <span class="nav-text"> Loss Function</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#optimizer"><span class="nav-number">5.</span> <span class="nav-text"> Optimizer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">6.</span> <span class="nav-text"> 完整的实现</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/basics_optimization_tutorial/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="basics_optimization_tutorial | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          basics_optimization_tutorial
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 22:03:54" itemprop="dateCreated datePublished" datetime="2021-10-25T22:03:54+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="获得数据和创建网络"><a class="markdownIt-Anchor" href="#获得数据和创建网络"></a> 获得数据和创建网络</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch
+<span class="token keyword">from</span> torch <span class="token keyword">import</span> nn
+<span class="token keyword">from</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data <span class="token keyword">import</span> DataLoader
+<span class="token keyword">from</span> torchvision <span class="token keyword">import</span> datasets
+<span class="token keyword">from</span> torchvision<span class="token punctuation">.</span>transforms <span class="token keyword">import</span> ToTensor<span class="token punctuation">,</span> Lambda
+
+training_data <span class="token operator">=</span> datasets<span class="token punctuation">.</span>FashionMNIST<span class="token punctuation">(</span>
+    root<span class="token operator">=</span><span class="token string">"data"</span><span class="token punctuation">,</span>
+    train<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+    download<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+    transform<span class="token operator">=</span>ToTensor<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+test_data <span class="token operator">=</span> datasets<span class="token punctuation">.</span>FashionMNIST<span class="token punctuation">(</span>
+    root<span class="token operator">=</span><span class="token string">"data"</span><span class="token punctuation">,</span>
+    train<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span>
+    download<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+    transform<span class="token operator">=</span>ToTensor<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+train_dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>training_data<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">)</span>
+test_dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>test_data<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">NeuralNetwork</span><span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token builtin">super</span><span class="token punctuation">(</span>NeuralNetwork<span class="token punctuation">,</span> self<span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>flatten <span class="token operator">=</span> nn<span class="token punctuation">.</span>Flatten<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>linear_relu_stack <span class="token operator">=</span> nn<span class="token punctuation">.</span>Sequential<span class="token punctuation">(</span>
+            nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">28</span><span class="token operator">*</span><span class="token number">28</span><span class="token punctuation">,</span> <span class="token number">512</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            nn<span class="token punctuation">.</span>ReLU<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">512</span><span class="token punctuation">,</span> <span class="token number">512</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            nn<span class="token punctuation">.</span>ReLU<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">512</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        x <span class="token operator">=</span> self<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        logits <span class="token operator">=</span> self<span class="token punctuation">.</span>linear_relu_stack<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> logits
+
+model <span class="token operator">=</span> NeuralNetwork<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="hyperparameters"><a class="markdownIt-Anchor" href="#hyperparameters"></a> Hyperparameters</h1>
+<p>Hyperparameters是用来控制模型optimization过程的.主要3个:</p>
+<ol>
+<li>Number of Epochs: 要遍历dataset几次</li>
+<li>Batch Size: 每次向网络中传输多少样本</li>
+<li>Learning Rate: 每次batch/epoch学习速率</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">learning_rate <span class="token operator">=</span> <span class="token number">1e-3</span>
+batch_size <span class="token operator">=</span> <span class="token number">64</span>
+epochs <span class="token operator">=</span> <span class="token number">5</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="optimization-loop"><a class="markdownIt-Anchor" href="#optimization-loop"></a> Optimization Loop</h1>
+<p>Each iteration of the optimization loop is called an epoch. 每个epoch包含两个部分:</p>
+<ol>
+<li>The Train Loop: 训练集</li>
+<li>The Validation/Test Loop: 看测试集的表现</li>
+</ol>
+<h1 id="loss-function"><a class="markdownIt-Anchor" href="#loss-function"></a> Loss Function</h1>
+<p><code>Loss function</code>用来衡量模型输出的结果和目标结果之间的差距.</p>
+<ol>
+<li><code>nn.MSELoss</code>(Mean Square Error): 用来做regression任务</li>
+<li><code>nn.NLLLoss</code>(Negative Log Likelihood): 用来做classification</li>
+<li><code>nn.CrossEntropyLoss</code>则结合了<code>nn.LogSoftmax</code>和<code>nn.NLLLoss</code></li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Initialize the loss function</span>
+loss_fn <span class="token operator">=</span> nn<span class="token punctuation">.</span>CrossEntropyLoss<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="optimizer"><a class="markdownIt-Anchor" href="#optimizer"></a> Optimizer</h1>
+<p>Optimizer就是调整模型的参数来减少模型的loss. 所有的优化方法都在<code>torch.optim</code>中</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">optimizer <span class="token operator">=</span> torch<span class="token punctuation">.</span>optim<span class="token punctuation">.</span>SGD<span class="token punctuation">(</span>model<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> lr<span class="token operator">=</span>learning_rate<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在训练循环中, 优化分为三个部分:</p>
+<ol>
+<li>调用<code>optimizer.zero_grad()</code>, 来重置模型的参数的gradients(Gradients默认是累加的, 所以每次迭代都要重置为0)</li>
+<li>调用<code>loss.backwards()</code>, 将loss进行反向传播.</li>
+<li>当得到gradients后, 调用<code>optimizer.step()</code>来调整parameters.</li>
+</ol>
+<h1 id="完整的实现"><a class="markdownIt-Anchor" href="#完整的实现"></a> 完整的实现</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">train_loop</span><span class="token punctuation">(</span>dataloader<span class="token punctuation">,</span> model<span class="token punctuation">,</span> loss_fn<span class="token punctuation">,</span> optimizer<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    size <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>dataloader<span class="token punctuation">.</span>dataset<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> batch<span class="token punctuation">,</span> <span class="token punctuation">(</span>X<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>dataloader<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># Compute prediction and loss</span>
+        pred <span class="token operator">=</span> model<span class="token punctuation">(</span>X<span class="token punctuation">)</span>
+        loss <span class="token operator">=</span> loss_fn<span class="token punctuation">(</span>pred<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+        <span class="token comment"># Backpropagation</span>
+        optimizer<span class="token punctuation">.</span>zero_grad<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        loss<span class="token punctuation">.</span>backward<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        optimizer<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> batch <span class="token operator">%</span> <span class="token number">100</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+            loss<span class="token punctuation">,</span> current <span class="token operator">=</span> loss<span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> batch <span class="token operator">*</span> <span class="token builtin">len</span><span class="token punctuation">(</span>X<span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"loss: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>loss<span class="token punctuation">:</span><span class="token format-spec">>7f</span><span class="token punctuation">&#125;</span></span><span class="token string">  [</span><span class="token interpolation"><span class="token punctuation">&#123;</span>current<span class="token punctuation">:</span><span class="token format-spec">>5d</span><span class="token punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>size<span class="token punctuation">:</span><span class="token format-spec">>5d</span><span class="token punctuation">&#125;</span></span><span class="token string">]"</span></span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">def</span> <span class="token function">test_loop</span><span class="token punctuation">(</span>dataloader<span class="token punctuation">,</span> model<span class="token punctuation">,</span> loss_fn<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    size <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>dataloader<span class="token punctuation">.</span>dataset<span class="token punctuation">)</span>
+    num_batches <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>dataloader<span class="token punctuation">)</span>
+    test_loss<span class="token punctuation">,</span> correct <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>
+    <span class="token keyword">with</span> torch<span class="token punctuation">.</span>no_grad<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> X<span class="token punctuation">,</span> y <span class="token keyword">in</span> dataloader<span class="token punctuation">:</span>
+            pred <span class="token operator">=</span> model<span class="token punctuation">(</span>X<span class="token punctuation">)</span>
+            test_loss <span class="token operator">+=</span> loss_fn<span class="token punctuation">(</span>pred<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            correct <span class="token operator">+=</span> <span class="token punctuation">(</span>pred<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> y<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">type</span><span class="token punctuation">(</span>torch<span class="token punctuation">.</span><span class="token builtin">float</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    test_loss <span class="token operator">/=</span> num_batches
+    correct <span class="token operator">/=</span> size
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Test Error: \n Accuracy: </span><span class="token interpolation"><span class="token punctuation">&#123;</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token operator">*</span>correct<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token format-spec">>0.1f</span><span class="token punctuation">&#125;</span></span><span class="token string">%, Avg loss: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>test_loss<span class="token punctuation">:</span><span class="token format-spec">>8f</span><span class="token punctuation">&#125;</span></span><span class="token string"> \n"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">loss_fn <span class="token operator">=</span> nn<span class="token punctuation">.</span>CrossEntropyLoss<span class="token punctuation">(</span><span class="token punctuation">)</span>
+optimizer <span class="token operator">=</span> torch<span class="token punctuation">.</span>optim<span class="token punctuation">.</span>SGD<span class="token punctuation">(</span>model<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> lr<span class="token operator">=</span>learning_rate<span class="token punctuation">)</span>
+
+epochs <span class="token operator">=</span> <span class="token number">10</span>
+<span class="token keyword">for</span> t <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>epochs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Epoch </span><span class="token interpolation"><span class="token punctuation">&#123;</span>t<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">&#125;</span></span><span class="token string">\n-------------------------------"</span></span><span class="token punctuation">)</span>
+    train_loop<span class="token punctuation">(</span>train_dataloader<span class="token punctuation">,</span> model<span class="token punctuation">,</span> loss_fn<span class="token punctuation">,</span> optimizer<span class="token punctuation">)</span>
+    test_loop<span class="token punctuation">(</span>test_dataloader<span class="token punctuation">,</span> model<span class="token punctuation">,</span> loss_fn<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Done!"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/optimization_tutorial.html">https://pytorch.org/tutorials/beginner/basics/optimization_tutorial.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/basics_quickstart_tutorial/" rel="prev" title="basics_quickstart_tutorial">
+                  <i class="fa fa-chevron-left"></i> basics_quickstart_tutorial
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/basics_data_tutorial/" rel="next" title="basics_data_tutorial">
+                  basics_data_tutorial <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

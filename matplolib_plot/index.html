@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="做线图 方法 :matplotlib.pyplot.plot(*args, scalex&#x3D;True, scaley&#x3D;True, data&#x3D;None, **kwargs) 返回 : Line2D对象  应用 import numpy as np import matplotlib.pyplot as plt t &#x3D; np.arange(0., 5., 0.2) fig, axe &#x3D; plt.subp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="matplolib_plot">
+<meta property="og:url" content="https://claroja.github.io/matplolib_plot/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="做线图 方法 :matplotlib.pyplot.plot(*args, scalex&#x3D;True, scaley&#x3D;True, data&#x3D;None, **kwargs) 返回 : Line2D对象  应用 import numpy as np import matplotlib.pyplot as plt t &#x3D; np.arange(0., 5., 0.2) fig, axe &#x3D; plt.subp">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-26T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.325Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/matplolib_plot/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/matplolib_plot/","path":"matplolib_plot/","title":"matplolib_plot"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>matplolib_plot | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text"> 应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text"> 参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fmt"><span class="nav-number">3.</span> <span class="nav-text"> fmt</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#markers"><span class="nav-number">3.1.</span> <span class="nav-text"> Markers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#line-styles"><span class="nav-number">3.2.</span> <span class="nav-text"> Line Styles</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#colors"><span class="nav-number">3.3.</span> <span class="nav-text"> colors</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/matplolib_plot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="matplolib_plot | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          matplolib_plot
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-26 22:03:54" itemprop="dateCreated datePublished" datetime="2021-11-26T22:03:54+08:00">2021-11-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>做线图</p>
+<p>方法 :<code>matplotlib.pyplot.plot(*args, scalex=True, scaley=True, data=None, **kwargs)</code><br />
+返回 : <a target="_blank" rel="noopener" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D">Line2D对象</a></p>
+<h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+t <span class="token operator">=</span> np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">0.</span><span class="token punctuation">,</span> <span class="token number">5.</span><span class="token punctuation">,</span> <span class="token number">0.2</span><span class="token punctuation">)</span>
+fig<span class="token punctuation">,</span> axe <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
+axe<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>t<span class="token punctuation">,</span> t<span class="token punctuation">,</span> <span class="token string">'r--o'</span><span class="token punctuation">)</span> <span class="token comment"># 等价于axe.plot(t, t, c='r', ls='--', marker='o')</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="参数"><a class="markdownIt-Anchor" href="#参数"></a> 参数</h1>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>x axis</td>
+</tr>
+<tr>
+<td>y</td>
+<td>y axis</td>
+</tr>
+<tr>
+<td>alpha</td>
+<td>透明度</td>
+</tr>
+<tr>
+<td>color or c</td>
+<td>颜色</td>
+</tr>
+<tr>
+<td>fillstyle</td>
+<td>填充样式</td>
+</tr>
+<tr>
+<td>label</td>
+<td>标签, 名称, 和legend关联</td>
+</tr>
+<tr>
+<td>linestyle or ls</td>
+<td>‘-’ or ‘solid’ , ‘–’ or ‘dashed’, ‘-.’ or ‘dashdot’, ‘:’ or ‘dotted’</td>
+</tr>
+<tr>
+<td>linewidth or lw</td>
+<td>线宽</td>
+</tr>
+<tr>
+<td>marker</td>
+<td>数据对应点的形状,具体<a target="_blank" rel="noopener" href="https://matplotlib.org/stable/api/markers_api.html#module-matplotlib.markers">参考</a></td>
+</tr>
+<tr>
+<td>markeredgecolor or mec</td>
+<td></td>
+</tr>
+<tr>
+<td>markeredgewidth or mew</td>
+<td></td>
+</tr>
+<tr>
+<td>markerfacecolor or mfc</td>
+<td></td>
+</tr>
+<tr>
+<td>markersize or ms</td>
+<td></td>
+</tr>
+<tr>
+<td>fmt</td>
+<td>maker, line, with的快捷方法, 详细见下面的小节<code>[marker][line][color]</code></td>
+</tr>
+</tbody>
+</table>
+<h1 id="fmt"><a class="markdownIt-Anchor" href="#fmt"></a> fmt</h1>
+<h2 id="markers"><a class="markdownIt-Anchor" href="#markers"></a> Markers</h2>
+<p><a target="_blank" rel="noopener" href="https://matplotlib.org/stable/api/markers_api.html#module-matplotlib.markers">参考</a></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘.’</td>
+<td>point marker</td>
+</tr>
+<tr>
+<td>‘,’</td>
+<td>pixel marker</td>
+</tr>
+<tr>
+<td>‘o’</td>
+<td>circle marker</td>
+</tr>
+<tr>
+<td>‘v’</td>
+<td>triangle_down marker</td>
+</tr>
+<tr>
+<td>‘^’</td>
+<td>triangle_up marker</td>
+</tr>
+<tr>
+<td>‘&lt;’</td>
+<td>triangle_left marker</td>
+</tr>
+<tr>
+<td>‘&gt;’</td>
+<td>triangle_right marker</td>
+</tr>
+</tbody>
+</table>
+<h2 id="line-styles"><a class="markdownIt-Anchor" href="#line-styles"></a> Line Styles</h2>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘-’</td>
+<td>solid line style</td>
+</tr>
+<tr>
+<td>‘–’</td>
+<td>dashed line style</td>
+</tr>
+<tr>
+<td>‘-.’</td>
+<td>dash-dot line style</td>
+</tr>
+<tr>
+<td>‘:’</td>
+<td>dotted line style</td>
+</tr>
+</tbody>
+</table>
+<h2 id="colors"><a class="markdownIt-Anchor" href="#colors"></a> colors</h2>
+<p><a target="_blank" rel="noopener" href="https://matplotlib.org/stable/tutorials/colors/colormaps.html">参考</a><br />
+可以使用简称’b’,或全称’blue’, 或’#008000’</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘b’</td>
+<td>blue</td>
+</tr>
+<tr>
+<td>‘g’</td>
+<td>green</td>
+</tr>
+<tr>
+<td>‘r’</td>
+<td>red</td>
+</tr>
+<tr>
+<td>‘c’</td>
+<td>cyan</td>
+</tr>
+<tr>
+<td>‘m’</td>
+<td>magenta</td>
+</tr>
+<tr>
+<td>‘y’</td>
+<td>yellow</td>
+</tr>
+<tr>
+<td>‘k’</td>
+<td>black</td>
+</tr>
+<tr>
+<td>‘w’</td>
+<td>white</td>
+</tr>
+</tbody>
+</table>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot">https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/matplotlib_hist/" rel="prev" title="matplotlib_hist">
+                  <i class="fa fa-chevron-left"></i> matplotlib_hist
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/pytorch_train_eval/" rel="next" title="pytorch_train_eval">
+                  pytorch_train_eval <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

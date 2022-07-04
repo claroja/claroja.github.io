@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="git log 1a410e来查看该提交的历史记录, 但是记忆1a410e值, 太麻烦了, 所以可以起个别名, 这种简单的名字被称为引用(references，或简写为 refs)。 你可以在 .git&#x2F;refs 目录下 $ find .git&#x2F;refs .git&#x2F;refs .git&#x2F;refs&#x2F;heads .git&#x2F;refs&#x2F;tags 给">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git原理-引用">
+<meta property="og:url" content="https://claroja.github.io/Git%E5%8E%9F%E7%90%86-%E5%BC%95%E7%94%A8/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="git log 1a410e来查看该提交的历史记录, 但是记忆1a410e值, 太麻烦了, 所以可以起个别名, 这种简单的名字被称为引用(references，或简写为 refs)。 你可以在 .git&#x2F;refs 目录下 $ find .git&#x2F;refs .git&#x2F;refs .git&#x2F;refs&#x2F;heads .git&#x2F;refs&#x2F;tags 给">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-26T04:56:49.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.066Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/Git%E5%8E%9F%E7%90%86-%E5%BC%95%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/Git%E5%8E%9F%E7%90%86-%E5%BC%95%E7%94%A8/","path":"Git原理-引用/","title":"Git原理-引用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Git原理-引用 | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#head-%E5%BC%95%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text"> HEAD 引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE%E5%BC%95%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text"> 标签引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E5%BC%95%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text"> 远程引用</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/Git%E5%8E%9F%E7%90%86-%E5%BC%95%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Git原理-引用 | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git原理-引用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-26 12:56:49" itemprop="dateCreated datePublished" datetime="2021-06-26T12:56:49+08:00">2021-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><code>git log 1a410e</code>来查看该提交的历史记录, 但是记忆<code>1a410e</code>值, 太麻烦了, 所以可以起个别名, 这种简单的名字被称为引用(references，或简写为 refs)。 你可以在 <code>.git/refs</code> 目录下</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ find .git&#x2F;refs
+.git&#x2F;refs
+.git&#x2F;refs&#x2F;heads
+.git&#x2F;refs&#x2F;tags<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>给SHA添加refs:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">echo 1a410efbd13591db07496601ebc7a059dd55cfe9 &gt; .git&#x2F;refs&#x2F;heads&#x2F;master<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以通过refs来查:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git log master<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这个就是Git分支的本质：一个指向某一系列提交之首的指针或引用。<br />
+当运行类似于 git branch <branch> 这样的命令时，Git 实际上会运行 update-ref 命令， 取得当前所在分支最新提交对应的 SHA-1 值，并将其加入你想要创建的任何新引用中。<br />
+git提供了<code>git update-ref</code>命令来添加refs, 不提倡直接使用<code>echo</code>来直接操作, 给第二个提交添加refs:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">git update-ref refs&#x2F;heads&#x2F;test cac0ca<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>目前仓库的样子:<br />
+<a target="_blank" rel="noopener" href="https://git-scm.com/book/en/v2/images/data-model-4.png">https://git-scm.com/book/en/v2/images/data-model-4.png</a></p>
+<h1 id="head-引用"><a class="markdownIt-Anchor" href="#head-引用"></a> HEAD 引用</h1>
+<p>HEAD 文件通常是一个符号引用（symbolic reference），指向目前所在的分支。 所谓符号引用，表示它是一个指向其他引用的指针。<br />
+然而在某些罕见的情况下，HEAD 文件可能会包含一个 git 对象的 SHA-1 值。 当你在检出一个标签、提交或远程分支，让你的仓库变成 &quot;分离 HEAD&quot;状态时，就会出现这种情况。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ cat .git&#x2F;HEAD
+ref: refs&#x2F;heads&#x2F;master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>如果执行 git checkout test，Git 会像这样更新 HEAD 文件：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ cat .git&#x2F;HEAD
+ref: refs&#x2F;heads&#x2F;test<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>git也提供了<code>git symbolic-ref</code>来修改HEAD<br />
+查看HEAD值</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git symbolic-ref HEAD
+refs&#x2F;heads&#x2F;master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>更新HEAD值</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git symbolic-ref HEAD refs&#x2F;heads&#x2F;test
+$ cat .git&#x2F;HEAD
+ref: refs&#x2F;heads&#x2F;test<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="标签引用"><a class="markdownIt-Anchor" href="#标签引用"></a> 标签引用</h1>
+<p>Git 的三种主要的对象类型（数据对象、树对象 和 提交对象 ）实际上还有第四种, 标签对象（tag object）.<br />
+标签对象（tag object）类似于一个提交对象——它包含一个标签创建者信息、一个日期、一段注释信息，以及一个指针。主要的区别在于，标签对象通常指向一个提交对象，而不是一个树对象。 它像是一个永不移动的分支引用——永远指向同一个提交对象，只不过给这个提交对象加上一个更友好的名字罢了.<br />
+创建一个轻量标签：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git update-ref refs&#x2F;tags&#x2F;v1.0 cac0cab538b970a37ea1e769cbbde608743bc96d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="远程引用"><a class="markdownIt-Anchor" href="#远程引用"></a> 远程引用</h1>
+<p>远程引用（remote reference）如果你添加了一个远程版本库并对其执行过推送操作，Git 会记录下最近一次推送操作时每一个分支所对应的值，并保存在 refs/remotes 目录下。<br />
+查看 refs/remotes/origin/master 文件，可以发现 origin 远程版本库的 master 分支所对应的 SHA-1 值，就是最近一次与服务器通信时本地 master 分支所对应的 SHA-1 值：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ cat .git&#x2F;refs&#x2F;remotes&#x2F;origin&#x2F;master<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git remote add origin https:&#x2F;&#x2F;github.com&#x2F;schacon&#x2F;simplegit-progit<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>仓库中的 .git/config 文件中添加一个小节， 并在其中指定远程版本库的名称（origin）、URL 和一个用于获取操作的 引用规范（refspec）：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">[remote &quot;origin&quot;]
+   url &#x3D; https:&#x2F;&#x2F;github.com&#x2F;schacon&#x2F;simplegit-progit
+   fetch &#x3D; +refs&#x2F;heads&#x2F;*:refs&#x2F;remotes&#x2F;origin&#x2F;*<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>引用规范的格式由一个可选的 + 号和紧随其后的 <src>:<dst> 组成，</p>
+<ul>
+<li><src> 是一个模式（pattern），代表远程版本库中的引用；</li>
+<li><dst> 是本地跟踪的远程引用的位置。</li>
+<li>+号告诉 Git 即使在不能快进的情况下也要（强制）更新引用。</li>
+</ul>
+<p>默认情况下，引用规范由 git remote add origin 命令自动生成， Git 获取服务器中 refs/heads/ 下面的所有引用，并将它写入到本地的 refs/remotes/origin/ 中。 所以，如果服务器上有一个 master 分支，你可以在本地通过下面任意一种方式来访问该分支上的提交记录：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ git log origin&#x2F;master
+$ git log remotes&#x2F;origin&#x2F;master
+$ git log refs&#x2F;remotes&#x2F;origin&#x2F;master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>上面的三个命令作用相同，因为 Git 会把它们都扩展成 refs/remotes/origin/master。<br />
+如果想让 Git 每次只拉取远程的 master 分支，而不是所有分支， 可以把（引用规范的）获取那一行修改为只引用该分支：</p>
+<pre class="line-numbers language-none"><code class="language-none">fetch &#x3D; +refs&#x2F;heads&#x2F;master:refs&#x2F;remotes&#x2F;origin&#x2F;master<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E5%BC%95%E7%94%A8%E8%A7%84%E8%8C%83">https://git-scm.com/book/zh/v2/Git-内部原理-引用规范</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Git%E5%8E%9F%E7%90%86-%E5%AF%B9%E8%B1%A1/" rel="prev" title="Git原理-对象">
+                  <i class="fa fa-chevron-left"></i> Git原理-对象
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Git%E5%8E%9F%E7%90%86-%E6%89%93%E5%8C%85/" rel="next" title="Git原理-打包">
+                  Git原理-打包 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Pods  共享网络 一个 Pod 内的多个容器之间可以通过 localhost 来进行通信 不同的 Pod 有不同的 IP, 不同pod使用IP来通信 共享存储 一个 Pod 里的多个容器可以共享存储卷，这个存储卷会被定义为 Pod 的一部分，并且可 以挂载到该 Pod里的所有容器的文件系统上。  实现共享的原理是:每个pod都是先初始化一个根容器, 然后将我们创建的容器加入到根容器.  使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8sPods">
+<meta property="og:url" content="https://claroja.github.io/k8sPods/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="Pods  共享网络 一个 Pod 内的多个容器之间可以通过 localhost 来进行通信 不同的 Pod 有不同的 IP, 不同pod使用IP来通信 共享存储 一个 Pod 里的多个容器可以共享存储卷，这个存储卷会被定义为 Pod 的一部分，并且可 以挂载到该 Pod里的所有容器的文件系统上。  实现共享的原理是:每个pod都是先初始化一个根容器, 然后将我们创建的容器加入到根容器.  使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-01T14:27:04.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.318Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/k8sPods/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/k8sPods/","path":"k8sPods/","title":"k8sPods"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>k8sPods | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#pods"><span class="nav-number">1.</span> <span class="nav-text"> Pods</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8E%A7%E5%88%B6"><span class="nav-number">1.1.</span> <span class="nav-text"> 使用命令行控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%8E%A7%E5%88%B6"><span class="nav-number">1.2.</span> <span class="nav-text"> 使用配置文件控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.3.</span> <span class="nav-text"> 参数详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AApod%E5%A4%9A%E4%B8%AAcontainer"><span class="nav-number">1.3.1.</span> <span class="nav-text"> 一个pod多个container</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#command%E5%92%8Cargs"><span class="nav-number">1.3.2.</span> <span class="nav-text"> command和args</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.3.3.</span> <span class="nav-text"> 环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3"><span class="nav-number">1.3.4.</span> <span class="nav-text"> 端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%90%E5%88%B6%E5%AE%B9%E5%99%A8%E8%B5%84%E6%BA%90"><span class="nav-number">1.3.5.</span> <span class="nav-text"> 限制容器资源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pod-yml%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.4.</span> <span class="nav-text"> pod YML详解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">1.5.</span> <span class="nav-text"> 注意</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pod%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">2.</span> <span class="nav-text"> pod生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%B9%E5%99%A8"><span class="nav-number">2.1.</span> <span class="nav-text"> 初始化容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E9%92%A9%E5%AD%90"><span class="nav-number">2.2.</span> <span class="nav-text"> 容器钩子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E6%8E%A2%E6%B5%8B"><span class="nav-number">2.3.</span> <span class="nav-text"> 容器探测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%90%AF%E7%AD%96%E7%95%A5"><span class="nav-number">2.4.</span> <span class="nav-text"> 重启策略</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pod%E8%B0%83%E5%BA%A6%E7%AD%96%E7%95%A5"><span class="nav-number">3.</span> <span class="nav-text"> pod调度策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E5%88%B6%E6%80%A7"><span class="nav-number">3.1.</span> <span class="nav-text"> 强制性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E4%BA%B2%E5%92%8C%E6%80%A7"><span class="nav-number">3.2.</span> <span class="nav-text"> (反)亲和性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%A1%E7%82%B9"><span class="nav-number">3.3.</span> <span class="nav-text"> 污点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E5%BF%8Dtoleration"><span class="nav-number">3.4.</span> <span class="nav-text"> 容忍(Toleration)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#container-%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.4.1.</span> <span class="nav-text"> container 设置</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/k8sPods/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="k8sPods | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          k8sPods
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-01 22:27:04" itemprop="dateCreated datePublished" datetime="2021-07-01T22:27:04+08:00">2021-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="pods"><a class="markdownIt-Anchor" href="#pods"></a> Pods</h1>
+<ul>
+<li>共享网络<br />
+一个 Pod 内的多个容器之间可以通过 localhost 来进行通信<br />
+不同的 Pod 有不同的 IP, 不同pod使用IP来通信</li>
+<li>共享存储<br />
+一个 Pod 里的多个容器可以共享存储卷，这个存储卷会被定义为 Pod 的一部分，并且可<br />
+以挂载到该 Pod里的所有容器的文件系统上。</li>
+</ul>
+<p>实现共享的原理是:每个pod都是先初始化一个根容器, 然后将我们创建的容器加入到根容器.</p>
+<h2 id="使用命令行控制"><a class="markdownIt-Anchor" href="#使用命令行控制"></a> 使用命令行控制</h2>
+<ul>
+<li>增加 <code>kubectl run nginx --image=nginx:1.17.1 --port=80</code><br />
+默认使用controller创建, 既<code>kind: Deployment</code></li>
+<li>查看 <code>kubectl get pod</code><br />
+<code>kubectl get pods -n kube-system</code> 查看某个namespce下的pods, 默认是default<br />
+<code>kubectl get pod -o wide</code> 显示额外的信息</li>
+<li>查看详细信息 <code>kubectl describe pod [NAME]</code></li>
+<li>删除 <code>kubectl delete pod [NAME]</code><br />
+使用controller创建的pod 删除pod会自动生成, 要直接删除controller<code>kubectl delete deployment [NAME]</code></li>
+</ul>
+<h2 id="使用配置文件控制"><a class="markdownIt-Anchor" href="#使用配置文件控制"></a> 使用配置文件控制</h2>
+<p><code>kubectl create/apply/delete -f YML_PATH</code></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> pod1
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> ngninx<span class="token punctuation">-</span>pod
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>latest
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginxport
+      <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="参数详解"><a class="markdownIt-Anchor" href="#参数详解"></a> 参数详解</h2>
+<h3 id="一个pod多个container"><a class="markdownIt-Anchor" href="#一个pod多个container"></a> 一个pod多个container</h3>
+<p>运行多个协同工作的container的 Pod, 这些container共享存储和网络</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> myapp<span class="token punctuation">-</span>pod
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> myapp
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> myapp<span class="token punctuation">-</span>container1
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> busybox<span class="token punctuation">:</span><span class="token number">1.28</span>
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'sh'</span><span class="token punctuation">,</span> <span class="token string">'-c'</span><span class="token punctuation">,</span> <span class="token string">'echo The app1 is running! &amp;&amp; sleep 3600'</span><span class="token punctuation">]</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> myapp<span class="token punctuation">-</span>container2
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> busybox<span class="token punctuation">:</span><span class="token number">1.28</span>
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'sh'</span><span class="token punctuation">,</span> <span class="token string">'-c'</span><span class="token punctuation">,</span> <span class="token string">'echo The app2 is running! &amp;&amp; sleep 3600'</span><span class="token punctuation">]</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="command和args"><a class="markdownIt-Anchor" href="#command和args"></a> command和args</h3>
+<ul>
+<li>如果无command无args, 使用Dockerfile的配置</li>
+<li>如果有command无args, 使用command覆盖Dockerfile的配置</li>
+<li>如果无command有args, Dockerfile的ENTRYPOINT被执行, 使用args参数</li>
+<li>如果有command有args, 使用command+args覆盖Dockerfile的配置</li>
+</ul>
+<h3 id="环境变量"><a class="markdownIt-Anchor" href="#环境变量"></a> 环境变量</h3>
+<p>设置环境变量列表</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">env</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">'username'</span>
+  <span class="token key atrule">value</span><span class="token punctuation">:</span> <span class="token string">'admin'</span>
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">'password'</span>
+  <span class="token key atrule">value</span><span class="token punctuation">:</span> <span class="token string">'123'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="端口"><a class="markdownIt-Anchor" href="#端口"></a> 端口</h3>
+<p>设置pod向外暴露的端口</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> test
+    <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span>
+    <span class="token key atrule">protocol</span><span class="token punctuation">:</span> TCP<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="限制容器资源"><a class="markdownIt-Anchor" href="#限制容器资源"></a> 限制容器资源</h3>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">resources</span><span class="token punctuation">:</span>
+    <span class="token key atrule">limits</span><span class="token punctuation">:</span> <span class="token comment"># 最大显示</span>
+      <span class="token key atrule">cpu</span><span class="token punctuation">:</span> <span class="token string">"2"</span>
+      <span class="token key atrule">memory</span><span class="token punctuation">:</span> <span class="token string">"10Gi"</span>
+    <span class="token key atrule">requests</span><span class="token punctuation">:</span> <span class="token comment"># 建议</span>
+      <span class="token key atrule">cpu</span><span class="token punctuation">:</span> <span class="token string">"1"</span>
+      <span class="token key atrule">memory</span><span class="token punctuation">:</span> <span class="token string">"10Mi"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="pod-yml详解"><a class="markdownIt-Anchor" href="#pod-yml详解"></a> pod YML详解</h2>
+<p>查看字段信息<code>kubectl explain pod</code> <code>kubectl explain pod.metadata</code></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>字段类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>apiVersion</td>
+<td>String</td>
+<td>集群定义, <code>kubectl api-versions</code>查看</td>
+</tr>
+<tr>
+<td>kind</td>
+<td>string</td>
+<td>集群定义, <code>kubectl api-resources</code>查看</td>
+</tr>
+<tr>
+<td>metadata</td>
+<td>object</td>
+<td>源信息</td>
+</tr>
+<tr>
+<td>spec</td>
+<td>object</td>
+<td>内容配置</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://metadata.name">metadata.name</a></td>
+<td>string</td>
+<td>资源的名称</td>
+</tr>
+<tr>
+<td>metadata.namespace</td>
+<td>string</td>
+<td>资源的namespace</td>
+</tr>
+<tr>
+<td>metadata.labels</td>
+<td>object</td>
+<td>资源的labels</td>
+</tr>
+<tr>
+<td>spec.containers[]</td>
+<td>object</td>
+<td>定义容器的列表</td>
+</tr>
+<tr>
+<td>spec.nodeName</td>
+<td>string</td>
+<td>根据nodeName将pod调度到指定Node上</td>
+</tr>
+<tr>
+<td>spec.nodeSelector</td>
+<td>map[]</td>
+<td>根据标签将pod调度到指定Node上</td>
+</tr>
+<tr>
+<td>spec.hostNetwork</td>
+<td>boolean</td>
+<td>默认false, 是否使用宿主机网络(容易冲突,还是使用集群分配的好)</td>
+</tr>
+<tr>
+<td>spec.volumes</td>
+<td>object[]</td>
+<td>存储卷, 定义pod挂载点</td>
+</tr>
+<tr>
+<td>spec.restartPolicy</td>
+<td>string</td>
+<td>重启策略</td>
+</tr>
+<tr>
+<td>spec.containers[].name</td>
+<td>String</td>
+<td>容器的名字</td>
+</tr>
+<tr>
+<td>spec.containers[].image</td>
+<td>String</td>
+<td>容器的镜像</td>
+</tr>
+<tr>
+<td>spec.containers[].imagePullPolicy</td>
+<td>String</td>
+<td>默认<code>IfNotPresent</code>, 如何拉取镜像</td>
+</tr>
+<tr>
+<td>spec.containers[].command[]</td>
+<td>List</td>
+<td>DockerFile的EntryPoint</td>
+</tr>
+<tr>
+<td>spec.containers[].args[]</td>
+<td>List</td>
+<td>DockerFile的CMD</td>
+</tr>
+<tr>
+<td>spec.containers[].env[]</td>
+<td>List</td>
+<td>DockerFile的ENV</td>
+</tr>
+<tr>
+<td>spec.containers[].env[].name</td>
+<td>String</td>
+<td>环境变量名称</td>
+</tr>
+<tr>
+<td>spec.containers[].env[].value</td>
+<td>String</td>
+<td>环境变量值</td>
+</tr>
+<tr>
+<td>spec.containers[].ports[]</td>
+<td>List</td>
+<td>容器需要用到的端口列表</td>
+</tr>
+<tr>
+<td>spec.containers[].ports[].name</td>
+<td>String</td>
+<td>端口名称</td>
+</tr>
+<tr>
+<td>spec.containers[].ports[].containerPort</td>
+<td>String</td>
+<td>容器需要监听的端口号</td>
+</tr>
+<tr>
+<td>spec.containers[].ports[].protocol</td>
+<td>String</td>
+<td>端口协议, 默认值为TCP</td>
+</tr>
+<tr>
+<td>spec.containers[].ports[].hostPort</td>
+<td>String</td>
+<td>容器映射到主机的端口, 多个controller会出问题, 不设置</td>
+</tr>
+<tr>
+<td>spec.containers[].ports[].hostIP</td>
+<td>String</td>
+<td>容器映射到主机的IP, 多个controller会出问题, 不设置</td>
+</tr>
+<tr>
+<td>spec.containers[].resources</td>
+<td>Object</td>
+<td>资源限制和资源请求的值</td>
+</tr>
+<tr>
+<td>spec.containers[].resources.limits</td>
+<td>Object</td>
+<td>设置容器运行时资源的运行上限</td>
+</tr>
+<tr>
+<td>spec.containers[].resources.limits.cpu</td>
+<td>String</td>
+<td>CPU的限制, 单位为core数</td>
+</tr>
+<tr>
+<td>spec.containers[].resources.limits.memory</td>
+<td>String</td>
+<td>MEM 内存的限制，单位为 MIB，GIB</td>
+</tr>
+<tr>
+<td>spec.containers[].resources.requests</td>
+<td>Object</td>
+<td>容器启动和调度室的限制设置</td>
+</tr>
+<tr>
+<td>spec.containers[].resources.requests.cpu</td>
+<td>String</td>
+<td>CPU请求，单位为 core 数</td>
+</tr>
+<tr>
+<td>spec.containers[].resources.requests.memory</td>
+<td>String</td>
+<td>内存请求, 单位为 MIB, GIB</td>
+</tr>
+</tbody>
+</table>
+<h2 id="注意"><a class="markdownIt-Anchor" href="#注意"></a> 注意</h2>
+<p>不要直接创建 Pod, 使用controller(Deployment/Job)来创建Pod.<br />
+controller通过使用<code>PodTemplate</code>来生成实际的pod, 如下:</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> batch/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Job
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> hello
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">template</span><span class="token punctuation">:</span> <span class="token comment"># 这里是 Pod 模版</span>
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> hello
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> busybox
+        <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'sh'</span><span class="token punctuation">,</span> <span class="token string">'-c'</span><span class="token punctuation">,</span> <span class="token string">'echo "Hello, Kubernetes!" &amp;&amp; sleep 3600'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="pod生命周期"><a class="markdownIt-Anchor" href="#pod生命周期"></a> pod生命周期</h1>
+<ol>
+<li>pod创建</li>
+<li>创建初始化容器(init container)</li>
+<li>运行用户容器(main container)<br />
+3.1. 容器启动后狗子(post start), 容器终止前钩子(pre stop)<br />
+3.2. 容器存活性探测(liveness probe), 就绪性探测(readiness probe)</li>
+<li>pod终止</li>
+</ol>
+<h2 id="初始化容器"><a class="markdownIt-Anchor" href="#初始化容器"></a> 初始化容器</h2>
+<ul>
+<li>初始化容器在用户容器之前创建,</li>
+<li>初始化容器按顺序创建</li>
+</ul>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> myapp<span class="token punctuation">-</span>pod
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> myapp
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> myapp<span class="token punctuation">-</span>container
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> busybox
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'sh'</span><span class="token punctuation">,</span> <span class="token string">'-c'</span><span class="token punctuation">,</span> <span class="token string">'echo The app is running! &amp;&amp; sleep 3600'</span><span class="token punctuation">]</span>
+  <span class="token key atrule">initContainers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> init<span class="token punctuation">-</span>myservice
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> busybox
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'sh'</span><span class="token punctuation">,</span> <span class="token string">'-c'</span><span class="token punctuation">,</span> <span class="token string">'until nslookup myservice; do echo waiting for myservice; sleep 2; done;'</span><span class="token punctuation">]</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> init<span class="token punctuation">-</span>mydb
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> busybox
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'sh'</span><span class="token punctuation">,</span> <span class="token string">'-c'</span><span class="token punctuation">,</span> <span class="token string">'until nslookup mydb; do echo waiting for mydb; sleep 2; done;'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="容器钩子"><a class="markdownIt-Anchor" href="#容器钩子"></a> 容器钩子</h2>
+<ul>
+<li>在容器开始后和结束前执行</li>
+<li>使用<code>spec.containers.lifecycle.postStart/preStop</code>来配置, 可选:
+<ul>
+<li><code>exec</code>执行命令</li>
+<li><code>HTTPGet</code> http请求</li>
+<li><code>tcpSocket</code> socket请求</li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+    <span class="token key atrule">lifecycle</span><span class="token punctuation">:</span>
+      <span class="token key atrule">postStart</span><span class="token punctuation">:</span>
+        <span class="token key atrule">exec</span><span class="token punctuation">:</span>
+          <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"/bin/sh"</span><span class="token punctuation">,</span><span class="token string">"-c"</span><span class="token punctuation">,</span><span class="token punctuation">...</span><span class="token punctuation">]</span>
+      <span class="token key atrule">preStop</span><span class="token punctuation">:</span>
+        <span class="token key atrule">exec</span><span class="token punctuation">:</span>
+          <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"/bin/sh"</span><span class="token punctuation">,</span><span class="token string">"-c"</span><span class="token punctuation">,</span><span class="token punctuation">...</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="容器探测"><a class="markdownIt-Anchor" href="#容器探测"></a> 容器探测</h2>
+<ul>
+<li>
+<p>探测方式</p>
+<ul>
+<li>liveness: pod是否正常运行, 决定是否重启pod</li>
+<li>readless: pod是否可以接受请求, 决定是否请求转发给pod</li>
+</ul>
+</li>
+<li>
+<p>使用<code>spec.containers.livenessProbe</code>来配置, 可选:</p>
+<ul>
+<li><code>exec</code>执行命令</li>
+<li><code>HTTPGet</code> http请求</li>
+<li><code>tcpSocket</code> socket请求</li>
+</ul>
+</li>
+</ul>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+    <span class="token key atrule">livenessProbe</span><span class="token punctuation">:</span>
+        <span class="token key atrule">exec</span><span class="token punctuation">:</span>
+          <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"/bin/sh"</span><span class="token punctuation">,</span><span class="token string">"-c"</span><span class="token punctuation">,</span><span class="token punctuation">...</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="重启策略"><a class="markdownIt-Anchor" href="#重启策略"></a> 重启策略</h2>
+<p><code>spec.restartPolicy</code>可取Always、OnFailure 和 Never。默认值是 Always。</p>
+<ul>
+<li>Always: 默认, 无论如何都重启</li>
+<li>OnFailure: 异常终止重启</li>
+<li>Never: 不重启</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>取值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pending</td>
+<td>Pod被调度的时间和通过网络下载镜像的时间</td>
+</tr>
+<tr>
+<td>Running</td>
+<td>Pod 已经绑定到了某个节点，Pod 中所有的容器都已被创建, 并且至少一个在运行</td>
+</tr>
+<tr>
+<td>Succeeded</td>
+<td>Pod 中的所有容器都已成功终止</td>
+</tr>
+<tr>
+<td>Failed</td>
+<td>至少一个容器以非0状态退出或者被系统终止</td>
+</tr>
+<tr>
+<td>Unknown</td>
+<td>Pod 所在主机通信失败</td>
+</tr>
+</tbody>
+</table>
+<p>pod中container的状态<br />
+<code>kubectl describe pod &lt;pod 名称&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>取值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Waiting</td>
+<td>初始化, 比如拉取容器镜像</td>
+</tr>
+<tr>
+<td>Running</td>
+<td>容器正在执行状态</td>
+</tr>
+<tr>
+<td>Terminated</td>
+<td>已经开始执行并且或者正常结束或者因为某些原因失败</td>
+</tr>
+</tbody>
+</table>
+<h1 id="pod调度策略"><a class="markdownIt-Anchor" href="#pod调度策略"></a> pod调度策略</h1>
+<ul>
+<li>自由调度: 默认通过Scheduler来决定pod在哪个node上执行</li>
+<li>定向调度: NodeName NodeSelector</li>
+<li>亲和性调度: NodeAffinity(和哪个node关系近), PodAffinity, PodAntiAffinity</li>
+<li>污点与容忍: Traints, Toleration</li>
+</ul>
+<h2 id="强制性"><a class="markdownIt-Anchor" href="#强制性"></a> 强制性</h2>
+<ol>
+<li>NodeName<br />
+强制将Pod指向某个Node, 跳过Scheduler的调度逻辑</li>
+</ol>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">nodeName</span><span class="token punctuation">:</span> node1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>NodeSelector<br />
+强制将pod指向具有某个标签的Node上, 跳过Scheduler的调度逻辑</li>
+</ol>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">nodeSelector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">key</span><span class="token punctuation">:</span> vallue<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="反亲和性"><a class="markdownIt-Anchor" href="#反亲和性"></a> (反)亲和性</h2>
+<p>亲和性: 当两个应用频繁交互时<br />
+反亲和性: 当多副本时, 打散到多个node, 实现高可用<br />
+<code>pod.spec.affinity.nodeAffinity/PodAffinity/PodAntiAffinity</code></p>
+<h2 id="污点"><a class="markdownIt-Anchor" href="#污点"></a> 污点</h2>
+<p>node上设置污点, 则和pod排斥, 不让pod进来</p>
+<ul>
+<li>PreferNoSchedule: 尽量不要来, 除非没有其他节点</li>
+<li>NoSchedule: 新的pod不要来, 已经来没关系</li>
+<li>NoExecute: 新的pod不要来, 已经有的也要走</li>
+</ul>
+<p>添加污点: <code>kubectl taint nodes [NAME] [KEY=VALUE:effect]</code><br />
+去除污点: <code>kubectl taint nodes [NAME] [KEY:effect-]</code><br />
+去除所有: <code>kubectl taint nodes key-</code></p>
+<h2 id="容忍toleration"><a class="markdownIt-Anchor" href="#容忍toleration"></a> 容忍(Toleration)</h2>
+<p>pod忽略node的污点, 强行进去</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">toleration</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">key</span><span class="token punctuation">:</span>
+    <span class="token key atrule">operator</span><span class="token punctuation">:</span>
+    <span class="token key atrule">value</span><span class="token punctuation">:</span>
+    effect<span class="token punctuation">:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="container-设置"><a class="markdownIt-Anchor" href="#container-设置"></a> container 设置</h3>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> command<span class="token punctuation">-</span>demo
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> test <span class="token comment"># 容易的唯一名称</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> debian <span class="token comment">#容器的镜像</span>
+    <span class="token key atrule">imagePullPolicy</span><span class="token punctuation">:</span> IfNotPresent <span class="token comment"># 默认值, 拉取镜像的策略</span>
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"printenv"</span><span class="token punctuation">]</span> <span class="token comment"># Dockerfile中的 ENTRYPOINT</span>
+    <span class="token key atrule">args</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"HOSTNAME"</span><span class="token punctuation">,</span> <span class="token string">"KUBERNETES_PORT"</span><span class="token punctuation">]</span> <span class="token comment"># Dockerfile中的 CMD</span>
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> http <span class="token comment"># 端口名称</span>
+      <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span> <span class="token comment"># container暴露的端口</span>
+      <span class="token key atrule">protocol</span><span class="token punctuation">:</span> TCP <span class="token comment"># 默认值</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> https <span class="token comment"># 端口名称</span>
+      <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">443</span> <span class="token comment"># container暴露的端口</span>
+      <span class="token key atrule">protocol</span><span class="token punctuation">:</span> TCP <span class="token comment"># 默认值</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/k8sNameSpace/" rel="prev" title="k8sNameSpace">
+                  <i class="fa fa-chevron-left"></i> k8sNameSpace
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/k8sController/" rel="next" title="k8sController">
+                  k8sController <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

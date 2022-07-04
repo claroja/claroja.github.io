@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="renderer Vex.Flow.Renderer(div,Vex.Flow.Renderer.Backends.SVG) | 渲染器 renderer并不参与实际的渲染, 它的主要作用是:  指定生成的标签(第一个参数) 渲染的方式svg和canvas(第二个参数) 生成context对象(getContext()) 设置界面的大小(&#96;resize())   方法    方法 描述">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claroja">
+<meta property="og:url" content="https://claroja.github.io/vexflow/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="renderer Vex.Flow.Renderer(div,Vex.Flow.Renderer.Backends.SVG) | 渲染器 renderer并不参与实际的渲染, 它的主要作用是:  指定生成的标签(第一个参数) 渲染的方式svg和canvas(第二个参数) 生成context对象(getContext()) 设置界面的大小(&#96;resize())   方法    方法 描述">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-04T05:40:02.490Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.490Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/vexflow/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/vexflow/","path":"vexflow/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#renderer"><span class="nav-number">1.</span> <span class="nav-text"> renderer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text"> 方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#context"><span class="nav-number">2.</span> <span class="nav-text"> context</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#stave"><span class="nav-number">3.</span> <span class="nav-text"> stave</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#notes"><span class="nav-number">4.</span> <span class="nav-text"> notes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#voice"><span class="nav-number">5.</span> <span class="nav-text"> voice</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#formatter"><span class="nav-number">6.</span> <span class="nav-text"> formatter</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vexflow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="renderer"><a class="markdownIt-Anchor" href="#renderer"></a> renderer</h1>
+<p>Vex.Flow.Renderer(div,Vex.Flow.Renderer.Backends.SVG) | 渲染器<br />
+<code>renderer</code>并不参与实际的渲染, 它的主要作用是:</p>
+<ol>
+<li>指定生成的标签(第一个参数)</li>
+<li>渲染的方式<code>svg</code>和<code>canvas</code>(第二个参数)</li>
+<li>生成<code>context</code>对象(<code>getContext()</code>)</li>
+<li>设置界面的大小(`resize())</li>
+</ol>
+<h2 id="方法"><a class="markdownIt-Anchor" href="#方法"></a> 方法</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>renderer.resize(500, 500)</td>
+<td>设置svg大小</td>
+</tr>
+<tr>
+<td>renderer.getContext()</td>
+<td>获得<code>context</code>对象</td>
+</tr>
+</tbody>
+</table>
+<h1 id="context"><a class="markdownIt-Anchor" href="#context"></a> context</h1>
+<p><code>context</code>的作用是作用是绘图(path),每个曲谱的渲染都需要<code>context</code>的协助.<br />
+下面的代码是画一个黄色的三角形</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">context<span class="token punctuation">.</span><span class="token function">beginPath</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// start recording our pen's moves</span>
+  <span class="token punctuation">.</span><span class="token function">moveTo</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment">// pickup the pen and set it down at X=0, Y=0. NOTE: Y=0 is the top of the screen.</span>
+  <span class="token punctuation">.</span><span class="token function">lineTo</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment">// now add a line to the right from (0, 0) to (50, 0) to our path</span>
+  <span class="token punctuation">.</span><span class="token function">lineTo</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">)</span> <span class="token comment">// add a line to the left and down from (50, 0) to (25, 50)</span>
+  <span class="token punctuation">.</span><span class="token function">closePath</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// now add a line back to wherever the path started, in this case (0, 0), closing the triangle.</span>
+  <span class="token punctuation">.</span><span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">fill</span><span class="token operator">:</span> <span class="token string">'yellow'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// now fill our triangle in yellow.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述的代码等价于:<code>M0 0L50 0L25 50Z</code></p>
+<p>绘制的上下文<br />
+renderer.getContext()</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/0xfe/vexflow/wiki/Understanding-Renderer-&amp;-Context">官网</a></p>
+<h1 id="stave"><a class="markdownIt-Anchor" href="#stave"></a> stave</h1>
+<p>stave就是五线谱了<br />
+Vex.Flow.Stave(10, 40, 400)</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>addClef(“treble”)</td>
+<td>谱号</td>
+</tr>
+<tr>
+<td>addTimeSignature(“4/4”)</td>
+<td>拍好</td>
+</tr>
+<tr>
+<td>setContext()</td>
+<td>设置context对象</td>
+</tr>
+<tr>
+<td>draw()</td>
+<td>绘制</td>
+</tr>
+</tbody>
+</table>
+<h1 id="notes"><a class="markdownIt-Anchor" href="#notes"></a> notes</h1>
+<p>音符</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> notes <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token comment">// A quarter-note C.</span>
+  <span class="token keyword">new</span> <span class="token class-name">VF<span class="token punctuation">.</span>StaveNote</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token literal-property property">clef</span><span class="token operator">:</span> <span class="token string">"treble"</span><span class="token punctuation">,</span> <span class="token literal-property property">keys</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"c/4"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token string">"q"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="voice"><a class="markdownIt-Anchor" href="#voice"></a> voice</h1>
+<p>将多个notes称为一个<code>voice</code>, 多个<code>voice</code>可以形成<code>voiceGroup</code></p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> voice <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VF<span class="token punctuation">.</span>Voice</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token literal-property property">num_beats</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>  <span class="token literal-property property">beat_value</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+voice<span class="token punctuation">.</span><span class="token function">addTickables</span><span class="token punctuation">(</span>notes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+voice<span class="token punctuation">.</span><span class="token function">draw</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> stave<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="formatter"><a class="markdownIt-Anchor" href="#formatter"></a> formatter</h1>
+<p>用来设置音符的样式</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VF<span class="token punctuation">.</span>Formatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">joinVoices</span><span class="token punctuation">(</span><span class="token punctuation">[</span>voice<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token punctuation">[</span>voice<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">350</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/vim/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/vite/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

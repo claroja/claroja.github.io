@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Inference 使用Asia network, 来进行推理(Inference) # Fetch the asia model from the bnlearn repository from pgmpy.utils import get_example_model asia_model &#x3D; get_example_model(&#39;asia&#39;) print(&quot;Nodes: &quot;, asia_mo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pgmpy推理">
+<meta property="og:url" content="https://claroja.github.io/pgmpy%E6%8E%A8%E7%90%86/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="Inference 使用Asia network, 来进行推理(Inference) # Fetch the asia model from the bnlearn repository from pgmpy.utils import get_example_model asia_model &#x3D; get_example_model(&#39;asia&#39;) print(&quot;Nodes: &quot;, asia_mo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-25T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.428Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/pgmpy%E6%8E%A8%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/pgmpy%E6%8E%A8%E7%90%86/","path":"pgmpy推理/","title":"pgmpy推理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>pgmpy推理 | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#inference"><span class="nav-number">1.</span> <span class="nav-text"> Inference</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#causal-inference"><span class="nav-number">2.</span> <span class="nav-text"> Causal Inference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pgmpy%E6%8E%A8%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="pgmpy推理 | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pgmpy推理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 22:03:54" itemprop="dateCreated datePublished" datetime="2021-10-25T22:03:54+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="inference"><a class="markdownIt-Anchor" href="#inference"></a> Inference</h1>
+<p>使用<a target="_blank" rel="noopener" href="http://www.bnlearn.com/bnrepository/#asia">Asia network</a>, 来进行推理(Inference)</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Fetch the asia model from the bnlearn repository</span>
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>utils <span class="token keyword">import</span> get_example_model
+asia_model <span class="token operator">=</span> get_example_model<span class="token punctuation">(</span><span class="token string">'asia'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Nodes: "</span><span class="token punctuation">,</span> asia_model<span class="token punctuation">.</span>nodes<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Edges: "</span><span class="token punctuation">,</span> asia_model<span class="token punctuation">.</span>edges<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
+Nodes:  ['asia', 'tub', 'smoke', 'lung', 'bronc', 'either', 'xray', 'dysp']
+Edges:  [('asia', 'tub'), ('tub', 'either'), ('smoke', 'lung'), ('smoke', 'bronc'), ('lung', 'either'), ('bronc', 'dysp'), ('either', 'xray'), ('either', 'dysp')]
+'''</span>
+
+<span class="token comment"># Initializing the VariableElimination class</span>
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>inference <span class="token keyword">import</span> VariableElimination
+asia_infer <span class="token operator">=</span> VariableElimination<span class="token punctuation">(</span>asia_model<span class="token punctuation">)</span>
+<span class="token comment"># Computing the probability of bronc given smoke=no.</span>
+q <span class="token operator">=</span> asia_infer<span class="token punctuation">.</span>query<span class="token punctuation">(</span>variables<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'bronc'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> evidence<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'smoke'</span><span class="token punctuation">:</span> <span class="token string">'no'</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>q<span class="token punctuation">)</span>
+<span class="token comment"># Computing the joint probability of bronc and asia given smoke=yes</span>
+q <span class="token operator">=</span> asia_infer<span class="token punctuation">.</span>query<span class="token punctuation">(</span>variables<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'bronc'</span><span class="token punctuation">,</span> <span class="token string">'asia'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> evidence<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'smoke'</span><span class="token punctuation">:</span> <span class="token string">'yes'</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>q<span class="token punctuation">)</span>
+<span class="token comment"># Computing the probabilities (not joint) of bronc and asia given smoke=no</span>
+q <span class="token operator">=</span> asia_infer<span class="token punctuation">.</span>query<span class="token punctuation">(</span>variables<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'bronc'</span><span class="token punctuation">,</span> <span class="token string">'asia'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> evidence<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'smoke'</span><span class="token punctuation">:</span> <span class="token string">'no'</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> joint<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> factor <span class="token keyword">in</span> q<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>factor<span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
++------------+--------------+
+| bronc      |   phi(bronc) |
++============+==============+
+| bronc(yes) |       0.3000 |
++------------+--------------+
+| bronc(no)  |       0.7000 |
++------------+--------------+
++------------+-----------+-------------------+
+| bronc      | asia      |   phi(bronc,asia) |
++============+===========+===================+
+| bronc(yes) | asia(yes) |            0.0060 |
++------------+-----------+-------------------+
+| bronc(yes) | asia(no)  |            0.5940 |
++------------+-----------+-------------------+
+| bronc(no)  | asia(yes) |            0.0040 |
++------------+-----------+-------------------+
+| bronc(no)  | asia(no)  |            0.3960 |
++------------+-----------+-------------------+
++------------+--------------+
+| bronc      |   phi(bronc) |
++============+==============+
+| bronc(yes) |       0.3000 |
++------------+--------------+
+| bronc(no)  |       0.7000 |
++------------+--------------+
++-----------+-------------+
+| asia      |   phi(asia) |
++===========+=============+
+| asia(yes) |      0.0100 |
++-----------+-------------+
+| asia(no)  |      0.9900 |
++-----------+-------------+
+'''</span>
+
+<span class="token comment"># Computing the MAP of bronc given smoke=no.</span>
+q <span class="token operator">=</span> asia_infer<span class="token punctuation">.</span>map_query<span class="token punctuation">(</span>variables<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'bronc'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> evidence<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'smoke'</span><span class="token punctuation">:</span> <span class="token string">'no'</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>q<span class="token punctuation">)</span>
+<span class="token comment"># Computing the MAP of bronc and asia given smoke=yes</span>
+q <span class="token operator">=</span> asia_infer<span class="token punctuation">.</span>map_query<span class="token punctuation">(</span>variables<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'bronc'</span><span class="token punctuation">,</span> <span class="token string">'asia'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> evidence<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'smoke'</span><span class="token punctuation">:</span> <span class="token string">'yes'</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>q<span class="token punctuation">)</span>
+
+<span class="token triple-quoted-string string">'''
+&#123;'bronc': 'no'&#125;
+&#123;'bronc': 'yes', 'asia': 'no'&#125;
+'''</span>
+
+lung_virt_evidence <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'lung'</span><span class="token punctuation">,</span> variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.4</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0.6</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># Query with hard evidence smoke = no and virtual evidence lung = [0.4, 0.6]</span>
+q <span class="token operator">=</span> asia_infer<span class="token punctuation">.</span>query<span class="token punctuation">(</span>variables<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'bronc'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> evidence<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'smoke'</span><span class="token punctuation">:</span> <span class="token string">'no'</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> virtual_evidence<span class="token operator">=</span><span class="token punctuation">[</span>lung_virt_evidence<span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>q<span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
++------------+--------------+
+| bronc      |   phi(bronc) |
++============+==============+
+| bronc(yes) |       0.3000 |
++------------+--------------+
+| bronc(no)  |       0.7000 |
++------------+--------------+
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://pgmpy.org/examples/Inference%20in%20Discrete%20Bayesian%20Networks.html">https://pgmpy.org/examples/Inference in Discrete Bayesian Networks.html</a></p>
+<h1 id="causal-inference"><a class="markdownIt-Anchor" href="#causal-inference"></a> Causal Inference</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>models <span class="token keyword">import</span> BayesianNetwork
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>inference <span class="token keyword">import</span> VariableElimination
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>factors<span class="token punctuation">.</span>discrete <span class="token keyword">import</span> TabularCPD
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>inference <span class="token keyword">import</span> CausalInference
+
+simp_model <span class="token operator">=</span> BayesianNetwork<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'S'</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'T'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'S'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+simp_model<span class="token punctuation">.</span>to_daft<span class="token punctuation">(</span>node_pos<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'T'</span><span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'S'</span><span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>render<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+cpd_s <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'S'</span><span class="token punctuation">,</span>
+                   variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+                   values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.5</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                           <span class="token punctuation">[</span><span class="token number">0.5</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                   state_names<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'S'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'m'</span><span class="token punctuation">,</span> <span class="token string">'f'</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+cpd_t <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'T'</span><span class="token punctuation">,</span>
+                   variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+                   values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.25</span><span class="token punctuation">,</span> <span class="token number">0.75</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                           <span class="token punctuation">[</span><span class="token number">0.75</span><span class="token punctuation">,</span> <span class="token number">0.25</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                   evidence<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'S'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                   evidence_card<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                   state_names<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'S'</span><span class="token punctuation">:</span><span class="token punctuation">[</span><span class="token string">'m'</span><span class="token punctuation">,</span> <span class="token string">'f'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">:</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+cpd_c <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'C'</span><span class="token punctuation">,</span>
+                   variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+                   values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.3</span><span class="token punctuation">,</span> <span class="token number">0.4</span><span class="token punctuation">,</span> <span class="token number">0.7</span><span class="token punctuation">,</span> <span class="token number">0.8</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                           <span class="token punctuation">[</span><span class="token number">0.7</span><span class="token punctuation">,</span> <span class="token number">0.6</span><span class="token punctuation">,</span> <span class="token number">0.3</span><span class="token punctuation">,</span> <span class="token number">0.2</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                   evidence<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'S'</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                   evidence_card<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                   state_names<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'S'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'m'</span><span class="token punctuation">,</span> <span class="token string">'f'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+simp_model<span class="token punctuation">.</span>add_cpds<span class="token punctuation">(</span>cpd_s<span class="token punctuation">,</span> cpd_t<span class="token punctuation">,</span> cpd_c<span class="token punctuation">)</span>
+
+
+<span class="token comment"># Non adjusted inference</span>
+infer_non_adjust <span class="token operator">=</span> VariableElimination<span class="token punctuation">(</span>simp_model<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>infer_non_adjust<span class="token punctuation">.</span>query<span class="token punctuation">(</span>variables<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'C'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> evidence<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'T'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>infer_non_adjust<span class="token punctuation">.</span>query<span class="token punctuation">(</span>variables<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'C'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> evidence<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'T'</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+
+<span class="token triple-quoted-string string">'''
++------+----------+
+| C    |   phi(C) |
++======+==========+
+| C(0) |   0.5000 |
++------+----------+
+| C(1) |   0.5000 |
++------+----------+
++------+----------+
+| C    |   phi(C) |
++======+==========+
+| C(0) |   0.6000 |
++------+----------+
+| C(1) |   0.4000 |
++------+----------+
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://pgmpy.org/examples/Causal%20Inference.html">https://pgmpy.org/examples/Causal Inference.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/pgmpy%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C/" rel="prev" title="pgmpy创建网络">
+                  <i class="fa fa-chevron-left"></i> pgmpy创建网络
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/gitlab_CICD/" rel="next" title="gitlab_CICD">
+                  gitlab_CICD <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

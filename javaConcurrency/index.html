@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="进程和线程  线程存在于进程内，是进程的一个子集 进程拥有共享的资源(资源分配最小单位)，如内存空间等，供其内部的线程(资源调度最小单位)共享 通信 同一台计算机的进程通信称为 IPC（Inter-process communication）, 不同计算机之间的进程通信，需要通过网络，并遵守共同的协议，例如 HTTP 多个线程可以访问同一个共享变量 线程更轻量，线程上下文切换成本一般上要比进程上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javaConcurrency">
+<meta property="og:url" content="https://claroja.github.io/javaConcurrency/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="进程和线程  线程存在于进程内，是进程的一个子集 进程拥有共享的资源(资源分配最小单位)，如内存空间等，供其内部的线程(资源调度最小单位)共享 通信 同一台计算机的进程通信称为 IPC（Inter-process communication）, 不同计算机之间的进程通信，需要通过网络，并遵守共同的协议，例如 HTTP 多个线程可以访问同一个共享变量 线程更轻量，线程上下文切换成本一般上要比进程上">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-11T02:29:01.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.298Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/javaConcurrency/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/javaConcurrency/","path":"javaConcurrency/","title":"javaConcurrency"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>javaConcurrency | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text"> 进程和线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B6%E8%A1%8C%E4%B8%8E%E5%B9%B6%E5%8F%91"><span class="nav-number">2.</span> <span class="nav-text"> 并行与并发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5"><span class="nav-number">3.</span> <span class="nav-text"> 同步与异步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text"> 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E5%92%8C%E5%BC%82%E6%AD%A5"><span class="nav-number">5.</span> <span class="nav-text"> 同步和异步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BA%94%E4%B8%AD%E7%8A%B6%E6%80%81"><span class="nav-number">6.</span> <span class="nav-text"> 操作系统的五中状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#java-thread-%E5%85%AD%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="nav-number">7.</span> <span class="nav-text"> Java Thread 六种状态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#new-runnable"><span class="nav-number">7.1.</span> <span class="nav-text"> NEW --&gt; RUNNABLE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runnable-waiting"><span class="nav-number">7.2.</span> <span class="nav-text"> RUNNABLE &lt;–&gt; WAITING</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runnable-timed_waiting"><span class="nav-number">7.3.</span> <span class="nav-text"> RUNNABLE &lt;–&gt; TIMED_WAITING</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runnable-blocked"><span class="nav-number">7.4.</span> <span class="nav-text"> RUNNABLE &lt;–&gt; BLOCKED</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runnable-terminated"><span class="nav-number">7.5.</span> <span class="nav-text"> RUNNABLE &lt;–&gt; TERMINATED</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/javaConcurrency/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="javaConcurrency | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          javaConcurrency
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-11 10:29:01" itemprop="dateCreated datePublished" datetime="2021-07-11T10:29:01+08:00">2021-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="进程和线程"><a class="markdownIt-Anchor" href="#进程和线程"></a> 进程和线程</h1>
+<ul>
+<li>线程存在于进程内，是进程的一个子集</li>
+<li>进程拥有共享的资源(资源分配最小单位)，如内存空间等，供其内部的线程(资源调度最小单位)共享</li>
+<li>通信<br />
+同一台计算机的进程通信称为 IPC（Inter-process communication）, 不同计算机之间的进程通信，需要通过网络，并遵守共同的协议，例如 HTTP<br />
+多个线程可以访问同一个共享变量</li>
+<li>线程更轻量，线程上下文切换成本一般上要比进程上下文切换低</li>
+</ul>
+<h1 id="并行与并发"><a class="markdownIt-Anchor" href="#并行与并发"></a> 并行与并发</h1>
+<p>并发(concurrent):<br />
+单核cpu下，线程实际还是串行执行的。操作系统通过任务调度器，将cpu的时间片(毫秒级)分给不同的程序,物理时间先后发生, 由于cpu在线程间（时间片很短）的切换非常快，给人感觉是同时运行的.<br />
+并行(parallel):<br />
+多个cpu下, 不同cpu同一时刻, 同时执行指令, 物理时间同时发生.</p>
+<h1 id="同步与异步"><a class="markdownIt-Anchor" href="#同步与异步"></a> 同步与异步</h1>
+<p>需要等待结果返回，才能继续运行就是同步<br />
+不需要等待结果返回，就能继续运行就是异步</p>
+<h1 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h1>
+<ol>
+<li>单核cpu下，多线程不能实际提高程序运行效率<br />
+但是IO操作不占用cpu, 线程虽然不用cpu，但需要一直等待IO结束, 此时虽然是单核cpu, 也可用多线程.</li>
+<li>多核cpu下, 可以</li>
+</ol>
+<h1 id="同步和异步"><a class="markdownIt-Anchor" href="#同步和异步"></a> 同步和异步</h1>
+<p>以调用方角度来讲</p>
+<ul>
+<li>需要等待子线程结果返回，才能继续运行就是同步</li>
+<li>不需要等待子线程结果返回，就能继续运行就是异步</li>
+</ul>
+<h1 id="操作系统的五中状态"><a class="markdownIt-Anchor" href="#操作系统的五中状态"></a> 操作系统的五中状态</h1>
+<p>New: 进程创建, 没有和系统关联<br />
+Ready: 等待系统调度, 分配CPU时间<br />
+Running: 获得CPU时间片, 正在运行<br />
+Blocked: 比如等待IO, 直到收到IO完成 event, 才会进入Ready状态<br />
+Exit:退出<br />
+参考:<a target="_blank" rel="noopener" href="https://www.tecmint.com/linux-process-management/">https://www.tecmint.com/linux-process-management/</a></p>
+<h1 id="java-thread-六种状态"><a class="markdownIt-Anchor" href="#java-thread-六种状态"></a> Java Thread 六种状态</h1>
+<ul>
+<li>New: Thread创建, 未调用<code>start()</code></li>
+<li>Runnable: 调用<code>start()</code>后, 包含了系统的(可运行,运行与阻塞状态)</li>
+<li>Blocked: acquiring a lock</li>
+<li>Waited: waiting for notification</li>
+<li>Timed_Waitting: waitingg for timeout notification</li>
+<li>Terminated: 方法执行完终止</li>
+</ul>
+<h2 id="new-runnable"><a class="markdownIt-Anchor" href="#new-runnable"></a> NEW --&gt; RUNNABLE</h2>
+<ul>
+<li>调用<code>t.start()</code></li>
+</ul>
+<h2 id="runnable-waiting"><a class="markdownIt-Anchor" href="#runnable-waiting"></a> RUNNABLE &lt;–&gt; WAITING</h2>
+<ul>
+<li>调用<code>obj.wait()</code>, 线程从 RUNNABLE --&gt; WAITING</li>
+<li>调用<code>obj.notify()</code>,<code>obj.notifyAll()</code>,<code>t.interrupt()</code>
+<ul>
+<li>竞争锁成功，t 线程从 WAITING --&gt; RUNNABLE</li>
+<li>竞争锁失败，t 线程从 WAITING --&gt; BLOCKED</li>
+</ul>
+</li>
+<li>调用<code>t.join()</code>时，当前线程从 RUNNABLE --&gt; WAITING<br />
+t 线程运行结束，或调用了当前线程的<code>interrupt()</code>时，当前线程从 WAITING --&gt; RUNNABLE</li>
+<li>当前线程调用<code>LockSupport.park()</code>方法会让当前线程从 RUNNABLE --&gt; WAITING<br />
+调用<code>LockSupport.unpark()</code>或调用了线程的<code>interrupt()</code>, 会让目标线程从 WAITING --&gt; RUNNABLE</li>
+</ul>
+<h2 id="runnable-timed_waiting"><a class="markdownIt-Anchor" href="#runnable-timed_waiting"></a> RUNNABLE &lt;–&gt; TIMED_WAITING</h2>
+<ul>
+<li>线程调用<code>synchronized(obj)</code>获取了对象锁后<br />
+调用<code>obj.wait(long n)</code>方法时, 线程从 RUNNABLE --&gt; TIMED_WAITING<br />
+线程等待时间超过了 n 毫秒，或调用 obj.notify(), obj.notifyAll(), t.interrupt() 时<br />
+竞争锁成功，t 线程从 TIMED_WAITING --&gt; RUNNABLE<br />
+竞争锁失败，t 线程从 TIMED_WAITING --&gt; BLOCKED</li>
+<li>当前线程调用<code>join(long n)</code> 方法时，当前线程从 RUNNABLE --&gt; TIMED_WAITING<br />
+当前线程等待时间超过了 n 毫秒，或t 线程运行结束，或调用了当前线程的 interrupt() 时，当前线程从TIMED_WAITING --&gt; RUNNABLE</li>
+<li>当前线程调用 Thread.sleep(long n), 当前线程从 RUNNABLE --&gt; TIMED_WAITING<br />
+当前线程等待时间超过了 n 毫秒，当前线程从 TIMED_WAITING --&gt; RUNNABLE</li>
+<li>当前线程调用 LockSupport.parkNanos(long nanos) 或 LockSupport.parkUntil(long millis) 时， 当前线程从 RUNNABLE --&gt; TIMED_WAITING<br />
+调用 LockSupport.unpark(目标线程) 或调用了线程 的 interrupt(), 或是等待超时，会让目标线程从TIMED_WAITING–&gt; RUNNABLE</li>
+</ul>
+<h2 id="runnable-blocked"><a class="markdownIt-Anchor" href="#runnable-blocked"></a> RUNNABLE &lt;–&gt; BLOCKED</h2>
+<p>t 线程用 synchronized(obj) 获取了对象锁时如果竞争失败，从 RUNNABLE --&gt; BLOCKED<br />
+持 obj 锁线程的同步代码块执行完毕，会唤醒该对象上所有 BLOCKED 的线程重新竞争，如果其中 t 线程竞争<br />
+成功，从 BLOCKED --&gt; RUNNABLE ，其它失败的线程仍然 BLOCKED</p>
+<h2 id="runnable-terminated"><a class="markdownIt-Anchor" href="#runnable-terminated"></a> RUNNABLE &lt;–&gt; TERMINATED</h2>
+<p>当前线程所有代码运行完毕，进入 TERMINATED</p>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://www.baeldung.com/java-thread-lifecycle">https://www.baeldung.com/java-thread-lifecycle</a><br />
+<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/lifecycle-and-states-of-a-thread-in-java/">https://www.geeksforgeeks.org/lifecycle-and-states-of-a-thread-in-java/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/JavaSpringBootLog/" rel="prev" title="JavaSpringBootLog">
+                  <i class="fa fa-chevron-left"></i> JavaSpringBootLog
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/JavaThread/" rel="next" title="JavaThread">
+                  JavaThread <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

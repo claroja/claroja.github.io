@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1.Linux2.6出现epoll,西能最好的多路I&#x2F;O就绪通知方法 2.epoll同时支持水平触发和边缘触发(只触发1次,再发生变化不会告知) 3.使用mmap技术,省去了fd在系统调用时复制的开销 4.epoll采用事件就绪通知方式,类似于callback机制    方法 描述     select.epoll([sizehint&#x3D;-1]) 返回epoll对象   epoll.poll(tim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python_io_epoll">
+<meta property="og:url" content="https://claroja.github.io/python_io_epoll/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="1.Linux2.6出现epoll,西能最好的多路I&#x2F;O就绪通知方法 2.epoll同时支持水平触发和边缘触发(只触发1次,再发生变化不会告知) 3.使用mmap技术,省去了fd在系统调用时复制的开销 4.epoll采用事件就绪通知方式,类似于callback机制    方法 描述     select.epoll([sizehint&#x3D;-1]) 返回epoll对象   epoll.poll(tim">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-02T00:14:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.448Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/python_io_epoll/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/python_io_epoll/","path":"python_io_epoll/","title":"python_io_epoll"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python_io_epoll | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_io_epoll/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="python_io_epoll | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python_io_epoll
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>1.Linux2.6出现epoll,西能最好的多路I/O就绪通知方法<br />
+2.epoll同时支持水平触发和边缘触发(只触发1次,再发生变化不会告知)<br />
+3.使用mmap技术,省去了fd在系统调用时复制的开销<br />
+4.epoll采用事件就绪通知方式,类似于callback机制</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>select.epoll([sizehint=-1])</td>
+<td>返回epoll对象</td>
+</tr>
+<tr>
+<td>epoll.poll(timeout=-1[, maxevnets=-1])</td>
+<td>等待事件，timeout(float)的单位是秒（second）</td>
+</tr>
+<tr>
+<td>epoll.close()</td>
+<td>关闭epoll对象的文件描述符。</td>
+</tr>
+<tr>
+<td>epoll.fileno</td>
+<td>返回control fd的文件描述符number。</td>
+</tr>
+<tr>
+<td>epoll.fromfd(fd)</td>
+<td>用给予的fd来创建一个epoll对象。</td>
+</tr>
+<tr>
+<td>epoll.register(fd[, eventmask])</td>
+<td>在epoll对象中注册一个文件描述符。（如果文件描述符已经存在，将会引起一个IOError）</td>
+</tr>
+<tr>
+<td>epoll.modify(fd, eventmask)</td>
+<td>修改一个已经注册的文件描述符。</td>
+</tr>
+<tr>
+<td>epoll.unregister(fd)</td>
+<td>注销一个文件描述符。</td>
+</tr>
+</tbody>
+</table>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> socket <span class="token keyword">import</span> <span class="token operator">*</span>
+<span class="token keyword">import</span> select
+serSocket <span class="token operator">=</span> socket<span class="token punctuation">(</span>AF_INET<span class="token punctuation">,</span> SOCK_STREAM<span class="token punctuation">)</span>
+serSocket<span class="token punctuation">.</span>bind<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">,</span> <span class="token number">8000</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+epoll <span class="token operator">=</span> select<span class="token punctuation">.</span>epoll<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 注意win环境下是没有epoll的</span>
+epoll<span class="token punctuation">.</span>register<span class="token punctuation">(</span>serSocket<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> select<span class="token punctuation">.</span>EPOLLIN<span class="token operator">|</span>select<span class="token punctuation">.</span>EPOLLET<span class="token punctuation">)</span>  <span class="token comment"># 读就绪|边缘触发</span>
+connections <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+adress <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+<span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+    epoll_list <span class="token operator">=</span> epoll<span class="token punctuation">.</span>epoll<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># epoll 进行 fd 扫描的地方 扫描出能满足条件的套接字，添加进列表中</span>
+    <span class="token keyword">for</span> fd<span class="token punctuation">,</span> events <span class="token keyword">in</span> epoll_list<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> fd <span class="token operator">==</span> serSocket<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment">#对epoll列表中的文件描述符、事件进行扫描</span>
+            conn<span class="token punctuation">,</span> addr <span class="token operator">=</span> serSocket<span class="token punctuation">.</span>accept<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment">#表示有客户端连接了服务器套接字</span>
+            connections<span class="token punctuation">[</span>conn<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> conn
+            adress<span class="token punctuation">[</span>addr<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> addr
+            epoll<span class="token punctuation">.</span>register<span class="token punctuation">(</span>conn<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> select<span class="token punctuation">.</span>EPOLLIN<span class="token operator">|</span>select<span class="token punctuation">.</span>EPOLLET<span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> events <span class="token operator">==</span> select<span class="token punctuation">.</span>EPOLLIN<span class="token punctuation">:</span> <span class="token comment"># 读就绪,既客户端发来信息</span>
+            recvData <span class="token operator">=</span> connections<span class="token punctuation">[</span>fd<span class="token punctuation">]</span><span class="token punctuation">.</span>recv<span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>recvData<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+                <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%s %s'</span><span class="token operator">%</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>addr<span class="token punctuation">)</span><span class="token punctuation">,</span> recvData<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                epoll<span class="token punctuation">.</span>unregister<span class="token punctuation">(</span>fd<span class="token punctuation">)</span>
+                connections<span class="token punctuation">[</span>fd<span class="token punctuation">]</span><span class="token punctuation">.</span>colse<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/wangbowj123/article/details/77885294">https://blog.csdn.net/wangbowj123/article/details/77885294</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/python_io_poll/" rel="prev" title="python_io_poll">
+                  <i class="fa fa-chevron-left"></i> python_io_poll
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/python_io_binaryio/" rel="next" title="python_io_binaryio">
+                  python_io_binaryio <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

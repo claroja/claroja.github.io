@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1. 实现 import numpy as np import dlib import cv2 as cv  # 1. 制作标准脸 TEMPLATE &#x3D; np.float32(     [[0.        , 0.17856914],     [0.00412831, 0.31259227],     [0.0196793 , 0.44770938],     [0.04809872, 0.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FaceAlign">
+<meta property="og:url" content="https://claroja.github.io/FaceAlign/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="1. 实现 import numpy as np import dlib import cv2 as cv  # 1. 制作标准脸 TEMPLATE &#x3D; np.float32(     [[0.        , 0.17856914],     [0.00412831, 0.31259227],     [0.0196793 , 0.44770938],     [0.04809872, 0.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-20T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.045Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/FaceAlign/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/FaceAlign/","path":"FaceAlign/","title":"FaceAlign"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>FaceAlign | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text"> 1. 实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8-face_aligneralign"><span class="nav-number">2.</span> <span class="nav-text"> 2. 直接调用 face_aligner.align</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#21-%E6%A0%87%E5%87%86%E5%8C%96%E8%84%B8%E5%88%B6%E4%BD%9C"><span class="nav-number">2.1.</span> <span class="nav-text"> 2.1 标准化脸制作</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/FaceAlign/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="FaceAlign | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FaceAlign
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-实现"><a class="markdownIt-Anchor" href="#1-实现"></a> 1. 实现</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> dlib
+<span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
+
+<span class="token comment"># 1. 制作标准脸</span>
+TEMPLATE <span class="token operator">=</span> np<span class="token punctuation">.</span>float32<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.</span>        <span class="token punctuation">,</span> <span class="token number">0.17856914</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.00412831</span><span class="token punctuation">,</span> <span class="token number">0.31259227</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.0196793</span> <span class="token punctuation">,</span> <span class="token number">0.44770938</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.04809872</span><span class="token punctuation">,</span> <span class="token number">0.5800727</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.10028344</span><span class="token punctuation">,</span> <span class="token number">0.70349526</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.17999782</span><span class="token punctuation">,</span> <span class="token number">0.81208664</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.27627307</span><span class="token punctuation">,</span> <span class="token number">0.90467805</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.38463727</span><span class="token punctuation">,</span> <span class="token number">0.98006284</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.5073561</span> <span class="token punctuation">,</span> <span class="token number">1.</span>        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.63014114</span><span class="token punctuation">,</span> <span class="token number">0.9761118</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.7386777</span> <span class="token punctuation">,</span> <span class="token number">0.89921385</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.8354747</span> <span class="token punctuation">,</span> <span class="token number">0.80513287</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.91434467</span><span class="token punctuation">,</span> <span class="token number">0.6945623</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.9643504</span> <span class="token punctuation">,</span> <span class="token number">0.56826204</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.9887058</span> <span class="token punctuation">,</span> <span class="token number">0.432444</span>  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.9993123</span> <span class="token punctuation">,</span> <span class="token number">0.29529294</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">1.</span>        <span class="token punctuation">,</span> <span class="token number">0.15909716</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.09485531</span><span class="token punctuation">,</span> <span class="token number">0.07603313</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.15534875</span><span class="token punctuation">,</span> <span class="token number">0.02492465</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.2377474</span> <span class="token punctuation">,</span> <span class="token number">0.01139098</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.32313403</span><span class="token punctuation">,</span> <span class="token number">0.02415778</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.4036699</span> <span class="token punctuation">,</span> <span class="token number">0.05780071</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.56864655</span><span class="token punctuation">,</span> <span class="token number">0.0521157</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.65128165</span><span class="token punctuation">,</span> <span class="token number">0.01543965</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.7379608</span> <span class="token punctuation">,</span> <span class="token number">0.</span>        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.82290924</span><span class="token punctuation">,</span> <span class="token number">0.01191543</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.88739765</span><span class="token punctuation">,</span> <span class="token number">0.06025707</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.48893312</span><span class="token punctuation">,</span> <span class="token number">0.15513189</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.48991537</span><span class="token punctuation">,</span> <span class="token number">0.24343018</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.49092147</span><span class="token punctuation">,</span> <span class="token number">0.33176517</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.49209353</span><span class="token punctuation">,</span> <span class="token number">0.422107</span>  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.397399</span>  <span class="token punctuation">,</span> <span class="token number">0.48004663</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.4442625</span> <span class="token punctuation">,</span> <span class="token number">0.49906778</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.4949509</span> <span class="token punctuation">,</span> <span class="token number">0.5144414</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.54558265</span><span class="token punctuation">,</span> <span class="token number">0.49682876</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.59175086</span><span class="token punctuation">,</span> <span class="token number">0.47722608</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.194157</span>  <span class="token punctuation">,</span> <span class="token number">0.16926692</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.24600308</span><span class="token punctuation">,</span> <span class="token number">0.13693026</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.31000495</span><span class="token punctuation">,</span> <span class="token number">0.13735634</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.36378494</span><span class="token punctuation">,</span> <span class="token number">0.17794687</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.3063696</span> <span class="token punctuation">,</span> <span class="token number">0.19082251</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.24390514</span><span class="token punctuation">,</span> <span class="token number">0.19138186</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.6189632</span> <span class="token punctuation">,</span> <span class="token number">0.17277813</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.67249435</span><span class="token punctuation">,</span> <span class="token number">0.12988105</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.7362857</span> <span class="token punctuation">,</span> <span class="token number">0.1279085</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.7888591</span> <span class="token punctuation">,</span> <span class="token number">0.15817115</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.74115133</span><span class="token punctuation">,</span> <span class="token number">0.18155812</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.6791372</span> <span class="token punctuation">,</span> <span class="token number">0.18370388</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.30711025</span><span class="token punctuation">,</span> <span class="token number">0.6418497</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.3759703</span> <span class="token punctuation">,</span> <span class="token number">0.6109595</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.44670257</span><span class="token punctuation">,</span> <span class="token number">0.5970508</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.49721557</span><span class="token punctuation">,</span> <span class="token number">0.60872644</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.5500201</span> <span class="token punctuation">,</span> <span class="token number">0.5954327</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.6233016</span> <span class="token punctuation">,</span> <span class="token number">0.6070911</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.69541407</span><span class="token punctuation">,</span> <span class="token number">0.6341429</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.628068</span>  <span class="token punctuation">,</span> <span class="token number">0.70906836</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.5573954</span> <span class="token punctuation">,</span> <span class="token number">0.7434471</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.50020397</span><span class="token punctuation">,</span> <span class="token number">0.7505844</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.44528747</span><span class="token punctuation">,</span> <span class="token number">0.74580276</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.37508208</span><span class="token punctuation">,</span> <span class="token number">0.7145425</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.3372878</span> <span class="token punctuation">,</span> <span class="token number">0.64616466</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.44701463</span><span class="token punctuation">,</span> <span class="token number">0.64064664</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.49795204</span><span class="token punctuation">,</span> <span class="token number">0.6449633</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.5513943</span> <span class="token punctuation">,</span> <span class="token number">0.6385937</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.6650228</span> <span class="token punctuation">,</span> <span class="token number">0.63955915</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.5530556</span> <span class="token punctuation">,</span> <span class="token number">0.67647934</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.4986481</span> <span class="token punctuation">,</span> <span class="token number">0.68417645</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">0.44657204</span><span class="token punctuation">,</span> <span class="token number">0.6786047</span> <span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 2. 放射变换时用到的点(仿射变换需要用到3个点)</span>
+INNER_EYES_AND_BOTTOM_LIP <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">39</span><span class="token punctuation">,</span> <span class="token number">42</span><span class="token punctuation">,</span> <span class="token number">57</span><span class="token punctuation">]</span>
+OUTER_EYES_AND_NOSE <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">36</span><span class="token punctuation">,</span> <span class="token number">45</span><span class="token punctuation">,</span> <span class="token number">33</span><span class="token punctuation">]</span>
+AffinePoint <span class="token operator">=</span> OUTER_EYES_AND_NOSE
+
+<span class="token comment"># 3. 制作并展示标准脸(放射变换三个点黑色, 其他红色)</span>
+image_template <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>uint8<span class="token punctuation">)</span>
+image_template<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> i<span class="token punctuation">,</span> point <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>TEMPLATE<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> i <span class="token keyword">in</span> AffinePoint<span class="token punctuation">:</span>
+        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image_template<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image_template<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'image_template'</span><span class="token punctuation">,</span> image_template<span class="token punctuation">)</span>
+
+<span class="token comment"># 4.1 读取图片, 并展示</span>
+image <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'waitou.png'</span><span class="token punctuation">)</span>
+image2 <span class="token operator">=</span> image<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'image'</span><span class="token punctuation">,</span> image<span class="token punctuation">)</span>
+
+<span class="token comment"># 4.2 定位人脸</span>
+face_detector <span class="token operator">=</span> dlib<span class="token punctuation">.</span>get_frontal_face_detector<span class="token punctuation">(</span><span class="token punctuation">)</span>
+face_locations <span class="token operator">=</span> face_detector<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token comment"># 4.3 获取定人人脸标志</span>
+predictor <span class="token operator">=</span> dlib<span class="token punctuation">.</span>shape_predictor<span class="token punctuation">(</span><span class="token string">"shape_predictor_68_face_landmarks.dat"</span><span class="token punctuation">)</span>
+landmark <span class="token operator">=</span> predictor<span class="token punctuation">(</span>image<span class="token punctuation">,</span> face_locations<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+points <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>x<span class="token punctuation">,</span> p<span class="token punctuation">.</span>y<span class="token punctuation">)</span> <span class="token keyword">for</span> p <span class="token keyword">in</span> landmark<span class="token punctuation">.</span>parts<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> i<span class="token punctuation">,</span> point <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>points<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> i <span class="token keyword">in</span> AffinePoint<span class="token punctuation">:</span>
+        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'image_landmark'</span><span class="token punctuation">,</span> image<span class="token punctuation">)</span>
+
+<span class="token comment"># 5. 制作并展示当前图片的脸</span>
+image_template2 <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>uint8<span class="token punctuation">)</span>
+image_template2<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> i<span class="token punctuation">,</span> point <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>points<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> i <span class="token keyword">in</span> AffinePoint<span class="token punctuation">:</span>
+        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image_template2<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image_template2<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'image_template2'</span><span class="token punctuation">,</span> image_template2<span class="token punctuation">)</span>
+
+<span class="token comment"># 6. 展示放射变换之后的脸</span>
+npLandmarks <span class="token operator">=</span> np<span class="token punctuation">.</span>float32<span class="token punctuation">(</span>points<span class="token punctuation">)</span>
+npLandmarkIndices <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>AffinePoint<span class="token punctuation">)</span>
+imgDim <span class="token operator">=</span> <span class="token number">500</span>
+H <span class="token operator">=</span> cv<span class="token punctuation">.</span>getAffineTransform<span class="token punctuation">(</span>npLandmarks<span class="token punctuation">[</span>npLandmarkIndices<span class="token punctuation">]</span><span class="token punctuation">,</span>
+                           imgDim <span class="token operator">*</span> TEMPLATE<span class="token punctuation">[</span>npLandmarkIndices<span class="token punctuation">]</span><span class="token punctuation">)</span>
+thumbnail <span class="token operator">=</span> cv<span class="token punctuation">.</span>warpAffine<span class="token punctuation">(</span>image2<span class="token punctuation">,</span> H<span class="token punctuation">,</span> <span class="token punctuation">(</span>imgDim<span class="token punctuation">,</span> imgDim<span class="token punctuation">)</span><span class="token punctuation">)</span>
+cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'thumbnail_source'</span><span class="token punctuation">,</span> thumbnail<span class="token punctuation">)</span>
+
+<span class="token comment"># 7. 展示放射变换之后带标志的脸</span>
+<span class="token keyword">for</span> i<span class="token punctuation">,</span> point <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>TEMPLATE<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> i <span class="token keyword">in</span> AffinePoint<span class="token punctuation">:</span>
+        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>thumbnail<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>thumbnail<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'thumbnail'</span><span class="token punctuation">,</span> thumbnail<span class="token punctuation">)</span>
+cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="2-直接调用-face_aligneralign"><a class="markdownIt-Anchor" href="#2-直接调用-face_aligneralign"></a> 2. 直接调用 face_aligner.align</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> dlib
+<span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
+<span class="token keyword">import</span> openface
+
+image <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'zhourui.png'</span><span class="token punctuation">)</span>
+face_detector <span class="token operator">=</span> dlib<span class="token punctuation">.</span>get_frontal_face_detector<span class="token punctuation">(</span><span class="token punctuation">)</span>
+detected_faces <span class="token operator">=</span> face_detector<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+
+face_pose_predictor <span class="token operator">=</span> dlib<span class="token punctuation">.</span>shape_predictor<span class="token punctuation">(</span><span class="token string">"shape_predictor_68_face_landmarks.dat"</span><span class="token punctuation">)</span>
+face_aligner <span class="token operator">=</span> openface<span class="token punctuation">.</span>AlignDlib<span class="token punctuation">(</span><span class="token string">"shape_predictor_68_face_landmarks.dat"</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> face_rect <span class="token keyword">in</span> detected_faces<span class="token punctuation">:</span>
+    x0<span class="token punctuation">,</span>y0<span class="token punctuation">,</span>x1<span class="token punctuation">,</span>y1 <span class="token operator">=</span>  face_rect<span class="token punctuation">.</span>left<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>top<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>right<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>bottom<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    cv<span class="token punctuation">.</span>rectangle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span>x0<span class="token punctuation">,</span> y0<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    landmarks <span class="token operator">=</span> face_pose_predictor<span class="token punctuation">(</span>image<span class="token punctuation">,</span> face_rect<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> pt <span class="token keyword">in</span> landmarks<span class="token punctuation">.</span>parts<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        pt_pos <span class="token operator">=</span> <span class="token punctuation">(</span>pt<span class="token punctuation">.</span>x<span class="token punctuation">,</span> pt<span class="token punctuation">.</span>y<span class="token punctuation">)</span>
+        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> pt_pos<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>  <span class="token comment"># img, center, radius, color, thickness</span>
+        alignedFace <span class="token operator">=</span> face_aligner<span class="token punctuation">.</span>align<span class="token punctuation">(</span><span class="token number">534</span><span class="token punctuation">,</span> image<span class="token punctuation">,</span> face_rect<span class="token punctuation">,</span> landmarkIndices<span class="token operator">=</span>openface<span class="token punctuation">.</span>AlignDlib<span class="token punctuation">.</span>OUTER_EYES_AND_NOSE<span class="token punctuation">)</span>
+
+<span class="token comment"># show the image</span>
+a <span class="token operator">=</span> cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> image<span class="token punctuation">)</span>
+b <span class="token operator">=</span> cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection2'</span><span class="token punctuation">,</span> alignedFace<span class="token punctuation">)</span>
+<span class="token comment"># keep the window open until we press a key</span>
+cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment"># close the window</span>
+cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="21-标准化脸制作"><a class="markdownIt-Anchor" href="#21-标准化脸制作"></a> 2.1 标准化脸制作</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
+<span class="token comment"># 1. 初始化一张标准landmark脸</span>
+TEMPLATE <span class="token operator">=</span> np<span class="token punctuation">.</span>float32<span class="token punctuation">(</span><span class="token punctuation">[</span>
+    <span class="token punctuation">(</span><span class="token number">0.0792396913815</span><span class="token punctuation">,</span> <span class="token number">0.339223741112</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.0829219487236</span><span class="token punctuation">,</span> <span class="token number">0.456955367943</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.0967927109165</span><span class="token punctuation">,</span> <span class="token number">0.575648016728</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.122141515615</span><span class="token punctuation">,</span> <span class="token number">0.691921601066</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.168687863544</span><span class="token punctuation">,</span> <span class="token number">0.800341263616</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.239789390707</span><span class="token punctuation">,</span> <span class="token number">0.895732504778</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.325662452515</span><span class="token punctuation">,</span> <span class="token number">0.977068762493</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.422318282013</span><span class="token punctuation">,</span> <span class="token number">1.04329000149</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.531777802068</span><span class="token punctuation">,</span> <span class="token number">1.06080371126</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.641296298053</span><span class="token punctuation">,</span> <span class="token number">1.03981924107</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.738105872266</span><span class="token punctuation">,</span> <span class="token number">0.972268833998</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.824444363295</span><span class="token punctuation">,</span> <span class="token number">0.889624082279</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.894792677532</span><span class="token punctuation">,</span> <span class="token number">0.792494155836</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.939395486253</span><span class="token punctuation">,</span> <span class="token number">0.681546643421</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.96111933829</span><span class="token punctuation">,</span> <span class="token number">0.562238253072</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.970579841181</span><span class="token punctuation">,</span> <span class="token number">0.441758925744</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.971193274221</span><span class="token punctuation">,</span> <span class="token number">0.322118743967</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.163846223133</span><span class="token punctuation">,</span> <span class="token number">0.249151738053</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.21780354657</span><span class="token punctuation">,</span> <span class="token number">0.204255863861</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.291299351124</span><span class="token punctuation">,</span> <span class="token number">0.192367318323</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.367460241458</span><span class="token punctuation">,</span> <span class="token number">0.203582210627</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.4392945113</span><span class="token punctuation">,</span> <span class="token number">0.233135599851</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.586445962425</span><span class="token punctuation">,</span> <span class="token number">0.228141644834</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.660152671635</span><span class="token punctuation">,</span> <span class="token number">0.195923841854</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.737466449096</span><span class="token punctuation">,</span> <span class="token number">0.182360984545</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.813236546239</span><span class="token punctuation">,</span> <span class="token number">0.192828009114</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.8707571886</span><span class="token punctuation">,</span> <span class="token number">0.235293377042</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.51534533827</span><span class="token punctuation">,</span> <span class="token number">0.31863546193</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.516221448289</span><span class="token punctuation">,</span> <span class="token number">0.396200446263</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.517118861835</span><span class="token punctuation">,</span> <span class="token number">0.473797687758</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.51816430343</span><span class="token punctuation">,</span> <span class="token number">0.553157797772</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.433701156035</span><span class="token punctuation">,</span> <span class="token number">0.604054457668</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.475501237769</span><span class="token punctuation">,</span> <span class="token number">0.62076344024</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.520712933176</span><span class="token punctuation">,</span> <span class="token number">0.634268222208</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.565874114041</span><span class="token punctuation">,</span> <span class="token number">0.618796581487</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.607054002672</span><span class="token punctuation">,</span> <span class="token number">0.60157671656</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.252418718401</span><span class="token punctuation">,</span> <span class="token number">0.331052263829</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.298663015648</span><span class="token punctuation">,</span> <span class="token number">0.302646354002</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.355749724218</span><span class="token punctuation">,</span> <span class="token number">0.303020650651</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.403718978315</span><span class="token punctuation">,</span> <span class="token number">0.33867711083</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.352507175597</span><span class="token punctuation">,</span> <span class="token number">0.349987615384</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.296791759886</span><span class="token punctuation">,</span> <span class="token number">0.350478978225</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.631326076346</span><span class="token punctuation">,</span> <span class="token number">0.334136672344</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.679073381078</span><span class="token punctuation">,</span> <span class="token number">0.29645404267</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.73597236153</span><span class="token punctuation">,</span> <span class="token number">0.294721285802</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.782865376271</span><span class="token punctuation">,</span> <span class="token number">0.321305281656</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.740312274764</span><span class="token punctuation">,</span> <span class="token number">0.341849376713</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.68499850091</span><span class="token punctuation">,</span> <span class="token number">0.343734332172</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.353167761422</span><span class="token punctuation">,</span> <span class="token number">0.746189164237</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.414587777921</span><span class="token punctuation">,</span> <span class="token number">0.719053835073</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.477677654595</span><span class="token punctuation">,</span> <span class="token number">0.706835892494</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.522732900812</span><span class="token punctuation">,</span> <span class="token number">0.717092275768</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.569832064287</span><span class="token punctuation">,</span> <span class="token number">0.705414478982</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.635195811927</span><span class="token punctuation">,</span> <span class="token number">0.71565572516</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.69951672331</span><span class="token punctuation">,</span> <span class="token number">0.739419187253</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.639447159575</span><span class="token punctuation">,</span> <span class="token number">0.805236879972</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.576410514055</span><span class="token punctuation">,</span> <span class="token number">0.835436670169</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.525398405766</span><span class="token punctuation">,</span> <span class="token number">0.841706377792</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.47641545769</span><span class="token punctuation">,</span> <span class="token number">0.837505914975</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.41379548902</span><span class="token punctuation">,</span> <span class="token number">0.810045601727</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.380084785646</span><span class="token punctuation">,</span> <span class="token number">0.749979603086</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.477955996282</span><span class="token punctuation">,</span> <span class="token number">0.74513234612</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.523389793327</span><span class="token punctuation">,</span> <span class="token number">0.748924302636</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.571057789237</span><span class="token punctuation">,</span> <span class="token number">0.74332894691</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.672409137852</span><span class="token punctuation">,</span> <span class="token number">0.744177032192</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.572539621444</span><span class="token punctuation">,</span> <span class="token number">0.776609286626</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0.5240106503</span><span class="token punctuation">,</span> <span class="token number">0.783370783245</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.477561227414</span><span class="token punctuation">,</span> <span class="token number">0.778476346951</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+TPL_MIN<span class="token punctuation">,</span> TPL_MAX <span class="token operator">=</span> np<span class="token punctuation">.</span><span class="token builtin">min</span><span class="token punctuation">(</span>TEMPLATE<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span>TEMPLATE<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment">#2. 进行标准化</span>
+MINMAX_TEMPLATE <span class="token operator">=</span> <span class="token punctuation">(</span>TEMPLATE <span class="token operator">-</span> TPL_MIN<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token punctuation">(</span>TPL_MAX <span class="token operator">-</span> TPL_MIN<span class="token punctuation">)</span>
+<span class="token comment"># 3. 画出这些点</span>
+image <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>uint8<span class="token punctuation">)</span>
+image<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> point <span class="token keyword">in</span> MINMAX_TEMPLATE<span class="token punctuation">:</span>
+    cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token comment"># show the image</span>
+cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> image<span class="token punctuation">)</span>
+<span class="token comment"># keep the window open until we press a key</span>
+cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment"># close the window</span>
+cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><a target="_blank" rel="noopener" href="https://openface-api.readthedocs.io/en/latest/openface.html">https://openface-api.readthedocs.io/en/latest/openface.html</a><br />
+<a target="_blank" rel="noopener" href="https://www.pyimagesearch.com/2017/04/03/facial-landmarks-dlib-opencv-python/">https://www.pyimagesearch.com/2017/04/03/facial-landmarks-dlib-opencv-python/</a><br />
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39507748/article/details/104448700">https://blog.csdn.net/qq_39507748/article/details/104448700</a></p>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://gist.github.com/ageitgey/82d0ea0fdb56dc93cb9b716e7ceb364b">https://gist.github.com/ageitgey/82d0ea0fdb56dc93cb9b716e7ceb364b</a><br />
+<a target="_blank" rel="noopener" href="https://www.dazhuanlan.com/tsing_95/topics/1664887">https://www.dazhuanlan.com/tsing_95/topics/1664887</a><br />
+<a target="_blank" rel="noopener" href="https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78">https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/FaceDetection/" rel="prev" title="FaceDetection">
+                  <i class="fa fa-chevron-left"></i> FaceDetection
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Hexo_NexT%E4%B8%BB%E9%A2%98/" rel="next" title="Hexo_NexT主题">
+                  Hexo_NexT主题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

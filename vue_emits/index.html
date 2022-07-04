@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="父定义了一个事件(@parentEvent), 指向了父的一个方法(parentFunc). 子通过emits(&quot;parentEvent&quot;, 666)触发了父的@parentEvent事件, 进而调用了父的方法(parentFunc)  这样就可以实现，子组件中的变量通过emits，传递到父组件，从而改变父组件的变量  script setup写法 &#x2F;&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue_emits">
+<meta property="og:url" content="https://claroja.github.io/vue_emits/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="父定义了一个事件(@parentEvent), 指向了父的一个方法(parentFunc). 子通过emits(&quot;parentEvent&quot;, 666)触发了父的@parentEvent事件, 进而调用了父的方法(parentFunc)  这样就可以实现，子组件中的变量通过emits，传递到父组件，从而改变父组件的变量  script setup写法 &#x2F;&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-25T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.498Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/vue_emits/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/vue_emits/","path":"vue_emits/","title":"vue_emits"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>vue_emits | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#script-setup%E5%86%99%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text"> script setup写法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E8%BF%87props%E6%9D%A5%E4%BC%A0%E9%80%92"><span class="nav-number">2.</span> <span class="nav-text"> 通过props来传递</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#propsbind"><span class="nav-number">3.</span> <span class="nav-text"> props+bind</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%86%99%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text"> 标准写法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%B9%E6%80%A7"><span class="nav-number">5.</span> <span class="nav-text"> 特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E6%80%A7"><span class="nav-number">5.1.</span> <span class="nav-text"> 继承性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%82%E5%8F%A0%E6%80%A7"><span class="nav-number">5.2.</span> <span class="nav-text"> 层叠性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">5.3.</span> <span class="nav-text"> 优先级</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B"><span class="nav-number">6.</span> <span class="nav-text"> 盒子模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%B9%E6%A1%86border"><span class="nav-number">6.1.</span> <span class="nav-text"> 边框(border)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#border-collapse"><span class="nav-number">6.1.1.</span> <span class="nav-text"> border-collapse</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%B9%E6%A1%86%E4%B8%8E%E7%9B%92%E5%AD%90%E7%9A%84%E5%A4%A7%E5%B0%8F"><span class="nav-number">6.1.2.</span> <span class="nav-text"> 边框与盒子的大小</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E8%BE%B9%E8%B7%9Dpadding"><span class="nav-number">6.2.</span> <span class="nav-text"> 内边距(padding)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E8%BE%B9%E8%B7%9D%E4%B8%8E%E7%9B%92%E5%AD%90%E7%9A%84%E5%A4%A7%E5%B0%8F"><span class="nav-number">6.2.1.</span> <span class="nav-text"> 内边距与盒子的大小</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E8%BE%B9%E8%B7%9Dmargin"><span class="nav-number">6.3.</span> <span class="nav-text"> 外边距(margin)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E8%BE%B9%E8%B7%9D%E5%B1%85%E4%B8%AD%E5%BA%94%E7%94%A8"><span class="nav-number">6.3.1.</span> <span class="nav-text"> 外边距居中应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E8%BE%B9%E8%B7%9D%E5%90%88%E5%B9%B6"><span class="nav-number">6.3.2.</span> <span class="nav-text"> 外边距合并</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%85%E9%99%A4%E5%86%85%E5%A4%96%E8%BE%B9%E8%B7%9D"><span class="nav-number">6.4.</span> <span class="nav-text"> 清除内外边距</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%A0%B7%E5%BC%8F"><span class="nav-number">7.</span> <span class="nav-text"> 其他样式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%86%E8%A7%92%E8%BE%B9%E6%A1%86"><span class="nav-number">7.1.</span> <span class="nav-text"> 圆角边框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%92%E5%AD%90%E9%98%B4%E5%BD%B1"><span class="nav-number">7.2.</span> <span class="nav-text"> 盒子阴影</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%AE%E5%8A%A8"><span class="nav-number">8.</span> <span class="nav-text"> 浮动</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E5%8A%A8%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">8.1.</span> <span class="nav-text"> 浮动的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">8.2.</span> <span class="nav-text"> 应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%85%E9%99%A4%E6%B5%AE%E5%8A%A8"><span class="nav-number">8.3.</span> <span class="nav-text"> 清除浮动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%85%E9%99%A4%E6%B5%AE%E5%8A%A8%E7%9A%84%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">8.3.1.</span> <span class="nav-text"> 清除浮动的多种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%9D%E5%A4%96%E6%A0%87%E7%AD%BE%E6%B3%95"><span class="nav-number">8.3.1.1.</span> <span class="nav-text"> 额外标签法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%B6%E7%BA%A7%E6%B7%BB%E5%8A%A0after%E4%BC%AA%E5%85%83%E7%B4%A0"><span class="nav-number">8.3.1.2.</span> <span class="nav-text"> 父级添加after伪元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#44-%E7%88%B6%E7%BA%A7%E6%B7%BB%E5%8A%A0%E5%8F%8C%E4%BC%AA%E5%85%83%E7%B4%A0"><span class="nav-number">8.3.1.3.</span> <span class="nav-text"> 4.4、父级添加双伪元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%B6%E7%BA%A7%E6%B7%BB%E5%8A%A0-overflow-%E5%B1%9E%E6%80%A7"><span class="nav-number">8.3.1.4.</span> <span class="nav-text"> 父级添加 overflow 属性</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vue_emits/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="vue_emits | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vue_emits
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 22:03:54" itemprop="dateCreated datePublished" datetime="2021-10-25T22:03:54+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <ol>
+<li>父定义了一个事件(<code>@parentEvent</code>), 指向了父的一个方法(<code>parentFunc</code>).</li>
+<li>子通过<code>emits(&quot;parentEvent&quot;, 666)</code>触发了父的<code>@parentEvent</code>事件, 进而调用了父的方法(<code>parentFunc</code>)</li>
+</ol>
+<p>这样就可以实现，子组件中的变量通过emits，传递到父组件，从而改变父组件的变量</p>
+<h1 id="script-setup写法"><a class="markdownIt-Anchor" href="#script-setup写法"></a> script setup写法</h1>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&#x2F;&#x2F; Parent.vue
+&lt;script setup&gt;
+import Child from &quot;.&#x2F;Child.vue&quot;
+function parentFunc(value) &#123;
+    alert(&#96;触发parentEvent事件，收到的参数是:$&#123;value&#125;！&#96;)
+&#125;
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &lt;Child @parentEvent&#x3D;&quot;parentFunc&quot;&gt;&lt;&#x2F;Child&gt;
+&lt;&#x2F;template&gt;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&#x2F;&#x2F; Child.vue
+&lt;script setup&gt;
+let emits &#x3D; defineEmits([&quot;parentEvent&quot;])
+function childFunc() &#123;
+    emits(&quot;parentEvent&quot;, 666)
+&#125;
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &lt;button @click&#x3D;&quot;childFunc&quot;&gt;我是Child组件，点我触发一下Parent组件的parentEvent事件&lt;&#x2F;button&gt;
+&lt;&#x2F;template&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="通过props来传递"><a class="markdownIt-Anchor" href="#通过props来传递"></a> 通过props来传递</h1>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq449245884/article/details/106066381">参考文档</a></p>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&#x2F;&#x2F; Parent.vue
+&lt;script setup&gt;
+import Child from &quot;.&#x2F;Child.vue&quot;
+function parentFunc(value) &#123;
+    alert(&#96;触发parentEvent事件，收到的参数是:$&#123;value&#125;！&#96;)
+&#125;
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &lt;Child :parentProp&#x3D;&quot;parentFunc&quot;&gt;&lt;&#x2F;Child&gt;
+&lt;&#x2F;template&gt;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&#x2F;&#x2F; Child.vue
+&lt;script setup&gt;
+let props &#x3D; defineProps([&quot;parentProp&quot;])
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &lt;button @click&#x3D;&quot;props.parentProp(666)&quot;&gt;我是Child组件，点我触发一下Parent组件的parentProp&lt;&#x2F;button&gt;
+&lt;&#x2F;template&gt;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="propsbind"><a class="markdownIt-Anchor" href="#propsbind"></a> props+bind</h1>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&#x2F;&#x2F; Parent.vue
+&lt;script setup&gt;
+import Child from &quot;.&#x2F;Child.vue&quot;
+let a &#x3D; 10
+let value &#x3D; 1
+function parentFunc(value) &#123;
+    alert(&#96;触发parentEvent事件，收到的参数是:$&#123;value&#125;！,parent中的参数a是$&#123;a&#125;&#96;)
+&#125;
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &lt;Child :parentProp&#x3D;&quot;parentFunc.bind(this, value)&quot;&gt;&lt;&#x2F;Child&gt;
+&lt;&#x2F;template&gt;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&#x2F;&#x2F; Child.vue
+&lt;script setup&gt;
+let props &#x3D; defineProps([&quot;parentProp&quot;])
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &lt;button @click&#x3D;&quot;props.parentProp()&quot;&gt;我是Child组件，点我触发一下Parent组件的parentProp&lt;&#x2F;button&gt;
+&lt;&#x2F;template&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="标准写法"><a class="markdownIt-Anchor" href="#标准写法"></a> 标准写法</h1>
+<p>App.vue</p>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;template&gt;
+	&lt;Demo @hello&#x3D;&quot;showHelloMsg&quot;&gt;&lt;&#x2F;Demo&gt;
+&lt;&#x2F;template&gt;
+
+&lt;script&gt;
+	import Demo from &#39;.&#x2F;components&#x2F;Demo&#39;
+	export default &#123;
+		name: &#39;App&#39;,
+		components:&#123;Demo&#125;,
+		setup()&#123;
+			function showHelloMsg(value)&#123;
+				alert(&#96;触发hello事件，收到的参数是:$&#123;value&#125;！&#96;)
+			&#125;
+			return &#123;
+				showHelloMsg
+			&#125;
+		&#125;
+	&#125;
+&lt;&#x2F;script&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Demo.vue</p>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;template&gt;
+	&lt;button @click&#x3D;&quot;test&quot;&gt;测试触发一下Demo组件的Hello事件&lt;&#x2F;button&gt;
+&lt;&#x2F;template&gt;
+
+&lt;script&gt;
+	export default &#123;
+		name: &#39;Demo&#39;,
+		emits:[&#39;hello&#39;],
+		setup(props, context)&#123;
+			console.log(&#39;---setup---&#39;,context.emit) &#x2F;&#x2F;触发自定义事件的。
+			&#x2F;&#x2F;方法
+			function test()&#123;
+				context.emit(&#39;hello&#39;,666)
+			&#125;
+			&#x2F;&#x2F;返回一个对象（常用）
+			return &#123;
+				test
+			&#125;
+		&#125;
+	&#125;
+&lt;&#x2F;script&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="特性"><a class="markdownIt-Anchor" href="#特性"></a> 特性</h1>
+<h2 id="继承性"><a class="markdownIt-Anchor" href="#继承性"></a> 继承性</h2>
+<p>子标签会继承父标签的某些样式，如文本颜色和字号。可以继承的属性包括:<code>text-*</code>，<code>font-*</code>，<code>line-*</code>等, 以及<code>color</code>.</p>
+<p>下例中, <code>&lt;p&gt;</code>标签继承了<code>&lt;div&gt;</code>标签的css属性</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>CSS继承性<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">div</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+            <span class="token property">font-size</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>龙生龙<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="层叠性"><a class="markdownIt-Anchor" href="#层叠性"></a> 层叠性</h2>
+<p>相同选择器给设置相同的样式，此时一个样式就会覆盖(层叠)另一个冲突的样式。遵循的原则是就近原则，哪个样式离结构近，就执行哪个样式</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>CSS层叠性<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+       <span class="token selector">div</span> <span class="token punctuation">&#123;</span>
+           <span class="token property">color</span><span class="token punctuation">:</span> red<span class="token punctuation">;</span>
+       <span class="token punctuation">&#125;</span>
+       <span class="token selector">div</span> <span class="token punctuation">&#123;</span>
+           <span class="token property">color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+       <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>最终显示的pink<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="优先级"><a class="markdownIt-Anchor" href="#优先级"></a> 优先级</h2>
+<p>当同一个元素指定多个不同选择器，就会有优先级的产生, 根据选择器权重执行</p>
+<table>
+<thead>
+<tr>
+<th>选择器</th>
+<th>权重</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>继承或*</td>
+<td>0.0.0.0</td>
+</tr>
+<tr>
+<td>元素选择器</td>
+<td>0.0.0.1</td>
+</tr>
+<tr>
+<td>类选择器</td>
+<td>0.0.1.0</td>
+</tr>
+<tr>
+<td>id选择器</td>
+<td>0.1.0.0</td>
+</tr>
+<tr>
+<td>行内样式<code>style=&quot;&quot;</code></td>
+<td>1.0.0.0</td>
+</tr>
+<tr>
+<td><code>!import</code></td>
+<td>无穷大</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>等级判断从左向右，如果某一位数值相同，则判断下一位数值。</li>
+<li>继承的权重是0， 如果该元素没有直接选中，不管父元素权重多高，子元素得到的权重都是 0。</li>
+<li>权重叠加：如果是复合选择器，则会有权重叠加，需要计算权重。</li>
+</ol>
+<ul>
+<li>div ul  li   ------&gt;      0,0,0,3</li>
+<li>.nav ul li   ------&gt;      0,0,1,2</li>
+<li>a:hover      -----—&gt;   0,0,1,1</li>
+<li>.nav a       ------&gt;      0,0,1,1</li>
+</ul>
+<h1 id="盒子模型"><a class="markdownIt-Anchor" href="#盒子模型"></a> 盒子模型</h1>
+<p>盒子模型: 把元素看作是一个矩形的盒子, 包括：<strong>边框</strong>、<strong>外边距</strong>、<strong>内边距</strong>、和 <strong>实际内容</strong></p>
+<h2 id="边框border"><a class="markdownIt-Anchor" href="#边框border"></a> 边框(border)</h2>
+<p>边框有三部分组成: 边框宽度(粗细),边框样式,边框颜色.</p>
+<ol>
+<li>border-width: 边框的宽度, 使用px作为单位</li>
+<li>border-style:
+<ul>
+<li>none：没有边框即忽略所有边框的宽度（默认值）</li>
+<li>solid：边框为单实线(最为常用的)</li>
+<li>dashed：边框为虚线</li>
+<li>dotted：边框为点线</li>
+</ul>
+</li>
+<li>border-color: 边框的颜色</li>
+</ol>
+<p>例子:</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">border</span><span class="token punctuation">:</span> 1px solid red<span class="token punctuation">;</span>  <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>也可以单独设置一个方向的边框, 比如上边框:</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">border-top</span><span class="token punctuation">:</span> 1px solid red<span class="token punctuation">;</span>  <span class="token comment">/* 只设定上边框， 其余同理 */</span>   <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="border-collapse"><a class="markdownIt-Anchor" href="#border-collapse"></a> border-collapse</h3>
+<p>控制浏览器绘制表格边框的方式。</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">border-collapse</span><span class="token punctuation">:</span>collapse<span class="token punctuation">;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>collapse 单词是合并的意思<br />
+border-collapse: collapse; 表示相邻边框合并在一起</p>
+<h3 id="边框与盒子的大小"><a class="markdownIt-Anchor" href="#边框与盒子的大小"></a> 边框与盒子的大小</h3>
+<p>边框会额外增加盒子的实际大小。<br />
+盒子的高度 = height + 2<em>border_width<br />
+盒子的宽度 = width + 2</em>border_width</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>边框会影响盒子的实际大小<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token comment">/* 这是一个200*200的盒子*/</span>
+        <span class="token selector">div</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 180px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 180px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+            <span class="token property">border</span><span class="token punctuation">:</span> 10px solid red<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="内边距padding"><a class="markdownIt-Anchor" href="#内边距padding"></a> 内边距(padding)</h2>
+<p>padding既是边框与内容之间的距离</p>
+<p>语法:</p>
+<ol>
+<li>合起来写:<br />
+值的个数|表达的意思<br />
+–|–<br />
+1个值, padding: 5px|上下左右都是5px<br />
+2个值, padding: 5px 10px|上下是5px, 左右是10px<br />
+3个值, padding: 5px 10px 20px| 上是5px 左右是10px 下是20px<br />
+4个值, padding: 5px 10px 20px 30px| 是上下左右分别</li>
+<li>分开写:<br />
+属性|描述<br />
+–|–<br />
+padding-left|<br />
+padding-right|<br />
+padding-top|<br />
+padding-bottom|</li>
+</ol>
+<h3 id="内边距与盒子的大小"><a class="markdownIt-Anchor" href="#内边距与盒子的大小"></a> 内边距与盒子的大小</h3>
+<ol>
+<li>当指定<code>width</code>和<code>height</code>时(无论是给具体像素值px, 还是百分比都包含在内),内边距会额外增加盒子的实际大小。<br />
+盒子的高度 = height + 2<em>padding<br />
+盒子的宽度 = width + 2</em>padding</li>
+</ol>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>内边距会影响盒子实际大小<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token comment">/* 下面是一个200*200的盒子 */</span>
+            <span class="token selector">div</span> <span class="token punctuation">&#123;</span>
+                <span class="token property">width</span><span class="token punctuation">:</span> 160px<span class="token punctuation">;</span>
+                <span class="token property">height</span><span class="token punctuation">:</span> 160px<span class="token punctuation">;</span>
+                <span class="token property">background-color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+                <span class="token property">padding</span><span class="token punctuation">:</span> 20px<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+         
+        </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+            200*200的盒子
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+       
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>当为给元素指定<code>width</code>和<code>height</code>时, padding不会增加盒子的大小.</li>
+</ol>
+<p>下例中, 由于没有指定<code>width</code>的值, 所以即使增加了padding, <code>&lt;h1&gt;</code>的宽度也不会改变, 和父元素<code>&lt;body&gt;</code>保持一致, 这是块级元素独享一行的特点, 不是继承.<br />
+但是, 但我们给<code>&lt;h1&gt;</code>增加了<code>width</code>属性后, padding属性就, 增加了<code>&lt;h1&gt;</code>的宽度</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>padding不会影响盒子大小的情况<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">   
+       <span class="token selector">h1</span> <span class="token punctuation">&#123;</span>
+           <span class="token comment">/* width: 100%; */</span>
+           <span class="token property">height</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+           <span class="token property">background-color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+           <span class="token property">padding</span><span class="token punctuation">:</span> 30px<span class="token punctuation">;</span>
+       <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="外边距margin"><a class="markdownIt-Anchor" href="#外边距margin"></a> 外边距(margin)</h2>
+<p>margin 属性用于设置外边距，即控制盒子和盒子之间的距离。</p>
+<p>语法:<br />
+参考padding</p>
+<h3 id="外边距居中应用"><a class="markdownIt-Anchor" href="#外边距居中应用"></a> 外边距居中应用</h3>
+<p>外边距可以让块级盒子水平居中的两个条件：</p>
+<ul>
+<li>盒子必须指定了宽度（width）。</li>
+<li>盒子左右的外边距都设置为 auto 。<br />
+常见的写法，以下三种都可以：</li>
+</ul>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">margin-left</span><span class="token punctuation">:</span> auto<span class="token punctuation">;</span>   <span class="token property">margin-right</span><span class="token punctuation">:</span> auto<span class="token punctuation">;</span>
+<span class="token property">margin</span><span class="token punctuation">:</span> auto<span class="token punctuation">;</span>
+<span class="token property">margin</span><span class="token punctuation">:</span> 0 auto<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>注意：以上方法是让块级元素水平居中，行内元素或者行内块元素水平居中给其父元素添加 text-align:center 即可。</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>块级盒子水平居中对齐<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+      <span class="token selector">.header</span> <span class="token punctuation">&#123;</span>
+          <span class="token property">width</span><span class="token punctuation">:</span> 900px<span class="token punctuation">;</span>
+          <span class="token property">height</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+          <span class="token property">background-color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+          <span class="token property">margin</span><span class="token punctuation">:</span> 100px auto<span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>header<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="外边距合并"><a class="markdownIt-Anchor" href="#外边距合并"></a> 外边距合并</h3>
+<ol>
+<li>相邻块元素垂直外边距的合<br />
+当上下相邻的两个块元素（兄弟关系）相遇时，如果上面的元素有下外边距 margin-bottom，下面的元素有上外边距 margin-top ，则他们之间的垂直间距不是 margin-bottom 与 margin-top 之和。取两个值中的较大者这种现象被称为相邻块元素垂直外边距的合并。</li>
+</ol>
+<p>解决方案：尽量只给一个盒子添加 margin 值。</p>
+<ol start="2">
+<li>对于两个嵌套关系（父子关系）的块元素，父元素有上外边距同时子元素也有上外边距，此时父元素会塌陷较大的外边距值。</li>
+</ol>
+<p>解决方案：</p>
+<ul>
+<li>可以为父元素定义上边框。</li>
+<li>可以为父元素定义上内边距。</li>
+<li>可以为父元素添加 overflow:hidden。</li>
+</ul>
+<p>下例中, .father元素<code>margin-top: 50px</code>, 当给.son元素添加<code>margin-top: 60px;</code>, .son元素并没有, 向下移动60px, 而是.father向下移动了60px, 这个现象就是父元素塌陷.<br />
+打开注释的三个方法, 可以解决这个问题.</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>外边距合并-嵌套块级元素垂直外边距塌陷<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">.father</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 400px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 400px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> purple<span class="token punctuation">;</span>
+            <span class="token property">margin-top</span><span class="token punctuation">:</span> 50px<span class="token punctuation">;</span>
+            <span class="token comment">/* border: 1px solid transparent; */</span>
+            <span class="token comment">/* padding: 1px; */</span>
+            <span class="token comment">/* overflow: hidden; */</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token selector">.son</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+            <span class="token property">margin-top</span><span class="token punctuation">:</span> 60px<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>father<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>son<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="清除内外边距"><a class="markdownIt-Anchor" href="#清除内外边距"></a> 清除内外边距</h2>
+<p>网页元素很多都带有默认的内外边距，而且不同浏览器默认的也不一致。因此我们在布局前，首先要清除下网页元素的内外边距。</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">*</span> <span class="token punctuation">&#123;</span>
+   <span class="token property">padding</span><span class="token punctuation">:</span>0<span class="token punctuation">;</span>   <span class="token comment">/* 清除内边距 */</span>
+   <span class="token property">margin</span><span class="token punctuation">:</span>0<span class="token punctuation">;</span>    <span class="token comment">/* 清除外边距 */</span>
+ <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意：行内元素为了照顾兼容性，尽量只设置左右内外边距，不要设置上下内外边距。但是转换为块级和行内块元素就可以了</p>
+<h1 id="其他样式"><a class="markdownIt-Anchor" href="#其他样式"></a> 其他样式</h1>
+<h2 id="圆角边框"><a class="markdownIt-Anchor" href="#圆角边框"></a> 圆角边框</h2>
+<p>border-radius 属性用于设置元素的外边框圆角。<br />
+语法：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">border-radius</span><span class="token punctuation">:</span>length<span class="token punctuation">;</span>    <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>参数值可以为数值或百分比的形式</li>
+<li>如果是正方形，想要设置为一个圆，把数值修改为高度或者宽度的一半即可，或者直接写为 50%</li>
+<li>该属性是一个简写属性，可以跟四个值，分别代表左上角、右上角、右下角、左下角</li>
+<li>分开写：border-top-left-radius、border-top-right-radius、border-bottom-right-radius 和border-bottom-left-radius</li>
+</ul>
+<h2 id="盒子阴影"><a class="markdownIt-Anchor" href="#盒子阴影"></a> 盒子阴影</h2>
+<p>使用 box-shadow 属性为盒子添加阴影。<br />
+语法：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">box-shadow</span><span class="token punctuation">:</span> h-shadow v-shadow blur spread color inset<span class="token punctuation">;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>h-shadow</td>
+<td>必须, 水平阴影的位置</td>
+</tr>
+<tr>
+<td>v-shadow</td>
+<td>必须, 垂直阴影的位置</td>
+</tr>
+<tr>
+<td>blur</td>
+<td>可选, 模糊距离</td>
+</tr>
+<tr>
+<td>spread</td>
+<td>可选, 阴影的尺寸</td>
+</tr>
+<tr>
+<td>color</td>
+<td>可选, 阴影的颜色</td>
+</tr>
+<tr>
+<td>inset</td>
+<td>可选, 将外部(outset)阴影改为内部阴影</td>
+</tr>
+</tbody>
+</table>
+<h1 id="浮动"><a class="markdownIt-Anchor" href="#浮动"></a> 浮动</h1>
+<p>​CSS 提供了三种传统布局方式(盒子如何进行排列顺序)：</p>
+<ul>
+<li>标准流
+<ol>
+<li>块级元素会独占一行，从上向下顺序排列。常用元素：div、hr、p、h1~h6、ul、ol、dl、form、table</li>
+<li>行内元素会按照顺序，从左到右顺序排列，碰到父元素边缘则自动换行。常用元素：span、a、i、em 等</li>
+</ol>
+</li>
+<li>浮动<br />
+​float 属性用于创建浮动框，将其移动到一边，直到左边缘或右边缘触及包含块或另一个浮动框的边缘。</li>
+<li>定位</li>
+</ul>
+<p>语法：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">选择器</span> <span class="token punctuation">&#123;</span> <span class="token property">float</span><span class="token punctuation">:</span> 属性值<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>属性值可选:<code>right</code>,<code>left</code>,<code>none</code></p>
+<h2 id="浮动的特性"><a class="markdownIt-Anchor" href="#浮动的特性"></a> 浮动的特性</h2>
+<ol>
+<li>浮动元素会脱离标准流(脱标: 浮动的盒子不再保留原先的位置)</li>
+<li>浮动的元素会一行内显示并且元素顶部对齐</li>
+<li>浮动的元素是互相贴靠在一起的（不会有缝隙），如果父级宽度装不下这些浮动的盒子，多出的盒子会另起一行对齐。</li>
+<li>浮动的元素会具有<code>行内块元素</code>的特性</li>
+</ol>
+<ul>
+<li>浮动元素的大小根据内容来决定</li>
+<li>浮动的盒子中间是没有缝隙的</li>
+</ul>
+<h2 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h2>
+<ol>
+<li>浮动主要是做块级元素的横向布局,(纵向布局还是使用标准流), 比如<br />
+浮动最典型的应用：可以让多个块级元素一行内排列显示。</li>
+</ol>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>什么是浮动<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">.left,
+        .right</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">float</span><span class="token punctuation">:</span> left<span class="token punctuation">;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token selector">.right</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">float</span><span class="token punctuation">:</span> right<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>left<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>左青龙<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>right<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>右白虎<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>浮动元素经常和标准流父级搭配使用<br />
+为了约束浮动元素位置, 我们网页布局一般采取的策略是:<br />
+先用标准流父元素排列上下位置, 之后内部子元素采取浮动排列左右位置.</li>
+</ol>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>浮动元素搭配标准流父盒子1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">.box</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 1200px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 460px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> pink<span class="token punctuation">;</span>
+            <span class="token property">margin</span><span class="token punctuation">:</span> 0 auto<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token selector">.left</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">float</span><span class="token punctuation">:</span> left<span class="token punctuation">;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 230px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 460px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> purple<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token selector">.right</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">float</span><span class="token punctuation">:</span> left<span class="token punctuation">;</span>
+            <span class="token property">width</span><span class="token punctuation">:</span> 970px<span class="token punctuation">;</span>
+            <span class="token property">height</span><span class="token punctuation">:</span> 460px<span class="token punctuation">;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> skyblue<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>box<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>left<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>左侧<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>right<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>右侧<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="清除浮动"><a class="markdownIt-Anchor" href="#清除浮动"></a> 清除浮动</h2>
+<p>由于父级盒子很多情况下，不方便给高度，但是子盒子浮动又不占有位置，最后父级盒子高度为 0 时，就会影响下面的标准流盒子。<br />
+清除浮动的本质是清除浮动元素造成的影响(浮动的子标签无法撑开父盒子的高度), 清除后父元素就会感知到浮动的子元素的高度, 父亲有了高度, 就不会影响下面的标准流了<br />
+清除浮动的策略是: 闭合浮动(只在父元素内部进行清理, 不影响父元素之外的其他元素)<br />
+语法：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">选择器</span><span class="token punctuation">&#123;</span><span class="token property">clear</span><span class="token punctuation">:</span>属性值<span class="token punctuation">;</span><span class="token punctuation">&#125;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>属性值可选:<code>left</code>,<code>right</code>,<code>both</code>, 在实际开发中几乎只使用<code>both</code></p>
+<h3 id="清除浮动的多种方式"><a class="markdownIt-Anchor" href="#清除浮动的多种方式"></a> 清除浮动的多种方式</h3>
+<h4 id="额外标签法"><a class="markdownIt-Anchor" href="#额外标签法"></a> 额外标签法</h4>
+<p>额外标签法也称为隔墙法，是 W3C 推荐的做法。<br />
+使用方式：<br />
+额外标签法会在浮动元素末尾添加一个空的标签。</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup">例如 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token special-attr"><span class="token attr-name">style</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value css language-css"><span class="token property">clear</span><span class="token punctuation">:</span>both</span><span class="token punctuation">"</span></span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>，或者其他标签（如<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span> <span class="token punctuation">/></span></span>等）。<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>优点： 通俗易懂，书写方便<br />
+缺点： 添加许多无意义的标签，结构化较差<br />
+注意： 要求这个新的空标签必须是块级元素。</p>
+<p>总结:</p>
+<ol>
+<li>清除浮动本质是?<br />
+清除浮动的本质是清除浮动元素脱离标准流造成的影响</li>
+<li>清除浮动策略是?<br />
+合浮动.  只让浮动在父盒子内部影响,不影响父盒子外面的其他盒子.</li>
+<li>额外标签法?<br />
+隔墙法, 就是在最后一个浮动的子元素后面添</li>
+<li>加一个额外标签, 添加 清除浮动样式.<br />
+实际工作可能会遇到,但是不常用</li>
+</ol>
+<h4 id="父级添加after伪元素"><a class="markdownIt-Anchor" href="#父级添加after伪元素"></a> 父级添加after伪元素</h4>
+<p>:after 方式是额外标签法的升级版。给父元素添加：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.clearfix:after</span> <span class="token punctuation">&#123;</span>  
+  <span class="token property">content</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">;</span> 
+  <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span> 
+  <span class="token property">height</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span> 
+  <span class="token property">clear</span><span class="token punctuation">:</span> both<span class="token punctuation">;</span> 
+  <span class="token property">visibility</span><span class="token punctuation">:</span> hidden<span class="token punctuation">;</span>  
+<span class="token punctuation">&#125;</span> 
+<span class="token selector">.clearfix</span> <span class="token punctuation">&#123;</span>  <span class="token comment">/* IE6、7 专有 */</span> 
+  *<span class="token property">zoom</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>   <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>优点：没有增加标签，结构更简单<br />
+缺点：照顾低版本浏览器<br />
+代表网站： 百度、淘宝网、网易等</p>
+<h4 id="44-父级添加双伪元素"><a class="markdownIt-Anchor" href="#44-父级添加双伪元素"></a> 4.4、父级添加双伪元素</h4>
+<p>给父元素添加</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.clearfix:before,.clearfix:after</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">content</span><span class="token punctuation">:</span><span class="token string">""</span><span class="token punctuation">;</span>
+  <span class="token property">display</span><span class="token punctuation">:</span>table<span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span>
+<span class="token selector">.clearfix:after</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">clear</span><span class="token punctuation">:</span>both<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token selector">.clearfix</span> <span class="token punctuation">&#123;</span>
+   *<span class="token property">zoom</span><span class="token punctuation">:</span>1<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>   <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>优点：代码更简洁<br />
+缺点：照顾低版本浏览器<br />
+代表网站：小米、腾讯等</p>
+<h4 id="父级添加-overflow-属性"><a class="markdownIt-Anchor" href="#父级添加-overflow-属性"></a> 父级添加 overflow 属性</h4>
+<p>可以给父级添加 overflow 属性，将其属性值设置为 hidden、 auto 或 scroll 。<br />
+例如：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">overflow</span><span class="token punctuation">:</span>hidden | auto | scroll<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>优点：代码简洁<br />
+缺点：无法显示溢出的部分<br />
+注意：是给父元素添加代码</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Mann_Whitney_U/" rel="prev" title="Mann_Whitney_U">
+                  <i class="fa fa-chevron-left"></i> Mann_Whitney_U
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/pgmpy%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/" rel="next" title="pgmpy模型训练">
+                  pgmpy模型训练 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

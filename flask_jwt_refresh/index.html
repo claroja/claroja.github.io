@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="refresh token的作用是刷新access token. 因为一直使用同一个access token在网络中传输, 可能会被截获. 偶尔使用一次refresh token会降低风险. access_token只能用于携带访问，并不能用于刷新token；同理refresh_token只能用于刷新，不能用于访问数据。  服务端代码 from flask_jwt_extended import">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flask_jwt_refresh">
+<meta property="og:url" content="https://claroja.github.io/flask_jwt_refresh/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="refresh token的作用是刷新access token. 因为一直使用同一个access token在网络中传输, 可能会被截获. 偶尔使用一次refresh token会降低风险. access_token只能用于携带访问，并不能用于刷新token；同理refresh_token只能用于刷新，不能用于访问数据。  服务端代码 from flask_jwt_extended import">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-20T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.259Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/flask_jwt_refresh/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/flask_jwt_refresh/","path":"flask_jwt_refresh/","title":"flask_jwt_refresh"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>flask_jwt_refresh | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BB%A3%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text"> 服务端代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#access-token%E7%9B%B4%E6%8E%A5%E8%AE%BF%E9%97%AE%E5%8F%97%E4%BF%9D%E6%8A%A4%E7%9A%84%E6%8E%A5%E5%8F%A3protected"><span class="nav-number">2.</span> <span class="nav-text"> access token直接访问受保护的接口&#x2F;protected</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BD%93access-token%E8%BF%87%E6%9C%9F%E5%90%8E-%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8refresh-token%E5%88%B0refresh%E6%8E%A5%E5%8F%A3%E9%87%8D%E6%96%B0%E8%8E%B7%E5%BE%97access-token"><span class="nav-number">3.</span> <span class="nav-text"> 当access token过期后, 可以使用refresh token到&#x2F;refresh接口重新获得access token</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#access-token%E4%B8%8D%E8%83%BD%E8%AE%BF%E9%97%AErefresh%E6%8E%A5%E5%8F%A3"><span class="nav-number">4.</span> <span class="nav-text"> access token不能访问&#x2F;refresh接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#refresh-token%E4%B8%8D%E8%83%BD%E8%AE%BF%E9%97%AEprotected%E6%8E%A5%E5%8F%A3"><span class="nav-number">5.</span> <span class="nav-text"> refresh token不能访问&#x2F;protected接口</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/flask_jwt_refresh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="flask_jwt_refresh | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          flask_jwt_refresh
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>refresh token的作用是刷新access token. 因为一直使用同一个access token在网络中传输, 可能会被截获. 偶尔使用一次refresh token会降低风险.<br />
+access_token只能用于携带访问，并不能用于刷新token；同理refresh_token只能用于刷新，不能用于访问数据。</p>
+<h1 id="服务端代码"><a class="markdownIt-Anchor" href="#服务端代码"></a> 服务端代码</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> flask_jwt_extended <span class="token keyword">import</span> create_access_token
+<span class="token keyword">from</span> flask_jwt_extended <span class="token keyword">import</span> create_refresh_token
+<span class="token keyword">from</span> flask_jwt_extended <span class="token keyword">import</span> get_jwt_identity
+<span class="token keyword">from</span> flask_jwt_extended <span class="token keyword">import</span> jwt_required
+<span class="token keyword">from</span> flask_jwt_extended <span class="token keyword">import</span> JWTManager
+
+<span class="token keyword">from</span> datetime <span class="token keyword">import</span> timedelta
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> Flask
+<span class="token keyword">from</span> flask <span class="token keyword">import</span> jsonify
+
+app <span class="token operator">=</span> Flask<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+app<span class="token punctuation">.</span>config<span class="token punctuation">[</span><span class="token string">'JWT_SECRET_KEY'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'salt'</span>  <span class="token comment"># 加密盐值</span>
+<span class="token comment"># 统一管理token的失效时间</span>
+app<span class="token punctuation">.</span>config<span class="token punctuation">[</span><span class="token string">'JWT_ACCESS_TOKEN_EXPIRES'</span><span class="token punctuation">]</span> <span class="token operator">=</span> timedelta<span class="token punctuation">(</span>hours<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>  <span class="token comment"># 设置access_token的有效时间</span>
+app<span class="token punctuation">.</span>config<span class="token punctuation">[</span><span class="token string">"JWT_REFRESH_TOKEN_EXPIRES"</span><span class="token punctuation">]</span> <span class="token operator">=</span> timedelta<span class="token punctuation">(</span>days<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>  <span class="token comment"># 设置refresh_token的有效时间</span>
+jwt <span class="token operator">=</span> JWTManager<span class="token punctuation">(</span>app<span class="token punctuation">)</span>
+
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">"/login"</span><span class="token punctuation">,</span> methods<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"POST"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">login</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    access_token <span class="token operator">=</span> create_access_token<span class="token punctuation">(</span>identity<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'user'</span><span class="token punctuation">:</span> <span class="token string">'access'</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># type=access</span>
+    refresh_token <span class="token operator">=</span> create_refresh_token<span class="token punctuation">(</span>identity<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'user'</span><span class="token punctuation">:</span> <span class="token string">'refresh'</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>  <span class="token comment"># type=refresh</span>
+    <span class="token keyword">return</span> jsonify<span class="token punctuation">(</span>access_token<span class="token operator">=</span>access_token<span class="token punctuation">,</span> refresh_token<span class="token operator">=</span>refresh_token<span class="token punctuation">)</span>
+
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">"/refresh"</span><span class="token punctuation">,</span> methods<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"GET"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token decorator annotation punctuation">@jwt_required</span><span class="token punctuation">(</span>refresh<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span> <span class="token comment"># 必须是type=refresh token才能访问</span>
+<span class="token keyword">def</span> <span class="token function">refresh</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    identity <span class="token operator">=</span> get_jwt_identity<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    access_token <span class="token operator">=</span> create_access_token<span class="token punctuation">(</span>identity<span class="token operator">=</span>identity<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> jsonify<span class="token punctuation">(</span>access_token<span class="token operator">=</span>access_token<span class="token punctuation">)</span>
+
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>route</span><span class="token punctuation">(</span><span class="token string">"/protected"</span><span class="token punctuation">,</span> methods<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"GET"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token decorator annotation punctuation">@jwt_required</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">protected</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    current_user <span class="token operator">=</span> get_jwt_identity<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> jsonify<span class="token punctuation">(</span>current_user<span class="token operator">=</span>current_user<span class="token punctuation">)</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    app<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ http post :5000/login
+HTTP/1.0 <span class="token number">200</span> OK
+Content-Length: <span class="token number">617</span>
+Content-Type: application/json
+Date: Thu, 06 Jan <span class="token number">2022</span> 08:10:31 GMT
+Server: Werkzeug/2.0.2 Python/3.8.10
+
+<span class="token punctuation">&#123;</span>
+    <span class="token string">"access_token"</span><span class="token builtin class-name">:</span> <span class="token string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTQ1NjYzMSwianRpIjoiYzYyNjA1YjUtNjFiZi00ZTE5LTkzNmQtY2I0MzU5NmJjMGRlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJ1c2VyIjoiYWNjZXNzIn0sIm5iZiI6MTY0MTQ1NjYzMSwiZXhwIjoxNjQxNDYwMjMxfQ.zUSc4uBXTx8h2NhZtjRYXGdN1UzVo6S9ULOcuFIEq3k"</span>,
+    <span class="token string">"refresh_token"</span><span class="token builtin class-name">:</span> <span class="token string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTQ1NjYzMSwianRpIjoiOTFiZTcxM2ItZjhjOC00MTI4LWEwZjUtZjVmMjI5ZjA1N2I3IiwidHlwZSI6InJlZnJlc2giLCJzdWIiOnsidXNlciI6InJlZnJlc2gifSwibmJmIjoxNjQxNDU2NjMxLCJleHAiOjE2NDE1NDMwMzF9.XMeOEyjLrpDzSCrj0X1syTt931lOlvpvHIBhO1leJPQ"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="access-token直接访问受保护的接口protected"><a class="markdownIt-Anchor" href="#access-token直接访问受保护的接口protected"></a> access token直接访问受保护的接口/protected</h1>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token builtin class-name">export</span> <span class="token assign-left variable">JWT</span><span class="token operator">=</span><span class="token string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTQ1NjYzMSwianRpIjoiYzYyNjA1YjUtNjFiZi00ZTE5LTkzNmQtY2I0MzU5NmJjMGRlIiwidHlwZSI6ImFjY2V
+zcyIsInN1YiI6eyJ1c2VyIjoiYWNjZXNzIn0sIm5iZiI6MTY0MTQ1NjYzMSwiZXhwIjoxNjQxNDYwMjMxfQ.zUSc4uBXTx8h2NhZtjRYXGdN1UzVo6S9ULOcuFIEq3k"</span>
+$ http get :5000/protected Authorization:<span class="token string">"Bearer <span class="token variable">$JWT</span>"</span>
+HTTP/1.0 <span class="token number">200</span> OK
+Content-Length: <span class="token number">49</span>
+Content-Type: application/json
+Date: Thu, 06 Jan <span class="token number">2022</span> 08:11:48 GMT
+Server: Werkzeug/2.0.2 Python/3.8.10
+
+<span class="token punctuation">&#123;</span>
+    <span class="token string">"current_user"</span><span class="token builtin class-name">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"user"</span><span class="token builtin class-name">:</span> <span class="token string">"access"</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="当access-token过期后-可以使用refresh-token到refresh接口重新获得access-token"><a class="markdownIt-Anchor" href="#当access-token过期后-可以使用refresh-token到refresh接口重新获得access-token"></a> 当access token过期后, 可以使用refresh token到/refresh接口重新获得access token</h1>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token builtin class-name">export</span> <span class="token assign-left variable">JWT</span><span class="token operator">=</span><span class="token string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTQ1NjYzMSwianRpIjoiOTFiZTcxM2ItZjhjOC00MTI4LWEwZjUtZjVmMjI5ZjA1N2I3IiwidHlwZSI6InJlZnJlc2giLCJzdWIiOnsidXNlciI6InJlZnJlc2gifSwibmJmIjoxNjQxNDU2NjMxLCJleHAiOjE2NDE1NDMwMzF9.XMeOEyjLrpDzSCrj0X1syTt931lOlvpvHIBhO1leJPQ"</span>
+
+$ http post :5000/refresh Authorization:<span class="token string">"Bearer <span class="token variable">$JWT</span>"</span>
+HTTP/1.0 <span class="token number">200</span> OK
+Content-Length: <span class="token number">309</span>
+Content-Type: application/json
+Date: Thu, 06 Jan <span class="token number">2022</span> 08:13:49 GMT
+Server: Werkzeug/2.0.2 Python/3.8.10
+
+<span class="token punctuation">&#123;</span>
+    <span class="token string">"access_token"</span><span class="token builtin class-name">:</span> <span class="token string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTQ1NjgyOSwianRpIjoiMDMwZDI5MjAtYjhlYS00NGY3LWIwYTYtMGQ3NDdjMzI0NTAyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJ1c2VyIjoicmVmcmVzaCJ9LCJuYmYiOjE2NDE0NTY4MjksImV4cCI6MTY0MTQ2MDQyOX0.Twkjk-9NbC6f7O-j0yNXKEtiTm4jGw5L8kAyGwGN60M"</span>
+<span class="token punctuation">&#125;</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="access-token不能访问refresh接口"><a class="markdownIt-Anchor" href="#access-token不能访问refresh接口"></a> access token不能访问/refresh接口</h1>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token builtin class-name">export</span> <span class="token assign-left variable">JWT</span><span class="token operator">=</span><span class="token string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTQ1NjYzMSwianRpIjoiYzYyNjA1YjUtNjFiZi00ZTE5LTkzNmQtY2I0MzU5NmJjMGRlIiwidHlwZSI6ImFjY2V
+zcyIsInN1YiI6eyJ1c2VyIjoiYWNjZXNzIn0sIm5iZiI6MTY0MTQ1NjYzMSwiZXhwIjoxNjQxNDYwMjMxfQ.zUSc4uBXTx8h2NhZtjRYXGdN1UzVo6S9ULOcuFIEq3k"</span>
+$ http get :5000/refresh Authorization:<span class="token string">"Bearer <span class="token variable">$JWT</span>"</span>
+HTTP/1.0 <span class="token number">422</span> UNPROCESSABLE ENTITY
+Content-Length: <span class="token number">47</span>
+Content-Type: application/json
+Date: Thu, 06 Jan <span class="token number">2022</span> 08:12:37 GMT
+Server: Werkzeug/2.0.2 Python/3.8.10
+
+<span class="token punctuation">&#123;</span>
+    <span class="token string">"msg"</span><span class="token builtin class-name">:</span> <span class="token string">"Only refresh tokens are allowed"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="refresh-token不能访问protected接口"><a class="markdownIt-Anchor" href="#refresh-token不能访问protected接口"></a> refresh token不能访问/protected接口</h1>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ <span class="token builtin class-name">export</span> <span class="token assign-left variable">JWT</span><span class="token operator">=</span><span class="token string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTQ1NjYzMSwianRpIjoiOTFiZTcxM2ItZjhjOC00MTI4LWEwZjUtZjVmMjI5ZjA1N2I3IiwidHlwZSI6InJlZnJlc2giLCJzdWIiOnsidXNlciI6InJlZnJlc2gifSwibmJmIjoxNjQxNDU2NjMxLCJleHAiOjE2NDE1NDMwMzF9.XMeOEyjLrpDzSCrj0X1syTt931lOlvpvHIBhO1leJPQ"</span>
+
+$ http get :5000/protected Authorization:<span class="token string">"Bearer <span class="token variable">$JWT</span>"</span>
+HTTP/1.0 <span class="token number">422</span> UNPROCESSABLE ENTITY
+Content-Length: <span class="token number">51</span>
+Content-Type: application/json
+Date: Thu, 06 Jan <span class="token number">2022</span> 08:13:34 GMT
+Server: Werkzeug/2.0.2 Python/3.8.10
+
+<span class="token punctuation">&#123;</span>
+    <span class="token string">"msg"</span><span class="token builtin class-name">:</span> <span class="token string">"Only non-refresh tokens are allowed"</span>
+<span class="token punctuation">&#125;</span>
+
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/flask_project/" rel="prev" title="flask_project">
+                  <i class="fa fa-chevron-left"></i> flask_project
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/flask_jwt_optional/" rel="next" title="flask_jwt_optional">
+                  flask_jwt_optional <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基础概率知识  Distributions 有三个变量(variables):分别是智力(intelligence)&#x2F;难度(difficult)&#x2F;评级(Grade). 一个学生的智力(Intelligence(I)),有两个值, 可能低(low), 也可能高(high), 两种情况 他学习的课程难度(Difficult(D)), 有两个值, 可能简单(easy), 也可能困难(hard), 两种">
+<meta property="og:type" content="article">
+<meta property="og:title" content="贝叶斯网络理论知识">
+<meta property="og:url" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="基础概率知识  Distributions 有三个变量(variables):分别是智力(intelligence)&#x2F;难度(difficult)&#x2F;评级(Grade). 一个学生的智力(Intelligence(I)),有两个值, 可能低(low), 也可能高(high), 两种情况 他学习的课程难度(Difficult(D)), 有两个值, 可能简单(easy), 也可能困难(hard), 两种">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/1.png">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/2.png">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/3.png">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/4.png">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/5.png">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/6.png">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/7.png">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/8.png">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/13.png">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/14.png">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/15.png">
+<meta property="og:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/16.png">
+<meta property="article:published_time" content="2021-10-25T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.526Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/1.png">
+
+
+<link rel="canonical" href="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/","path":"贝叶斯网络理论知识/","title":"贝叶斯网络理论知识"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>贝叶斯网络理论知识 | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E7%8E%87%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text"> 基础概率知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#distributions"><span class="nav-number">1.1.</span> <span class="nav-text"> Distributions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#condition"><span class="nav-number">1.2.</span> <span class="nav-text"> Condition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#marginalization"><span class="nav-number">1.3.</span> <span class="nav-text"> Marginalization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#factors"><span class="nav-number">1.4.</span> <span class="nav-text"> Factors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#factor-product"><span class="nav-number">1.5.</span> <span class="nav-text"> Factor Product</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#factor-marginalization"><span class="nav-number">1.6.</span> <span class="nav-text"> Factor Marginalization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#factor-reduction"><span class="nav-number">1.7.</span> <span class="nav-text"> Factor Reduction</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text"> 实例说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#conditional-independence"><span class="nav-number">3.</span> <span class="nav-text"> Conditional Independence</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#conditional-independence-2"><span class="nav-number">3.1.</span> <span class="nav-text"> Conditional Independence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#independence"><span class="nav-number">3.2.</span> <span class="nav-text"> independence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conditional-independence-3"><span class="nav-number">3.3.</span> <span class="nav-text"> Conditional Independence</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A8%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text"> 推理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E6%8E%A8%E7%90%86causal-reasoning"><span class="nav-number">4.1.</span> <span class="nav-text"> 结果推理(Causal reasoning)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%81%E6%8D%AE%E6%8E%A8%E7%90%86evidential-reasoning"><span class="nav-number">4.2.</span> <span class="nav-text"> 证据推理(Evidential Reasoning)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E7%BB%93%E6%9E%9C%E8%AF%81%E6%8D%AE%E9%97%B4%E6%8E%A8%E7%90%86intercausal-reasoning"><span class="nav-number">4.3.</span> <span class="nav-text"> 中间结果证据间推理(Intercausal Reasoning)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#flow-of-probabilistic-influence"><span class="nav-number">5.</span> <span class="nav-text"> Flow of Probabilistic Influence</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#when-can-x-influence-y-given-evidence-about-z"><span class="nav-number">6.</span> <span class="nav-text"> When can X influence Y Given evidence about Z</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#d-%E5%88%86%E7%A6%BB"><span class="nav-number">7.</span> <span class="nav-text"> d-分离</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E8%BF%9E%E6%8E%A5"><span class="nav-number">7.1.</span> <span class="nav-text"> 直接连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%B4%E6%8E%A5%E8%BF%9E%E6%8E%A5"><span class="nav-number">7.2.</span> <span class="nav-text"> 间接连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.3.</span> <span class="nav-text"> 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">7.4.</span> <span class="nav-text"> 应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#i-map"><span class="nav-number">8.</span> <span class="nav-text"> I-MAP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8B%AC%E7%AB%8B%E6%80%A7%E5%88%A4%E6%96%AD"><span class="nav-number">9.</span> <span class="nav-text"> 独立性判断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8B%AC%E7%AB%8B"><span class="nav-number">9.1.</span> <span class="nav-text"> 独立</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="贝叶斯网络理论知识 | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          贝叶斯网络理论知识
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 22:03:54" itemprop="dateCreated datePublished" datetime="2021-10-25T22:03:54+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="基础概率知识"><a class="markdownIt-Anchor" href="#基础概率知识"></a> 基础概率知识</h1>
+<h2 id="distributions"><a class="markdownIt-Anchor" href="#distributions"></a> Distributions</h2>
+<p>有三个变量(variables):分别是智力(intelligence)/难度(difficult)/评级(Grade).<br />
+一个学生的智力(Intelligence(I)),有两个值, 可能低(low), 也可能高(high), 两种情况<br />
+他学习的课程难度(Difficult(D)), 有两个值, 可能简单(easy), 也可能困难(hard), 两种情况<br />
+他最终的评级(Grade(G)), 有三个值, 可能有A, B, C 三种情况<br />
+下表联合概率分布(Joint Distribution), 最后一列是P(I,D,G)<br />
+<img src="1.png" alt="1.png" /></p>
+<h2 id="condition"><a class="markdownIt-Anchor" href="#condition"></a> Condition</h2>
+<p>联合概率分布(Joint Distribution)最大的用处就是计算条件概率(Condition)<br />
+假设我们观察(observe)G=g1, 我们就可以将包含g2, g3的所有概率去除, 这样的操作称为Reduction.<br />
+<img src="2.png" alt="2.png" /><br />
+取出所有G=g1,并对其重新标准化(Renormalization), 就得到了条件概率<br />
+<img src="3.png" alt="3.png" /></p>
+<h2 id="marginalization"><a class="markdownIt-Anchor" href="#marginalization"></a> Marginalization</h2>
+<p>Marginalization(边缘化) 变量I, 就是将变量I消除<br />
+<img src="4.png" alt="4.png" /></p>
+<h2 id="factors"><a class="markdownIt-Anchor" href="#factors"></a> Factors</h2>
+<p>factor可以是function或table</p>
+<h2 id="factor-product"><a class="markdownIt-Anchor" href="#factor-product"></a> Factor Product</h2>
+<p><img src="5.png" alt="5.png" /></p>
+<h2 id="factor-marginalization"><a class="markdownIt-Anchor" href="#factor-marginalization"></a> Factor Marginalization</h2>
+<p><img src="6.png" alt="6.png" /></p>
+<h2 id="factor-reduction"><a class="markdownIt-Anchor" href="#factor-reduction"></a> Factor Reduction</h2>
+<p><img src="7.png" alt="7.png" /></p>
+<h1 id="实例说明"><a class="markdownIt-Anchor" href="#实例说明"></a> 实例说明</h1>
+<p>给出五个变量(Variables):</p>
+<ol>
+<li>
+<p>智力(Student Intelligence)</p>
+</li>
+<li>
+<p>难度(Course Difficulty)</p>
+</li>
+<li>
+<p>分数评级(Grade)</p>
+</li>
+<li>
+<p>SAT(Student SAT)</p>
+</li>
+<li>
+<p>推荐信(Reference Letter)<br />
+构建如下的贝叶斯网络.每一个节点就是一个CPD(Conditional Probability Distribution), 也称为一个因子(factor). 我们有五个节点, 就是有五个CPD, 五个因子(factor).<br />
+Difficulty 和 Intelligence 是unconditional distribution<br />
+<img src="8.png" alt="8.png" /></p>
+</li>
+<li>
+<p>计算联合概率P(D,I,G,S,L)<br />
+P(D,I,G,S,L) = P(D)P(I)P(G|I,D)P(S|I)P(L|G)<br />
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><msup><mi>d</mi><mn>0</mn></msup><mo separator="true">,</mo><msup><mi>i</mi><mn>1</mn></msup><mo separator="true">,</mo><msup><mi>g</mi><mn>3</mn></msup><mo separator="true">,</mo><msup><mi>s</mi><mn>1</mn></msup><mo separator="true">,</mo><msup><mi>l</mi><mn>1</mn></msup><mo stretchy="false">)</mo><mo>=</mo><mn>0.6</mn><mo>∗</mo><mn>0.3</mn><mo>∗</mo><mn>0.02</mn><mo>∗</mo><mn>0.8</mn><mo>∗</mo><mn>0.01</mn></mrow><annotation encoding="application/x-tex">P(d^0,i^1,g^3,s^1,l^1)=0.6*0.3*0.02*0.8*0.01</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">6</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mord">1</span></span></span></span></p>
+</li>
+<li>
+<p>计算单个事件概率P(S)</p>
+</li>
+<li>
+<p>先计算联合分布(joint distribution)</p>
+</li>
+<li>
+<p>再进行边缘化(Marginalization)<br />
+$P(s<sup>0,i</sup>0)=P(s<sup>0|i</sup>0)*P(i^0)=<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.95</mn><mo>∗</mo><mn>0.7</mn><mo>=</mo><mn>0.665</mn></mrow><annotation encoding="application/x-tex">0.95 * 0.7 = 0.665
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">9</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">7</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">6</span><span class="mord">6</span><span class="mord">5</span></span></span></span>P(s<sup>0,i</sup>1)=P(s<sup>0|i</sup>1)<em>P(i^1)=0.2</em>0.3=0.06<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow></mrow><annotation encoding="application/x-tex">
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"></span></span>P(s<sup>0)=P(s</sup>0,i<sup>0)+P(s</sup>0,i^1)=0.665+0.06=0.725<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow></mrow><annotation encoding="application/x-tex">
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"></span></span>P(s<sup>1,i</sup>0)=P(s<sup>1|i</sup>0)*P(i^0)=0.05 * 0.7 = 0.035<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow></mrow><annotation encoding="application/x-tex">
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"></span></span>P(s<sup>1,i</sup>1)=P(s<sup>1|i</sup>1)<em>P(i^1)=0.8</em>0.3=0.24<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow></mrow><annotation encoding="application/x-tex">
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"></span></span>P(s<sup>1)=P(s</sup>1,i<sup>0)+P(s</sup>1,i^1)=0.035+0.24=0.275$</p>
+</li>
+</ol>
+<p>贝叶斯网络的定义:</p>
+<ul>
+<li>A directed acyclic graph(DAG) G whose nodes represent the random variables<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>X</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">X_1,...,X_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>For each node <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">X_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> a CPD <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><msub><mi>X</mi><mi>i</mi></msub><mi mathvariant="normal">∣</mi><mi>p</mi><mi>a</mi><msub><mi>r</mi><mi>G</mi></msub><mo stretchy="false">(</mo><msub><mi>X</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(X_i|par_G(X_i))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord mathnormal">p</span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">G</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span><br />
+Bayesian network: 表示了一个joint distribution<br />
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><msub><mi>X</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="false">)</mo><mo>=</mo><msubsup><mo>∏</mo><mi>i</mi><mi>n</mi></msubsup><mi>P</mi><mo stretchy="false">(</mo><msub><mi>X</mi><mi>i</mi></msub><mi mathvariant="normal">∣</mi><mi>P</mi><mi>a</mi><msub><mi>r</mi><mi>G</mi></msub><mo stretchy="false">(</mo><msub><mi>X</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(X_1,...,x_n) = \prod_i^nP(X_i|Par_G(X_i))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.104002em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∏</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">G</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span><br />
+Bayesian network legal:</li>
+</ul>
+<ol start="8">
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>&gt;</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">P&gt;=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span></li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∑</mo><mi>P</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\sum P = 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00001em;vertical-align:-0.25001em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></li>
+</ol>
+<h1 id="conditional-independence"><a class="markdownIt-Anchor" href="#conditional-independence"></a> Conditional Independence</h1>
+<h2 id="conditional-independence-2"><a class="markdownIt-Anchor" href="#conditional-independence-2"></a> Conditional Independence</h2>
+<p>╞是satisfy sign<br />
+⊥是independence sign<br />
+| 是conditon sign</p>
+<h2 id="independence"><a class="markdownIt-Anchor" href="#independence"></a> independence</h2>
+<p><img src="13.png" alt="13.png" /><br />
+具体的例子:<br />
+<img src="14.png" alt="14.png" /></p>
+<h2 id="conditional-independence-3"><a class="markdownIt-Anchor" href="#conditional-independence-3"></a> Conditional Independence</h2>
+<p><img src="15.png" alt="15.png" /><br />
+具体案例:<br />
+<img src="16.png" alt="16.png" /></p>
+<h1 id="推理"><a class="markdownIt-Anchor" href="#推理"></a> 推理</h1>
+<h2 id="结果推理causal-reasoning"><a class="markdownIt-Anchor" href="#结果推理causal-reasoning"></a> 结果推理(Causal reasoning)</h2>
+<p>知道了事件的一个原因后，我们会改变对事件结果的预估。<br />
+<a href="9.png">9.png</a></p>
+<ol>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><msup><mi>l</mi><mn>1</mn></msup><mo stretchy="false">)</mo><mo>≈</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">P(l^1)\approx0.5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span></span></span></span> 在没有任何前提下, 得到1评价的概率是0.5</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><msup><mi>l</mi><mn>1</mn></msup><mi mathvariant="normal">∣</mi><msup><mi>i</mi><mn>0</mn></msup><mo stretchy="false">)</mo><mo>≈</mo><mn>0.39</mn></mrow><annotation encoding="application/x-tex">P(l^1|i^0)\approx 0.39</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">3</span><span class="mord">9</span></span></span></span>当知道该学生intelligence为low时, 得到1 letter的概率降到0.39</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><msup><mi>l</mi><mn>1</mn></msup><mi mathvariant="normal">∣</mi><msup><mi>i</mi><mn>0</mn></msup><mo separator="true">,</mo><msup><mi>d</mi><mn>0</mn></msup><mo stretchy="false">)</mo><mo>≈</mo><mn>0.51</mn></mrow><annotation encoding="application/x-tex">P(l^1|i^0, d^0)\approx 0.51</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">5</span><span class="mord">1</span></span></span></span>当知道该学生的intelligence为low时, 且Difficulty为easy时, 得到1 letter的概率为0.51</li>
+</ol>
+<h2 id="证据推理evidential-reasoning"><a class="markdownIt-Anchor" href="#证据推理evidential-reasoning"></a> 证据推理(Evidential Reasoning)</h2>
+<p>当我们知道了事件的结果后，我们会改变对引发事件的原因的判断。<br />
+4. <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><msup><mi>d</mi><mn>1</mn></msup><mo stretchy="false">)</mo><mo>=</mo><mn>0.4</mn></mrow><annotation encoding="application/x-tex">p(d^1)=0.4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">4</span></span></span></span><br />
+5. 在已知学生得到了C的评价后<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><msup><mi>d</mi><mn>1</mn></msup><mi mathvariant="normal">∣</mi><msup><mi>g</mi><mn>3</mn></msup><mo stretchy="false">)</mo><mo>≈</mo><mn>0.63</mn></mrow><annotation encoding="application/x-tex">p(d^1|g^3)\approx0.63</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">6</span><span class="mord">3</span></span></span></span>,相比之前的0.4上升了,既课程的为难的概率上升了<br />
+同理<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><msup><mi>i</mi><mn>1</mn></msup><mi mathvariant="normal">∣</mi><msup><mi>g</mi><mn>3</mn></msup><mo stretchy="false">)</mo><mo>≈</mo><mn>0.08</mn></mrow><annotation encoding="application/x-tex">P(i^1|g^3)\approx0.08</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mord">8</span></span></span></span>,也既是说, 该同学为high intelligence的概率降低了<br />
+<a href="10.png">10.png</a></p>
+<h2 id="中间结果证据间推理intercausal-reasoning"><a class="markdownIt-Anchor" href="#中间结果证据间推理intercausal-reasoning"></a> 中间结果证据间推理(Intercausal Reasoning)</h2>
+<p>从图中来看结果在中间.现实意义是: 有多个原因导致了某个事件的发生，如果我们已经知道了事件的结果，那么对其中一个原因的观察，会改变我们对另一个原因的判断。</p>
+<p>当告知课程难度是hard时, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><msup><mi>i</mi><mn>1</mn></msup><mi mathvariant="normal">∣</mi><msup><mi>g</mi><mn>3</mn></msup><mo separator="true">,</mo><msup><mi>d</mi><mn>1</mn></msup><mo stretchy="false">)</mo><mo>≈</mo><mn>0.11</mn></mrow><annotation encoding="application/x-tex">P(i^1|g^3,d^1)\approx0.11</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">1</span><span class="mord">1</span></span></span></span>,上升了, 应为课程变难了 ,所以是高智商的概率也变大了.<br />
+<a href="11.png">11.png</a><br />
+一下是对Intercausal Reasoning的解释:<br />
+<a href="12.png">12.png</a></p>
+<h1 id="flow-of-probabilistic-influence"><a class="markdownIt-Anchor" href="#flow-of-probabilistic-influence"></a> Flow of Probabilistic Influence</h1>
+<p>注意这里的w, 是没有被观测的.</p>
+<ol>
+<li>x-&gt;y 比如 Grade-&gt;Letter</li>
+<li>x&lt;-y 比如 Grade&lt;-Letter</li>
+<li>x-&gt;w-&gt;y 比如 Difficulty -&gt; Grade -&gt; Letter</li>
+<li>x&lt;-w&lt;-y 比如 Difficulty &lt;- Grade &lt;- Letter</li>
+<li>x&lt;-w-&gt;y 比如 Grade &lt;- Intelligence -&gt; SAT</li>
+<li>x -&gt;w &lt;-y 比如 Difficulty -&gt; Grade &lt;- Intelligence<br />
+只要不存在V型(第6种),整个influence flow就是有效的<br />
+<a href="18.png">18.png</a></li>
+</ol>
+<h1 id="when-can-x-influence-y-given-evidence-about-z"><a class="markdownIt-Anchor" href="#when-can-x-influence-y-given-evidence-about-z"></a> When can X influence Y Given evidence about Z</h1>
+<p>当W未被观察室, 3,4,5的X都可以影响Y<br />
+如果W,且他的所有descendants没有被观测, 6中 X不能影响Y<br />
+当W被观察时, 3,4,5的X都不可以影响Y, 因为此时Y只受到W的影响, 既W将此流阻断了<br />
+如果W,且他的所有descendants被观测, 6中 X能影响Y, 可以参考:Intercausal Reasoning的解释<br />
+<a href="19.png">19.png</a><br />
+也即是<br />
+7. 对于evidence n structure, 当evidence不被观察时, 能流动, 当evidence被观察时, 阻塞不能流动<br />
+8. 对于causal v structure,  当causal被观察时, 能流动, 当causal不被观察时, 不能流动</p>
+<p>所以可以得到更广泛的结论:<br />
+<a href="20.png">20.png</a></p>
+<h1 id="d-分离"><a class="markdownIt-Anchor" href="#d-分离"></a> d-分离</h1>
+<p>D-分离是寻找网络节点之间的条件独立性的一种方法, 在用贝叶斯网络进行预测，诊断推理等方面，可以提高计算速度，减少计算复杂性。</p>
+<h2 id="直接连接"><a class="markdownIt-Anchor" href="#直接连接"></a> 直接连接</h2>
+<p>当X和Y通过一条边直接连接时, 则称<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>→</mo><mi>Y</mi></mrow><annotation encoding="application/x-tex">X\rightarrow Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span></span></span></span>, XY不独立</p>
+<h2 id="间接连接"><a class="markdownIt-Anchor" href="#间接连接"></a> 间接连接</h2>
+<p><a href="21.png">21.png</a></p>
+<ol>
+<li>结果作用(图a):</li>
+<li>Z未被观察, XY不独立</li>
+<li>Z被观察, XY独立</li>
+<li>证据作用(图b):</li>
+<li>Z未被观察, XY不独立</li>
+<li>Z被观察, XY独立</li>
+<li>共同证据作用(图c):</li>
+<li>Z未被观察, XY不独立</li>
+<li>Z被观察, XY独立</li>
+<li>共同结果作用(图d):</li>
+<li>Z未被观察, XY独立</li>
+<li>Z被观察, XY不独立</li>
+</ol>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>对于DAG的任意路径,满足下面条件的任意一条, 则该路径是阻塞的:<br />
+5. 路径中存在某个节点Z, 是结果/证据/共同证据, 并且X被观测<br />
+6. 路径中存在某个节点Z, 是共同结果节点, 且Z或Z的儿子不被观测<br />
+如果XY间, 所有路径都是阻塞的, 那么XY就是关于Z条件独立, 否则XY相互依赖</p>
+<h2 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h2>
+<ol start="7">
+<li>判断Difficulty与SAT是否在Letter条件下独立</li>
+<li>Difficulty到SAT只有一条路径D-&gt;G-&gt;I-&gt;S.</li>
+<li>路径上有节点Grade是共同结果, 且Grade的儿子Letter被观测, 所以Difficulty和Intelligence依赖.</li>
+<li>路径上有节点Intelligence是共同证据, 且Intelligence没有被观测, 所以Grade和SAT依赖<br />
+综合上面结果, Difficulty和SAT在给定Letter条件下依赖.</li>
+</ol>
+<h1 id="i-map"><a class="markdownIt-Anchor" href="#i-map"></a> I-MAP</h1>
+<p><a href="22.png">22.png</a></p>
+<h1 id="独立性判断"><a class="markdownIt-Anchor" href="#独立性判断"></a> 独立性判断</h1>
+<h2 id="独立"><a class="markdownIt-Anchor" href="#独立"></a> 独立</h2>
+<ol>
+<li>Local Independencies:在给定$$X$$父节点的条件下, $$X$$独立于非子孙节点, 既:</li>
+</ol>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>X</mi><mi mathvariant="normal">⊥</mi><mi>N</mi><mi>o</mi><mi>n</mi><mi>D</mi><mi>e</mi><mi>s</mi><mi>c</mi><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo><mi mathvariant="normal">∣</mi><msub><mi>P</mi><mi>a</mi></msub><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">X\bot NonDesc(X)|P_a(X)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mord">⊥</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mord mathnormal">c</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span></span></span></span></span></p>
+<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Can&#039;t use function &#039;$&#039; in math mode at position 11: NonDesc(X)$̲$表示非$$X$$的子孙节点
+…'>NonDesc(X)$$表示非$$X$$的子孙节点
+$$P_a(X)$$表示$$X$$的父节点
+2. Global Independencies:
+第一种情况:两个节点直接连接, 无论方向
+[23.png](23.png)
+无论更改任何节点都会影响另一个.
+[24.png](24.png)
+第二种情况:
+Causal: 当$$B$$被观察时,将阻断$$A \rightarrow C$$的影响, $$(A \perp C | B)</p>
+<p>Evidential: 当$$B$$被观察时,将阻断$$A \rightarrow C$$的影响,$$(A \perp C | B)$$<br />
+Common Evidence: 当B未知时, 将阻断$$A \rightarrow C$$的影响,$$(A \perp C )$$<br />
+Common Cause: 当$$B$$被观察时,将阻断$$A \rightarrow C$$的影响,$$(A \perp C | B)$$</p>
+<p>总结<br />
+对于DAG的任意路径,满足下面条件的任意一条, 则该路径是阻塞的:</p>
+<ol>
+<li>路径中存在某个节点Z, 是结果/证据/共同证据, 并且X被观测</li>
+<li>路径中存在某个节点Z, 是共同结果节点, 且Z或Z的儿子不被观测<br />
+如果XY间, 所有路径都是阻塞的, 那么XY就是关于Z条件独立, 否则XY相互依赖</li>
+</ol>
+<p>应用<br />
+3. 判断Difficulty与SAT是否在Letter条件下独立</p>
+<ol>
+<li>Difficulty到SAT只有一条路径D-&gt;G-&gt;I-&gt;S.</li>
+<li>路径上有节点Grade是共同结果, 且Grade的儿子Letter被观测, 所以Difficulty和Intelligence依赖.</li>
+<li>路径上有节点Intelligence是共同证据, 且Intelligence没有被观测, 所以Grade和SAT依赖<br />
+综合上面结果, Difficulty和SAT在给定Letter条件下依赖.</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#Listing all Independencies</span>
+alarm_model<span class="token punctuation">.</span>get_independencies<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># Getting the local independencies of a variable.</span>
+model<span class="token punctuation">.</span>local_independencies<span class="token punctuation">(</span><span class="token string">'G'</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
+(G _|_ S | I, D)
+'''</span>
+<span class="token comment"># Getting all the local independencies in the network.</span>
+model<span class="token punctuation">.</span>local_independencies<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token string">'I'</span><span class="token punctuation">,</span> <span class="token string">'S'</span><span class="token punctuation">,</span> <span class="token string">'G'</span><span class="token punctuation">,</span> <span class="token string">'L'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
+(D _|_ I, S)
+(I _|_ D)
+(S _|_ G, L, D | I)
+(G _|_ S | I, D)
+(L _|_ I, D, S | G)
+'''</span>
+<span class="token comment"># Active trail: For any two variables A and B in a network if any change in A influences the values of B then we say</span>
+<span class="token comment">#               that there is an active trail between A and B.</span>
+<span class="token comment"># In pgmpy active_trail_nodes gives a set of nodes which are affected (i.e. correlated) by any</span>
+<span class="token comment"># change in the node passed in the argument.</span>
+model<span class="token punctuation">.</span>active_trail_nodes<span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
+&#123;'D': &#123;'D', 'G', 'L'&#125;&#125;
+'''</span>
+model<span class="token punctuation">.</span>active_trail_nodes<span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span> observed<span class="token operator">=</span><span class="token string">'G'</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
+&#123;'D': &#123;'D', 'I', 'S'&#125;&#125;
+'''</span>
+<span class="token comment"># Check for d-separation between variables</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">.</span>is_dconnected<span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token string">'I'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">.</span>is_dconnected<span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token string">'L'</span><span class="token punctuation">,</span> observed<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'G'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>PGM-cn<br />
+<a target="_blank" rel="noopener" href="https://www.coursera.org/learn/probabilistic-graphical-models/lecture/tEZ6S/factors">https://www.coursera.org/learn/probabilistic-graphical-models/lecture/tEZ6S/factors</a><br />
+<a target="_blank" rel="noopener" href="https://www.coursera.org/learn/probabilistic-graphical-models/resources/7ct5V">https://www.coursera.org/learn/probabilistic-graphical-models/resources/7ct5V</a><br />
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/github_36326955/article/details/73089182">https://blog.csdn.net/github_36326955/article/details/73089182</a><br />
+<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80399641?ivk_sa=1024320u">https://zhuanlan.zhihu.com/p/80399641?ivk_sa=1024320u</a><br />
+<a target="_blank" rel="noopener" href="https://my.oschina.net/dillan/blog/134011">https://my.oschina.net/dillan/blog/134011</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/hypothesis_test/" rel="prev" title="hypothesis_test">
+                  <i class="fa fa-chevron-left"></i> hypothesis_test
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E8%A1%A5%E5%85%85/" rel="next" title="补充">
+                  补充 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

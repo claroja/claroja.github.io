@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="比较有名的语料库是Wikipedia和Google News, 另外是莎士比亚和夏目簌石等伟大作家的作品. 文本预处理是指分词, 单词ID转换.  分词  text &#x3D; &#39;You say goodbye and I say hello.&#39; text &#x3D; text.lower() text &#x3D; text.replace(&#39;.&#39;, &#39; .&#39;) text  # &#39;you say goodbye and">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nlp_statistic">
+<meta property="og:url" content="https://claroja.github.io/nlp_statistic/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="比较有名的语料库是Wikipedia和Google News, 另外是莎士比亚和夏目簌石等伟大作家的作品. 文本预处理是指分词, 单词ID转换.  分词  text &#x3D; &#39;You say goodbye and I say hello.&#39; text &#x3D; text.lower() text &#x3D; text.replace(&#39;.&#39;, &#39; .&#39;) text  # &#39;you say goodbye and">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://claroja.github.io/nlp_statistic/1.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_statistic/2.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_statistic/3.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_statistic/4.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_statistic/5.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_statistic/6.png">
+<meta property="article:published_time" content="2021-11-26T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.376Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://claroja.github.io/nlp_statistic/1.png">
+
+
+<link rel="canonical" href="https://claroja.github.io/nlp_statistic/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/nlp_statistic/","path":"nlp_statistic/","title":"nlp_statistic"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>nlp_statistic | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E8%AF%8D%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.</span> <span class="nav-text"> 单词的分布式表示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B1%E7%8E%B0%E7%9F%A9%E9%98%B5"><span class="nav-number">2.</span> <span class="nav-text"> 共现矩阵</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E9%97%B4%E7%9B%B8%E4%BC%BC%E5%BA%A6"><span class="nav-number">3.</span> <span class="nav-text"> 向量间相似度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E8%AF%8D%E7%9B%B8%E4%BC%BC%E5%BA%A6%E6%8E%92%E5%BA%8F"><span class="nav-number">4.</span> <span class="nav-text"> 单词相似度排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%82%B9%E4%BA%92%E4%BF%A1%E6%81%AFpointwise-mutual-information-pmi"><span class="nav-number">5.</span> <span class="nav-text"> 点互信息(Pointwise Mutual Information, PMI)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%8D%E7%BB%B4"><span class="nav-number">6.</span> <span class="nav-text"> 降维</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/nlp_statistic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="nlp_statistic | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nlp_statistic
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-26 22:03:54" itemprop="dateCreated datePublished" datetime="2021-11-26T22:03:54+08:00">2021-11-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>比较有名的语料库是Wikipedia和Google News, 另外是莎士比亚和夏目簌石等伟大作家的作品.<br />
+文本预处理是指分词, 单词ID转换.</p>
+<ul>
+<li>分词</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">text <span class="token operator">=</span> <span class="token string">'You say goodbye and I say hello.'</span>
+text <span class="token operator">=</span> text<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span>
+text <span class="token operator">=</span> text<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'.'</span><span class="token punctuation">,</span> <span class="token string">' .'</span><span class="token punctuation">)</span>
+text  <span class="token comment"># 'you say goodbye and i say hello .'</span>
+words <span class="token operator">=</span> text<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span>
+words  <span class="token comment"># ['you', 'say', 'goodbye', 'and', 'i', 'say', 'hello', '.']</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这把’.'也当成了一个单词来看待.</p>
+<ul>
+<li>单词ID转换</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">word_to_id <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+id_to_word <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+<span class="token keyword">for</span> word <span class="token keyword">in</span> words<span class="token punctuation">:</span>
+    <span class="token keyword">if</span> word <span class="token keyword">not</span> <span class="token keyword">in</span> word_to_id<span class="token punctuation">:</span>
+        new_id <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>word_to_id<span class="token punctuation">)</span>
+        word_to_id<span class="token punctuation">[</span>word<span class="token punctuation">]</span> <span class="token operator">=</span> new_id
+        id_to_word<span class="token punctuation">[</span>new_id<span class="token punctuation">]</span> <span class="token operator">=</span> word
+id_to_word  <span class="token comment"># &#123;0: 'you', 1: 'say', 2: 'goodbye', 3: 'and', 4: 'i', 5: 'hello', 6:'.'&#125;</span>
+word_to_id  <span class="token comment"># &#123;'you': 0, 'say': 1, 'goodbye': 2, 'and': 3, 'i': 4, 'hello': 5, '.': 6&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>id_to_word</code>负责将单词ID转为为单词, <code>word_to_id</code>负责将单词转化为Id</p>
+<ul>
+<li>将单词列表转换为id</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+corpus <span class="token operator">=</span> <span class="token punctuation">[</span>word_to_id<span class="token punctuation">[</span>w<span class="token punctuation">]</span> <span class="token keyword">for</span> w <span class="token keyword">in</span> words<span class="token punctuation">]</span>
+corpus <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>corpus<span class="token punctuation">)</span>
+corpus  <span class="token comment"># array([0, 1, 2, 3, 4, 1, 5, 6])</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以将上述的过程, 封装成函数:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">preprocess</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    text <span class="token operator">=</span> text<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    text <span class="token operator">=</span> text<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'.'</span><span class="token punctuation">,</span> <span class="token string">' .'</span><span class="token punctuation">)</span>
+    words <span class="token operator">=</span> text<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span>
+    word_to_id <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    id_to_word <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">for</span> word <span class="token keyword">in</span> words<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> word <span class="token keyword">not</span> <span class="token keyword">in</span> word_to_id<span class="token punctuation">:</span>
+            new_id <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>word_to_id<span class="token punctuation">)</span>
+            word_to_id<span class="token punctuation">[</span>word<span class="token punctuation">]</span> <span class="token operator">=</span> new_id
+            id_to_word<span class="token punctuation">[</span>new_id<span class="token punctuation">]</span> <span class="token operator">=</span> word
+    corpus <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span>word_to_id<span class="token punctuation">[</span>w<span class="token punctuation">]</span> <span class="token keyword">for</span> w <span class="token keyword">in</span> words<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> corpus<span class="token punctuation">,</span> word_to_id<span class="token punctuation">,</span> id_to_word
+
+text <span class="token operator">=</span> <span class="token string">'You say goodbye and I say hello.'</span>
+corpus<span class="token punctuation">,</span> word_to_id<span class="token punctuation">,</span> id_to_word <span class="token operator">=</span> preprocess<span class="token punctuation">(</span>text<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="单词的分布式表示"><a class="markdownIt-Anchor" href="#单词的分布式表示"></a> 单词的分布式表示</h1>
+<p>单词本身没有含义, 单词含义由它所在的上下文形成. 比如&quot;I drink beer&quot;, “we drink wine”, “drink&quot;附近经常有饮料出现. 另外从&quot;I guzzle beer”, &quot;We guzzle wine&quot;可知, &quot;guzzle&quot;和&quot;drink&quot;所在的语境相似, 它俩可能是近义词.<br />
+单词的&quot;上下文&quot;是指某个单词周围的单词. 将上下文的大小, 称为窗口大小.窗口大小为1, 则上下文左右各1个单词; 窗口大小为2, 上下文包含左右各2个单词.<br />
+<img src="1.png" alt="1.png" /></p>
+<h1 id="共现矩阵"><a class="markdownIt-Anchor" href="#共现矩阵"></a> 共现矩阵</h1>
+<p>基于分布式假设使用向量表示单词, 最简单的方法就是对单词的数量进行计数, 也就是说对其周围出现了多少次什么单词进行计数. 称这种方法是&quot;基于计数的方法&quot;或者&quot;基于统计的方法&quot;.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">'..'</span><span class="token punctuation">)</span>
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">from</span> common<span class="token punctuation">.</span>util <span class="token keyword">import</span> preprocess
+text <span class="token operator">=</span> <span class="token string">'You say goodbye and I say hello.'</span>
+corpus<span class="token punctuation">,</span> word_to_id<span class="token punctuation">,</span> id_to_word <span class="token operator">=</span> preprocess<span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>corpus<span class="token punctuation">)</span>
+<span class="token comment"># [0 1 2 3 4 1 5 6]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>id_to_word<span class="token punctuation">)</span>
+<span class="token comment"># &#123;0: 'you', 1: 'say', 2: 'goodbye', 3: 'and', 4: 'i', 5: 'hello', 6:'.'&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>词汇总共有7个, 我们要计算每个单词的上下文所包含的单词的频数. 将窗口大小设为1, 从ID为0的you开始, 单词you的上下文仅有say这个单词:<br />
+<img src="2.png" alt="2.png" /><br />
+上图是单词you的上下文共现的单词的频数, 同时也意味着可以用<code>[0, 1, 0, 0, 0, 0, 0]</code>来表示单词you.<br />
+同样的道理, 计算其他的单词, 我们可以得到:<br />
+<img src="3.png" alt="3.png" /><br />
+上图是汇总了所有单词的共线单词表格, 这个表格的各行对应单词的向量, 称为共现矩阵(co-occurence matrix).<br />
+python实现共线矩阵:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">create_co_matrix</span><span class="token punctuation">(</span>corpus<span class="token punctuation">,</span> vocab_size<span class="token punctuation">,</span> window_size<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    corpus_size <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>corpus<span class="token punctuation">)</span>
+    co_matrix <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span>vocab_size<span class="token punctuation">,</span> vocab_size<span class="token punctuation">)</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span>np<span class="token punctuation">.</span>int32<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> idx<span class="token punctuation">,</span> word_id <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>corpus<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> window_size <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            left_idx <span class="token operator">=</span> idx <span class="token operator">-</span> i
+            right_idx <span class="token operator">=</span> idx <span class="token operator">+</span> i
+            <span class="token keyword">if</span> left_idx <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                left_word_id <span class="token operator">=</span> corpus<span class="token punctuation">[</span>left_idx<span class="token punctuation">]</span>
+                co_matrix<span class="token punctuation">[</span>word_id<span class="token punctuation">,</span> left_word_id<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> right_idx <span class="token operator">&lt;</span> corpus_size<span class="token punctuation">:</span>
+                right_word_id <span class="token operator">=</span> corpus<span class="token punctuation">[</span>right_idx<span class="token punctuation">]</span>
+                co_matrix<span class="token punctuation">[</span>word_id<span class="token punctuation">,</span> right_word_id<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
+    <span class="token keyword">return</span> co_matrix<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="向量间相似度"><a class="markdownIt-Anchor" href="#向量间相似度"></a> 向量间相似度</h1>
+<p>测量单词的向量相似度一般使用余弦相似度(cosine similarity):<br />
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>i</mi><mi>m</mi><mi>i</mi><mi>l</mi><mi>a</mi><mi>a</mi><mi>r</mi><mi>i</mi><mi>t</mi><mi>y</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mi>x</mi><mo>⋅</mo><mi>y</mi></mrow><mrow><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><mi>x</mi><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><mi>y</mi><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mn>1</mn></msub><msub><mi>y</mi><mn>1</mn></msub><mo>+</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>+</mo><msub><mi>x</mi><mi>n</mi></msub><msub><mi>y</mi><mi>n</mi></msub></mrow><mrow><msqrt><mrow><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>+</mo><msubsup><mi>x</mi><mi>n</mi><mn>2</mn></msubsup></mrow></msqrt><msqrt><mrow><msubsup><mi>y</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>+</mo><msubsup><mi>y</mi><mi>n</mi><mn>2</mn></msubsup></mrow></msqrt></mrow></mfrac></mrow><annotation encoding="application/x-tex">similaarity(x,y)=\frac{x\cdot y}{||x||||y||}=\frac{x_1y_1+...+x_ny_n}{\sqrt{x_1^2+...+x_n^2}\sqrt{y_1^2+...+y_n^2}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">i</span><span class="mord mathnormal">m</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">a</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">i</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.277223em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.757223em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∣</span><span class="mord mtight">∣</span><span class="mord mathnormal mtight">x</span><span class="mord mtight">∣</span><span class="mord mtight">∣</span><span class="mord mtight">∣</span><span class="mord mtight">∣</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="mord mtight">∣</span><span class="mord mtight">∣</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.446108em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="mbin mtight">⋅</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.6840389999999998em;vertical-align:-0.8295999999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.854439em;"><span style="top:-2.4664025em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0337107142857143em;"><span class="svg-align" style="top:-3.428571428571429em;"><span class="pstrut" style="height:3.428571428571429em;"></span><span class="mord mtight" style="padding-left:1.19em;"><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8051142857142857em;"><span style="top:-2.188485714285714em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span><span style="top:-2.8448em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.31151428571428574em;"><span></span></span></span></span></span></span><span class="mbin mtight">+</span><span class="mord mtight">.</span><span class="mord mtight">.</span><span class="mord mtight">.</span><span class="mbin mtight">+</span><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7463142857142857em;"><span style="top:-2.214em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">n</span></span></span><span style="top:-2.786em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.0057107142857147em;"><span class="pstrut" style="height:3.428571428571429em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.5428571428571431em;"><svg width='400em' height='1.5428571428571431em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.42286071428571426em;"><span></span></span></span></span></span><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0337107142857143em;"><span class="svg-align" style="top:-3.428571428571429em;"><span class="pstrut" style="height:3.428571428571429em;"></span><span class="mord mtight" style="padding-left:1.19em;"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8051142857142857em;"><span style="top:-2.188485714285714em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span><span style="top:-2.8448em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.31151428571428574em;"><span></span></span></span></span></span></span><span class="mbin mtight">+</span><span class="mord mtight">.</span><span class="mord mtight">.</span><span class="mord mtight">.</span><span class="mbin mtight">+</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7463142857142857em;"><span style="top:-2.214em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">n</span></span></span><span style="top:-2.786em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.0057107142857147em;"><span class="pstrut" style="height:3.428571428571429em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.5428571428571431em;"><svg width='400em' height='1.5428571428571431em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.42286071428571426em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.446108em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mbin mtight">+</span><span class="mord mtight">.</span><span class="mord mtight">.</span><span class="mord mtight">.</span><span class="mbin mtight">+</span><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.16454285714285719em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.16454285714285719em;"><span style="top:-2.357em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8295999999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span><br />
+余弦相似度直观地表示了&quot;两个向量在多大程度上指向同一方向&quot;.两个向量完全指向相同的方向时, 余弦相似度为1;完全指向相反的方向时, 余弦相似度为-1.<br />
+python实现:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">cos_similarity</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    nx <span class="token operator">=</span> x <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>np<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>x<span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># x的正规化</span>
+    ny <span class="token operator">=</span> y <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>np<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>y<span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># y的正规化</span>
+    <span class="token keyword">return</span> np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>nx<span class="token punctuation">,</span> ny<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果当零向量被当做参数时, 会出现&quot;除数为0&quot;的情况, 解决此类问题的一个常用的方法是, 加上一个微小的值.通过参数设置一个微小的值eps(epsilon),并默认为eps=1e-8:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">cos_similarity</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> eps<span class="token operator">=</span><span class="token number">1e-8</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    nx <span class="token operator">=</span> x <span class="token operator">/</span> <span class="token punctuation">(</span>np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>np<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>x <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> eps<span class="token punctuation">)</span>
+    ny <span class="token operator">=</span> y <span class="token operator">/</span> <span class="token punctuation">(</span>np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>np<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>y <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> eps<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>nx<span class="token punctuation">,</span> ny<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用余弦相似度,求you和i的相似度:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">'..'</span><span class="token punctuation">)</span>
+<span class="token keyword">from</span> common<span class="token punctuation">.</span>util <span class="token keyword">import</span> preprocess<span class="token punctuation">,</span> create_co_matrix<span class="token punctuation">,</span> cos_similarity
+text <span class="token operator">=</span> <span class="token string">'You say goodbye and I say hello.'</span>
+corpus<span class="token punctuation">,</span> word_to_id<span class="token punctuation">,</span> id_to_word <span class="token operator">=</span> preprocess<span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+vocab_size <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>word_to_id<span class="token punctuation">)</span>
+C <span class="token operator">=</span> create_co_matrix<span class="token punctuation">(</span>corpus<span class="token punctuation">,</span> vocab_size<span class="token punctuation">)</span>
+c0 <span class="token operator">=</span> C<span class="token punctuation">[</span>word_to_id<span class="token punctuation">[</span><span class="token string">'you'</span><span class="token punctuation">]</span><span class="token punctuation">]</span>  <span class="token comment"># you的单词向量</span>
+c1 <span class="token operator">=</span> C<span class="token punctuation">[</span>word_to_id<span class="token punctuation">[</span><span class="token string">'i'</span><span class="token punctuation">]</span><span class="token punctuation">]</span>    <span class="token comment"># i的单词向量</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>cos_similarity<span class="token punctuation">(</span>c0<span class="token punctuation">,</span> c1<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># # 0.7071067691154799</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>说明you和I有一定的相似度.</p>
+<h1 id="单词相似度排序"><a class="markdownIt-Anchor" href="#单词相似度排序"></a> 单词相似度排序</h1>
+<p>当某个单词被作为查询单词时, 将这个查询词相似的单词按降序显示出来.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">most_similar</span><span class="token punctuation">(</span>query<span class="token punctuation">,</span> word_to_id<span class="token punctuation">,</span> id_to_word<span class="token punctuation">,</span> word_matrix<span class="token punctuation">,</span> top<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># ❶ 取出查询词</span>
+    <span class="token keyword">if</span> query <span class="token keyword">not</span> <span class="token keyword">in</span> word_to_id<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%s is not found'</span> <span class="token operator">%</span> query<span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n[query] '</span> <span class="token operator">+</span> query<span class="token punctuation">)</span>
+    query_id <span class="token operator">=</span> word_to_id<span class="token punctuation">[</span>query<span class="token punctuation">]</span>
+    query_vec <span class="token operator">=</span> word_matrix<span class="token punctuation">[</span>query_id<span class="token punctuation">]</span>
+    <span class="token comment"># ❷ 计算余弦相似度</span>
+    vocab_size <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>id_to_word<span class="token punctuation">)</span>
+    similarity <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>vocab_size<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>vocab_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        similarity<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> cos_similarity<span class="token punctuation">(</span>word_matrix<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> query_vec<span class="token punctuation">)</span>
+    <span class="token comment"># ❸ 基于余弦相似度，按降序输出值</span>
+    count <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span> <span class="token operator">*</span> similarity<span class="token punctuation">)</span><span class="token punctuation">.</span>argsort<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> id_to_word<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> query<span class="token punctuation">:</span>
+            <span class="token keyword">continue</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">' %s: %s'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>id_to_word<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> similarity<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        count <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> count <span class="token operator">>=</span> top<span class="token punctuation">:</span>
+            <span class="token keyword">return</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参数描述:</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>query</td>
+<td>查询单词</td>
+</tr>
+<tr>
+<td>word_to_id</td>
+<td>单词到ID的字典</td>
+</tr>
+<tr>
+<td>id_to_word</td>
+<td>ID到单词的字典</td>
+</tr>
+<tr>
+<td>word_matrix</td>
+<td>共现矩阵</td>
+</tr>
+<tr>
+<td>top</td>
+<td>前几位相似的单词</td>
+</tr>
+</tbody>
+</table>
+<h1 id="点互信息pointwise-mutual-information-pmi"><a class="markdownIt-Anchor" href="#点互信息pointwise-mutual-information-pmi"></a> 点互信息(Pointwise Mutual Information, PMI)</h1>
+<p>语料库中the和car的共现情况. 将会出现很多&quot;the car&quot;的短语. 他们的共现次数将会很大.car和drive也明显有很强的相关性, 但是只看单词得的出现次数, 那么和drive相比, the和car的相关性更强. 这意味着, 仅仅the是个常用词, 就被认为与car有很强的相关性.<br />
+使用点互信息解决这个问题:<br />
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>M</mi><mi>I</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mfrac><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">PMI(x,y)=log_2\frac{P(x,y)}{P(x)P(y)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.53em;vertical-align:-0.52em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">x</span><span class="mclose mtight">)</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="mclose mtight">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">x</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span><br />
+其中<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span>表示x发生的概率,<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span>表示y发生的概率,<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span>表示x和y同时发生的概率. PMI的值越高, 表明相关性越强.</p>
+<p>在自然语言的例子中, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span>就是指单词x在语料库中出现的概率.假设某个语料库中有10000个单词, 单词the出现了100次, 则<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi mathvariant="normal">&quot;</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi mathvariant="normal">&quot;</mi><mo stretchy="false">)</mo><mo>=</mo><mn>100</mn><mi mathvariant="normal">/</mi><mn>10000</mn><mo>=</mo><mn>0.01</mn></mrow><annotation encoding="application/x-tex">P(&quot;the&quot;)=100/10000=0.01</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord">&quot;</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">e</span><span class="mord">&quot;</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">/</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mord">1</span></span></span></span>. 另外,<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span>标识号单词x和y同时出现的概率. 假设the和car一起一种出现了10次,则<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi mathvariant="normal">&quot;</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi mathvariant="normal">&quot;</mi><mo separator="true">,</mo><mi mathvariant="normal">&quot;</mi><mi>c</mi><mi>a</mi><mi>r</mi><mi mathvariant="normal">&quot;</mi><mo stretchy="false">)</mo><mo>=</mo><mn>10</mn><mi mathvariant="normal">/</mi><mn>10000</mn><mo>=</mo><mn>0.001</mn></mrow><annotation encoding="application/x-tex">P(&quot;the&quot;,&quot;car&quot;)=10/10000=0.001</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord">&quot;</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">e</span><span class="mord">&quot;</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">&quot;</span><span class="mord mathnormal">c</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord">&quot;</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">/</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span></span></span></span></p>
+<p>将共现矩阵表示为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span>, 将单词x和y的共现次数表示为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">C(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span>, 将单词x和y的出现次数分别表示为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>C</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">C(x),C(y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span>, 将语料库的单词数量记为N, 则:<br />
+<span class='katex-error' title='ParseError: KaTeX parse error: Expected &#039;}&#039;, got &#039;EOF&#039; at end of input: …ot N}{C(x)C(y)}'>PMI(x,y)=log_2\frac{P(x,y)}{P(x)P(y)=log2\frac{\frac{C(x,y)}{N}}{\frac{C(x)\cdot C(y)}{N\cdot N}}=\frac{C(x,y)\cdot N}{C(x)C(y)}</span></p>
+<p>假设语料库的单词数量(N)为10000,the出现100次, car出现20次, drive出现10次, the和car共现10次, car和drive共现5次. 从共现次数来看, 与drive相比, the和car的相关性更强. 而从PMI角度来看:<br />
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>M</mi><mi>I</mi><mo stretchy="false">(</mo><mi mathvariant="normal">&quot;</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi mathvariant="normal">&quot;</mi><mo separator="true">,</mo><mi mathvariant="normal">&quot;</mi><mi>c</mi><mi>a</mi><mi>r</mi><mi mathvariant="normal">&quot;</mi><mo stretchy="false">)</mo><mo>=</mo><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mfrac><mrow><mn>10</mn><mo>⋅</mo><mn>10000</mn></mrow><mrow><mn>1000</mn><mo>⋅</mo><mn>20</mn></mrow></mfrac><mo>≈</mo><mn>2.32</mn></mrow><annotation encoding="application/x-tex">PMI(&quot;the&quot;,&quot;car&quot;)=log_2\frac{10\cdot 10000}{1000\cdot 20}\approx 2.32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mopen">(</span><span class="mord">&quot;</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">e</span><span class="mord">&quot;</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">&quot;</span><span class="mord mathnormal">c</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord">&quot;</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">0</span><span class="mord mtight">0</span><span class="mord mtight">0</span><span class="mbin mtight">⋅</span><span class="mord mtight">2</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">0</span><span class="mbin mtight">⋅</span><span class="mord mtight">1</span><span class="mord mtight">0</span><span class="mord mtight">0</span><span class="mord mtight">0</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord">.</span><span class="mord">3</span><span class="mord">2</span></span></span></span><br />
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>M</mi><mi>I</mi><mo stretchy="false">(</mo><mi mathvariant="normal">&quot;</mi><mi>c</mi><mi>a</mi><mi>r</mi><mi mathvariant="normal">&quot;</mi><mo separator="true">,</mo><mi mathvariant="normal">&quot;</mi><mi>d</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>e</mi><mi mathvariant="normal">&quot;</mi><mo stretchy="false">)</mo><mo>=</mo><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mfrac><mrow><mn>5</mn><mo>⋅</mo><mn>10000</mn></mrow><mrow><mn>20</mn><mo>⋅</mo><mn>10</mn></mrow></mfrac><mo>≈</mo><mn>7.97</mn></mrow><annotation encoding="application/x-tex">PMI(&quot;car&quot;,&quot;drive&quot;)=log_2\frac{5\cdot 10000}{20\cdot 10}\approx 7.97</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mopen">(</span><span class="mord">&quot;</span><span class="mord mathnormal">c</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord">&quot;</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">&quot;</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">e</span><span class="mord">&quot;</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mtight">0</span><span class="mbin mtight">⋅</span><span class="mord mtight">1</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span><span class="mbin mtight">⋅</span><span class="mord mtight">1</span><span class="mord mtight">0</span><span class="mord mtight">0</span><span class="mord mtight">0</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">7</span><span class="mord">.</span><span class="mord">9</span><span class="mord">7</span></span></span></span><br />
+PMI结果是drive和car有更强的相关性.<br />
+PMI也有一个问题, 当两个单词的共现次数为0时,<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mn>0</mn><mo>=</mo><mo>−</mo><mi mathvariant="normal">∞</mi></mrow><annotation encoding="application/x-tex">log_20=-\infty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord">−</span><span class="mord">∞</span></span></span></span>, 为了解决这个问题,使用正的点互信息(Positive PMI,PPMI):<br />
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>P</mi><mi>M</mi><mi>I</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mi>P</mi><mi>M</mi><mi>I</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">PPMI(x,y)=max(0,PMI(x,y))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mord mathnormal">a</span><span class="mord mathnormal">x</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span><br />
+python实现:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">ppmi</span><span class="token punctuation">(</span>C<span class="token punctuation">,</span> verbose<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> eps<span class="token operator">=</span><span class="token number">1e-8</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    M <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros_like<span class="token punctuation">(</span>C<span class="token punctuation">,</span> dtype<span class="token operator">=</span>np<span class="token punctuation">.</span>float32<span class="token punctuation">)</span>
+    N <span class="token operator">=</span> np<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>C<span class="token punctuation">)</span>
+    S <span class="token operator">=</span> np<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>C<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+    total <span class="token operator">=</span> C<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> C<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+    cnt <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>C<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>C<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            pmi <span class="token operator">=</span> np<span class="token punctuation">.</span>log2<span class="token punctuation">(</span>C<span class="token punctuation">[</span>i<span class="token punctuation">,</span> j<span class="token punctuation">]</span> <span class="token operator">*</span> N <span class="token operator">/</span> <span class="token punctuation">(</span>S<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">*</span>S<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">+</span> eps<span class="token punctuation">)</span>
+            M<span class="token punctuation">[</span>i<span class="token punctuation">,</span> j<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> pmi<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> verbose<span class="token punctuation">:</span>
+                cnt <span class="token operator">+=</span> <span class="token number">1</span>
+                <span class="token keyword">if</span> cnt <span class="token operator">%</span> <span class="token punctuation">(</span>total<span class="token operator">//</span><span class="token number">100</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%.1f%% done'</span> <span class="token operator">%</span> <span class="token punctuation">(</span><span class="token number">100</span><span class="token operator">*</span>cnt<span class="token operator">/</span>total<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> M<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以将共现矩阵转换为PPMI矩阵.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">'..'</span><span class="token punctuation">)</span>
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">from</span> common<span class="token punctuation">.</span>util <span class="token keyword">import</span> preprocess<span class="token punctuation">,</span> create_co_matrix<span class="token punctuation">,</span> cos_similarity<span class="token punctuation">,</span>
+   ppmi
+text <span class="token operator">=</span> <span class="token string">'You say goodbye and I say hello.'</span>
+corpus<span class="token punctuation">,</span> word_to_id<span class="token punctuation">,</span> id_to_word <span class="token operator">=</span> preprocess<span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+vocab_size <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>word_to_id<span class="token punctuation">)</span>
+C <span class="token operator">=</span> create_co_matrix<span class="token punctuation">(</span>corpus<span class="token punctuation">,</span> vocab_size<span class="token punctuation">)</span>
+W <span class="token operator">=</span> ppmi<span class="token punctuation">(</span>C<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="降维"><a class="markdownIt-Anchor" href="#降维"></a> 降维</h1>
+<p>降维(dimensionality reduction), 就是减少向量的维度. 并不是简单地减少, 而是在尽量保留&quot;重要信息&quot;的基础上减少.<br />
+<img src="4.png" alt="4.png" /><br />
+考虑到数据的广度, 导入一根新轴, 将原来的二维坐标的点表示在一个坐标轴上. 选择新轴时, 要考虑数据的广度. 因此使用一维的值也能捕获数据的本质差异.<br />
+向量中的大多数元素为0的矩阵(或向量)称为稀疏矩阵(或稀疏向量).从稀疏线向量中找出重要的轴, 用更少的维度对其进行重新表示. 结果, 稀疏矩阵就会被转化为大多搜狐元素均不为0的密集矩阵.</p>
+<p>降维的方法有很多, 我们使用奇异值分解(Singular Value Decomposition, SVD).SVD将任意矩阵分解为3个矩阵的乘积:</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mo>=</mo><mi>U</mi><mi>S</mi><msup><mi>V</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">C=USV^T
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8913309999999999em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>是列向量彼此正交的正交矩阵, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span>是除了对角线元素以外其余元素均为0的对角矩阵.</p>
+<p><img src="5.png" alt="5.png" /></p>
+<p>矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span>的奇异值小, 对应的基轴的重要性低, 因此, 可以通过去除矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span>中的多余的列向量来近似原始矩阵.</p>
+<p><img src="6.png" alt="6.png" /><br />
+以PPMI矩阵来说, 矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span>的各行包含对应的ID的单词向量, 可以使用降维后的矩阵<span class='katex-error' title='ParseError: KaTeX parse error: Expected group after &#039;^&#039; at position 2: U^̲&#039;'>U^&#039;</span>来表示.<br />
+python实现:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">'..'</span><span class="token punctuation">)</span>
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<span class="token keyword">from</span> common<span class="token punctuation">.</span>util <span class="token keyword">import</span> preprocess<span class="token punctuation">,</span> create_co_matrix<span class="token punctuation">,</span> ppmi
+text <span class="token operator">=</span> <span class="token string">'You say goodbye and I say hello.'</span>
+corpus<span class="token punctuation">,</span> word_to_id<span class="token punctuation">,</span> id_to_word <span class="token operator">=</span> preprocess<span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+vocab_size <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>id_to_word<span class="token punctuation">)</span>
+C <span class="token operator">=</span> create_co_matrix<span class="token punctuation">(</span>corpus<span class="token punctuation">,</span> vocab_size<span class="token punctuation">,</span> window_size<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+W <span class="token operator">=</span> ppmi<span class="token punctuation">(</span>C<span class="token punctuation">)</span>
+<span class="token comment"># SVD</span>
+U<span class="token punctuation">,</span> S<span class="token punctuation">,</span> V <span class="token operator">=</span> np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>svd<span class="token punctuation">(</span>W<span class="token punctuation">)</span>
+<span class="token comment"># 如果要降到二维向量, 只需取出前两个元素即可</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>U<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># [ 3.409e-01 -1.110e-16]</span>
+
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/python_process_forkspaw/" rel="prev" title="python_process_forkspaw">
+                  <i class="fa fa-chevron-left"></i> python_process_forkspaw
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/nlp_seq2seq/" rel="next" title="nlp_seq2seq">
+                  nlp_seq2seq <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基于 RNN 的语言模型称为 RNNLM(RNN Language Model)  第一层是Embedding层, 将单词转换为词向量 第二层是Time RNN, 向下一层输出隐状态, 同时也向下一时刻的RNN层输出隐状态 第三层是Affine层, 输入是Time RNN的隐状态 第四层是Softmax层 以&quot;you say goodbye and i say hello&quot;为例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="deeplearn_rnnlm">
+<meta property="og:url" content="https://claroja.github.io/deeplearn_rnnlm/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="基于 RNN 的语言模型称为 RNNLM(RNN Language Model)  第一层是Embedding层, 将单词转换为词向量 第二层是Time RNN, 向下一层输出隐状态, 同时也向下一时刻的RNN层输出隐状态 第三层是Affine层, 输入是Time RNN的隐状态 第四层是Softmax层 以&quot;you say goodbye and i say hello&quot;为例">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://claroja.github.io/deeplearn_rnnlm/1.png">
+<meta property="og:image" content="https://claroja.github.io/deeplearn_rnnlm/2.png">
+<meta property="og:image" content="https://claroja.github.io/deeplearn_rnnlm/3.png">
+<meta property="og:image" content="https://claroja.github.io/deeplearn_rnnlm/4.png">
+<meta property="og:image" content="https://claroja.github.io/deeplearn_rnnlm/5.png">
+<meta property="og:image" content="https://claroja.github.io/deeplearn_rnnlm/6.png">
+<meta property="article:published_time" content="2021-11-13T13:01:11.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.233Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://claroja.github.io/deeplearn_rnnlm/1.png">
+
+
+<link rel="canonical" href="https://claroja.github.io/deeplearn_rnnlm/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/deeplearn_rnnlm/","path":"deeplearn_rnnlm/","title":"deeplearn_rnnlm"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>deeplearn_rnnlm | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#rnnlm%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text"> RNNLM实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%84%E4%BB%B7"><span class="nav-number">2.</span> <span class="nav-text"> 评价</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83"><span class="nav-number">3.</span> <span class="nav-text"> 训练</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/deeplearn_rnnlm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="deeplearn_rnnlm | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          deeplearn_rnnlm
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-13 21:01:11" itemprop="dateCreated datePublished" datetime="2021-11-13T21:01:11+08:00">2021-11-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>基于 RNN 的语言模型称为 RNNLM(RNN Language Model)<br />
+<img src="1.png" alt="1.png" /><br />
+第一层是Embedding层, 将单词转换为词向量<br />
+第二层是Time RNN, 向下一层输出隐状态, 同时也向下一时刻的RNN层输出隐状态<br />
+第三层是Affine层, 输入是Time RNN的隐状态<br />
+第四层是Softmax层</p>
+<p>以&quot;you say goodbye and i say hello&quot;为例</p>
+<p><img src="2.png" alt="2.png" /></p>
+<p>第一时刻, 作为第一个单词ID为0的you被输入.此时, 查看Softmax层输出的概率分布, 可知say的概率最高, 这表明正确预测出了you后面出现的单词say.</p>
+<p>同样我们可以把单个的RNN层, Embedding, Affine层都处理成Time RNN, Time Embedding, Time Affine. 就可以写成下图的形式:<br />
+<img src="3.png" alt="3.png" /><br />
+Time Affine层是将T个Affine层分别处理各个时刻的数据.<br />
+<img src="4.png" alt="4.png" /><br />
+同样的道理, Time Embedding层也是将T个Embedding层分别处理各个时刻的数据.<br />
+在 Softmax 中一并实现损失误差 Cross Entropy Error 层。<br />
+<img src="5.png" alt="5.png" /><br />
+上图中<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_0,x_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>等数据表示从下方出来的得分,<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>t</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">t_0,t_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.80952em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>表示正确解的标签. T个时刻各自计算出损失, 然后将它们加在一起取平均作为最终的损失. 公式如下:<br />
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mfrac><mn>1</mn><mi>T</mi></mfrac><mo stretchy="false">(</mo><msub><mi>L</mi><mn>0</mn></msub><mo>+</mo><msub><mi>L</mi><mn>1</mn></msub><mo>+</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>+</mo><msub><mi>L</mi><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">L=\frac{1}{T}(L_0+L_1+...+L_{T-1})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></p>
+<h1 id="rnnlm实现"><a class="markdownIt-Anchor" href="#rnnlm实现"></a> RNNLM实现</h1>
+<p><img src="6.png" alt="6.png" /></p>
+<p>python实现:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">'..'</span><span class="token punctuation">)</span>
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">from</span> common<span class="token punctuation">.</span>time_layers <span class="token keyword">import</span> <span class="token operator">*</span>
+<span class="token keyword">class</span> <span class="token class-name">SimpleRnnlm</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> vocab_size<span class="token punctuation">,</span> wordvec_size<span class="token punctuation">,</span> hidden_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        V<span class="token punctuation">,</span> D<span class="token punctuation">,</span> H <span class="token operator">=</span> vocab_size<span class="token punctuation">,</span> wordvec_size<span class="token punctuation">,</span> hidden_size
+        rn <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn
+        <span class="token comment"># 初始化权重</span>
+        embed_W <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>V<span class="token punctuation">,</span> D<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        rnn_Wx <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>D<span class="token punctuation">,</span> H<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        rnn_Wh <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>H<span class="token punctuation">,</span> H<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        rnn_b <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        affine_W <span class="token operator">=</span> <span class="token punctuation">(</span>rn<span class="token punctuation">(</span>H<span class="token punctuation">,</span> V<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>H<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        affine_b <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>V<span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        <span class="token comment"># 生成层</span>
+        self<span class="token punctuation">.</span>layers <span class="token operator">=</span> <span class="token punctuation">[</span>
+            TimeEmbedding<span class="token punctuation">(</span>embed_W<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            TimeRNN<span class="token punctuation">(</span>rnn_Wx<span class="token punctuation">,</span> rnn_Wh<span class="token punctuation">,</span> rnn_b<span class="token punctuation">,</span> stateful<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            TimeAffine<span class="token punctuation">(</span>affine_W<span class="token punctuation">,</span> affine_b<span class="token punctuation">)</span>
+        <span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>loss_layer <span class="token operator">=</span> TimeSoftmaxWithLoss<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>rnn_layer <span class="token operator">=</span> self<span class="token punctuation">.</span>layers<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+        <span class="token comment"># 将所有的权重和梯度整理到列表中</span>
+        self<span class="token punctuation">.</span>params<span class="token punctuation">,</span> self<span class="token punctuation">.</span>grads <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> layer <span class="token keyword">in</span> self<span class="token punctuation">.</span>layers<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>params <span class="token operator">+=</span> layer<span class="token punctuation">.</span>params
+            self<span class="token punctuation">.</span>grads <span class="token operator">+=</span> layer<span class="token punctuation">.</span>grads<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>假设使用<code>Truncated BPTT</code>进行学习, 将Time RNN层的stateful设置为True, Time RNN层就可以继承上一时刻的隐藏状态.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> xs<span class="token punctuation">,</span> ts<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> layer <span class="token keyword">in</span> self<span class="token punctuation">.</span>layers<span class="token punctuation">:</span>
+        xs <span class="token operator">=</span> layer<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>xs<span class="token punctuation">)</span>
+    loss <span class="token operator">=</span> self<span class="token punctuation">.</span>loss_layer<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>xs<span class="token punctuation">,</span> ts<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> loss
+<span class="token keyword">def</span> <span class="token function">backward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> dout<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    dout <span class="token operator">=</span> self<span class="token punctuation">.</span>loss_layer<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>dout<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> layer <span class="token keyword">in</span> <span class="token builtin">reversed</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>layers<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        dout <span class="token operator">=</span> layer<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>dout<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> dout
+<span class="token keyword">def</span> <span class="token function">reset_state</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    self<span class="token punctuation">.</span>rnn_layer<span class="token punctuation">.</span>reset_state<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="评价"><a class="markdownIt-Anchor" href="#评价"></a> 评价</h1>
+<p>语言模型基于给定的已经出现的单词输出将要出现的单词的概率分布. 困惑度(perplexity)常被用来作为评价语言模型的预测性能的指标. 困惑度表示&quot;概率的倒数&quot;. 比如如果预测的下一个单词的概率是0.8, 则困惑度就是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>0.8</mn></mfrac><mo>=</mo><mn>1.25</mn></mrow><annotation encoding="application/x-tex">\frac{1}{0.8}=1.25</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span><span class="mord mtight">.</span><span class="mord mtight">8</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">.</span><span class="mord">2</span><span class="mord">5</span></span></span></span>, 如果概率是0.2, 则困惑度为5. 我们可以将困惑度直观的理解为&quot;分叉度&quot;, 分叉度是指下一个可能选择的选项数量. 比如困惑度为5, 则说明下一个单词有5种选择. 所以困惑度越少越好. 公式为:</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><munder><mo>∑</mo><mi>n</mi></munder><munder><mo>∑</mo><mi>k</mi></munder><msub><mi>t</mi><mrow><mi>n</mi><mi>k</mi></mrow></msub><mi>l</mi><mi>o</mi><mi>g</mi><msub><mi>y</mi><mrow><mi>n</mi><mi>k</mi></mrow></msub></mrow><annotation encoding="application/x-tex">L=-\frac{1}{N}\sum_n\sum_kt_{nk}logy_{nk}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.623553em;vertical-align:-1.3021129999999999em;"></span><span class="mord">−</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8999949999999999em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.250005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0500050000000005em;"><span style="top:-1.847887em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.3021129999999999em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>困惑度</mtext><mo>=</mo><msup><mi>e</mi><mi>L</mi></msup></mrow><annotation encoding="application/x-tex">困惑度 = e^L
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord cjk_fallback">困</span><span class="mord cjk_fallback">惑</span><span class="mord cjk_fallback">度</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8913309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>假设数据有N个, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">t_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76508em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是one-hot向量形式的正确解标签, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mrow><mi>n</mi><mi>k</mi></mrow></msub></mrow><annotation encoding="application/x-tex">t_{nk}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76508em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>表示第<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span>个数据的第<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span>个值, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>n</mi><mi>k</mi></mrow></msub></mrow><annotation encoding="application/x-tex">y_{nk}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>表示概率分布(神经网络中softmax的输出).<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span></span></span></span>是神经网络的损失.<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mi>L</mi></msup></mrow><annotation encoding="application/x-tex">e^L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span></span></span></span></span></span></span></span>是困惑度.</p>
+<h1 id="训练"><a class="markdownIt-Anchor" href="#训练"></a> 训练</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">'..'</span><span class="token punctuation">)</span>
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">from</span> common<span class="token punctuation">.</span>optimizer <span class="token keyword">import</span> SGD
+<span class="token keyword">from</span> dataset <span class="token keyword">import</span> ptb
+<span class="token keyword">from</span> simple_rnnlm <span class="token keyword">import</span> SimpleRnnlm
+
+<span class="token comment"># 设定超参数</span>
+batch_size <span class="token operator">=</span> <span class="token number">10</span>
+wordvec_size <span class="token operator">=</span> <span class="token number">100</span>
+hidden_size <span class="token operator">=</span> <span class="token number">100</span> <span class="token comment"># RNN的隐藏状态向量的元素个数</span>
+time_size <span class="token operator">=</span> <span class="token number">5</span> <span class="token comment"># Truncated BPTT的时间跨度大小</span>
+lr <span class="token operator">=</span> <span class="token number">0.1</span>
+max_epoch <span class="token operator">=</span> <span class="token number">100</span>
+
+<span class="token comment"># 读入训练数据（缩小了数据集）</span>
+corpus<span class="token punctuation">,</span> word_to_id<span class="token punctuation">,</span> id_to_word <span class="token operator">=</span> ptb<span class="token punctuation">.</span>load_data<span class="token punctuation">(</span><span class="token string">'train'</span><span class="token punctuation">)</span>
+corpus_size <span class="token operator">=</span> <span class="token number">1000</span>
+corpus <span class="token operator">=</span> corpus<span class="token punctuation">[</span><span class="token punctuation">:</span>corpus_size<span class="token punctuation">]</span>
+vocab_size <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">max</span><span class="token punctuation">(</span>corpus<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+xs <span class="token operator">=</span> corpus<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token comment"># 输入</span>
+ts <span class="token operator">=</span> corpus<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token comment"># 输出（监督标签）  输入和输出错一个时间点</span>
+data_size <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>xs<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'corpus size: %d, vocabulary size: %d'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>corpus_size<span class="token punctuation">,</span> vocab_size<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 学习用的参数</span>
+max_iters <span class="token operator">=</span> data_size <span class="token operator">//</span> <span class="token punctuation">(</span>batch_size <span class="token operator">*</span> time_size<span class="token punctuation">)</span>
+time_idx <span class="token operator">=</span> <span class="token number">0</span>
+total_loss <span class="token operator">=</span> <span class="token number">0</span>
+loss_count <span class="token operator">=</span> <span class="token number">0</span>
+ppl_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token comment"># 生成模型</span>
+model <span class="token operator">=</span> SimpleRnnlm<span class="token punctuation">(</span>vocab_size<span class="token punctuation">,</span> wordvec_size<span class="token punctuation">,</span> hidden_size<span class="token punctuation">)</span>
+optimizer <span class="token operator">=</span> SGD<span class="token punctuation">(</span>lr<span class="token punctuation">)</span>
+
+<span class="token comment"># 1 计算读入mini-batch的各笔样本数据的开始位置</span>
+jump <span class="token operator">=</span> <span class="token punctuation">(</span>corpus_size <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">//</span> batch_size
+offsets <span class="token operator">=</span> <span class="token punctuation">[</span>i <span class="token operator">*</span> jump <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>batch_size<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> epoch <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>max_epoch<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> <span class="token builtin">iter</span> <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>max_iters<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 2  获取mini-batch</span>
+        batch_x <span class="token operator">=</span> np<span class="token punctuation">.</span>empty<span class="token punctuation">(</span><span class="token punctuation">(</span>batch_size<span class="token punctuation">,</span> time_size<span class="token punctuation">)</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span><span class="token string">'i'</span><span class="token punctuation">)</span>
+        batch_t <span class="token operator">=</span> np<span class="token punctuation">.</span>empty<span class="token punctuation">(</span><span class="token punctuation">(</span>batch_size<span class="token punctuation">,</span> time_size<span class="token punctuation">)</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span><span class="token string">'i'</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> t <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>time_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> i<span class="token punctuation">,</span> offset <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>offsets<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                batch_x<span class="token punctuation">[</span>i<span class="token punctuation">,</span> t<span class="token punctuation">]</span> <span class="token operator">=</span> xs<span class="token punctuation">[</span><span class="token punctuation">(</span>offset <span class="token operator">+</span> time_idx<span class="token punctuation">)</span> <span class="token operator">%</span> data_size<span class="token punctuation">]</span>
+                batch_t<span class="token punctuation">[</span>i<span class="token punctuation">,</span> t<span class="token punctuation">]</span> <span class="token operator">=</span> ts<span class="token punctuation">[</span><span class="token punctuation">(</span>offset <span class="token operator">+</span> time_idx<span class="token punctuation">)</span> <span class="token operator">%</span> data_size<span class="token punctuation">]</span>
+            time_idx <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token comment"># 计算梯度，更新参数</span>
+        loss <span class="token operator">=</span> model<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>batch_x<span class="token punctuation">,</span> batch_t<span class="token punctuation">)</span>
+        model<span class="token punctuation">.</span>backward<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        optimizer<span class="token punctuation">.</span>update<span class="token punctuation">(</span>model<span class="token punctuation">.</span>params<span class="token punctuation">,</span> model<span class="token punctuation">.</span>grads<span class="token punctuation">)</span>
+        total_loss <span class="token operator">+=</span> loss
+        loss_count <span class="token operator">+=</span> <span class="token number">1</span>
+    <span class="token comment"># 3 各个epoch的困惑度评价</span>
+    ppl <span class="token operator">=</span> np<span class="token punctuation">.</span>exp<span class="token punctuation">(</span>total_loss <span class="token operator">/</span> loss_count<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'| epoch %d | perplexity %.2f'</span>
+          <span class="token operator">%</span> <span class="token punctuation">(</span>epoch<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> ppl<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    ppl_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token builtin">float</span><span class="token punctuation">(</span>ppl<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    total_loss<span class="token punctuation">,</span> loss_count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>使用Truncated BPTT进行学习, 因此数据需要按顺序输入, 并且<code>mini-batch</code>的各批次要平移读入数据的开始位置</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/derivative/" rel="prev" title="derivative">
+                  <i class="fa fa-chevron-left"></i> derivative
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/deeplearn_rnn/" rel="next" title="deeplearn_rnn">
+                  deeplearn_rnn <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

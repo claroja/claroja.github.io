@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="贝叶斯网络学习 贝叶斯网络的学习可以分为两个部分: 参数学习(Parameter learning):给出数据样本和DAG结构,来估算CPD. 结构学习(Structure learning):给出数据样本, 来估算DAG结构和CPD.  参数学习  构造数据 import pandas as pd data&#x3D;&amp;#123;&#39;fruit&#39;: [&quot;banana&quot;, &quot;apple&quot;, &quot;banana&quot;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pgmpy模型训练">
+<meta property="og:url" content="https://claroja.github.io/pgmpy%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="贝叶斯网络学习 贝叶斯网络的学习可以分为两个部分: 参数学习(Parameter learning):给出数据样本和DAG结构,来估算CPD. 结构学习(Structure learning):给出数据样本, 来估算DAG结构和CPD.  参数学习  构造数据 import pandas as pd data&#x3D;&amp;#123;&#39;fruit&#39;: [&quot;banana&quot;, &quot;apple&quot;, &quot;banana&quot;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-25T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.429Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/pgmpy%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/pgmpy%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/","path":"pgmpy模型训练/","title":"pgmpy模型训练"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>pgmpy模型训练 | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text"> 贝叶斯网络学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.1.</span> <span class="nav-text"> 参数学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E6%95%B0%E6%8D%AE"><span class="nav-number">1.1.1.</span> <span class="nav-text"> 构造数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0dag"><span class="nav-number">1.1.2.</span> <span class="nav-text"> 构造DAG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#parameterestimator"><span class="nav-number">1.1.3.</span> <span class="nav-text"> ParameterEstimator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maximum-likelihood-estimation"><span class="nav-number">1.1.4.</span> <span class="nav-text"> Maximum Likelihood Estimation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bayesian-parameter-estimation"><span class="nav-number">1.1.5.</span> <span class="nav-text"> Bayesian Parameter Estimation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.1.6.</span> <span class="nav-text"> 参数设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%BD%E5%85%A5%E9%A2%84%E7%BD%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.7.</span> <span class="nav-text"> 载入预置模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.8.</span> <span class="nav-text"> 模型描述</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0-2"><span class="nav-number">2.</span> <span class="nav-text"> 参数学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%8E%B7%E5%BE%97%E6%95%B0%E6%8D%AE"><span class="nav-number">2.1.</span> <span class="nav-text"> 1. 获得数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="nav-number">2.2.</span> <span class="nav-text"> 2. 定义模型结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%AD%A6%E4%B9%A0%E5%8F%82%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text"> 3. 学习参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="nav-number">2.3.1.</span> <span class="nav-text"> 最大似然估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%B0%E8%AE%A1"><span class="nav-number">2.3.2.</span> <span class="nav-text"> 贝叶斯估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E6%8D%B7%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.3.</span> <span class="nav-text"> 快捷方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#structure-learning"><span class="nav-number">3.</span> <span class="nav-text"> Structure Learning</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pgmpy%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="pgmpy模型训练 | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pgmpy模型训练
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 22:03:54" itemprop="dateCreated datePublished" datetime="2021-10-25T22:03:54+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="贝叶斯网络学习"><a class="markdownIt-Anchor" href="#贝叶斯网络学习"></a> 贝叶斯网络学习</h1>
+<p>贝叶斯网络的学习可以分为两个部分:<br />
+参数学习(Parameter learning):给出数据样本和DAG结构,来估算CPD.<br />
+结构学习(Structure learning):给出数据样本, 来估算DAG结构和CPD.</p>
+<h2 id="参数学习"><a class="markdownIt-Anchor" href="#参数学习"></a> 参数学习</h2>
+<h3 id="构造数据"><a class="markdownIt-Anchor" href="#构造数据"></a> 构造数据</h3>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+data<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'fruit'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"banana"</span><span class="token punctuation">,</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"banana"</span><span class="token punctuation">,</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"banana"</span><span class="token punctuation">,</span><span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"banana"</span><span class="token punctuation">,</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"banana"</span><span class="token punctuation">,</span> <span class="token string">"banana"</span><span class="token punctuation">,</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"banana"</span><span class="token punctuation">,</span><span class="token punctuation">]</span><span class="token punctuation">,</span> 
+        <span class="token string">'tasty'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"yes"</span><span class="token punctuation">,</span> <span class="token string">"no"</span><span class="token punctuation">,</span> <span class="token string">"yes"</span><span class="token punctuation">,</span> <span class="token string">"yes"</span><span class="token punctuation">,</span> <span class="token string">"yes"</span><span class="token punctuation">,</span> <span class="token string">"yes"</span><span class="token punctuation">,</span> <span class="token string">"yes"</span><span class="token punctuation">,</span> <span class="token string">"yes"</span><span class="token punctuation">,</span> <span class="token string">"yes"</span><span class="token punctuation">,</span> <span class="token string">"yes"</span><span class="token punctuation">,</span> <span class="token string">"yes"</span><span class="token punctuation">,</span> <span class="token string">"no"</span><span class="token punctuation">,</span> <span class="token string">"no"</span><span class="token punctuation">,</span> <span class="token string">"no"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> 
+        <span class="token string">'size'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"large"</span><span class="token punctuation">,</span> <span class="token string">"large"</span><span class="token punctuation">,</span> <span class="token string">"large"</span><span class="token punctuation">,</span> <span class="token string">"small"</span><span class="token punctuation">,</span> <span class="token string">"large"</span><span class="token punctuation">,</span> <span class="token string">"large"</span><span class="token punctuation">,</span> <span class="token string">"large"</span><span class="token punctuation">,</span><span class="token string">"small"</span><span class="token punctuation">,</span> <span class="token string">"large"</span><span class="token punctuation">,</span> <span class="token string">"large"</span><span class="token punctuation">,</span> <span class="token string">"large"</span><span class="token punctuation">,</span> <span class="token string">"large"</span><span class="token punctuation">,</span> <span class="token string">"small"</span><span class="token punctuation">,</span> <span class="token string">"small"</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span>
+data <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="构造dag"><a class="markdownIt-Anchor" href="#构造dag"></a> 构造DAG</h3>
+<p><a href="1.png">1.png</a></p>
+<h3 id="parameterestimator"><a class="markdownIt-Anchor" href="#parameterestimator"></a> ParameterEstimator</h3>
+<p>状态统计(state count)是非常有意义的, 我们可以看每个变量值出现的次数. 如果是存在父节点的话, 还可以看到各个条件下的统计次数</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>estimators <span class="token keyword">import</span> ParameterEstimator
+pe <span class="token operator">=</span> ParameterEstimator<span class="token punctuation">(</span>model<span class="token punctuation">,</span> data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span> pe<span class="token punctuation">.</span>state_counts<span class="token punctuation">(</span><span class="token string">'fruit'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># unconditional</span>
+<span class="token triple-quoted-string string">'''
+         fruit
+apple       7
+banana      7
+'''</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">,</span> pe<span class="token punctuation">.</span>state_counts<span class="token punctuation">(</span><span class="token string">'tasty'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># conditional on fruit and size</span>
+<span class="token triple-quoted-string string">'''
+ fruit apple       banana
+size  large small  large small
+tasty
+no      1.0   1.0    1.0   1.0
+yes     3.0   2.0    5.0   0.0
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="maximum-likelihood-estimation"><a class="markdownIt-Anchor" href="#maximum-likelihood-estimation"></a> Maximum Likelihood Estimation</h3>
+<p>估算CPD的一个方法是根据频率进行计算, 比如我们观察到14个水果中有7个苹果, 那么就可以推算7/14=50%个水果是苹果.这个就是最大似然估计(Maximum Likelihood Estimation (MLE)).</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>estimators <span class="token keyword">import</span> MaximumLikelihoodEstimator
+model<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>data<span class="token punctuation">,</span> estimator<span class="token operator">=</span>MaximumLikelihoodEstimator<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">.</span>get_cpds<span class="token punctuation">(</span><span class="token string">"fruit"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># unconditional</span>
+<span class="token triple-quoted-string string">'''
++---------------+-----+
+| fruit(apple)  | 0.5 |
++---------------+-----+
+| fruit(banana) | 0.5 |
++---------------+-----+
+'''</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">.</span>get_cpds<span class="token punctuation">(</span><span class="token string">"tasty"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># conditional</span>
+<span class="token triple-quoted-string string">'''
++------------+--------------+--------------------+---------------------+---------------+
+| fruit      | fruit(apple) | fruit(apple)       | fruit(banana)       | fruit(banana) |
++------------+--------------+--------------------+---------------------+---------------+
+| size       | size(large)  | size(small)        | size(large)         | size(small)   |
++------------+--------------+--------------------+---------------------+---------------+
+| tasty(no)  | 0.25         | 0.3333333333333333 | 0.16666666666666666 | 1.0           |
++------------+--------------+--------------------+---------------------+---------------+
+| tasty(yes) | 0.75         | 0.6666666666666666 | 0.8333333333333334  | 0.0           |
++------------+--------------+--------------------+---------------------+---------------+
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>ML估计会过拟合.large banana为tasty的概率是0.833, 因为被观察的5/6的banana是tasty. 而small banana为tasty的概率是0, 因为我们只观察到一个small banana,而且它是 not tasty. 但是我们很难相信,small banana一定是not tasty. 因为我们观察的样本还不足够多.<br />
+ML另外一个问题是在网络复杂时, 计算将非常苦难.比如一个变量有3个父节点, 每个节点有10种状态, 那么该变量的CPD将会有$$10^3$$中可能.</p>
+<h3 id="bayesian-parameter-estimation"><a class="markdownIt-Anchor" href="#bayesian-parameter-estimation"></a> Bayesian Parameter Estimation</h3>
+<p>为了解决ML的问题, 可以使用Bayesian Parameter Estimation.具体的是 BDeu (Bayesian Dirichlet equivalent uniform prior), 就是均衡的向各个变量中添加样本.<br />
+equivalent_sample_size = 10, 就是向各个变量中各个状态添加10个样本.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>estimators <span class="token keyword">import</span> BayesianEstimator
+model<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>data<span class="token punctuation">,</span> estimator<span class="token operator">=</span>BayesianEstimator<span class="token punctuation">,</span> prior_type<span class="token operator">=</span><span class="token string">"BDeu"</span><span class="token punctuation">,</span> equivalent_sample_size<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token comment"># default equivalent_sample_size=5</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">.</span>get_cpds<span class="token punctuation">(</span><span class="token string">"tasty"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
++------------+---------------------+--------------------+--------------------+---------------------+
+| fruit      | fruit(apple)        | fruit(apple)       | fruit(banana)      | fruit(banana)       |
++------------+---------------------+--------------------+--------------------+---------------------+
+| size       | size(large)         | size(small)        | size(large)        | size(small)         |
++------------+---------------------+--------------------+--------------------+---------------------+
+| tasty(no)  | 0.34615384615384615 | 0.4090909090909091 | 0.2647058823529412 | 0.6428571428571429  |
++------------+---------------------+--------------------+--------------------+---------------------+
+| tasty(yes) | 0.6538461538461539  | 0.5909090909090909 | 0.7352941176470589 | 0.35714285714285715 |
++------------+---------------------+--------------------+--------------------+---------------------+
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="参数设置"><a class="markdownIt-Anchor" href="#参数设置"></a> 参数设置</h3>
+<p>直接设置参数</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>models <span class="token keyword">import</span> BayesianModel
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>factors<span class="token punctuation">.</span>discrete <span class="token keyword">import</span> TabularCPD
+<span class="token comment"># 定义网络结构, 每个元组填入两个节点, 第一个节点指向第二个节点</span>
+model <span class="token operator">=</span> BayesianModel<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span> <span class="token string">'G'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'I'</span><span class="token punctuation">,</span> <span class="token string">'G'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'G'</span><span class="token punctuation">,</span> <span class="token string">'L'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'I'</span><span class="token punctuation">,</span> <span class="token string">'S'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># 定义每个节点的CPD</span>
+<span class="token comment">## 独立节点的CPD定义,variable:变量名为D/variable_card:变量状态为两个/values:变量各状态值/state_names:变量状态的名字是Easy Hard</span>
+cpd_d_sn <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'D'</span><span class="token punctuation">,</span> variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.6</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0.4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> state_names<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'D'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'Easy'</span><span class="token punctuation">,</span> <span class="token string">'Hard'</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+cpd_i_sn <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'I'</span><span class="token punctuation">,</span> variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.7</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0.3</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> state_names<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'I'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'Dumb'</span><span class="token punctuation">,</span> <span class="token string">'Intelligent'</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+<span class="token comment">## 非独立节点的CPD定义, 列：evidence 行：state</span>
+<span class="token comment">#    +---------+---------+---------+---------+---------+</span>
+<span class="token comment">#    | diff    | intel_0 | intel_0 | intel_1 | intel_1 |</span>
+<span class="token comment">#    +---------+---------+---------+---------+---------+</span>
+<span class="token comment">#    | intel   | diff_0  | diff_1  | diff_0  | diff_1  |</span>
+<span class="token comment">#    +---------+---------+---------+---------+---------+</span>
+<span class="token comment">#    | grade_0 | 0.3     | 0.05    | 0.9     | 0.5     |</span>
+<span class="token comment">#    +---------+---------+---------+---------+---------+</span>
+<span class="token comment">#    | grade_1 | 0.4     | 0.25    | 0.08    | 0.3     |</span>
+<span class="token comment">#    +---------+---------+---------+---------+---------+</span>
+<span class="token comment">#    | grade_2 | 0.3     | 0.7     | 0.02    | 0.2     |</span>
+<span class="token comment">#    +---------+---------+---------+---------+---------+</span>
+<span class="token comment"># evidence:证据或父节点/evidence_card:证据或父节点变量状态个数/state_names取别名</span>
+cpd_g_sn <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'G'</span><span class="token punctuation">,</span> variable_card<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span>
+                      values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.3</span><span class="token punctuation">,</span> <span class="token number">0.05</span><span class="token punctuation">,</span> <span class="token number">0.9</span><span class="token punctuation">,</span>  <span class="token number">0.5</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                              <span class="token punctuation">[</span><span class="token number">0.4</span><span class="token punctuation">,</span> <span class="token number">0.25</span><span class="token punctuation">,</span> <span class="token number">0.08</span><span class="token punctuation">,</span> <span class="token number">0.3</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                              <span class="token punctuation">[</span><span class="token number">0.3</span><span class="token punctuation">,</span> <span class="token number">0.7</span><span class="token punctuation">,</span>  <span class="token number">0.02</span><span class="token punctuation">,</span> <span class="token number">0.2</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                      evidence<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'I'</span><span class="token punctuation">,</span> <span class="token string">'D'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                      evidence_card<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                      state_names<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'G'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                   <span class="token string">'I'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'Dumb'</span><span class="token punctuation">,</span> <span class="token string">'Intelligent'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                   <span class="token string">'D'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'Easy'</span><span class="token punctuation">,</span> <span class="token string">'Hard'</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+cpd_l_sn <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'L'</span><span class="token punctuation">,</span> variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+                      values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.1</span><span class="token punctuation">,</span> <span class="token number">0.4</span><span class="token punctuation">,</span> <span class="token number">0.99</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                              <span class="token punctuation">[</span><span class="token number">0.9</span><span class="token punctuation">,</span> <span class="token number">0.6</span><span class="token punctuation">,</span> <span class="token number">0.01</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                      evidence<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'G'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                      evidence_card<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                      state_names<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'L'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'Bad'</span><span class="token punctuation">,</span> <span class="token string">'Good'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                   <span class="token string">'G'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token string">'C'</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+cpd_s_sn <span class="token operator">=</span> TabularCPD<span class="token punctuation">(</span>variable<span class="token operator">=</span><span class="token string">'S'</span><span class="token punctuation">,</span> variable_card<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span>
+                      values<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.95</span><span class="token punctuation">,</span> <span class="token number">0.2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                              <span class="token punctuation">[</span><span class="token number">0.05</span><span class="token punctuation">,</span> <span class="token number">0.8</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                      evidence<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'I'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                      evidence_card<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                      state_names<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'S'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'Bad'</span><span class="token punctuation">,</span> <span class="token string">'Good'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                   <span class="token string">'I'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'Dumb'</span><span class="token punctuation">,</span> <span class="token string">'Intelligent'</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token comment"># 将条件概率分布加入到贝叶斯网络中</span>
+model<span class="token punctuation">.</span>add_cpds<span class="token punctuation">(</span>cpd_d_sn<span class="token punctuation">,</span> cpd_i_sn<span class="token punctuation">,</span> cpd_g_sn<span class="token punctuation">,</span> cpd_l_sn<span class="token punctuation">,</span> cpd_s_sn<span class="token punctuation">)</span>
+model<span class="token punctuation">.</span>check_model<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="载入预置模型"><a class="markdownIt-Anchor" href="#载入预置模型"></a> 载入预置模型</h3>
+<p>pgmpy内置了很多模型:pgmpy内置了很多模型:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Use the alarm model to generate data from it.</span>
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>utils <span class="token keyword">import</span> get_example_model
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>sampling <span class="token keyword">import</span> BayesianModelSampling
+
+alarm_model <span class="token operator">=</span> get_example_model<span class="token punctuation">(</span><span class="token string">'alarm'</span><span class="token punctuation">)</span>
+samples <span class="token operator">=</span> BayesianModelSampling<span class="token punctuation">(</span>alarm_model<span class="token punctuation">)</span><span class="token punctuation">.</span>forward_sample<span class="token punctuation">(</span>size<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span><span class="token number">1e5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+samples<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>罗列内置的模型:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">filenames <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"asia"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/asia.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"cancer"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/cancer.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"earthquake"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/earthquake.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"sachs"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/sachs.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"survey"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/survey.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"alarm"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/alarm.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"barley"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/barley.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"child"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/child.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"insurance"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/insurance.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"mildew"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/mildew.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"water"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/water.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"hailfinder"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/hailfinder.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"hepar2"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/hepar2.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"win95pts"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/win95pts.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"andes"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/andes.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"diabetes"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/diabetes.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"link"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/link.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"munin1"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/munin1.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"munin2"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/munin2.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"munin3"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/munin3.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"munin4"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/munin4.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"pathfinder"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/pathfinder.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"pigs"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/pigs.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"munin"</span><span class="token punctuation">:</span> <span class="token string">"utils/example_models/munin.bif.gz"</span><span class="token punctuation">,</span>
+    <span class="token string">"ecoli70"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"magic-niab"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"magic-irri"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"arth150"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"sangiovese"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"mehra"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="模型描述"><a class="markdownIt-Anchor" href="#模型描述"></a> 模型描述</h3>
+<p>在student模型中, 可以将模型打印出来</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model<span class="token punctuation">.</span>nodes<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
+NodeView(('D', 'G', 'I', 'L', 'S'))
+'''</span>
+model<span class="token punctuation">.</span>edges<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
+OutEdgeView([('D', 'G'), ('G', 'L'), ('I', 'G'), ('I', 'S')])
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> networkx <span class="token keyword">as</span> nx
+<span class="token keyword">from</span> matplotlib <span class="token keyword">import</span> pyplot <span class="token keyword">as</span> plt
+<span class="token comment"># 绘制网络结构图，并附上概率分布表</span>
+nx<span class="token punctuation">.</span>draw<span class="token punctuation">(</span>model<span class="token punctuation">,</span>
+        with_labels<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+        node_size<span class="token operator">=</span><span class="token number">800</span><span class="token punctuation">,</span>
+        font_weight<span class="token operator">=</span><span class="token string">'bold'</span><span class="token punctuation">,</span>
+        node_color<span class="token operator">=</span><span class="token string">'y'</span><span class="token punctuation">,</span>
+        pos<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"D"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"I"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"G"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"S"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token string">"L"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>text<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2.5</span><span class="token punctuation">,</span> model<span class="token punctuation">.</span>get_cpds<span class="token punctuation">(</span><span class="token string">"D"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">'b'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>text<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2.5</span><span class="token punctuation">,</span> model<span class="token punctuation">.</span>get_cpds<span class="token punctuation">(</span><span class="token string">"I"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">'b'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>text<span class="token punctuation">(</span><span class="token number">2.1</span><span class="token punctuation">,</span> <span class="token number">1.25</span><span class="token punctuation">,</span> model<span class="token punctuation">.</span>get_cpds<span class="token punctuation">(</span><span class="token string">"G"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">'b'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>text<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> model<span class="token punctuation">.</span>get_cpds<span class="token punctuation">(</span><span class="token string">"S"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">'b'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>text<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">0.8</span><span class="token punctuation">,</span> model<span class="token punctuation">.</span>get_cpds<span class="token punctuation">(</span><span class="token string">"L"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">'b'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">'test'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://colab.research.google.com/github/kristiyandd/ai-combinator/blob/master/Learning_Bayesian_Networks.ipynb#scrollTo=VaeRKm7qj-SS">https://colab.research.google.com/github/kristiyandd/ai-combinator/blob/master/Learning_Bayesian_Networks.ipynb#scrollTo=VaeRKm7qj-SS</a></p>
+<h1 id="参数学习-2"><a class="markdownIt-Anchor" href="#参数学习-2"></a> 参数学习</h1>
+<h2 id="1-获得数据"><a class="markdownIt-Anchor" href="#1-获得数据"></a> 1. 获得数据</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Use the alarm model to generate data from it.</span>
+
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>utils <span class="token keyword">import</span> get_example_model
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>sampling <span class="token keyword">import</span> BayesianModelSampling
+
+alarm_model <span class="token operator">=</span> get_example_model<span class="token punctuation">(</span><span class="token string">'alarm'</span><span class="token punctuation">)</span>
+samples <span class="token operator">=</span> BayesianModelSampling<span class="token punctuation">(</span>alarm_model<span class="token punctuation">)</span><span class="token punctuation">.</span>forward_sample<span class="token punctuation">(</span>size<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span><span class="token number">1e5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+samples<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-定义模型结构"><a class="markdownIt-Anchor" href="#2-定义模型结构"></a> 2. 定义模型结构</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Defining the Bayesian Model structure</span>
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>models <span class="token keyword">import</span> BayesianNetwork
+model_struct <span class="token operator">=</span> BayesianNetwork<span class="token punctuation">(</span>ebunch<span class="token operator">=</span>alarm_model<span class="token punctuation">.</span>edges<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+model_struct<span class="token punctuation">.</span>nodes<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
+NodeView(('HYPOVOLEMIA', 'LVEDVOLUME', 'STROKEVOLUME', 'CVP', 'PCWP', 'LVFAILURE', 'HISTORY', 'CO', 'ERRLOWOUTPUT', 'HRBP', 'ERRCAUTER', 'HREKG', 'HRSAT', 'INSUFFANESTH', 'CATECHOL', 'ANAPHYLAXIS', 'TPR', 'BP', 'KINKEDTUBE', 'PRESS', 'VENTLUNG', 'FIO2', 'PVSAT', 'SAO2', 'PULMEMBOLUS', 'PAP', 'SHUNT', 'INTUBATION', 'MINVOL', 'VENTALV', 'DISCONNECT', 'VENTTUBE', 'MINVOLSET', 'VENTMACH', 'EXPCO2', 'ARTCO2', 'HR'))
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-学习参数"><a class="markdownIt-Anchor" href="#3-学习参数"></a> 3. 学习参数</h2>
+<h3 id="最大似然估计"><a class="markdownIt-Anchor" href="#最大似然估计"></a> 最大似然估计</h3>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Fitting the model using Maximum Likelihood Estimator</span>
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>estimators <span class="token keyword">import</span> MaximumLikelihoodEstimator
+mle <span class="token operator">=</span> MaximumLikelihoodEstimator<span class="token punctuation">(</span>model<span class="token operator">=</span>model_struct<span class="token punctuation">,</span> data<span class="token operator">=</span>samples<span class="token punctuation">)</span>
+<span class="token comment"># Estimating the CPD for a single node.</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>mle<span class="token punctuation">.</span>estimate_cpd<span class="token punctuation">(</span>node<span class="token operator">=</span><span class="token string">'FIO2'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>mle<span class="token punctuation">.</span>estimate_cpd<span class="token punctuation">(</span>node<span class="token operator">=</span><span class="token string">'CVP'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># Estimating CPDs for all the nodes in the model</span>
+mle<span class="token punctuation">.</span>get_parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">]</span> <span class="token comment"># Show just the first 10 CPDs in the output</span>
+
+<span class="token triple-quoted-string string">'''
++--------------+---------+
+| FIO2(LOW)    | 0.04859 |
++--------------+---------+
+| FIO2(NORMAL) | 0.95141 |
++--------------+---------+
++-------------+----------------------+-----------------------+----------------------+
+| LVEDVOLUME  | LVEDVOLUME(HIGH)     | LVEDVOLUME(LOW)       | LVEDVOLUME(NORMAL)   |
++-------------+----------------------+-----------------------+----------------------+
+| CVP(HIGH)   | 0.702671646078713    | 0.0069145318521877126 | 0.010257212769589711 |
++-------------+----------------------+-----------------------+----------------------+
+| CVP(LOW)    | 0.009480034472852629 | 0.9526184538653366    | 0.03999032606840039  |
++-------------+----------------------+-----------------------+----------------------+
+| CVP(NORMAL) | 0.28784831944843436  | 0.04046701428247563   | 0.94975246116201     |
++-------------+----------------------+-----------------------+----------------------+
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="贝叶斯估计"><a class="markdownIt-Anchor" href="#贝叶斯估计"></a> 贝叶斯估计</h3>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Fitting the using Bayesian Estimator</span>
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>estimators <span class="token keyword">import</span> BayesianEstimator
+best <span class="token operator">=</span> BayesianEstimator<span class="token punctuation">(</span>model<span class="token operator">=</span>model_struct<span class="token punctuation">,</span> data<span class="token operator">=</span>samples<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>best<span class="token punctuation">.</span>estimate_cpd<span class="token punctuation">(</span>node<span class="token operator">=</span><span class="token string">'FIO2'</span><span class="token punctuation">,</span> prior_type<span class="token operator">=</span><span class="token string">"BDeu"</span><span class="token punctuation">,</span> equivalent_sample_size<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># Uniform pseudo count for each state. Can also accept an array of the size of CPD.</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>best<span class="token punctuation">.</span>estimate_cpd<span class="token punctuation">(</span>node<span class="token operator">=</span><span class="token string">'CVP'</span><span class="token punctuation">,</span> prior_type<span class="token operator">=</span><span class="token string">"dirichlet"</span><span class="token punctuation">,</span> pseudo_counts<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># Learning CPDs for all the nodes in the model. For learning all parameters with BDeU prior, a dict of</span>
+<span class="token comment"># pseudo_counts need to be provided</span>
+best<span class="token punctuation">.</span>get_parameters<span class="token punctuation">(</span>prior_type<span class="token operator">=</span><span class="token string">"BDeu"</span><span class="token punctuation">,</span> equivalent_sample_size<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">]</span>
+<span class="token triple-quoted-string string">'''
++--------------+-----------+
+| FIO2(LOW)    | 0.0530594 |
++--------------+-----------+
+| FIO2(NORMAL) | 0.946941  |
++--------------+-----------+
++-------------+----------------------+----------------------+----------------------+
+| LVEDVOLUME  | LVEDVOLUME(HIGH)     | LVEDVOLUME(LOW)      | LVEDVOLUME(NORMAL)   |
++-------------+----------------------+----------------------+----------------------+
+| CVP(HIGH)   | 0.6974417067875012   | 0.017649638237228676 | 0.011630213055303717 |
++-------------+----------------------+----------------------+----------------------+
+| CVP(LOW)    | 0.014065892570565468 | 0.9322516991887744   | 0.041236967361740706 |
++-------------+----------------------+----------------------+----------------------+
+| CVP(NORMAL) | 0.2884924006419334   | 0.05009866257399693  | 0.9471328195829556   |
++-------------+----------------------+----------------------+----------------------+
+'''</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="快捷方法"><a class="markdownIt-Anchor" href="#快捷方法"></a> 快捷方法</h3>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Shortcut for learning all the parameters and adding the CPDs to the model.</span>
+model_struct <span class="token operator">=</span> BayesianNetwork<span class="token punctuation">(</span>ebunch<span class="token operator">=</span>alarm_model<span class="token punctuation">.</span>edges<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+model_struct<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>data<span class="token operator">=</span>samples<span class="token punctuation">,</span> estimator<span class="token operator">=</span>MaximumLikelihoodEstimator<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>model_struct<span class="token punctuation">.</span>get_cpds<span class="token punctuation">(</span><span class="token string">'FIO2'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+model_struct <span class="token operator">=</span> BayesianNetwork<span class="token punctuation">(</span>ebunch<span class="token operator">=</span>alarm_model<span class="token punctuation">.</span>edges<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+model_struct<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>data<span class="token operator">=</span>samples<span class="token punctuation">,</span> estimator<span class="token operator">=</span>BayesianEstimator<span class="token punctuation">,</span> prior_type<span class="token operator">=</span><span class="token string">'BDeu'</span><span class="token punctuation">,</span> equivalent_sample_size<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>model_struct<span class="token punctuation">.</span>get_cpds<span class="token punctuation">(</span><span class="token string">'FIO2'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">'''
++--------------+---------+
+| FIO2(LOW)    | 0.04859 |
++--------------+---------+
+| FIO2(NORMAL) | 0.95141 |
++--------------+---------+
++--------------+-----------+
+| FIO2(LOW)    | 0.0530594 |
++--------------+-----------+
+| FIO2(NORMAL) | 0.946941  |
++--------------+-----------+
+'''</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://pgmpy.org/examples/Learning%20Parameters%20in%20Discrete%20Bayesian%20Networks.html">https://pgmpy.org/examples/Learning Parameters in Discrete Bayesian Networks.html</a></p>
+<h1 id="structure-learning"><a class="markdownIt-Anchor" href="#structure-learning"></a> Structure Learning</h1>
+<p>三种学习结构的方法:</p>
+<ol>
+<li>PC with stable and parallel variants.</li>
+<li>Hill-Climb Search</li>
+<li>Exhaustive Search</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> itertools <span class="token keyword">import</span> combinations
+<span class="token keyword">import</span> networkx <span class="token keyword">as</span> nx
+<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>metrics <span class="token keyword">import</span> f1_score
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>estimators <span class="token keyword">import</span> PC<span class="token punctuation">,</span> HillClimbSearch<span class="token punctuation">,</span> ExhaustiveSearch
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>estimators <span class="token keyword">import</span> K2Score
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>utils <span class="token keyword">import</span> get_example_model
+<span class="token keyword">from</span> pgmpy<span class="token punctuation">.</span>sampling <span class="token keyword">import</span> BayesianModelSampling
+model <span class="token operator">=</span> get_example_model<span class="token punctuation">(</span><span class="token string">'alarm'</span><span class="token punctuation">)</span>
+samples <span class="token operator">=</span> BayesianModelSampling<span class="token punctuation">(</span>model<span class="token punctuation">)</span><span class="token punctuation">.</span>forward_sample<span class="token punctuation">(</span>size<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span><span class="token number">1e3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+samples<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># Funtion to evaluate the learned model structures.</span>
+<span class="token keyword">def</span> <span class="token function">get_f1_score</span><span class="token punctuation">(</span>estimated_model<span class="token punctuation">,</span> true_model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    nodes <span class="token operator">=</span> estimated_model<span class="token punctuation">.</span>nodes<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    est_adj <span class="token operator">=</span> nx<span class="token punctuation">.</span>to_numpy_matrix<span class="token punctuation">(</span>estimated_model<span class="token punctuation">.</span>to_undirected<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> nodelist<span class="token operator">=</span>nodes<span class="token punctuation">,</span> weight<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span>
+    true_adj <span class="token operator">=</span> nx<span class="token punctuation">.</span>to_numpy_matrix<span class="token punctuation">(</span>true_model<span class="token punctuation">.</span>to_undirected<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> nodelist<span class="token operator">=</span>nodes<span class="token punctuation">,</span> weight<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span>
+
+    f1 <span class="token operator">=</span> f1_score<span class="token punctuation">(</span>np<span class="token punctuation">.</span>ravel<span class="token punctuation">(</span>true_adj<span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>ravel<span class="token punctuation">(</span>est_adj<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"F1-score for the model skeleton: "</span><span class="token punctuation">,</span> f1<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol>
+<li>使用PC</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">est <span class="token operator">=</span> PC<span class="token punctuation">(</span>data<span class="token operator">=</span>samples<span class="token punctuation">)</span>
+estimated_model <span class="token operator">=</span> est<span class="token punctuation">.</span>estimate<span class="token punctuation">(</span>variant<span class="token operator">=</span><span class="token string">'stable'</span><span class="token punctuation">,</span> max_cond_vars<span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">)</span>
+get_f1_score<span class="token punctuation">(</span>estimated_model<span class="token punctuation">,</span> model<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>使用HillClimb</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">scoring_method <span class="token operator">=</span> K2Score<span class="token punctuation">(</span>data<span class="token operator">=</span>samples<span class="token punctuation">)</span>
+est <span class="token operator">=</span> HillClimbSearch<span class="token punctuation">(</span>data<span class="token operator">=</span>samples<span class="token punctuation">)</span>
+estimated_model <span class="token operator">=</span> est<span class="token punctuation">.</span>estimate<span class="token punctuation">(</span>scoring_method<span class="token operator">=</span>scoring_method<span class="token punctuation">,</span> max_indegree<span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">,</span> max_iter<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span><span class="token number">1e4</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+get_f1_score<span class="token punctuation">(</span>estimated_model<span class="token punctuation">,</span> model<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://pgmpy.org/examples/Structure%20Learning%20in%20Bayesian%20Networks.html">https://pgmpy.org/examples/Structure Learning in Bayesian Networks.html</a><br />
+<a target="_blank" rel="noopener" href="https://pgmpy.org/examples/Structure%20Learning%20with%20Chow-Liu.html">https://pgmpy.org/examples/Structure Learning with Chow-Liu.html</a><br />
+<a target="_blank" rel="noopener" href="https://pgmpy.org/examples/Structure%20Learning%20with%20TAN.html">https://pgmpy.org/examples/Structure Learning with TAN.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/vue_emits/" rel="prev" title="vue_emits">
+                  <i class="fa fa-chevron-left"></i> vue_emits
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/pgmpyEg/" rel="next" title="pgmpyEg">
+                  pgmpyEg <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

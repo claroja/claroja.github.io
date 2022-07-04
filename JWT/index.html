@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="JWTs既可以是签名(JWS,Signature),也可以是加密(JWE,Encryption) jwt有三个部分, 使用.来隔开, 每个部分使用 Base64URL进行编码.  第一部分: header 记录该lwt使用什么进行签名 第二部分: body(claims) 要传输的内容 第三部分: signature, 将第一部分header和第二部分加合并进行签名.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JWT">
+<meta property="og:url" content="https://claroja.github.io/JWT/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="JWTs既可以是签名(JWS,Signature),也可以是加密(JWE,Encryption) jwt有三个部分, 使用.来隔开, 每个部分使用 Base64URL进行编码.  第一部分: header 记录该lwt使用什么进行签名 第二部分: body(claims) 要传输的内容 第三部分: signature, 将第一部分header和第二部分加合并进行签名.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-26T03:17:34.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.072Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/JWT/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/JWT/","path":"JWT/","title":"JWT"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JWT | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text"> 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text"> 入门案例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jwt%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text"> jwt原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AD%BE%E5%90%8Dkey"><span class="nav-number">4.</span> <span class="nav-text"> 签名key</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#key%E7%AE%80%E4%BB%8B"><span class="nav-number">4.1.</span> <span class="nav-text"> key简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%AE%89%E5%85%A8key"><span class="nav-number">4.2.</span> <span class="nav-text"> 生成安全key</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAjws"><span class="nav-number">5.</span> <span class="nav-text"> 创建jws</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E8%BF%87%E7%A8%8B"><span class="nav-number">5.1.</span> <span class="nav-text"> 一般过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEhead"><span class="nav-number">5.2.</span> <span class="nav-text"> 设置head</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEclaims"><span class="nav-number">5.3.</span> <span class="nav-text"> 设置claims</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%AD%BE%E5%90%8D"><span class="nav-number">5.4.</span> <span class="nav-text"> 设置签名</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96jws"><span class="nav-number">6.</span> <span class="nav-text"> 读取jws</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4"><span class="nav-number">6.1.</span> <span class="nav-text"> 一般步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#key"><span class="nav-number">6.2.</span> <span class="nav-text"> key</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/JWT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JWT | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JWT
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-26 11:17:34" itemprop="dateCreated datePublished" datetime="2021-06-26T11:17:34+08:00">2021-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>JWTs既可以是签名(JWS,Signature),也可以是加密(JWE,Encryption)<br />
+jwt有三个部分, 使用<code>.</code>来隔开, 每个部分使用 Base64URL进行编码.</p>
+<ol>
+<li>第一部分: header 记录该lwt使用什么进行签名</li>
+<li>第二部分: body(claims) 要传输的内容</li>
+<li>第三部分: signature, 将第一部分header和第二部分加合并进行签名.</li>
+</ol>
+<span id="more"></span>
+<h1 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h1>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>io.jsonwebtoken<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>jjwt-api<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>0.11.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>io.jsonwebtoken<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>jjwt-impl<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>0.11.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">></span></span>runtime<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>io.jsonwebtoken<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>jjwt-jackson<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span> <span class="token comment">&lt;!-- or jjwt-gson if Gson is preferred --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>0.11.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">></span></span>runtime<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="入门案例"><a class="markdownIt-Anchor" href="#入门案例"></a> 入门案例</h1>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">io<span class="token punctuation">.</span>jsonwebtoken<span class="token punctuation">.</span></span><span class="token class-name">Jwts</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">io<span class="token punctuation">.</span>jsonwebtoken<span class="token punctuation">.</span></span><span class="token class-name">SignatureAlgorithm</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">io<span class="token punctuation">.</span>jsonwebtoken<span class="token punctuation">.</span>security<span class="token punctuation">.</span></span><span class="token class-name">Keys</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>security<span class="token punctuation">.</span></span><span class="token class-name">Key</span></span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> test <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Key</span> key <span class="token operator">=</span> <span class="token class-name">Keys</span><span class="token punctuation">.</span><span class="token function">secretKeyFor</span><span class="token punctuation">(</span><span class="token class-name">SignatureAlgorithm</span><span class="token punctuation">.</span>HS256<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> jws <span class="token operator">=</span> <span class="token class-name">Jwts</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setSubject</span><span class="token punctuation">(</span><span class="token string">"Joe"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">signWith</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">compact</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> subject <span class="token operator">=</span> <span class="token class-name">Jwts</span><span class="token punctuation">.</span><span class="token function">parserBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setSigningKey</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">parseClaimsJws</span><span class="token punctuation">(</span>jws<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getBody</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSubject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>subject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="jwt原理"><a class="markdownIt-Anchor" href="#jwt原理"></a> jwt原理</h1>
+<p>jwt保证:</p>
+<ul>
+<li>authenticity, 保证我们知道创建jwt的人(不能伪造创建者)</li>
+<li>integrity, 保证jwt不能被修改(不能伪造信息)<br />
+jwt通过以下步骤实现了这两点:</li>
+</ul>
+<ol>
+<li>创建jwt的信息</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> header <span class="token operator">=</span> '<span class="token punctuation">&#123;</span><span class="token string">"alg"</span><span class="token operator">:</span><span class="token string">"HS256"</span><span class="token punctuation">&#125;</span>'
+<span class="token class-name">String</span> claims <span class="token operator">=</span> '<span class="token punctuation">&#123;</span><span class="token string">"sub"</span><span class="token operator">:</span><span class="token string">"Joe"</span><span class="token punctuation">&#125;</span>'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>使用base64转码</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> encodedHeader <span class="token operator">=</span> <span class="token function">base64URLEncode</span><span class="token punctuation">(</span> header<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token string">"UTF-8"</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+<span class="token class-name">String</span> encodedClaims <span class="token operator">=</span> <span class="token function">base64URLEncode</span><span class="token punctuation">(</span> claims<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token string">"UTF-8"</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ol start="3">
+<li>拼贴header和claims</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> concatenated <span class="token operator">=</span> encodedHeader <span class="token operator">+</span> <span class="token char">'.'</span> <span class="token operator">+</span> encodedClaims<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol start="4">
+<li>进行签名</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Key</span> key <span class="token operator">=</span> <span class="token function">getMySecretKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> signature <span class="token operator">=</span> <span class="token function">hmacSha256</span><span class="token punctuation">(</span> concatenated<span class="token punctuation">,</span> key <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ol start="5">
+<li>追加签名信息</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> jws <span class="token operator">=</span> concatenated <span class="token operator">+</span> <span class="token char">'.'</span> <span class="token operator">+</span> <span class="token function">base64URLEncode</span><span class="token punctuation">(</span> signature <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="签名key"><a class="markdownIt-Anchor" href="#签名key"></a> 签名key</h1>
+<h2 id="key简介"><a class="markdownIt-Anchor" href="#key简介"></a> key简介</h2>
+<p>jwt包含了12个签名算法:3个秘钥算法和9个不对称加密算法.</p>
+<ul>
+<li>HS256: HMAC using SHA-256</li>
+<li>HS384: HMAC using SHA-384</li>
+<li>HS512: HMAC using SHA-512</li>
+<li>ES256: ECDSA using P-256 and SHA-256</li>
+<li>ES384: ECDSA using P-384 and SHA-384</li>
+<li>ES512: ECDSA using P-521 and SHA-512</li>
+<li>RS256: RSASSA-PKCS-v1_5 using SHA-256</li>
+<li>RS384: RSASSA-PKCS-v1_5 using SHA-384</li>
+<li>RS512: RSASSA-PKCS-v1_5 using SHA-512</li>
+<li>PS256: RSASSA-PSS using SHA-256 and MGF1 with SHA-256</li>
+<li>PS384: RSASSA-PSS using SHA-384 and MGF1 with SHA-384</li>
+<li>PS512: RSASSA-PSS using SHA-512 and MGF1 with SHA-512</li>
+</ul>
+<ol>
+<li>HMAC-SHA<br />
+HS256: HMAC-SHA-256, 长度最少: 256 bits (32 bytes)<br />
+HS384: HMAC-SHA-384, 长度最少: 384 bits (48 bytes)<br />
+HS512: HMAC-SHA-512, 长度最少: 512 bits (64 bytes)</li>
+<li>Elliptic<br />
+ES256: 256 bits (32 bytes)<br />
+ES384: 384 bits (48 bytes)<br />
+ES512: 512 bits (64 bytes)</li>
+<li>RSA<br />
+RS256 and PS256: 建议长度最少2048 bit<br />
+RS384 and PS384: 建议长度最少3072 bit<br />
+RS512 and PS512: 建议长度最少4096 bit</li>
+</ol>
+<h2 id="生成安全key"><a class="markdownIt-Anchor" href="#生成安全key"></a> 生成安全key</h2>
+<ol>
+<li>生成secret key<br />
+如果不想自己写key(考虑上面要求的长度, 很烦躁), 可以使用<code>io.jsonwebtoken.security.Keys</code>来生成.<br />
+为<code>HS256</code>加密算法生成<code>符合要求</code>的<code>随机</code>的key</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">SecretKey</span> key <span class="token operator">=</span> <span class="token class-name">Keys</span><span class="token punctuation">.</span><span class="token function">secretKeyFor</span><span class="token punctuation">(</span><span class="token class-name">SignatureAlgorithm</span><span class="token punctuation">.</span>HS256<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用BASE64来保存key</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> secretString <span class="token operator">=</span> <span class="token class-name">Encoders</span><span class="token punctuation">.</span>BASE64<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">getEncoded</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol start="2">
+<li>Asymmetric Keys</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">KeyPair</span> keyPair <span class="token operator">=</span> <span class="token class-name">Keys</span><span class="token punctuation">.</span><span class="token function">keyPairFor</span><span class="token punctuation">(</span><span class="token class-name">SignatureAlgorithm</span><span class="token punctuation">.</span>RS256<span class="token punctuation">)</span><span class="token punctuation">;</span>
+keyPair<span class="token punctuation">.</span><span class="token function">getPrivate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//私钥用来创建jws</span>
+keyPair<span class="token punctuation">.</span><span class="token function">getPublic</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment">//公钥用来解析和认证jws</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="创建jws"><a class="markdownIt-Anchor" href="#创建jws"></a> 创建jws</h1>
+<h2 id="一般过程"><a class="markdownIt-Anchor" href="#一般过程"></a> 一般过程</h2>
+<ol>
+<li><code>Jwts.builder()</code>创建<code>JwtBuilder</code>实例</li>
+<li>使用<code>JwtBuilder</code>来添加<code>header</code>和<code>claim</code></li>
+<li>指定<code>SecretKey</code>或者<code>PrivateKey</code>来对jwt进行签名</li>
+<li>调用<code>compact()</code>来&quot;挤压&quot;生成结果</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> jws <span class="token operator">=</span> <span class="token class-name">Jwts</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// (1)</span>
+    <span class="token punctuation">.</span><span class="token function">setSubject</span><span class="token punctuation">(</span><span class="token string">"Bob"</span><span class="token punctuation">)</span>      <span class="token comment">// (2) </span>
+    <span class="token punctuation">.</span><span class="token function">signWith</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>          <span class="token comment">// (3)</span>
+    <span class="token punctuation">.</span><span class="token function">compact</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>             <span class="token comment">// (4)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="设置head"><a class="markdownIt-Anchor" href="#设置head"></a> 设置head</h2>
+<p>注意不需要设置<code>alg</code>或<code>zip</code>, jwt会自动设置</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> jws <span class="token operator">=</span> <span class="token class-name">Jwts</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">setHeaderParam</span><span class="token punctuation">(</span><span class="token string">"kid"</span><span class="token punctuation">,</span> <span class="token string">"myKeyId"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="设置claims"><a class="markdownIt-Anchor" href="#设置claims"></a> 设置claims</h2>
+<ul>
+<li><code>JwtBuilder</code>提供了快捷方法来设置, 标准的claims的key  <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> jws <span class="token operator">=</span> <span class="token class-name">Jwts</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token punctuation">.</span><span class="token function">setIssuer</span><span class="token punctuation">(</span><span class="token string">"me"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">setSubject</span><span class="token punctuation">(</span><span class="token string">"Bob"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">setAudience</span><span class="token punctuation">(</span><span class="token string">"you"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">setExpiration</span><span class="token punctuation">(</span>expiration<span class="token punctuation">)</span> <span class="token comment">//a java.util.Date</span>
+    <span class="token punctuation">.</span><span class="token function">setNotBefore</span><span class="token punctuation">(</span>notBefore<span class="token punctuation">)</span> <span class="token comment">//a java.util.Date </span>
+    <span class="token punctuation">.</span><span class="token function">setIssuedAt</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// for example, now</span>
+    <span class="token punctuation">.</span><span class="token function">setId</span><span class="token punctuation">(</span>UUID<span class="token punctuation">.</span><span class="token function">randomUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//just an example id</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>也可以自定义  <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> jws <span class="token operator">=</span> <span class="token class-name">Jwts</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">claim</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">,</span> <span class="token string">"world"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h2 id="设置签名"><a class="markdownIt-Anchor" href="#设置签名"></a> 设置签名</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> jws <span class="token operator">=</span> <span class="token class-name">Jwts</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token comment">// ... etc ...</span>
+   <span class="token punctuation">.</span><span class="token function">signWith</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token comment">// &lt;---</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>获得key的方法</p>
+<ul>
+<li>An encoded byte array</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">SecretKey</span> key <span class="token operator">=</span> <span class="token class-name">Keys</span><span class="token punctuation">.</span><span class="token function">hmacShaKeyFor</span><span class="token punctuation">(</span>encodedKeyBytes<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>Base64-encoded string:</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">SecretKey</span> key <span class="token operator">=</span> <span class="token class-name">Keys</span><span class="token punctuation">.</span><span class="token function">hmacShaKeyFor</span><span class="token punctuation">(</span><span class="token class-name">Decoders</span><span class="token punctuation">.</span>BASE64<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>secretString<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>A Base64URL-encoded string:</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">SecretKey</span> key <span class="token operator">=</span> <span class="token class-name">Keys</span><span class="token punctuation">.</span><span class="token function">hmacShaKeyFor</span><span class="token punctuation">(</span><span class="token class-name">Decoders</span><span class="token punctuation">.</span>BASE64URL<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>secretString<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>A raw (non-encoded) string (e.g. a password String):</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">SecretKey</span> key <span class="token operator">=</span> <span class="token class-name">Keys</span><span class="token punctuation">.</span><span class="token function">hmacShaKeyFor</span><span class="token punctuation">(</span>secretString<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token class-name">StandardCharsets</span><span class="token punctuation">.</span>UTF_8<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="读取jws"><a class="markdownIt-Anchor" href="#读取jws"></a> 读取jws</h1>
+<h2 id="一般步骤"><a class="markdownIt-Anchor" href="#一般步骤"></a> 一般步骤</h2>
+<ol>
+<li><code>Jwts.parserBuilder()</code>创建<code>JwtParserBuilder</code>实例</li>
+<li>指定<code>SecretKey</code>或<code>PublicKey</code>来验证JWS的签名</li>
+<li>调用<code>build()</code>创建<code>JwtParser</code></li>
+<li>调用<code>parseClaimsJws(String)</code></li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">jws <span class="token operator">=</span> <span class="token class-name">Jwts</span><span class="token punctuation">.</span><span class="token function">parserBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">// (1)</span>
+<span class="token punctuation">.</span><span class="token function">setSigningKey</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>         <span class="token comment">// (2)</span>
+<span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span>                    <span class="token comment">// (3)</span>
+<span class="token punctuation">.</span><span class="token function">parseClaimsJws</span><span class="token punctuation">(</span>jwsString<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// (4)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="key"><a class="markdownIt-Anchor" href="#key"></a> key</h2>
+<ul>
+<li>如果签名使用<code>SecretKey</code>, 则需要提供相同的key  <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Jwts</span><span class="token punctuation">.</span><span class="token function">parserBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token function">setSigningKey</span><span class="token punctuation">(</span>secretKey<span class="token punctuation">)</span> <span class="token comment">// &lt;----</span>
+<span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token function">parseClaimsJws</span><span class="token punctuation">(</span>jwsString<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>如果签名使用<code>PrivateKey</code>, 则需要提供对应的<code>PublicKey</code>(PrivateKey,虽然也能解密,但是提供出来被人窃取会伪造JWS)</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Jwts</span><span class="token punctuation">.</span><span class="token function">parserBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setSigningKey</span><span class="token punctuation">(</span>publicKey<span class="token punctuation">)</span> <span class="token comment">// &lt;---- publicKey, not privateKey</span>
+  <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">parseClaimsJws</span><span class="token punctuation">(</span>jwsString<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://github.com/jwtk/jjwt">https://github.com/jwtk/jjwt</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/JavaLogger/" rel="prev" title="JavaLogger">
+                  <i class="fa fa-chevron-left"></i> JavaLogger
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Jackson/" rel="next" title="Jackson">
+                  Jackson <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

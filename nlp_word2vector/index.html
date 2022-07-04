@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基于统计的方法的问题:语料库处理的单词数量非常大, 对n*n的矩阵, SVD的复杂度是O(n3)O(n^3)O(n3).   而基于推理的方法使用神经网络, 通过在mini-batch数据上进行学习. 大大降低了计算难度.   当给出周围的单词(上下文), 预测&quot;?&quot;会出现的单词就是推理. “you ? goodbye and i say hello”  神经网络单词的处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nlp_word2vector">
+<meta property="og:url" content="https://claroja.github.io/nlp_word2vector/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="基于统计的方法的问题:语料库处理的单词数量非常大, 对n*n的矩阵, SVD的复杂度是O(n3)O(n^3)O(n3).   而基于推理的方法使用神经网络, 通过在mini-batch数据上进行学习. 大大降低了计算难度.   当给出周围的单词(上下文), 预测&quot;?&quot;会出现的单词就是推理. “you ? goodbye and i say hello”  神经网络单词的处理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/1.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/2.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/3.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/4.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/5.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/6.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/7.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/8.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/9.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/10.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/11.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/12.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/13.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/14.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/15.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/16.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/17.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/18.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/19.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/20.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/21.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/22.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/23.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/24.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/25.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/26.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/27.png">
+<meta property="og:image" content="https://claroja.github.io/nlp_word2vector/28.png">
+<meta property="article:published_time" content="2021-11-26T14:03:54.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.380Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://claroja.github.io/nlp_word2vector/1.png">
+
+
+<link rel="canonical" href="https://claroja.github.io/nlp_word2vector/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/nlp_word2vector/","path":"nlp_word2vector/","title":"nlp_word2vector"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>nlp_word2vector | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8D%95%E8%AF%8D%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text"> 神经网络单词的处理方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84word2vec"><span class="nav-number">2.</span> <span class="nav-text"> 简单的word2vec</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cbow%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="nav-number">3.</span> <span class="nav-text"> CBOW模型的学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#word2vec%E5%AD%A6%E4%B9%A0%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="nav-number">4.</span> <span class="nav-text"> word2vec学习数据准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cbow%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.</span> <span class="nav-text"> CBOW模型的实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cbow%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%A6%82%E7%8E%87"><span class="nav-number">6.</span> <span class="nav-text"> CBOW模型和概率</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#skip-gram%E6%A8%A1%E5%9E%8B"><span class="nav-number">7.</span> <span class="nav-text"> skip-gram模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#embedding"><span class="nav-number">8.</span> <span class="nav-text"> Embedding</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#negative-sampling"><span class="nav-number">9.</span> <span class="nav-text"> Negative Sampling</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/nlp_word2vector/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="nlp_word2vector | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nlp_word2vector
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-26 22:03:54" itemprop="dateCreated datePublished" datetime="2021-11-26T22:03:54+08:00">2021-11-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li>
+<p>基于统计的方法的问题:语料库处理的单词数量非常大, 对n*n的矩阵, SVD的复杂度是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>3</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^3)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>.</p>
+</li>
+<li>
+<p>而基于推理的方法使用神经网络, 通过在mini-batch数据上进行学习. 大大降低了计算难度.</p>
+</li>
+</ul>
+<p>当给出周围的单词(上下文), 预测&quot;?&quot;会出现的单词就是推理.<br />
+“you ? goodbye and i say hello”</p>
+<h1 id="神经网络单词的处理方法"><a class="markdownIt-Anchor" href="#神经网络单词的处理方法"></a> 神经网络单词的处理方法</h1>
+<p>将单词转换为one-hot表示(one-hot向量), 只有一个元素是1, 其他元素都是0.比如在&quot;you say goodbye and i say hello&quot;语料中, 一共有7个单词(“you”,“say”,“goodbye”,“and”,“i”,“say”,“hello”,“.”). 转换为one-hot表示为:</p>
+<p><img src="1.png" alt="1.png" /></p>
+<p>这样将单词转换为固定长度的向量, 神经网络的输入层的神经元个数就能固定下来:</p>
+<p><img src="2.png" alt="2.png" /></p>
+<p>输入层由7个神经元表示, 分别对应一个单词的7维的one-hot表示.只要将单词表示为向量, 这些向量就可可以由构成神经网络的各种层来处理.</p>
+<p><img src="3.png" alt="3.png" /></p>
+<p>也可以表示为:</p>
+<p><img src="4.png" alt="4.png" /></p>
+<p>python实现全连接层变换:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+c <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment"># 输入</span>
+W <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>              <span class="token comment"># 权重</span>
+h <span class="token operator">=</span> np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>c<span class="token punctuation">,</span> W<span class="token punctuation">)</span>                       <span class="token comment"># 中间节点</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span>
+<span class="token comment"># [[-0.70012195  0.25204755 -0.79774592]]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>c是one-hot表示, 单词ID对应的元素是1, 其他地方都是0, 因此c和w的矩阵乘积相当于&quot;提取&quot;权重的对应行向量.<br />
+<img src="5.png" alt="5.png" /></p>
+<h1 id="简单的word2vec"><a class="markdownIt-Anchor" href="#简单的word2vec"></a> 简单的word2vec</h1>
+<p>实现continuous bag of words(cbow)的模型.准确的来说CBOW和skip-gram模型是word2vec中使用的两个神经网络.word2vec则表示的是程序或者工具.</p>
+<p>CBOW模型是根据上下文预测目标词的神经网络.它有两个输入层, 经过中间层到达输出层. 从输入层到中间层的变换由相同的全连接层(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{in}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>)完成, 从中间层到输出层神经元的变换由另一个全连接层(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{out}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">u</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>)完成. 因为我们对上下文仅考虑两个单词, 所以输入层有两个, 如果上下文考虑N个单词, 则输入层会有N个.</p>
+<p><img src="6.png" alt="6.png" /></p>
+<p>中间层的神经元是各个输入层经全连接层变换后得到的值的&quot;平均&quot;.如上例中: 经全连接层变换后, 第1个输入层转换为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">h_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, 第2个输入层转换为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">h_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, 那么中间层的神经元是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="false">(</mo><msub><mi>h</mi><mn>1</mn></msub><mo>+</mo><msub><mi>h</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\frac{1}{2}(h_1+h_2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>.</p>
+<p>输出层有7个神经元, 这些神经元对应各个单词. 输出层的神经元是各个单词的得分, 它的值越大, 说明对应单词的出现概率就越高, 使用softmax函数获得.</p>
+<p>从输入层到中间层的变换由全连接层(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{in}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>)完成. 此时, 全连接层的权重<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{in}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是一个7*3的矩阵, 这个权重就是我们要的单词的分布式表示.</p>
+<p><img src="7.png" alt="7.png" /></p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{in}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的各行保存着各个单词的分布式表示. 通过反复学习, 不断更更新各个单词的分布式表示, 以正确地从上下文预测出应当出现的单词.</p>
+<p>中间层的神经元数量比输入层少这一点很重要. 中间层需要将预测单词所需的信息进行压缩保存, 从而产生密集的向量表示. 中间层被写入了我们人类无法解读的代码, 这相当于&quot;编码&quot;工作. 而从中间层的信息获得期望结果的过程则称为&quot;解码&quot;.</p>
+<p>从层视角表示CBOW模型:</p>
+<p><img src="8.png" alt="8.png" /></p>
+<p>SBOW模型宜开有两个MatMul层, 这两个层的输出被加在一起, 然后得到的值乘以0.5求均值, 得到中间层的神经元. 最后将另外一个MatMul层应用于中间层的神经元, 输出得分.</p>
+<p>python实现:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">'..'</span><span class="token punctuation">)</span>
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">from</span> common<span class="token punctuation">.</span>layers <span class="token keyword">import</span> MatMul
+<span class="token comment"># 样本的上下文数据</span>
+c0 <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+c1 <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># 权重的初始值</span>
+W_in <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+W_out <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span>
+<span class="token comment"># 生成层</span>
+in_layer0 <span class="token operator">=</span> MatMul<span class="token punctuation">(</span>W_in<span class="token punctuation">)</span>
+in_layer1 <span class="token operator">=</span> MatMul<span class="token punctuation">(</span>W_in<span class="token punctuation">)</span>
+out_layer <span class="token operator">=</span> MatMul<span class="token punctuation">(</span>W_out<span class="token punctuation">)</span>
+<span class="token comment"># 正向传播</span>
+h0 <span class="token operator">=</span> in_layer0<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>c0<span class="token punctuation">)</span>
+h1 <span class="token operator">=</span> in_layer1<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>c1<span class="token punctuation">)</span>
+h <span class="token operator">=</span> <span class="token number">0.5</span> <span class="token operator">*</span> <span class="token punctuation">(</span>h0 <span class="token operator">+</span> h1<span class="token punctuation">)</span>
+s <span class="token operator">=</span> out_layer<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>h<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token comment"># [[ 0.30916255  0.45060817 -0.77308656  0.22054131  0.15037278</span>
+<span class="token comment">#   -0.93659277 -0.59612048]]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先将权重矩阵<code>W_in</code>和<code>W_out</code>初始化.</p>
+<p>然后生成与上下文单词数量等量(这里是2个)的处理输入层的MatMul层, 输出侧仅生成一个MatMul层. 注意输入侧的MatMul层共享权重矩阵<code>W_in</code>.</p>
+<p>之后, 输入侧的MatMul层(in_layer0和in_layer1)调用forward()方法, 计算中间数据, 并通过输出侧的MatMul层(out_layer)计算各个单词的得分.</p>
+<h1 id="cbow模型的学习"><a class="markdownIt-Anchor" href="#cbow模型的学习"></a> CBOW模型的学习</h1>
+<p><img src="9.png" alt="9.png" /><br />
+如上图, 上下文是you和goodbye, 正确解标签是say.</p>
+<p>这里我们处理的模型是一个进行多分类的神经网络. 首先使用Softmax函数将得分转化为概率, 再求这些概率和监督标签之间的交叉熵误差, 并将其作为损失进行学习:</p>
+<p><img src="10.png" alt="10.png" /></p>
+<p>将Softmax和Cross Entropy Error合并为Softmax with Loss层, 则可表示为:</p>
+<p><img src="11.png" alt="11.png" /></p>
+<p>word2vec中使用的网络有两个权重, 分别是输入侧的全连接层的权重(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{in}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>)和输出侧的权重(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{out}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">u</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>).两个权重都保存了对单词含义的编码的向量.</p>
+<p><img src="12.png" alt="12.png" /></p>
+<p>一般使用输入侧的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{in}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>作为最终的单词的分布式表示.另外在GloVe方法中, 通过将两个权重相加, 也获得了良好的效果.</p>
+<h1 id="word2vec学习数据准备"><a class="markdownIt-Anchor" href="#word2vec学习数据准备"></a> word2vec学习数据准备</h1>
+<p>从语料库生成上下文和目标词, 如图所示:</p>
+<p><img src="13.png" alt="13.png" /></p>
+<p>我们对语料库中的单词操作, 得到右侧的contexts(上下文)和target(目标词).contexts的各行作为神经网络的输入, target的各行称为正确解标签.</p>
+<p>python实现从语料库生成上下文和目标词的函数</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">'..'</span><span class="token punctuation">)</span>
+<span class="token keyword">from</span> common<span class="token punctuation">.</span>util <span class="token keyword">import</span> preprocess
+text <span class="token operator">=</span> <span class="token string">'You say goodbye and I say hello.'</span>
+corpus<span class="token punctuation">,</span> word_to_id<span class="token punctuation">,</span> id_to_word <span class="token operator">=</span> preprocess<span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>corpus<span class="token punctuation">)</span>
+<span class="token comment"># [0 1 2 3 4 1 5 6]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>id_to_word<span class="token punctuation">)</span>
+<span class="token comment"># &#123;0: 'you', 1: 'say', 2: 'goodbye', 3: 'and', 4: 'i', 5: 'hello', 6:'.'&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后从ID列表corpus生成contexts和target.</p>
+<p><img src="14.png" alt="14.png" /></p>
+<p>contexts是二维数组, 第0维保存各个上下文的数据. 具体来说, <code>contexts[0]</code>保存的是第0个上下文. 同样的道理<code>target[0]</code>保存的是第0个目标词. python实现如下:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">create_contexts_target</span><span class="token punctuation">(</span>corpus<span class="token punctuation">,</span> window_size<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    target <span class="token operator">=</span> corpus<span class="token punctuation">[</span>window_size<span class="token punctuation">:</span><span class="token operator">-</span>window_size<span class="token punctuation">]</span>
+    contexts <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> idx <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>window_size<span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>corpus<span class="token punctuation">)</span><span class="token operator">-</span>window_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        cs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> t <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token operator">-</span>window_size<span class="token punctuation">,</span> window_size <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> t <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                <span class="token keyword">continue</span>
+            cs<span class="token punctuation">.</span>append<span class="token punctuation">(</span>corpus<span class="token punctuation">[</span>idx <span class="token operator">+</span> t<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        contexts<span class="token punctuation">.</span>append<span class="token punctuation">(</span>cs<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>contexts<span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>target<span class="token punctuation">)</span>
+contexts<span class="token punctuation">,</span> target <span class="token operator">=</span> create_contexts_target<span class="token punctuation">(</span>corpus<span class="token punctuation">,</span> window_size<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>contexts<span class="token punctuation">)</span>
+<span class="token comment"># [[0 2]</span>
+<span class="token comment">#  [1 3]</span>
+<span class="token comment">#  [2 4]</span>
+<span class="token comment">#  [3 1]</span>
+<span class="token comment">#  [4 5]</span>
+<span class="token comment">#  [1 6]]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span>
+<span class="token comment"># [1 2 3 4 1 5]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>下面将上下文和目标词转换为one-hot表示:</p>
+<p><img src="15.png" alt="15.png" /></p>
+<p>使用ID时contexts的形状是(6,2),将其转换为one-hot表示后, 其形状变成了(6,2,7).</p>
+<h1 id="cbow模型的实现"><a class="markdownIt-Anchor" href="#cbow模型的实现"></a> CBOW模型的实现</h1>
+<p><img src="16.png" alt="16.png" /></p>
+<p>python实现如下:</p>
+<p>首先看初始化层</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">'..'</span><span class="token punctuation">)</span>
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">from</span> common<span class="token punctuation">.</span>layers <span class="token keyword">import</span> MatMul<span class="token punctuation">,</span> SoftmaxWithLoss
+<span class="token keyword">class</span> <span class="token class-name">SimpleCBOW</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> vocab_size<span class="token punctuation">,</span> hidden_size<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        V<span class="token punctuation">,</span> H <span class="token operator">=</span> vocab_size<span class="token punctuation">,</span> hidden_size
+        <span class="token comment"># 初始化权重</span>
+        W_in <span class="token operator">=</span> <span class="token number">0.01</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span>V<span class="token punctuation">,</span> H<span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        W_out <span class="token operator">=</span> <span class="token number">0.01</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span>H<span class="token punctuation">,</span> V<span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'f'</span><span class="token punctuation">)</span>
+        <span class="token comment"># 生成层</span>
+        self<span class="token punctuation">.</span>in_layer0 <span class="token operator">=</span> MatMul<span class="token punctuation">(</span>W_in<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>in_layer1 <span class="token operator">=</span> MatMul<span class="token punctuation">(</span>W_in<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>out_layer <span class="token operator">=</span> MatMul<span class="token punctuation">(</span>W_out<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>loss_layer <span class="token operator">=</span> SoftmaxWithLoss<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment"># 将所有的权重和梯度整理到列表中</span>
+        layers <span class="token operator">=</span> <span class="token punctuation">[</span>self<span class="token punctuation">.</span>in_layer0<span class="token punctuation">,</span> self<span class="token punctuation">.</span>in_layer1<span class="token punctuation">,</span> self<span class="token punctuation">.</span>out_layer<span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>params<span class="token punctuation">,</span> self<span class="token punctuation">.</span>grads <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> layer <span class="token keyword">in</span> layers<span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>params <span class="token operator">+=</span> layer<span class="token punctuation">.</span>params
+            self<span class="token punctuation">.</span>grads <span class="token operator">+=</span> layer<span class="token punctuation">.</span>grads
+        <span class="token comment"># 将单词的分布式表示设置为成员变量</span>
+        self<span class="token punctuation">.</span>word_vecs <span class="token operator">=</span> W_in<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后实现前向传播<code>forward()</code>函数</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> contexts<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    h0 <span class="token operator">=</span> self<span class="token punctuation">.</span>in_layer0<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>contexts<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    h1 <span class="token operator">=</span> self<span class="token punctuation">.</span>in_layer1<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>contexts<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    h <span class="token operator">=</span> <span class="token punctuation">(</span>h0 <span class="token operator">+</span> h1<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.5</span>
+    score <span class="token operator">=</span> self<span class="token punctuation">.</span>out_layer<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>h<span class="token punctuation">)</span>
+    loss <span class="token operator">=</span> self<span class="token punctuation">.</span>loss_layer<span class="token punctuation">.</span>forward<span class="token punctuation">(</span>score<span class="token punctuation">,</span> target<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> loss<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最后实现后向传播<code>backward()</code>函数</p>
+<p><img src="17.png" alt="17.png" /></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">backward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> dout<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    ds <span class="token operator">=</span> self<span class="token punctuation">.</span>loss_layer<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>dout<span class="token punctuation">)</span>
+    da <span class="token operator">=</span> self<span class="token punctuation">.</span>out_layer<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>ds<span class="token punctuation">)</span>
+    da <span class="token operator">*=</span> <span class="token number">0.5</span>
+    self<span class="token punctuation">.</span>in_layer1<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>da<span class="token punctuation">)</span>
+    self<span class="token punctuation">.</span>in_layer0<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>da<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token boolean">None</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="cbow模型和概率"><a class="markdownIt-Anchor" href="#cbow模型和概率"></a> CBOW模型和概率</h1>
+<p>当给定某个上下文时, 输出目标词的概率.这里语料库包含<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>w</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>w</mi><mi>T</mi></msub></mrow><annotation encoding="application/x-tex">w_1,w_2,...,w_T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>等单词, 考虑窗口大小为1的情况, 则给定上下文<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">w_{t-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.638891em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">w_{t+1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.638891em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span>时目标词为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">w_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的概率为:</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><msub><mi>w</mi><mi>t</mi></msub><mi mathvariant="normal">∣</mi><msub><mi>w</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo><msub><mi>w</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(w_t|w_{t-1},w_{t+1})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>使用上式可更简洁的表示CBOW模型的损失函数. 回想交叉熵误差函数:</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mo>−</mo><munder><mo>∑</mo><mi>k</mi></munder><msub><mi>t</mi><mi>k</mi></msub><mi>l</mi><mi>o</mi><mi>g</mi><msub><mi>y</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">L=-\sum_kt_klogy_k
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.3521180000000004em;vertical-align:-1.3021129999999999em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0500050000000005em;"><span style="top:-1.847887em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.3021129999999999em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>其中,<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">y_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>表示第<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span>个事件发生的概率.<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">t_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76508em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是监督标签, 它是一个one-hot向量的元素, 对应正解的元素为1, 其他元素都是0. 考虑到这一点, 则交叉熵误差函数可以表示为:</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mo>−</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>P</mi><mo stretchy="false">(</mo><msub><mi>w</mi><mi>t</mi></msub><mi mathvariant="normal">∣</mi><msub><mi>w</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo><msub><mi>w</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">L=-logP(w_t|w_{t-1},w_{t+1})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">−</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>CBOW模型的损失函数只是对概率取log, 并加上负号, 这也称为负对数似然(negative log likelihood). 如果损失函数可以写为:</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mi>T</mi></mfrac><munderover><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>T</mi></munderover><mi>l</mi><mi>o</mi><mi>g</mi><mi>P</mi><mo stretchy="false">(</mo><msub><mi>w</mi><mi>t</mi></msub><mi mathvariant="normal">∣</mi><mi>w</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow><mo separator="true">,</mo><mi>w</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">L=-\frac{1}{T}\sum_{t=1}^{T}logP(w_t|w{t-1},w{t+1})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.0954490000000003em;vertical-align:-1.267113em;"></span><span class="mord">−</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283360000000002em;"><span style="top:-1.882887em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.267113em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mord"><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mord"><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span></span><span class="mclose">)</span></span></span></span></span></p>
+<h1 id="skip-gram模型"><a class="markdownIt-Anchor" href="#skip-gram模型"></a> skip-gram模型</h1>
+<p>skip-gram是反转了CBOW模型.</p>
+<p><img src="18.png" alt="18.png" /></p>
+<p>如上图, CBOW模型从上下文的多个单词预测中间的单词, 而skip-gram模型则从中间的单词预测周围的多个单词.</p>
+<p><img src="19.png" alt="19.png" /></p>
+<p>输入层只有一个, 输出层的数量则与上下文的单词的个数相等. 因此, 首先要分别求出各个输出层的损失, 然后将他们加起来作为最后的损失.</p>
+<h1 id="embedding"><a class="markdownIt-Anchor" href="#embedding"></a> Embedding</h1>
+<p>假设词汇量有100万个, CBOW模型的中间层神经元有100个,则:</p>
+<p><img src="20.png" alt="20.png" /></p>
+<p>输入层和输出层存在100万个神经元, 有两个地方的计算会出现瓶颈:<br />
+输入层和one-hot表示和权重矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{in}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的乘积. 比如在词汇量有100万个的情况下, 仅one-hot表示本身就需要占用100万个元素的内存大小. 此外还要计算one-hot表示的权重矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{in}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的乘积.</p>
+<p>之前, 我们将单词转换为了one-hot表示, 并将其输入了MatMul层, 在MatMul层中计算one-hot表示和权重矩阵的乘积. 这里考虑词汇量是100万个的情况, 中间层的神经元个数是100, 则:</p>
+<p><img src="21.png" alt="21.png" /></p>
+<p>因为语料库的词汇量有100万个, 则单词的one-hot表示的维数也是100万, 我们需要计算这个巨大向量和权重矩阵的乘积. 但是, 如图所示, 乘积所表达的意思无非是将矩阵的某个特定的行取出来.因此, 直觉上将单词转换为one-hot向量和处理和MatMul层中的矩阵乘法似乎没有必要.</p>
+<p>我们创建一个从权重参数中抽取&quot;id对应行(向量)&quot;的层, 我们称为Embedding层(来自于word embedding).</p>
+<p>python实现:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+W <span class="token operator">=</span> np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">21</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+W
+<span class="token comment"># array([[ 0,  1,  2],</span>
+<span class="token comment">#        [ 3,  4,  5],</span>
+<span class="token comment">#        [ 6,  7,  8],</span>
+<span class="token comment">#        [ 9, 10, 11],</span>
+<span class="token comment">#        [12, 13, 14],</span>
+<span class="token comment">#        [15, 16, 17],</span>
+<span class="token comment">#        [18, 19, 20]])</span>
+W<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
+<span class="token comment"># array([6, 7, 8])</span>
+W<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span>
+<span class="token comment"># array([15, 16, 17])</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>另外, 从权重<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>中一次性提取多行的处理也很简单, 只需要指定行号即可:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">idx <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+W<span class="token punctuation">[</span>idx<span class="token punctuation">]</span>
+<span class="token comment"># array([[ 3,  4,  5],</span>
+<span class="token comment">#        [ 0,  1,  2],</span>
+<span class="token comment">#        [ 9, 10, 11],</span>
+<span class="token comment">#        [ 0,  1,  2]])</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们一次性提取了4个索引(1,0,3,0), 通过将数组作为参数, 可以一次性提取多行, 用于mini-batch处理.python实现embedding的<code>forwart()</code>方法</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Embedding</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> W<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>params <span class="token operator">=</span> <span class="token punctuation">[</span>W<span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>grads <span class="token operator">=</span> <span class="token punctuation">[</span>np<span class="token punctuation">.</span>zeros_like<span class="token punctuation">(</span>W<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>idx <span class="token operator">=</span> <span class="token boolean">None</span>
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> idx<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        W<span class="token punctuation">,</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>params
+        self<span class="token punctuation">.</span>idx <span class="token operator">=</span> idx
+        out <span class="token operator">=</span> W<span class="token punctuation">[</span>idx<span class="token punctuation">]</span>
+        <span class="token keyword">return</span> out<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>params</code>和<code>grads</code>作为成员变量, 并在成员变量<code>idx</code>中以数组的形式保存需要提取的行的索引(单词ID).</p>
+<p>接下来是反向传播. Embedding层的正向传播只是从权重矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>中提取特定的行, 并将该特定行的神经元原样传给下一层. 因此, 在反向传播时, 从上一层(输出层侧的层)传过来的梯度将原样传给下一层(输入侧的层). 不过, 从上一层传来的梯度会被应用到权重梯度<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>W</mi></mrow><annotation encoding="application/x-tex">dW</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>的特定行(idx), 如图:<br />
+<img src="22.png" alt="22.png" /><br />
+python实现<code>backward()</code>:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">backward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> dout<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    dW<span class="token punctuation">,</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>grads
+    dW<span class="token punctuation">[</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> i<span class="token punctuation">,</span> word_id <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>idx<span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 考虑idx多次出现的情况</span>
+        dW<span class="token punctuation">[</span>word_id<span class="token punctuation">]</span> <span class="token operator">+=</span> dout<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+    <span class="token comment"># 或者</span>
+    <span class="token comment"># np.add.at(dW, self.idx, dout)</span>
+    <span class="token keyword">return</span> <span class="token boolean">None</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>取出权重梯度<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>W</mi></mrow><annotation encoding="application/x-tex">dW</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>, 通过<code>dW[...] = 0</code>将<code>dW</code>的元素设为0. 然后将上一层传来的梯度<code>dout</code>写入<code>idx</code>指定的行. 这里创建了和权重 W相同大小的矩阵 dW，并将梯度写入了 dW对应的行。但是，我们最终想做的事情是更新权重 W，所以没有必要特意创建 dW（大小与 W相同）。相反，只需把需要更新的行号（idx）及其对应的梯度（dout）保存下来，就可以更新权重（W）的特定行。但是，这里为了兼容已经实现的优化器类（Optimizer），所以写成了现在的样子。</p>
+<h1 id="negative-sampling"><a class="markdownIt-Anchor" href="#negative-sampling"></a> Negative Sampling</h1>
+<p>中间层之后的计算. 首先, 中间层和权重矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{out}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">u</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的乘积需要大量的计算. 其次, 随着词汇量的增加, Softmax层的计算量也会增加.<br />
+考虑词汇量为100万个, 中间层神经元个数为100个的word2vec(CBOW)模型, 如图:</p>
+<p><img src="23.png" alt="23.png" /></p>
+<p>如上图, 输入层和输出层有100万个神经元.通过引入Embedding层, 节省了输入层中不必要的计算. 剩下的问题就是中间层之后的处理:</p>
+<ul>
+<li>中间层的神经元和权重矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{out}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">u</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的乘积</li>
+<li>Softmax层的计算</li>
+</ul>
+<p>第1个问题在于巨大的矩阵乘积计算. 中间层向量的大小是100, 权重矩阵的大小是100*1000000, 如此巨大的矩阵乘积计算需要大量时间和空间.</p>
+<p>另外Softmax也会发生同样的问题. 换句话说, 随着词汇量的增加, Softmax的计算量也会增加:</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>y</mi><mi>k</mi></msub><mo>=</mo><mfrac><mrow><mi>e</mi><mi>x</mi><mi>p</mi><mo stretchy="false">(</mo><msub><mi>s</mi><mi>k</mi></msub><mo stretchy="false">)</mo></mrow><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mn>1000000</mn></munderover><mi>e</mi><mi>x</mi><mi>p</mi><mo stretchy="false">(</mo><msub><mi>s</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">y_k=\frac{exp(s_k)}{\sum_{i=1}^{1000000}exp(s_i)}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.5707180000000003em;vertical-align:-1.143718em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.155992em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.954008em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">0</span><span class="mord mtight">0</span><span class="mord mtight">0</span><span class="mord mtight">0</span><span class="mord mtight">0</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.143718em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>上式是第k个元素(单词)的Softmax的计算公式(各个元素的得分为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">s_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>,<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">s_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>,…).分母要进行1000000次的exp计算, 计算量和词汇量呈正比.</p>
+<p>我们考虑将多分类转换为二分类. 比如,神经网络来回答&quot;当上下文是you和goodbye时, 目标词是say嘛&quot;这个问题, 这时输出层值需要一个神经元即可, 如图:</p>
+<p><img src="24.png" alt="24.png" /></p>
+<p>要计算中间层和输出侧的权重矩阵的乘积, 只需要提出say对应的列(单词向量), 并用它与中间层的神经元计算内积即可.</p>
+<p><img src="25.png" alt="25.png" /></p>
+<p>输出侧的权重<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">W_{out}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight">u</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>中保存了各个单词ID对应的单词向量.此处, 我们提取say这个单词向量, 再求这个向量和中间层神经元的内积, 就是最终的结果.</p>
+<p>二分类和多分类的顺势函数均为交叉熵误差, 式子分别为:</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mo>−</mo><mo stretchy="false">(</mo><mi>t</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>y</mi><mo>+</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>t</mi><mo stretchy="false">)</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>y</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">L=-(tlogy+(1-t)log(1-y))
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">−</span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mo>−</mo><munder><mo>∑</mo><mi>k</mi></munder><msub><mi>t</mi><mi>k</mi></msub><mi>l</mi><mi>o</mi><mi>g</mi><msub><mi>y</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">L=-\sum_kt_klog{y_k}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.3521180000000004em;vertical-align:-1.3021129999999999em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0500050000000005em;"><span style="top:-1.847887em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.3021129999999999em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>他们仅仅是写法不同而已, 实际上表示的内容是一致的. 如果输出层只有两个神经元, 则完全一致.</p>
+<p>下面将多分类问题转换为二分类:</p>
+<p><img src="26.png" alt="26.png" /></p>
+<p>上图中上下文是you和goodbye, 作为正解的目标词是say(you的id为0, say的id为1, goodbye的id为2).</p>
+<p>将上图的神经网络转化成二分类的神经网络:</p>
+<p><img src="27.png" alt="27.png" /></p>
+<p>上述过程只解决了正解问题, 既只能正确的预测say, 但是对错误的词语还无法预测, 我需要对负例进行学习.不需要对所有的负例进行学习, 只使用少量负例即可(一般5~10个)这就是负采样的含义.</p>
+<p>在进行负采样时, 基于语料库的统计数据进行采样的方法比随机抽样要好, 既将语料库中经常出现的单词容易被抽到, 让语料库中不经常出现的单词难以被抽到. 也就是说处理稀有单词的重要性低.</p>
+<p>负采样方法既可以求将正例作为目标词时的损失, 同时也可以采样若干个负例, 对这些负例求损失. 然后讲这些数据(正例+负例)的损失加起来, 作为最终的损失.</p>
+<p><img src="28.png" alt="28.png" /></p>
+<p>如上图, 正例(say)和之前一样, 向Sigmoid with Loss层输入正确解标签1, 而因为负例(hello和i)是错误答案, 所以要想Sigmoid with Loss层输入正确解标签0. 然后, 将各个数据的损失相加, 作为最终输出.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/covariance/" rel="prev" title="covariance">
+                  <i class="fa fa-chevron-left"></i> covariance
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/tensor_zerograd/" rel="next" title="tensor_zerograd">
+                  tensor_zerograd <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

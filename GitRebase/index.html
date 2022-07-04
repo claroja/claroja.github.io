@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1. 向下游移动base 下游移动base,根节点是两个分支的交叉点  初始化数据  * c54f8b7 (HEAD -&gt; b) version3 b &quot; * f9fc6be (a) version4 a &quot; * 730cb6a version3 a &quot;&#x2F; * 604ad92 version2 &#x2F;&#x2F;a和b的交点,既base * 6">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitRebase">
+<meta property="og:url" content="https://claroja.github.io/GitRebase/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="1. 向下游移动base 下游移动base,根节点是两个分支的交叉点  初始化数据  * c54f8b7 (HEAD -&gt; b) version3 b &quot; * f9fc6be (a) version4 a &quot; * 730cb6a version3 a &quot;&#x2F; * 604ad92 version2 &#x2F;&#x2F;a和b的交点,既base * 6">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/1.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/2.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/3.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/4.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/5.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/6.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/7.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/8.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/9.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/10.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/11.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/12.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/13.png">
+<meta property="og:image" content="https://claroja.github.io/GitRebase/14.png">
+<meta property="article:published_time" content="2021-06-26T04:44:06.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.053Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://claroja.github.io/GitRebase/1.png">
+
+
+<link rel="canonical" href="https://claroja.github.io/GitRebase/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/GitRebase/","path":"GitRebase/","title":"GitRebase"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GitRebase | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%90%91%E4%B8%8B%E6%B8%B8%E7%A7%BB%E5%8A%A8base"><span class="nav-number">1.</span> <span class="nav-text"> 1. 向下游移动base</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E4%B8%8A%E6%B8%B8reabase"><span class="nav-number">2.</span> <span class="nav-text"> 2. 上游reabase</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%90%88%E5%B9%B6%E4%B8%AD%E9%97%B4%E6%8F%90%E4%BA%A4"><span class="nav-number">3.</span> <span class="nav-text"> 3. 合并中间提交</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/GitRebase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GitRebase | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GitRebase
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-26 12:44:06" itemprop="dateCreated datePublished" datetime="2021-06-26T12:44:06+08:00">2021-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-向下游移动base"><a class="markdownIt-Anchor" href="#1-向下游移动base"></a> 1. 向下游移动base</h1>
+<p>下游移动base,根节点是两个分支的交叉点</p>
+<ol>
+<li>初始化数据</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">* c54f8b7 (HEAD -&gt; b) version3 b
+&quot; * f9fc6be (a) version4 a
+&quot; * 730cb6a version3 a
+&quot;&#x2F;
+* 604ad92 version2 &#x2F;&#x2F;a和b的交点,既base
+* 648ef5e version1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="1.png" alt="1.png" /></p>
+<p>2.rebase 换基<br />
+此时HEAD在b分支上,我们可以现在base是version2,我们可以将b分支的base改为version1~4的任意位置,假设rebase到version3 a上<br />
+<code>git rebase 730cb6a</code><br />
+这里使用等价的图形操作</p>
+<ol>
+<li>rebase操作<br />
+<img src="2.png" alt="2.png" /><br />
+<img src="3.png" alt="3.png" /><br />
+<img src="4.png" alt="4.png" /></li>
+<li>处理冲突<br />
+<img src="5.png" alt="5.png" /></li>
+<li>填写提交信息<br />
+<img src="6.png" alt="6.png" /></li>
+<li>结果, b分支的base已经改变<br />
+<img src="7.png" alt="7.png" /></li>
+</ol>
+<h1 id="2-上游reabase"><a class="markdownIt-Anchor" href="#2-上游reabase"></a> 2. 上游reabase</h1>
+<p>向上游移动base,base是指定的上游commit点<br />
+假设要移动到version2<br />
+<img src="8.png" alt="8.png" /><br />
+此时version2为base,这样计算的话b分支就有两个commit,verson3 a 和 version 3 b.<br />
+如果想恢复到最初的状态,可以吧version3 a 的<code>Action</code>改成<code>skip</code>即可<br />
+<img src="9.png" alt="9.png" /></p>
+<h1 id="3-合并中间提交"><a class="markdownIt-Anchor" href="#3-合并中间提交"></a> 3. 合并中间提交</h1>
+<ol>
+<li>
+<p>准备数据,每次提交一行<br />
+<img src="10.png" alt="10.png" /></p>
+</li>
+<li>
+<p>rebase<br />
+<img src="11.png" alt="11.png" /></p>
+</li>
+<li>
+<p>将version3合并到version2<br />
+<code>fixup</code>也可,就是不能修改提交信息</p>
+</li>
+</ol>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">pick：保留该commit（缩写:p）
+reword：保留该commit，但我需要修改该commit的注释（缩写:r）
+edit：保留该commit, 但我要停下来修改该提交(不仅仅修改注释)（缩写:e）
+squash：将该commit和前一个commit合并（缩写:s）
+fixup：将该commit和前一个commit合并，但我不要保留该提交的注释信息（缩写:f）
+exec：执行shell命令（缩写:x）
+drop：我要丢弃该commit（缩写:d）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="12.png" alt="12.png" /><br />
+<img src="13.png" alt="13.png" /><br />
+4.结果<br />
+内容进行了合并<br />
+<img src="14.png" alt="14.png" /></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/git_fetch/" rel="prev" title="GitFetch">
+                  <i class="fa fa-chevron-left"></i> GitFetch
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/GitRevert/" rel="next" title="GitRevert">
+                  GitRevert <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

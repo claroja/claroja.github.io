@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="在需要日志的class中创建logger实例, 使用static和final来修饰, 指定这个class中的所有实例, 使用相同的logger实例. public class Examples &amp;#123;     private static final Logger logger &#x3D;         Logger.getLogger(Examples.class.getName());&#x2F;&#x2F;ge">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaLogger">
+<meta property="og:url" content="https://claroja.github.io/JavaLogger/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="在需要日志的class中创建logger实例, 使用static和final来修饰, 指定这个class中的所有实例, 使用相同的logger实例. public class Examples &amp;#123;     private static final Logger logger &#x3D;         Logger.getLogger(Examples.class.getName());&#x2F;&#x2F;ge">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-26T03:13:29.000Z">
+<meta property="article:modified_time" content="2022-07-04T05:40:02.076Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/JavaLogger/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/JavaLogger/","path":"JavaLogger/","title":"JavaLogger"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaLogger | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#logging-messages"><span class="nav-number">1.</span> <span class="nav-text"> Logging Messages</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#log-levels"><span class="nav-number">2.</span> <span class="nav-text"> Log Levels</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#filters"><span class="nav-number">3.</span> <span class="nav-text"> Filters</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#logrecord"><span class="nav-number">4.</span> <span class="nav-text"> LogRecord</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#handlers"><span class="nav-number">5.</span> <span class="nav-text"> Handlers</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#consolehandler"><span class="nav-number">5.1.</span> <span class="nav-text"> ConsoleHandler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filehandler"><span class="nav-number">5.2.</span> <span class="nav-text"> FileHandler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#streamhandler"><span class="nav-number">5.3.</span> <span class="nav-text"> StreamHandler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sockethandler"><span class="nav-number">5.4.</span> <span class="nav-text"> SocketHandler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#memoryhandler"><span class="nav-number">5.5.</span> <span class="nav-text"> MemoryHandler</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#formatters"><span class="nav-number">6.</span> <span class="nav-text"> Formatters</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#logger-hierarchy"><span class="nav-number">7.</span> <span class="nav-text"> Logger Hierarchy</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">8.</span> <span class="nav-text"> 配置文件</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/JavaLogger/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JavaLogger | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaLogger
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-26 11:13:29" itemprop="dateCreated datePublished" datetime="2021-06-26T11:13:29+08:00">2021-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在需要日志的class中创建<code>logger</code>实例, 使用<code>static</code>和<code>final</code>来修饰, 指定这个class中的所有实例, 使用相同的<code>logger</code>实例.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Examples</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Logger</span> logger <span class="token operator">=</span>
+        <span class="token class-name">Logger</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token class-name">Examples</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//getLogger获得logger实例, 并以该类的类名作为名称</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="logging-messages"><a class="markdownIt-Anchor" href="#logging-messages"></a> Logging Messages</h1>
+<ol>
+<li><code>log()</code></li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Logger</span> logger <span class="token operator">=</span> <span class="token class-name">Logger</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token string">"myLogger"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token class-name">Level</span><span class="token punctuation">.</span>SEVERE<span class="token punctuation">,</span> <span class="token string">"Hello logging"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//第一个参数是等级, 只有符合等级的日志, 才会输出</span>
+logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token class-name">Level</span><span class="token punctuation">.</span>SEVERE<span class="token punctuation">,</span> <span class="token string">"Hello logging: &#123;0&#125; "</span><span class="token punctuation">,</span> <span class="token string">"P1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//添加参数</span>
+logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token class-name">Level</span><span class="token punctuation">.</span>SEVERE<span class="token punctuation">,</span> <span class="token string">"Hello logging: &#123;0&#125;, &#123;1&#125;"</span><span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">&#123;</span><span class="token string">"P1"</span><span class="token punctuation">,</span> <span class="token string">"P2"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token class-name">Level</span><span class="token punctuation">.</span>SEVERE<span class="token punctuation">,</span> <span class="token string">"Hello logging"</span><span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token string">"Error"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li><code>logp()</code><br />
+相比<code>log()</code>多了<code>sourceClass</code>和<code>sourceMethod</code>参数, 可以指明<code>logger</code>实例的位置</li>
+</ol>
+<h1 id="log-levels"><a class="markdownIt-Anchor" href="#log-levels"></a> Log Levels</h1>
+<ul>
+<li>java.util.logging.Level中定义了日志的级别：<br />
+SEVERE（最高值）<br />
+WARNING<br />
+INFO （默认级别）<br />
+CONFIG<br />
+FINE<br />
+FINER<br />
+FINEST（最低值）</li>
+<li>还有两个特殊的级别：<br />
+OFF，可用来关闭日志记录。<br />
+ALL，启用所有消息的日志记录。</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token class-name">Level</span><span class="token punctuation">.</span>SEVERE<span class="token punctuation">,</span> <span class="token string">"A severe message!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>通过设置<code>logger</code>的等级, 可以将等级较低的<code>logger.log()</code>过滤掉</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">logger<span class="token punctuation">.</span><span class="token function">setLevel</span><span class="token punctuation">(</span><span class="token class-name">Level</span><span class="token punctuation">.</span>WARNING<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//所有低于WARNING等级的`logger.log()`将无效</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="filters"><a class="markdownIt-Anchor" href="#filters"></a> Filters</h1>
+<p><code>Filter</code>可以根据日志捕获的信息<code>record</code>过滤日志.</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyFilter</span> <span class="token keyword">implements</span> <span class="token class-name">Filter</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isLoggable</span><span class="token punctuation">(</span><span class="token class-name">LogRecord</span> record<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//通过判断record来决定是否输出</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token class-name">Filter</span> filter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyFilter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+logger1<span class="token punctuation">.</span><span class="token function">setFilter</span><span class="token punctuation">(</span>filter<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="logrecord"><a class="markdownIt-Anchor" href="#logrecord"></a> LogRecord</h1>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token function">getLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">getLoggerName</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">getMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">getParameters</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">getResourceBundle</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">getResourceBundleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">getSequenceNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">getSourceClassName</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">getSourceMethodName</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">getThreadID</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">getThrown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="handlers"><a class="markdownIt-Anchor" href="#handlers"></a> Handlers</h1>
+<p><code>Handler</code>处理日志的输出方向:</p>
+<ul>
+<li>控制台 <code>ConsoleHandler</code></li>
+<li>硬盘 <code>FileHandler</code></li>
+<li>流 <code>StreamHandler</code></li>
+<li>socket <code>SocketHandler</code></li>
+<li>内存 <code>MemoryHandler</code></li>
+</ul>
+<h2 id="consolehandler"><a class="markdownIt-Anchor" href="#consolehandler"></a> ConsoleHandler</h2>
+<p>默认将所有的日志信息写入<code>System.err</code></p>
+<h2 id="filehandler"><a class="markdownIt-Anchor" href="#filehandler"></a> FileHandler</h2>
+<p>将日志写入硬盘的文件, 可以是一个文件, 也可以是多个滚动的文件.<br />
+如果是多个滚动文件, 则每个文件都有大小的限制, 命名也会使用原始名称+序号</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">FileHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">FileHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileHandler</span><span class="token punctuation">(</span><span class="token class-name">String</span> pattern<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">FileHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileHandler</span><span class="token punctuation">(</span><span class="token class-name">String</span> pattern<span class="token punctuation">,</span> <span class="token keyword">boolean</span> append<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">FileHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileHandler</span><span class="token punctuation">(</span><span class="token class-name">String</span> pattern<span class="token punctuation">,</span> <span class="token keyword">int</span> limit<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">FileHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileHandler</span><span class="token punctuation">(</span><span class="token class-name">String</span> pattern<span class="token punctuation">,</span> <span class="token keyword">int</span> limit<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">,</span><span class="token keyword">boolean</span> append<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">FileHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileHandler</span><span class="token punctuation">(</span><span class="token string">"myapp-log.%u.%g.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">FileHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileHandler</span><span class="token punctuation">(</span><span class="token string">"myapp-log.%u.%g.txt"</span><span class="token punctuation">,</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">FileHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileHandler</span><span class="token punctuation">(</span><span class="token string">"myapp-log.%u.%g.txt"</span><span class="token punctuation">,</span><span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1024</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">FileHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileHandler</span><span class="token punctuation">(</span><span class="token string">"myapp-log.%u.%g.txt"</span><span class="token punctuation">,</span><span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1024</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="streamhandler"><a class="markdownIt-Anchor" href="#streamhandler"></a> StreamHandler</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">StreamHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StreamHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">StreamHandler</span> handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StreamHandler</span><span class="token punctuation">(</span>outputStream<span class="token punctuation">,</span> formatter<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="sockethandler"><a class="markdownIt-Anchor" href="#sockethandler"></a> SocketHandler</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">SocketHandler</span> socketHandler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SocketHandler</span><span class="token punctuation">(</span>host<span class="token punctuation">,</span> port<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="memoryhandler"><a class="markdownIt-Anchor" href="#memoryhandler"></a> MemoryHandler</h2>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">MemoryHandler</span> handler <span class="token operator">=</span> <span class="token class-name">MemoryHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">MemoryHandler</span> handler <span class="token operator">=</span> <span class="token class-name">MemoryHandler</span><span class="token punctuation">(</span>targetHandler<span class="token punctuation">,</span> bufferSize<span class="token punctuation">,</span> pushLevel<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="formatters"><a class="markdownIt-Anchor" href="#formatters"></a> Formatters</h1>
+<p><code>Handler</code>使用<code>java.util.logging.Formatter</code>来设置<code>LogRecord</code>的输出格式.<br />
+Java有两个内置的<code>Formatter</code></p>
+<ul>
+<li>SimpleFormatter</li>
+<li>XMLFormatter<br />
+可以通过继承<code>java.util.logging.Formatter</code>来自定义格式:</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyFormatter</span> <span class="token keyword">extends</span> <span class="token class-name">Formatter</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token class-name">LogRecord</span> record<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> record<span class="token punctuation">.</span><span class="token function">getLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> record<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="logger-hierarchy"><a class="markdownIt-Anchor" href="#logger-hierarchy"></a> Logger Hierarchy</h1>
+<p>JUL中Logger之间存在父子关系，JUL在初始化时会创建一个顶层RootLogger作为所有Logger父Logger.</p>
+<ul>
+<li>并父子关系通过路径名称关联</li>
+<li>子可以继承父类的日志级别, 可以使用<code>logger.setUseParentHandlers(false);</code>来关闭</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 日志记录器名称记录了</span>
+<span class="token class-name">Logger</span> logger1 <span class="token operator">=</span> <span class="token class-name">Logger</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token string">"com.claroja.log"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Logger</span> logger2 <span class="token operator">=</span> <span class="token class-name">Logger</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token string">"com.claroja"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>logger1<span class="token punctuation">.</span><span class="token function">getParent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> logger2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 所有日志记录器对象的顶级父元素 class为java.util.logging.LogManager$RootLoggername为""</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"logger2 parent:"</span> <span class="token operator">+</span> logger2<span class="token punctuation">.</span><span class="token function">getParent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"，name："</span> <span class="token operator">+</span>logger2<span class="token punctuation">.</span><span class="token function">getParent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="配置文件"><a class="markdownIt-Anchor" href="#配置文件"></a> 配置文件</h1>
+<p>默认配置文件路径$JAVAHOME\jre\lib\logging.properties</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token class-name">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 读取自定义配置文件</span>
+    <span class="token class-name">InputStream</span> in <span class="token operator">=</span><span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"logging.properties"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 获取日志管理器对象</span>
+    <span class="token class-name">LogManager</span> logManager <span class="token operator">=</span> <span class="token class-name">LogManager</span><span class="token punctuation">.</span><span class="token function">getLogManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 通过日志管理器加载配置文件</span>
+    logManager<span class="token punctuation">.</span><span class="token function">readConfiguration</span><span class="token punctuation">(</span>in<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 自定义日志对象</span>
+    <span class="token class-name">Logger</span> logger <span class="token operator">=</span> <span class="token class-name">Logger</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token string">"com.claroja.Log"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">## RootLogger</span>
+handlers<span class="token operator">=</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>ConsoleHandler <span class="token comment"># 使用的处理器, 可以设置多个</span>
+<span class="token punctuation">.</span>level<span class="token operator">=</span> INFO <span class="token comment"># RootLogger日志等级</span>
+<span class="token comment">## 自定义Logger</span>
+com<span class="token punctuation">.</span>claroja<span class="token punctuation">.</span>Log<span class="token punctuation">.</span>handlers<span class="token operator">=</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>FileHandler <span class="token comment"># 使用的处理器, 可以设置多个</span>
+com<span class="token punctuation">.</span>claroja<span class="token punctuation">.</span>Log<span class="token punctuation">.</span>level<span class="token operator">=</span> INFO <span class="token comment"># 自定义Logger日志等级</span>
+com<span class="token punctuation">.</span>claroja<span class="token punctuation">.</span>Log<span class="token punctuation">.</span>useParentHandlers<span class="token operator">=</span>false <span class="token comment"># 忽略父日志设置</span>
+<span class="token comment">## 控制台处理器</span>
+java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>ConsoleHandler<span class="token punctuation">.</span>level <span class="token operator">=</span> INFO <span class="token comment"># 输出日志级别</span>
+java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>ConsoleHandler<span class="token punctuation">.</span>formatter <span class="token operator">=</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>SimpleFormatter <span class="token comment"># 输出日志格式</span>
+<span class="token comment">## 文件处理器</span>
+java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>FileHandler<span class="token punctuation">.</span>level<span class="token operator">=</span>INFO <span class="token comment"># 输出日志级别</span>
+java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>FileHandler<span class="token punctuation">.</span>formatter <span class="token operator">=</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>SimpleFormatter <span class="token comment"># 输出日志格式</span>
+java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>FileHandler<span class="token punctuation">.</span>pattern <span class="token operator">=</span> <span class="token operator">/</span>java<span class="token operator">%</span>u<span class="token punctuation">.</span>log <span class="token comment"># 输出日志文件路径</span>
+java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>FileHandler<span class="token punctuation">.</span>limit <span class="token operator">=</span> <span class="token number">50000</span> <span class="token comment"># 输出日志文件限制大小（50000字节）</span>
+java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>FileHandler<span class="token punctuation">.</span>count <span class="token operator">=</span> <span class="token number">10</span> <span class="token comment"># 输出日志文件限制个数</span>
+java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>FileHandler<span class="token punctuation">.</span>append<span class="token operator">=</span>true <span class="token comment"># 输出日志文件 是否是追加</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-logging/logger.html">http://tutorials.jenkov.com/java-logging/logger.html</a><br />
+<a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-logging/logger-hierarchy.html">http://tutorials.jenkov.com/java-logging/logger-hierarchy.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/docker%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C/" rel="prev" title="docker基础操作">
+                  <i class="fa fa-chevron-left"></i> docker基础操作
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/JWT/" rel="next" title="JWT">
+                  JWT <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>
