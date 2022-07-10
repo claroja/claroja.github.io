@@ -4,7 +4,23 @@ toc: true
 date: 2021-11-26 22:03:54
 tags:
 ---
+
+# 基础
+```python
+torch.cuda.is_available()  # GPU是否可用
+torch.cuda.device_count()  # 查看有几个GPU, 后续的device名称可以指定第几块GPU, 比如 tensor.to("cuda:0")
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+
+tensor.to(dev)
+```
+
+```sh
+nvidia-smi # 查看GPU的使用
+watch -n 10 nvidia-smi # 定时查看
+```
+
 # CPU和GPU交换tensor
+
 `pytorch`中的`Tensor`和`nn.Module`(`layer`,`loss function`等)分为`CPU`和`GPU`两个版本. 都带有`.to()`和`.cuda()`方法.
 
 - `tensor.cuda()`会拷贝`CPU`上的数据到`GPU`上, 并返回(之前`CPU`上的`tensor`不变).
@@ -16,6 +32,7 @@ b = a.cuda(0)  # 将CPU上a的数据拷贝到b上, 此时a在CPU上, b在GPU上
 a.is_cuda  # False
 b.is_cuda  # True
 ```
+
 - `nn.module.cuda()`则会剪切`CPU`上的数据到`GPU`上, 并返回自己(之前`CPU`上的`tensor`没了), 所以`module = module.cuda()`和`module.cuda()`所起的作用是一致的.
 
 ```python
@@ -24,12 +41,11 @@ module = nn.Linear(3, 4)
 module.cuda()
 module.weight.is_cuda # True
 ```
+
 本质是将`nn.Module`下所有的`parameter`转移到`GPU`(`parameter`本质是`tensor`).
 
-
-
-
 # 转换方法
+
 ```python
 a = np.random.randn(1, 1, 2, 3)
 
@@ -62,13 +78,11 @@ y  = torch.rand([3,3], requires_grad=True, device='cuda').
 y_ = y.cpu().detach().numpy()
 ```
 
-
-
-
-
 # 应用
 ## 在`DataLoader`取出时, 转到`GPU`
+
 这个是主流的方法
+
 ```python
 import torch.utils.data
 Data = torch.tensor([[1, 2], [3, 4],[5, 6], [7, 8]])
@@ -88,7 +102,9 @@ for step, (x,y) in enumerate(torch_dataloader):
 ```
 
 ## 在创建数据时就转到`GPU`
+
 在这种情况下, `DataLoader`不能开启多进程, 不建议使用, 因为将batch传给GPU并不是`DataLoader`的作用.
+
 ```python
 import torch.utils.data
 
@@ -132,7 +148,9 @@ if torch.cuda.device_count() > 1:#判断是不是有多个GPU
 
 
 ## sava 与 load
+
 1. GPU上保存, CPU上加载
+
 ```python
 model.to("cuda:0")
 torch.save(model.state_dict(), PATH) # 保存
@@ -140,6 +158,7 @@ model.load_state_dict(torch.load(PATH, map_location="cpu"))
 ```
 
 2. CPU上保存, GPU上加载
+
 ```python
 model.to("cpu")
 torch.save(model.state_dict(), PATH) # 保存
@@ -165,9 +184,6 @@ for k, v in state_dict.items():
 # 加载参数
 model.load_state_dict(new_state_dict)
 ```
-
-
-
 
 参考:
 https://stackoverflow.com/questions/53331247/pytorch-0-4-0-there-are-three-ways-to-create-tensors-on-cuda-device-is-there-s

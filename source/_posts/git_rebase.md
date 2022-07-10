@@ -1,6 +1,6 @@
 
-git rebase: Move the base of a branch
-更改当前分支的根基
+git rebase: 更改当前分支的根基(Move the base of a branch)
+
 
 
 # 命令
@@ -13,8 +13,12 @@ git rebase: Move the base of a branch
 
 
 
+
 # 应用
 ## 替换`merge`
+
+`git rebase branch`
+
 ![1.png](1.png)
 
 
@@ -89,6 +93,22 @@ git rebase: Move the base of a branch
 
 `git reabse --continue --abort`
 在使用-i交互模式时,处理conflict会中断,要使用--continue来恢复交互模式
+
+
+
+# 命令
+
+```sh
+pick：保留该commit（缩写:p）
+reword：保留该commit，但我需要修改该commit的注释（缩写:r）
+edit：保留该commit, 但我要停下来修改该提交(不仅仅修改注释)（缩写:e）
+squash：将该commit和前一个commit合并（缩写:s）
+fixup：将该commit和前一个commit合并，但我不要保留该提交的注释信息（缩写:f）
+exec：执行shell命令（缩写:x）
+drop：我要丢弃该commit（缩写:d）
+```
+
+
 
 https://git-rebase.io/
 https://www.educative.io/answers/what-is-the-git-rebase-branch-name-command

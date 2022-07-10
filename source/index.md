@@ -17,6 +17,22 @@ toc: true
 **nlp**|[statistic](/nlp_statistic/)|[word2vector](/nlp_word2vector/)|[seq2seq](/nlp_seq2seq/)|[attention](/nlp_attention/)|[敏感词过滤](/敏感词过滤/)
 **结构与算法**|[python_treelib](/python_treelib/)
 
+
+[alg_evalue](/alg_evalue/)
+[alg_rec](/alg_rec/)
+[alg_audio_process](/alg_audio_process/)
+
+[transformers_pipeline](/transformers_pipeline/)
+[transformers_autoClasses](/transformers_autoClasses/)
+[transformers_autoModel](/transformers_autoModel/)
+[transformers_datasets](/transformers_datasets/)
+[transformers_evaluate](/transformers_evaluate/)
+[transformers_fineTune](/transformers_fineTune/)
+[transformers_saveModel](/transformers_saveModel/)
+[transformers_task_textClassification](/transformers_task_textClassification/)
+[transformers_task_tokenClassification](/transformers_task_tokenClassification/)
+[transformers_tokenizer](/transformers_tokenizer/)
+
 ## 工具
 1. 基础工具
 
@@ -28,18 +44,13 @@ toc: true
 ↑|[pandas_groupby](/pandas_groupby/)|[pandas_concate](/pandas_concate/)|[pandas_merge](/pandas_merge/)
 ↑|[pandas_string](/pandas_string/)|[pandas_datetime](/pandas_datetime/)|[pandas_index](/pandas_index/)
 [**matplotlib**](/matplotlib/)|[plot](/matplolib_plot/)|[subplot](/matplotlib_subplot/)|[hist](/matplotlib_hist/)
-**scikit**|[processing](/scikit_processing/)|[kstest](/statistic_kstest/)
+**scikit**|[processing](/scikit_processing/)|[kstest](/statistic_kstest/)|[train_test_split](/scikit_train_test_split/)
 **贝叶斯网络**|[理论知识](/贝叶斯网络理论知识/)|[pgmpy_MontyHallProblem](/pgmpy_MontyHallProblem/)|[pgmpy创建网络](/pgmpy创建网络/)|[pgmpy推理](/pgmpy推理/)|[pgmpy模型训练](/pgmpy模型训练/)|[pgmpyEg](/pgmpyEg/)
 [模型评估](/模型评估/)|
 
-[scikit_train_test_split](/scikit_train_test_split/)
 
-
-
-
-
-
-
+[scipy_csr_matrix](/scipy_csr_matrix/)
+[pandas_pivot](/pandas_pivot/)
 
 
 2. **Pytorch**
@@ -186,13 +197,12 @@ toc: true
 主题|一|二|三|四|五
 -- |--|--|--|--|--
 **安装与配置**|[Git安装](/Git安装/)|
-[**Git命令**](/git/)|[Clone](/GitClone/)|[fetch](/git_fetch/)|[Rebase](/GitRebase/)|[Revert](/GitRevert/)|[stash](/git_stash/)
+[**Git命令**](/git/)|[clone](/git_clone/)|[fetch](/git_fetch/)|[git_rebase](/git_rebase/)|[revert](/git_revert/)|[stash](/git_stash/)
 **Git原理**|[对象](/Git原理-对象/)|[引用](/Git原理-引用/)|[打包](/Git原理-打包/)
 **Git实战**|[git多人协作](/git多人协作/)
 **GitLab**|[CICD](/gitlab_CICD/)
 [git_branch](/git_branch/)
 [git_pull](/git_pull/)
-[git_rebase](/git_rebase/)
 [git_HEAD](/git_HEAD/)
 [git_commit](/git_commit/)
 
@@ -253,8 +263,6 @@ toc: true
 [audition](/audition/)
 [GuitarAndVocals](/GuitarAndVocals/)
 
-
-
 # 其他未归类
 
 [aws](/aws/)
@@ -263,17 +271,9 @@ toc: true
 [算法复杂度](/算法复杂度/)
 [LaTex](/LaTex/)
 
-
-
 [oscillator](/oscillator/)
 [vim](/vim/)
-
-
 [redux](/redux/)
-
 
 # 管理
 [management](/management/)
-
-
-
