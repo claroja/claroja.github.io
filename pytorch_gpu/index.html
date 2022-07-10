@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="CPU和GPU交换tensor pytorch中的Tensor和nn.Module(layer,loss function等)分为CPU和GPU两个版本. 都带有.to()和.cuda()方法.  tensor.cuda()会拷贝CPU上的数据到GPU上, 并返回(之前CPU上的tensor不变).  import torch a &#x3D; torch.Tensor(3, 4) b &#x3D; a.cuda(">
+    <meta name="description" content="基础 torch.cuda.is_available()  # GPU是否可用 torch.cuda.device_count()  # 查看有几个GPU, 后续的device名称可以指定第几块GPU, 比如 tensor.to(&quot;cuda:0&quot;) device &#x3D; torch.device(&quot;cuda&quot;) if torch.cuda.is_available() else torch.devi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pytorch_gpu">
 <meta property="og:url" content="https://claroja.github.io/pytorch_gpu/index.html">
 <meta property="og:site_name" content="Claroja">
-<meta property="og:description" content="CPU和GPU交换tensor pytorch中的Tensor和nn.Module(layer,loss function等)分为CPU和GPU两个版本. 都带有.to()和.cuda()方法.  tensor.cuda()会拷贝CPU上的数据到GPU上, 并返回(之前CPU上的tensor不变).  import torch a &#x3D; torch.Tensor(3, 4) b &#x3D; a.cuda(">
+<meta property="og:description" content="基础 torch.cuda.is_available()  # GPU是否可用 torch.cuda.device_count()  # 查看有几个GPU, 后续的device名称可以指定第几块GPU, 比如 tensor.to(&quot;cuda:0&quot;) device &#x3D; torch.device(&quot;cuda&quot;) if torch.cuda.is_available() else torch.devi">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-26T14:03:54.000Z">
-<meta property="article:modified_time" content="2022-07-04T05:40:02.478Z">
+<meta property="article:modified_time" content="2022-07-08T07:50:48.718Z">
 <meta property="article:author" content="Claroja">
 <meta name="twitter:card" content="summary">
 
@@ -115,7 +115,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cpu%E5%92%8Cgpu%E4%BA%A4%E6%8D%A2tensor"><span class="nav-number">1.</span> <span class="nav-text"> CPU和GPU交换tensor</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text"> 转换方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text"> 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8dataloader%E5%8F%96%E5%87%BA%E6%97%B6-%E8%BD%AC%E5%88%B0gpu"><span class="nav-number">3.1.</span> <span class="nav-text"> 在DataLoader取出时, 转到GPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E6%97%B6%E5%B0%B1%E8%BD%AC%E5%88%B0gpu"><span class="nav-number">3.2.</span> <span class="nav-text"> 在创建数据时就转到GPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9Agpu%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97"><span class="nav-number">3.3.</span> <span class="nav-text"> 多GPU并行运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E6%9C%BA%E5%A4%9A%E5%8D%A1"><span class="nav-number">3.3.1.</span> <span class="nav-text"> 单机多卡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E6%9C%BA%E5%A4%9A%E5%8D%A1"><span class="nav-number">3.3.2.</span> <span class="nav-text"> 多机多卡</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sava-%E4%B8%8E-load"><span class="nav-number">3.4.</span> <span class="nav-text"> sava 与 load</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text"> 基础</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cpu%E5%92%8Cgpu%E4%BA%A4%E6%8D%A2tensor"><span class="nav-number">2.</span> <span class="nav-text"> CPU和GPU交换tensor</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text"> 转换方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text"> 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8dataloader%E5%8F%96%E5%87%BA%E6%97%B6-%E8%BD%AC%E5%88%B0gpu"><span class="nav-number">4.1.</span> <span class="nav-text"> 在DataLoader取出时, 转到GPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E6%97%B6%E5%B0%B1%E8%BD%AC%E5%88%B0gpu"><span class="nav-number">4.2.</span> <span class="nav-text"> 在创建数据时就转到GPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9Agpu%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97"><span class="nav-number">4.3.</span> <span class="nav-text"> 多GPU并行运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E6%9C%BA%E5%A4%9A%E5%8D%A1"><span class="nav-number">4.3.1.</span> <span class="nav-text"> 单机多卡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E6%9C%BA%E5%A4%9A%E5%8D%A1"><span class="nav-number">4.3.2.</span> <span class="nav-text"> 多机多卡</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sava-%E4%B8%8E-load"><span class="nav-number">4.4.</span> <span class="nav-text"> sava 与 load</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -128,7 +128,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-count">456</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -219,7 +219,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+      <time title="修改时间：2022-07-08 15:50:48" itemprop="dateModified" datetime="2022-07-08T15:50:48+08:00">2022-07-08</time>
     </span>
 
   
@@ -232,7 +232,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="cpu和gpu交换tensor"><a class="markdownIt-Anchor" href="#cpu和gpu交换tensor"></a> CPU和GPU交换tensor</h1>
+        <h1 id="基础"><a class="markdownIt-Anchor" href="#基础"></a> 基础</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>is_available<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># GPU是否可用</span>
+torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>device_count<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 查看有几个GPU, 后续的device名称可以指定第几块GPU, 比如 tensor.to("cuda:0")</span>
+device <span class="token operator">=</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">"cuda"</span><span class="token punctuation">)</span> <span class="token keyword">if</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>is_available<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">else</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">"cpu"</span><span class="token punctuation">)</span>
+
+tensor<span class="token punctuation">.</span>to<span class="token punctuation">(</span>dev<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">nvidia-smi # 查看GPU的使用
+watch -n 10 nvidia-smi # 定时查看<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="cpu和gpu交换tensor"><a class="markdownIt-Anchor" href="#cpu和gpu交换tensor"></a> CPU和GPU交换tensor</h1>
 <p><code>pytorch</code>中的<code>Tensor</code>和<code>nn.Module</code>(<code>layer</code>,<code>loss function</code>等)分为<code>CPU</code>和<code>GPU</code>两个版本. 都带有<code>.to()</code>和<code>.cuda()</code>方法.</p>
 <ul>
 <li><code>tensor.cuda()</code>会拷贝<code>CPU</code>上的数据到<code>GPU</code>上, 并返回(之前<code>CPU</code>上的<code>tensor</code>不变).</li>
@@ -389,13 +397,13 @@ model<span class="token punctuation">.</span>load_state_dict<span class="token p
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/pytorch_dataset/" rel="prev" title="pytorch_dataset">
-                  <i class="fa fa-chevron-left"></i> pytorch_dataset
+                <a href="/pytorch_nn_loss/" rel="prev" title="pytorch_nn_loss">
+                  <i class="fa fa-chevron-left"></i> pytorch_nn_loss
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/pytorch_dataloader/" rel="next" title="pytorch_dataloader">
-                  pytorch_dataloader <i class="fa fa-chevron-right"></i>
+                <a href="/pytorch_nn_linear/" rel="next" title="pytorch_nn_linear">
+                  pytorch_nn_linear <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

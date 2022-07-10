@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="推荐系统  原始数据   文章表，记录了文章的基本信息，只取目前还在分享的文章，既eventType&#x3D;&#x3D;CONTENT SHARED articles_df:  timestamp：文章发表的时间 eventType：共两个分类，CONTENT SHARED（文章正在被分享） CONTENT REMOVED（文章已经被删除） contentId：文章的Id authorPersonId：作者的Id">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claroja">
+<meta property="og:url" content="https://claroja.github.io/alg_rec/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="推荐系统  原始数据   文章表，记录了文章的基本信息，只取目前还在分享的文章，既eventType&#x3D;&#x3D;CONTENT SHARED articles_df:  timestamp：文章发表的时间 eventType：共两个分类，CONTENT SHARED（文章正在被分享） CONTENT REMOVED（文章已经被删除） contentId：文章的Id authorPersonId：作者的Id">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://claroja.github.io/alg_rec/1.png">
+<meta property="article:published_time" content="2022-07-05T09:00:01.848Z">
+<meta property="article:modified_time" content="2022-07-05T09:25:45.082Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://claroja.github.io/alg_rec/1.png">
+
+
+<link rel="canonical" href="https://claroja.github.io/alg_rec/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/alg_rec/","path":"alg_rec/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE"><span class="nav-number">1.</span> <span class="nav-text"> 原始数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E8%A1%8C%E4%B8%BA%E6%95%B0%E5%AD%A6%E8%BD%AC%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text"> 用户行为数学转化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0"><span class="nav-number">3.</span> <span class="nav-text"> 模型评估</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text"> 模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#popularity-model"><span class="nav-number">4.1.</span> <span class="nav-text"> Popularity model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#content-based-filtering-model"><span class="nav-number">4.2.</span> <span class="nav-text"> Content-Based Filtering model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#colaboratory-filter-model"><span class="nav-number">4.3.</span> <span class="nav-text"> colaboratory filter model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hybridization-model"><span class="nav-number">4.4.</span> <span class="nav-text"> hybridization model</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">456</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/alg_rec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-05 17:00:01 / 修改时间：17:25:45" itemprop="dateCreated datePublished" datetime="2022-07-05T17:00:01+08:00">2022-07-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>推荐系统</p>
+<h1 id="原始数据"><a class="markdownIt-Anchor" href="#原始数据"></a> 原始数据</h1>
+<ol>
+<li>
+<p>文章表，记录了文章的基本信息，只取目前还在分享的文章，既<code>eventType==CONTENT SHARED</code><br />
+articles_df:</p>
+<ul>
+<li>timestamp：文章发表的时间</li>
+<li>eventType：共两个分类，CONTENT SHARED（文章正在被分享） CONTENT REMOVED（文章已经被删除）</li>
+<li>contentId：文章的Id</li>
+<li>authorPersonId：作者的Id</li>
+<li>authorSessionId：作者回话Id</li>
+<li>authorUserAgent：作者单位</li>
+<li>authorRegion：作者地区</li>
+<li>authorCountry：作者国家</li>
+<li>contentType：共 个份额里，HTML（网页）</li>
+<li>url：文章的链接</li>
+<li>title：文章标题</li>
+<li>text：文章内容</li>
+<li>lang：文章语言</li>
+</ul>
+</li>
+<li>
+<p>交互表，记录了用户与文章的交互信息<br />
+interactions_df：交互表</p>
+<ul>
+<li>timestamp：交互时间</li>
+<li>eventType：公有5分类，VIEW（查看）LIKE（喜欢）COMMENT CREATED（评论）BOOKMARK（收藏）FOLLOW（关注）</li>
+<li>contentId：文章的Id</li>
+<li>personId：用户的Id</li>
+<li>sessionId：回话Id</li>
+<li>userAgent：客户端类型</li>
+<li>userRegion：用户地区</li>
+<li>userCountry：用户国家</li>
+</ul>
+</li>
+</ol>
+<h1 id="用户行为数学转化"><a class="markdownIt-Anchor" href="#用户行为数学转化"></a> 用户行为数学转化</h1>
+<p>给<code>eventType</code>进行权重定义，这就是一个自然问题转换为数学问题的过程。不同的event有不同的评分，我们认为评论是的用户对文章的最大认可。</p>
+<pre class="line-numbers language-none"><code class="language-none">&#123;
+   &#39;VIEW&#39;: 1.0,
+   &#39;LIKE&#39;: 2.0, 
+   &#39;BOOKMARK&#39;: 2.5, 
+   &#39;FOLLOW&#39;: 3.0,
+   &#39;COMMENT CREATED&#39;: 4.0,  
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="模型评估"><a class="markdownIt-Anchor" href="#模型评估"></a> 模型评估</h1>
+<p>在测试集取用户交互的一个item, 放在随机抽取的100个用户没有交互的item中, 然后进行排序. 看测试集这个item在第几位.</p>
+<ol>
+<li>遍历每一个user<br />
+2. 遍历测试集中user交互的每个item<br />
+3.1 抽取100个该user没有交互的item(这里假设没有交互的item就是和user不相关的，因为user可能仅仅是因为没有注意的该item)<br />
+3.2 从1次交互和100个未交互的item中，让模型产出一个推荐的排序<br />
+3.3 从推荐的排序中计算Top-N accuracy metrics</li>
+<li>汇总global Top-N accuracy metrics</li>
+</ol>
+<p>Top-N accuracy 衡量的是交互的item命中top N item的概率</p>
+<h1 id="模型"><a class="markdownIt-Anchor" href="#模型"></a> 模型</h1>
+<h2 id="popularity-model"><a class="markdownIt-Anchor" href="#popularity-model"></a> Popularity model</h2>
+<p>计算最受欢迎的item</p>
+<h2 id="content-based-filtering-model"><a class="markdownIt-Anchor" href="#content-based-filtering-model"></a> Content-Based Filtering model</h2>
+<p>用一个用所有的item的profile的平均数, 作为该用户的profile. 然后用该profile和所有item比较距离, 排序.</p>
+<h2 id="colaboratory-filter-model"><a class="markdownIt-Anchor" href="#colaboratory-filter-model"></a> colaboratory filter model</h2>
+<p>svd 矩阵分解</p>
+<h2 id="hybridization-model"><a class="markdownIt-Anchor" href="#hybridization-model"></a> hybridization model</h2>
+<p>就是将不同的排序给权重, 然后融合, 给出综合的排序</p>
+<p>kaggle里面代码的流程图<br />
+<img src="1.png" alt="1.png" /></p>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://www.kaggle.com/code/gspmoreira/recommender-systems-in-python-101/notebook">https://www.kaggle.com/code/gspmoreira/recommender-systems-in-python-101/notebook</a><br />
+<a target="_blank" rel="noopener" href="https://www.cxymm.net/article/qq_45531594/108899674">https://www.cxymm.net/article/qq_45531594/108899674</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/alg_evalue/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/alg_audio_process/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

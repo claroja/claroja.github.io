@@ -123,7 +123,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-count">456</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___setattr__/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___del__/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -195,7 +195,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/python___setattr__/" class="post-title-link" itemprop="url">python___setattr__</a>
+          <a href="/python___del__/" class="post-title-link" itemprop="url">python___del__</a>
         </h2>
 
         <div class="post-meta-container">
@@ -226,41 +226,335 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>当给对象成员进行赋值时(包括添加和修改), 比如<code>__init__()</code>中赋值, <code>object.attr</code>赋值, 或直接调用<code>setattr()</code>方法<br />
-作用: 可以限制和管理成员的添加和修改操作<br />
-参数: 1. self 2. 设置的成员名 3.设置的成员值<br />
-返回值: 无<br />
-注意: 使用用父类<code>object</code>来调用<code>__setattr__()</code>,来避免死循环</p>
+          <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__del__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"del"</span><span class="token punctuation">)</span>
+
+wang <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 创建实例</span>
+<span class="token keyword">del</span> wang<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___delete__/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python___delete__/" class="post-title-link" itemprop="url">python___delete__</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>当一个类中包含了魔术方法<code>__get__()</code>,<code>__set__()</code>,<code>__delete__()</code>任何一个时, 这个类就称为描述符类.<br />
+作用:</p>
+<ol>
+<li>对一个类中的某个成员进行一个详细的管理操作(获取,赋值,删除)</li>
+<li>类似于代理的思想</li>
+</ol>
+<p>下例中, <code>PersionName</code>对应了<code>Person</code>实例的一个属性, 当我们访问<code>Person</code>的属性<code>name</code>时, 是调用了<code>PersonName</code>中的三个描述符方法.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">PersonName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    __name <span class="token operator">=</span> <span class="token string">"abc"</span>
+
+    <span class="token keyword">def</span> <span class="token function">__get__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> instance<span class="token punctuation">,</span> owner<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>instance<span class="token punctuation">,</span>owner<span class="token punctuation">)</span>  <span class="token comment"># &lt;__main__.PersonName object>, &lt;__main__.Person object, &lt;class '__main__.Person'>, 第一个是PersonName类, 第二个Person实例, 第三个是Person类</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__name
+
+    <span class="token keyword">def</span> <span class="token function">__set__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> instance<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>instance<span class="token punctuation">,</span>value<span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">__delete__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> instance<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>instance<span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    name <span class="token operator">=</span> PersonName<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+
+person <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>person<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___delattr__/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python___delattr__/" class="post-title-link" itemprop="url">python___delattr__</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>当对象成员删除时触发<br />
+作用: 可以限制成员对象的删除, 还可以删除不存在成员时, 防止误报<br />
+注意: <code>__delattr__()</code>方法中, 不能直接删除对象, 会触发递归</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">:</span>
         self<span class="token punctuation">.</span>name <span class="token operator">=</span> name
 
-    <span class="token keyword">def</span> <span class="token function">__setattr__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"setting:&#123;&#125;,  with:&#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> <span class="token builtin">object</span><span class="token punctuation">.</span>__setattr__<span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">,</span> value<span class="token punctuation">)</span>  <span class="token comment"># 因为子类重写父类方法，所以要返回父类该方法完成在__dict__的注册，父类的__setattr__本质上是完成了·self.__dict__[key] = value·</span>
+    <span class="token keyword">def</span> <span class="token function">__delattr__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"del:&#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-person <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token string">"wang"</span><span class="token punctuation">)</span>  <span class="token comment"># setting:name,  with:wang, 直接使用`__init__()`来赋值也会触发</span>
-person<span class="token punctuation">.</span>__dict__  <span class="token comment"># &#123;'name': 'wang'&#125;</span>
 
-person<span class="token punctuation">.</span>age<span class="token operator">=</span><span class="token number">13</span>  <span class="token comment"># setting:age,  with:13, 直接赋值也会触发</span>
-person<span class="token punctuation">.</span>__dict__  <span class="token comment"># &#123;'name': 'wang', 'age': 13&#125;</span>
+person <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token string">"wang"</span><span class="token punctuation">)</span>
+<span class="token keyword">del</span> person<span class="token punctuation">.</span>name  <span class="token comment"># del:name</span>
+<span class="token builtin">delattr</span><span class="token punctuation">(</span>person<span class="token punctuation">,</span><span class="token string">"name"</span><span class="token punctuation">)</span>  <span class="token comment"># del:name</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<span class="token builtin">setattr</span><span class="token punctuation">(</span>person<span class="token punctuation">,</span><span class="token string">"gender"</span><span class="token punctuation">,</span><span class="token string">"man"</span><span class="token punctuation">)</span>  <span class="token comment"># setting:gender,  with:man, 使用setarrt方法也会触发</span>
-person<span class="token punctuation">.</span>__dict__  <span class="token comment"># &#123;'name': 'wang', 'age': 13, 'gender': 'man'&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>应用:</p>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___dict__/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python___dict__/" class="post-title-link" itemprop="url">python___dict__</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><code>__dict__</code>用来查看类或对象的成员</p>
 <ol>
-<li>将字典转为类属性</li>
+<li><code>类</code>的<code>__dict__</code>保存了普通方法,类方法,静态方法,全局变量,内置方法和属性</li>
+<li><code>对象</code>的<code>__dict__</code>保存了<code>__init__()</code>方法里的属性,既<code>self.xx</code></li>
 </ol>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    a <span class="token operator">=</span> <span class="token number">0</span>
+    b <span class="token operator">=</span> <span class="token number">3</span>
+
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>values <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-            <span class="token string">'x'</span><span class="token punctuation">:</span><span class="token string">'wang'</span><span class="token punctuation">,</span>
-            <span class="token string">'y'</span><span class="token punctuation">:</span><span class="token string">'wei'</span><span class="token punctuation">,</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">for</span> k<span class="token punctuation">,</span>v <span class="token keyword">in</span> self<span class="token punctuation">.</span>values<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token builtin">setattr</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>k<span class="token punctuation">,</span>v<span class="token punctuation">)</span>
-obj <span class="token operator">=</span> Foo<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        self<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">2</span>
+        self<span class="token punctuation">.</span>c <span class="token operator">=</span> <span class="token number">1</span>
+
+    <span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'normal func.'</span><span class="token punctuation">)</span>
+
+    <span class="token decorator annotation punctuation">@staticmethod</span>
+    <span class="token keyword">def</span> <span class="token function">static_test</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'static func.'</span><span class="token punctuation">)</span>
+
+    <span class="token decorator annotation punctuation">@classmethod</span>
+    <span class="token keyword">def</span> <span class="token function">class_test</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'calss func.'</span><span class="token punctuation">)</span>
+
+obj <span class="token operator">=</span> A<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span> <span class="token punctuation">(</span>A<span class="token punctuation">.</span>__dict__<span class="token punctuation">)</span> <span class="token comment"># &#123;'__module__': '__main__', '__doc__': '\n    Class A.\n    ', 'a': 0, 'b': 3, '__init__': &lt;function A.__init__ at 0x0000022BAC955730>, 'test': &lt;function A.test at 0x0000022BAC9557B8>, 'static_test': &lt;staticmethod object at 0x0000022BAC953C88>, 'class_test': &lt;classmethod object at 0x0000022BAC953CF8>, '__dict__': &lt;attribute '__dict__' of 'A' objects>, '__weakref__': &lt;attribute '__weakref__' of 'A' objects>&#125;</span>
+
+<span class="token keyword">print</span> <span class="token punctuation">(</span>obj<span class="token punctuation">.</span>__dict__<span class="token punctuation">)</span> <span class="token comment"># &#123;'a': 2, 'c': 1&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="继承中的__dict__"><a class="markdownIt-Anchor" href="#继承中的__dict__"></a> 继承中的<code>__dict__</code></h1>
+<p>1)每个类的类变量都放在自己的<code>__dict__</code>,即使被重写<br />
+2)每个类实例化的对象的<code>__dict__</code>是相同的</p>
+<h1 id="__slots__"><a class="markdownIt-Anchor" href="#__slots__"></a> <code>__slots__</code></h1>
+<p>当使用了<code>__slots__</code>对属性进行限定后, 将不会有<code>__dict__</code>属性</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    __slots__ <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'bar'</span><span class="token punctuation">,</span><span class="token punctuation">)</span>
+    bar <span class="token operator">=</span> <span class="token string">'spam'</span>
+
+Foo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__dict__
+<span class="token comment">#Traceback (most recent call last):</span>
+<span class="token comment">#  File "&lt;stdin>", line 1, in &lt;module></span>
+<span class="token comment">#AttributeError: 'Foo' object has no attribute '__dict__'</span>
+<span class="token builtin">dir</span><span class="token punctuation">(</span>Foo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">#['__class__', '__delattr__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__slots__', '__str__', '__subclasshook__', 'bar']</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="__dir__"><a class="markdownIt-Anchor" href="#__dir__"></a> <code>__dir__()</code></h1>
+<p>python的实例和类都有<code>__dir__()</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    bar <span class="token operator">=</span> <span class="token string">'spam'</span>
+
+Foo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__dict__ <span class="token comment"># &#123;&#125;</span>
+Foo<span class="token punctuation">.</span>__dict__<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># [('__dict__', &lt;attribute '__dict__' of 'Foo' objects>), ('__weakref__', &lt;attribute '__weakref__' of 'Foo' objects>), ('__module__', '__main__'), ('bar', 'spam'), ('__doc__', None)]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>__dir__</code>包含了类的<code>__dict__</code>的属性和实例的<code>__dict__</code>, 以及所有祖先类的属性<br />
+总结:</p>
+<ul>
+<li><code>__dir__</code>会搜集实例的<code>__dict__</code>(可能不存在), 还会搜集它的类, 它的祖先类, 然后返回所有可用的属性和方法</li>
+<li><code>__dict__</code>只会返回实例的本地的属性和方法(当然类也本质也是一种实例)</li>
+</ul>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://www.cnblogs.com/alvin2010/p/9102344.html">https://www.cnblogs.com/alvin2010/p/9102344.html</a><br />
+<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/14361256/whats-the-biggest-difference-between-dir-and-dict-in-python">https://stackoverflow.com/questions/14361256/whats-the-biggest-difference-between-dir-and-dict-in-python</a></p>
 
       
     </div>
@@ -287,7 +581,7 @@ obj <span class="token operator">=</span> Foo<span class="token punctuation">(</
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___slots__/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___dir__/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -305,7 +599,7 @@ obj <span class="token operator">=</span> Foo<span class="token punctuation">(</
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/python___slots__/" class="post-title-link" itemprop="url">python___slots__</a>
+          <a href="/python___dir__/" class="post-title-link" itemprop="url">python___dir__</a>
         </h2>
 
         <div class="post-meta-container">
@@ -336,15 +630,20 @@ obj <span class="token operator">=</span> Foo<span class="token punctuation">(</
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>限制类的属性,只能在<code>__slots__</code>中选择</p>
-<p>slots可以限制class实例添加的属性，如果实例中添加了非slots中不含有的属性，会报错，这样就可以限制动态语言，修改代码的行为<br />
-<font color=red>动态语言：可以在运行的过程中，修改代码;静态语言：编译时已经确定好代码，运行过程中不能修改</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Animal</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    __slots__ <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span>
-a<span class="token operator">=</span>Animal<span class="token punctuation">(</span><span class="token punctuation">)</span>
-a<span class="token punctuation">.</span>name<span class="token operator">=</span><span class="token string">"cat"</span>
-a<span class="token punctuation">.</span>age<span class="token operator">=</span><span class="token number">20</span>
-AttributeError<span class="token punctuation">:</span> Animal instance has no attribute <span class="token string">'name'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+          <p>python的实例和类都有<code>__dir__()</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    bar <span class="token operator">=</span> <span class="token string">'spam'</span>
+
+Foo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__dict__ <span class="token comment"># &#123;&#125;</span>
+Foo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__dir__<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># ['__module__', 'bar', '__dict__', '__weakref__', '__doc__', '__repr__', '__hash__', '__str__', '__getattribute__', '__setattr__', '__delattr__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__init__', '__new__', '__reduce_ex__', '__reduce__', '__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', '__class__']</span>
+Foo<span class="token punctuation">.</span>__dict__<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># [('__dict__', &lt;attribute '__dict__' of 'Foo' objects>), ('__weakref__', &lt;attribute '__weakref__' of 'Foo' objects>), ('__module__', '__main__'), ('bar', 'spam'), ('__doc__', None)]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>__dir__</code>包含了类的<code>__dict__</code>的属性和实例的<code>__dict__</code>, 以及所有祖先类的属性<br />
+总结:</p>
+<ul>
+<li><code>__dir__</code>会搜集实例的<code>__dict__</code>(可能不存在), 还会搜集它的类, 它的祖先类, 然后返回所有可用的属性和方法</li>
+<li><code>__dict__</code>只会返回实例的本地的属性和方法(当然类也本质也是一种实例)</li>
+</ul>
+
       
     </div>
 
@@ -370,7 +669,7 @@ AttributeError<span class="token punctuation">:</span> Animal instance has no at
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___str__/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___get__/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -388,7 +687,7 @@ AttributeError<span class="token punctuation">:</span> Animal instance has no at
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/python___str__/" class="post-title-link" itemprop="url">python___str__</a>
+          <a href="/python___get__/" class="post-title-link" itemprop="url">python___get__</a>
         </h2>
 
         <div class="post-meta-container">
@@ -419,16 +718,32 @@ AttributeError<span class="token punctuation">:</span> Animal instance has no at
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><code>__str__(self)</code>可以来控制<code>print()</code>和<code>str()</code>方法的返回</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+          <p>当一个类中包含了魔术方法<code>__get__()</code>,<code>__set__()</code>,<code>__delete__()</code>任何一个时, 这个类就称为描述符类.<br />
+作用:</p>
+<ol>
+<li>对一个类中的某个成员进行一个详细的管理操作(获取,赋值,删除)</li>
+<li>类似于代理的思想</li>
+</ol>
+<p>下例中, <code>PersionName</code>对应了<code>Person</code>实例的一个属性, 当我们访问<code>Person</code>的属性<code>name</code>时, 是调用了<code>PersonName</code>中的三个描述符方法.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">PersonName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    __name <span class="token operator">=</span> <span class="token string">"abc"</span>
 
-    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> <span class="token string">"重写了父类的__str__方法"</span>
+    <span class="token keyword">def</span> <span class="token function">__get__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> instance<span class="token punctuation">,</span> owner<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>instance<span class="token punctuation">,</span>owner<span class="token punctuation">)</span>  <span class="token comment"># &lt;__main__.PersonName object>, &lt;__main__.Person object, &lt;class '__main__.Person'>, 第一个是PersonName类, 第二个Person实例, 第三个是Person类</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__name
+
+    <span class="token keyword">def</span> <span class="token function">__set__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> instance<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>instance<span class="token punctuation">,</span>value<span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">__delete__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> instance<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>instance<span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    name <span class="token operator">=</span> PersonName<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 
-wang <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 创建实例</span>
-<span class="token builtin">str</span><span class="token punctuation">(</span>wang<span class="token punctuation">)</span>  <span class="token comment"># '重写了父类的__str__方法'</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>wang<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 重写了父类的__str__方法, 如果不重写会默认使用父类的__str__()方法, 打印&lt;__main__.Person object at 0x000001B31434CA30></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+person <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>person<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
       
     </div>
 
@@ -454,7 +769,7 @@ wang <span class="token operator">=</span> Person<span class="token punctuation"
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___subclass__/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___getattr__/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -472,7 +787,7 @@ wang <span class="token operator">=</span> Person<span class="token punctuation"
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/python___subclass__/" class="post-title-link" itemprop="url">python___subclass__</a>
+          <a href="/python___getattr__/" class="post-title-link" itemprop="url">python___getattr__</a>
         </h2>
 
         <div class="post-meta-container">
@@ -503,658 +818,312 @@ wang <span class="token operator">=</span> Person<span class="token punctuation"
     
     
     <div class="post-body" itemprop="articleBody">
-          <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">parent</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">pass</span>
-<span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">(</span>parent<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">pass</span>
-<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">(</span>parent<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">pass</span>
-<span class="token keyword">class</span> <span class="token class-name">C</span><span class="token punctuation">(</span>parent<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">pass</span>
+          <p>当访问不存在的成员时, 触发.比<code>__getattribute__</code>的优先级低, 既如果定义了<code>__getattribute__</code>, 则不会触发<code>__getattr__</code></p>
+<p>下例中, 当访问不存在的<code>age</code>的时候, 会触发<code>__getattr__</code>方法</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>name <span class="token operator">=</span> name
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>parent<span class="token punctuation">.</span>__subclasses__<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># [&lt;class '__main__.A'>, &lt;class '__main__.B'>, &lt;class '__main__.C'>]</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">[</span>cls<span class="token punctuation">.</span>__name__ <span class="token keyword">for</span> cls <span class="token keyword">in</span> parent<span class="token punctuation">.</span>__subclasses__<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment"># ['A', 'B', 'C']</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___xxxitem__/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python___xxxitem__/" class="post-title-link" itemprop="url">python___xxxitem__</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><code>__setitem__</code>:每当属性被赋值的时候都会调用该方法，因此不能再该方法内赋值 <a target="_blank" rel="noopener" href="http://self.name">self.name</a> = value 会死循环<br />
-<code>__getitem__</code>:当访问不存在的属性时会调用该方法<br />
-<code>__delitem__</code>:当删除属性时调用该方法</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span> 
-
-    <span class="token keyword">def</span> <span class="token function">__setitem__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>name<span class="token punctuation">,</span>value<span class="token punctuation">)</span><span class="token punctuation">:</span> 
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"__setitem__被调用"</span><span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>__dict__<span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token operator">=</span> value 
-       
-    <span class="token keyword">def</span> <span class="token function">__getitem__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span> 
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"__getitem__被调用"</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__dict__<span class="token punctuation">[</span>name<span class="token punctuation">]</span> 
-       
-    <span class="token keyword">def</span> <span class="token function">__delitem__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span> 
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"__delitem__被调用"</span><span class="token punctuation">)</span>
-        <span class="token keyword">del</span> self<span class="token punctuation">.</span>__dict__<span class="token punctuation">[</span>name<span class="token punctuation">]</span> 
-       
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span> 
-    a <span class="token operator">=</span> A<span class="token punctuation">(</span><span class="token punctuation">)</span> 
-    a<span class="token punctuation">[</span><span class="token string">'x'</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span>
-    a<span class="token punctuation">[</span><span class="token string">'x'</span><span class="token punctuation">]</span>
-    <span class="token keyword">del</span> a<span class="token punctuation">[</span><span class="token string">'x'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>参考：<br />
-<a target="_blank" rel="noopener" href="https://www.cnblogs.com/royfans/p/8191253.html">https://www.cnblogs.com/royfans/p/8191253.html</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python__bool__/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python__bool__/" class="post-title-link" itemprop="url">python__bool__</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>当使用<code>bool()</code>函数转换时触发</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-
-    <span class="token keyword">def</span> <span class="token function">__bool__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__getattr__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"getting:&#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span>
         <span class="token keyword">return</span> <span class="token boolean">False</span>
 
+person <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token string">"wang"</span><span class="token punctuation">)</span>
+person<span class="token punctuation">.</span>name  <span class="token comment"># 'wang'</span>
+person<span class="token punctuation">.</span>age  <span class="token comment"># getting:age</span>
+<span class="token builtin">getattr</span><span class="token punctuation">(</span>person<span class="token punctuation">,</span><span class="token string">"name"</span><span class="token punctuation">)</span>  <span class="token comment"># 'wang'</span>
+<span class="token builtin">getattr</span><span class="token punctuation">(</span>person<span class="token punctuation">,</span><span class="token string">"age"</span><span class="token punctuation">)</span> <span class="token comment"># getting:age</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___init__/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python___init__/" class="post-title-link" itemprop="url">python___init__</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><code>__init__(self,*args)</code>方法用来初始化实例属性.<br />
+<code>self</code>表示实例本身<br />
+<code>*args</code>是具体要初始化的参数.</p>
+<p>在<code>__init__()</code>方法中的属性, 都是实例属性, 而在外面的属性是类属性. 类属性可以通过<code>__class__</code>来访问</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">:</span>
+    name <span class="token operator">=</span> <span class="token string">"li"</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>name <span class="token operator">=</span> name
+
+
+wang <span class="token operator">=</span> Person<span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"wang"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>wang<span class="token punctuation">.</span>name<span class="token punctuation">)</span>  <span class="token comment"># wang, 实例属性覆盖了类属性</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>wang<span class="token punctuation">.</span>__class__<span class="token punctuation">)</span>  <span class="token comment"># &lt;class '__main__.Person'>, 获得类</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>wang<span class="token punctuation">.</span>__class__<span class="token punctuation">.</span>name<span class="token punctuation">)</span>  <span class="token comment"># li, 获得类属性</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>Person<span class="token punctuation">.</span>name<span class="token punctuation">)</span>  <span class="token comment"># li, 获得类属性</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___iter&next__/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python___iter&next__/" class="post-title-link" itemprop="url">python___iter&next__</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><code>iter(object)</code>会调用object的<code>__iter__</code>方法，所以需要在<code>__iter__</code>方法中返回一个可迭代的对象。<br />
+可迭代对象应该实现<code>__next__</code>方法，供<code>next</code>方法来调用，以实现迭代效果。</p>
+<p>下例中<code>iter(A())</code>调用了A中的<code>__iter__</code>方法，返回了B的对象实例。<br />
+<code>next(obj)</code>调用B对象实例中的<code>__next__</code>方法来进行迭代</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__iter__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> B<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>data <span class="token operator">=</span> <span class="token number">1</span>
+    <span class="token keyword">def</span> <span class="token function">__next__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>data <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>data
+
+obj <span class="token operator">=</span> <span class="token builtin">iter</span><span class="token punctuation">(</span>A<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token builtin">next</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>应用1：实现range</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">MyRange</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> end<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>start <span class="token operator">=</span> <span class="token number">0</span>
+        self<span class="token punctuation">.</span>end <span class="token operator">=</span> end
+
+    <span class="token keyword">def</span> <span class="token function">__iter__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self
+
+    <span class="token keyword">def</span> <span class="token function">__next__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>start <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>end<span class="token punctuation">:</span>
+            ret <span class="token operator">=</span> self<span class="token punctuation">.</span>start
+            self<span class="token punctuation">.</span>start <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">return</span> ret
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> StopIteration
+
+a <span class="token operator">=</span> MyRange<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> i <span class="token keyword">in</span> a<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考：<br />
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/xmlbm/article/details/99985678">https://blog.csdn.net/xmlbm/article/details/99985678</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___len__/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python___len__/" class="post-title-link" itemprop="url">python___len__</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>当使用<code>len()</code>函数时触发, 必须返回一个整型</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    lis <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span>
+
+    <span class="token keyword">def</span> <span class="token function">__len__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>lis<span class="token punctuation">)</span>
+
 
 wang <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 创建实例</span>
-<span class="token builtin">bool</span><span class="token punctuation">(</span>wang<span class="token punctuation">)</span> <span class="token comment"># False</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_abstractClass/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_abstractClass/" class="post-title-link" itemprop="url">python_abstractClass</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>通过<code>abc</code>模块来创建,类似于<code>java</code>中的<code>abstract class</code></p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> abc
-<span class="token keyword">class</span> <span class="token class-name">Animal</span><span class="token punctuation">(</span>metaclass<span class="token operator">=</span>abc<span class="token punctuation">.</span>ABCMeta<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token decorator annotation punctuation">@abc<span class="token punctuation">.</span>abstractmethod</span>
-    <span class="token keyword">def</span> <span class="token function">say</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">pass</span>
-    <span class="token keyword">def</span> <span class="token function">eat</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"eat food"</span><span class="token punctuation">)</span>
-
-<span class="token comment"># a = Animal() # 抽象类不能被实例化</span>
-
-<span class="token keyword">class</span> <span class="token class-name">Dog</span><span class="token punctuation">(</span>Animal<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">say</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"dog"</span><span class="token punctuation">)</span>
-
-dog <span class="token operator">=</span> Dog<span class="token punctuation">(</span><span class="token punctuation">)</span>
-dog<span class="token punctuation">.</span>say<span class="token punctuation">(</span><span class="token punctuation">)</span>
-dog<span class="token punctuation">.</span>eat<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_class/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_class/" class="post-title-link" itemprop="url">python_class</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Name</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># 大驼峰命名方法</span>
-	class_prop<span class="token operator">=</span> <span class="token comment">#类属性</span>
-	__private_class_prop<span class="token operator">=</span> <span class="token comment">#类私有属性</span>
-	<span class="token keyword">def</span> <span class="token function">__int__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>arg1<span class="token punctuation">,</span>arg2<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token comment">#初始化实例对象</span>
-		self<span class="token punctuation">.</span>instance_prop<span class="token operator">=</span> arg1<span class="token comment">#实例对象属性</span>
-		self<span class="token punctuation">.</span>__private_instance_prop<span class="token operator">=</span> arg2 <span class="token comment">#实例对象私有属性</span>
-	<span class="token keyword">def</span> <span class="token function">instance_func</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment">#实例独享方法</span>
-	<span class="token keyword">def</span> <span class="token function">__private_instance_func</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment">#实例对象私有方法</span>
-	<span class="token decorator annotation punctuation">@classmethod</span>
-	<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span>cls<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment">#类对象方法</span>
-	<span class="token decorator annotation punctuation">@staticmethod</span>
-    <span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol>
-<li>类属性<code>class_prop</code></li>
-</ol>
-<ul>
-<li>被所有实例所共有, 在内存中只有一个地址</li>
-<li>如果如果实例，添加了类相同的属性名，则会优先调用实例的属性。</li>
-</ul>
-<ol start="2">
-<li>实例属性<code>instance_prop</code></li>
-</ol>
-<ul>
-<li>每个实例各自拥有</li>
-<li>在 <code>__init__()</code>方法里初始化</li>
-</ul>
-<ol start="3">
-<li>实例方法<code>instance_func</code></li>
-</ol>
-<ul>
-<li>每个实例各自拥有</li>
-</ul>
-<ol start="4">
-<li>
-<p>类方法<code>@classmethod</code><br />
-类方法，所有的类的对象和实例所共有，第一个参数必须是类对象，一般用&quot;cls&quot;来表示.</p>
-</li>
-<li>
-<p>静态方法 <code>@staticmethod</code><br />
-静态方法和类与实例没有任何联系, 不需要指定第一个参数为<code>self</code>或<code>cls</code>, 就像普通的方法一样. 在python中用处比较少</p>
-</li>
-<li>
-<p>下划线的作用<br />
-<code>name</code>:公有<br />
-<code>_name</code>:模块私有,import *<br />
-<code>__name</code>:类私有,模块私有,import *;(其实可以用变成了_class__name)<br />
-<code>__name__</code>:Python系统方法<br />
-<code>name_</code>:避免冲突</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_classStaticMethod/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_classStaticMethod/" class="post-title-link" itemprop="url">python_classStaticMethod</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="类属性方法实例属性方法"><a class="markdownIt-Anchor" href="#类属性方法实例属性方法"></a> 类属性方法&amp;实例属性方法</h1>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>类变量(静态变量)</td>
-<td>所有实例共有,每个实例可以不加<code>self</code>调用</td>
-</tr>
-<tr>
-<td>类方法(静态方法)</td>
-<td>所有实例共有,每个实例都可以调用</td>
-</tr>
-<tr>
-<td>实例变量(非静态变量)</td>
-<td>单个实例所有,需通过<code>self</code>调用</td>
-</tr>
-<tr>
-<td>实例方法(非静态方法)</td>
-<td>单个实例所有</td>
-</tr>
-<tr>
-<td>下例中</td>
-<td></td>
-</tr>
-<tr>
-<td><code>class_name</code>是类属性,所有的实例都具有该属性,而且任何一个实例修改都可以修改该属性,修改后,其他实例也会改变</td>
-<td></td>
-</tr>
-<tr>
-<td><code>object_name</code>是实例属性,只有实例具有,智能通过<code>__init__</code>来创建</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    class_name <span class="token operator">=</span> <span class="token string">'wang'</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>na<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>object_name <span class="token operator">=</span> <span class="token string">'wei'</span>
-
-<span class="token comment"># 查看类的成员,只有class_name,没有object_name</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>Foo<span class="token punctuation">.</span>__dict__<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">dir</span><span class="token punctuation">(</span>Foo<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token comment"># 查看对象成员,既有class_name,又有object_name</span>
-obj <span class="token operator">=</span> Foo<span class="token punctuation">(</span><span class="token string">'zhao'</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>__dict__<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">dir</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="instancemethodclassmethod和staticmethod"><a class="markdownIt-Anchor" href="#instancemethodclassmethod和staticmethod"></a> <code>instancemethod</code>,<code>classmethod</code>和<code>staticmethod</code></h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span> <span class="token string">"executing foo(%s, %s)"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">)</span>
-    <span class="token decorator annotation punctuation">@classmethod</span>
-    <span class="token keyword">def</span> <span class="token function">class_foo</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span> <span class="token string">"executing class_foo(%s, %s)"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>cls<span class="token punctuation">,</span> x<span class="token punctuation">)</span>
-    <span class="token decorator annotation punctuation">@staticmethod</span>
-    <span class="token keyword">def</span> <span class="token function">static_foo</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span> <span class="token string">"executing static_foo(%s)"</span> <span class="token operator">%</span> x    
-a <span class="token operator">=</span> A<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>instancemethod</code><br />
-在定义<code>foo(self,x)</code>方法时，将<code>self</code>作为第一个参数，而调用时就隐式地将<code>a</code>作为第一个参数传入，而我们只要传一个参数即可。</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">a<span class="token punctuation">.</span>foo<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token comment"># executing foo(&lt;__main__.A object at 0xb7dbef0c>,1)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p><code>classmethod</code><br />
-类似instancemethod，只是第一个参数变成了<code>cls</code></p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">a<span class="token punctuation">.</span>class_foo<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token comment"># executing class_foo(&lt;class '__main__.A'>,1)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p><code>staticmethods</code><br />
-<code>slef</code>(the object instance)和<code>cls</code>(the class)都不会传入方法，这个和再类外定义一个函数没有区别，只是有些时候某些方法在逻辑上属于某个类的时候，才用。</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">a<span class="token punctuation">.</span>static_foo<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token comment"># executing static_foo(1)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>总结:<br />
-<code>foo</code>只是一个方法，当使用<code>a.foo</code>时，将instance作为第一个参数与<code>foo</code>进行绑定。<br />
-当使用<code>A.class_foo</code>时，将类A作为第一个参数与之相绑定。<br />
-档使用<code>A.static_foo</code>时，没有与instance和class绑定，定义和调用时都只是一个参数。</p>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/136097/difference-between-staticmethod-and-classmethod?r=SearchResults">https://stackoverflow.com/questions/136097/difference-between-staticmethod-and-classmethod?r=SearchResults</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_cls/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_cls/" class="post-title-link" itemprop="url">python_cls</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><code>cls</code>是类本身 <code>cls(entries)</code>既<code>User(entries)</code>，让后会继续调用<code>__new__</code>和<code>__init__</code>创建和初始化对象</p>
-<p>通过这个方式，既使用<code>@classmethod</code>来创建了新的对象</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> entries<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>__dict__<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token operator">**</span>entries<span class="token punctuation">)</span>
-
-    <span class="token decorator annotation punctuation">@classmethod</span>
-    <span class="token keyword">def</span> <span class="token function">from_json</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span>path<span class="token operator">=</span><span class="token string">"./user.json"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        entries <span class="token operator">=</span> json<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token builtin">open</span><span class="token punctuation">(</span>path<span class="token punctuation">,</span><span class="token string">'r'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> cls<span class="token punctuation">(</span>entries<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token builtin">len</span><span class="token punctuation">(</span>wang<span class="token punctuation">)</span>  <span class="token comment"># 3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
       
     </div>
 
@@ -1173,7 +1142,7 @@ a <span class="token operator">=</span> A<span class="token punctuation">(</span
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/other/page/41/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/other/">1</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/41/">41</a><span class="page-number current">42</span><a class="page-number" href="/other/page/43/">43</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/45/">45</a><a class="extend next" rel="next" href="/other/page/43/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/other/page/41/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/other/">1</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/41/">41</a><span class="page-number current">42</span><a class="page-number" href="/other/page/43/">43</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/46/">46</a><a class="extend next" rel="next" href="/other/page/43/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

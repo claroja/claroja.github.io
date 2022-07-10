@@ -123,7 +123,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-count">456</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/git_commit/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_task_tokenClassification/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -195,7 +195,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/git_commit/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/transformers_task_tokenClassification/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -207,7 +207,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-07-04 18:37:46 / 修改时间：19:13:00" itemprop="dateCreated datePublished" datetime="2022-07-04T18:37:46+08:00">2022-07-04</time>
+      <time title="创建时间：2022-07-07 10:35:24 / 修改时间：14:39:20" itemprop="dateCreated datePublished" datetime="2022-07-07T10:35:24+08:00">2022-07-07</time>
     </span>
 
   
@@ -220,723 +220,1255 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>git_commit.md</p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-a</code></td>
-<td>执行<code>add ./</code></td>
-</tr>
-<tr>
-<td><code>-m</code></td>
-<td>输入简单的commit log</td>
-</tr>
-<tr>
-<td><code>--amend</code></td>
-<td>将本次提交和上次提交合并</td>
-</tr>
-<tr>
-<td><code>--author</code></td>
-<td><code>--author=&quot;Author Name &lt;email@address.com&gt;&quot;</code> 用于设定用户名和邮箱, 默认使用<code>git config</code>设置的</td>
-</tr>
-<tr>
-<td><code>--no-edit</code></td>
-<td>默认<code>git commit</code>会打开编辑器, 有此参数会忽略</td>
-</tr>
-</tbody>
-</table>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/git_HEAD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/git_HEAD/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-07-04 17:39:45 / 修改时间：18:41:15" itemprop="dateCreated datePublished" datetime="2022-07-04T17:39:45+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><code>HEAD</code>是一种指针</p>
-<h1 id="~控制回退个数"><a class="markdownIt-Anchor" href="#~控制回退个数"></a> <code>~</code>控制回退个数</h1>
-<p><code>~</code>表示相对于当前<code>HEAD</code>指针的<code>commitId</code>的相对位置</p>
+          <p>token classification tasks:</p>
 <ul>
-<li><code>git checkout HEAD~1</code> 表示当前<code>HEAD</code>指针指向<code>commitId</code>的前一个<code>commitId</code></li>
-<li><code>git checkout HEAD~2</code> 表示当前<code>HEAD</code>指针指向<code>commitId</code>的前两个<code>commitId</code></li>
+<li>NER (Named-entity recognition) Classify the entities in the text (person, organization, location…).</li>
+<li>POS (Part-of-speech tagging) Grammatically classify the tokens (noun, verb, adjective…)</li>
+<li>Chunk (Chunking) Grammatically classify the tokens and group them into “chunks” that go together</li>
 </ul>
-<p>注意: <code>HEAD</code>是等价于<code>HEAD~1</code>, 而不是<code>HEAD~0</code><br />
-<img src="6.png" alt="6.png" /></p>
-<h1 id="回退1步并控制方向"><a class="markdownIt-Anchor" href="#回退1步并控制方向"></a> <code>^</code>回退1步并控制方向</h1>
-<ol>
-<li>
-<p>仓库如图, <code>HEAD</code>指针指向<code>master</code>分支<br />
-<img src="1.png" alt="1.png" /></p>
+<h1 id="ner"><a class="markdownIt-Anchor" href="#ner"></a> NER</h1>
+<h2 id="数据准备"><a class="markdownIt-Anchor" href="#数据准备"></a> 数据准备</h2>
+<p>数据初始化配置</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">task <span class="token operator">=</span> <span class="token string">"ner"</span> <span class="token comment"># Should be one of "ner", "pos" or "chunk"</span>
+model_checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased"</span>
+batch_size <span class="token operator">=</span> <span class="token number">16</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>查看训练数据</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset<span class="token punctuation">,</span> load_metric
+datasets <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"conll2003"</span><span class="token punctuation">)</span>
+<span class="token comment"># DatasetDict(&#123;</span>
+<span class="token comment">#     train: Dataset(&#123;</span>
+<span class="token comment">#         features: ['id', 'tokens', 'pos_tags', 'chunk_tags', 'ner_tags'],</span>
+<span class="token comment">#         num_rows: 14041</span>
+<span class="token comment">#     &#125;)</span>
+<span class="token comment">#     validation: Dataset(&#123;</span>
+<span class="token comment">#         features: ['id', 'tokens', 'pos_tags', 'chunk_tags', 'ner_tags'],</span>
+<span class="token comment">#         num_rows: 3250</span>
+<span class="token comment">#     &#125;)</span>
+<span class="token comment">#     test: Dataset(&#123;</span>
+<span class="token comment">#         features: ['id', 'tokens', 'pos_tags', 'chunk_tags', 'ner_tags'],</span>
+<span class="token comment">#         num_rows: 3453</span>
+<span class="token comment">#     &#125;)</span>
+<span class="token comment"># &#125;)</span>
+
+datasets<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+<span class="token comment"># &#123;'chunk_tags': [11, 21, 11, 12, 21, 22, 11, 12, 0],</span>
+<span class="token comment">#  'id': '0',</span>
+<span class="token comment">#  'ner_tags': [3, 0, 7, 0, 0, 0, 7, 0, 0],</span>
+<span class="token comment">#  'pos_tags': [22, 42, 16, 21, 35, 37, 16, 21, 7],</span>
+<span class="token comment">#  'tokens': ['EU',</span>
+<span class="token comment">#   'rejects',</span>
+<span class="token comment">#   'German',</span>
+<span class="token comment">#   'call',</span>
+<span class="token comment">#   'to',</span>
+<span class="token comment">#   'boycott',</span>
+<span class="token comment">#   'British',</span>
+<span class="token comment">#   'lamb',</span>
+<span class="token comment">#   '.']&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>字段解释:<br />
+<code>chunk_tags</code>: 用于chunk任务的标注<br />
+<code>id</code>: 句子的Id<br />
+<code>ner_tags</code>: 用于ner任务的标注<br />
+<code>pos_tags</code>: 用于pos任务的标注<br />
+<code>tokens</code>: 句子, 列表的形式. 一个<code>token</code>就是一个<code>word</code></p>
+<p>查看特征数据</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">datasets<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>features<span class="token punctuation">[</span><span class="token string-interpolation"><span class="token string">f"ner_tags"</span></span><span class="token punctuation">]</span>
+
+<span class="token comment"># Sequence(feature=ClassLabel(num_classes=9, names=['O', 'B-PER', 'I-PER', 'B-ORG', 'I-ORG', 'B-LOC', 'I-LOC', 'B-MISC', 'I-MISC'], names_file=None, id=None), length=-1, id=None)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>对于NER tags:</p>
 <ul>
-<li>
-<p><code>git checkout head^1</code> <code>^</code>或<code>^1</code>表示在当前的分支(<code>master</code>), 回退一个<code>HEAD</code>位置<br />
-<img src="4.png" alt="4.png" /></p>
-</li>
-<li>
-<p><code>git checkout head^1</code> <code>^2</code>表示在<code>merge</code>节点, 非当前分支(‘test’), 回退一个<code>HEAD</code>位置<br />
-<img src="5.png" alt="5.png" /></p>
-</li>
+<li>0对应’O’, 1对应’B-PER’…</li>
+<li>有4个labels, ‘B-’(beginning), ‘I-’(intermediate)
+<ul>
+<li>‘PER’ for person</li>
+<li>‘ORG’ for organization</li>
+<li>‘LOC’ for location</li>
+<li>‘MISC’ for miscellaneous</li>
 </ul>
 </li>
-</ol>
-<p>注意 <code>^1</code>和<code>^2</code>都只回退了一个<code>HEAD</code>, 只不过是回退的方向不同</p>
-<h1 id="和~一起使用"><a class="markdownIt-Anchor" href="#和~一起使用"></a> <code>^</code>和<code>~</code>一起使用</h1>
-<ol>
-<li>
-<p>仓库如图, <code>HEAD</code>指针指向<code>master</code>分支<br />
-<img src="1.png" alt="1.png" /></p>
-</li>
-<li>
-<p>基于<strong>步骤1</strong>, <code>git checkout head^1~1</code> <code>^</code>在本分支(<code>master</code>)前移动1位, <code>~</code>再向前移动1位, 所以是在<code>master</code>分支上, 向前移动2位<br />
-<img src="2.png" alt="2.png" /></p>
-</li>
-<li>
-<p>基于<strong>步骤1</strong>, <code>git checkout head^2~1</code> <code>^2</code>在非本分支,既非<code>master</code>分支(也就是<code>test</code>分支), <code>~</code>再向前移动1位, 所以是在<code>test</code>分支上, 向前移动2位<br />
-<img src="3.png" alt="3.png" /></p>
-</li>
-</ol>
-<h1 id="工具"><a class="markdownIt-Anchor" href="#工具"></a> 工具</h1>
-<p><a target="_blank" rel="noopener" href="http://git-school.github.io/visualizing-git/">http://git-school.github.io/visualizing-git/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/git_rebase/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/git_rebase/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-07-04 16:29:55 / 修改时间：19:45:36" itemprop="dateCreated datePublished" datetime="2022-07-04T16:29:55+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>git rebase: Move the base of a branch<br />
-更改当前分支的根基</p>
-<h1 id="命令"><a class="markdownIt-Anchor" href="#命令"></a> 命令</h1>
-<p><code>git rebase -i [&lt;upstream&gt; [&lt;branch&gt;]]</code></p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>branch</code></td>
-<td>默认停留在当前的分支, 如果指定<code>branch</code>, 则自动执行<code>git switch &lt;branch&gt;</code></td>
-</tr>
-<tr>
-<td><code>&lt;upstream&gt;</code></td>
-<td>默认指向输入的<code>&lt;branch&gt;</code>, 如果不指定<code>&lt;branch&gt;</code>或<code>&lt;upstream&gt;</code>, 则会退出</td>
-</tr>
-</tbody>
-</table>
-<h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
-<h2 id="替换merge"><a class="markdownIt-Anchor" href="#替换merge"></a> 替换<code>merge</code></h2>
-<p><img src="1.png" alt="1.png" /></p>
-<h2 id="更改指定提交的信息"><a class="markdownIt-Anchor" href="#更改指定提交的信息"></a> 更改指定提交的信息</h2>
-<p>假设有提交<code>A-B-C-D-E-F</code>, <code>HEAD</code>指向<code>F</code>, 需要修改<code>C</code>和<code>D</code>的 author.</p>
-<ol>
-<li>
-<p><code>git rebase -i B</code>, 将<code>C-D-E-F</code>取出, 并将<code>B</code>作为base</p>
-</li>
-<li>
-<p>将<code>C</code>和<code>D</code> 之前的<code>pick</code> 更改为<code>edit</code></p>
-</li>
-<li>
-<p>退出编辑器(在<code>vim</code>中是<code>:wq</code>)</p>
-</li>
-<li>
-<p><code>rebase</code>会在<code>C</code>暂停</p>
-</li>
-<li>
-<p>使用<code>git commit --amend --author=&quot;Author Name &lt;email@address.com&gt;&quot;</code> 重新提交<code>C</code></p>
-</li>
-<li>
-<p>再次执行<code>git rebase --continue</code></p>
-</li>
-<li>
-<p><code>rebase</code>会在<code>D</code>暂停</p>
-</li>
-<li>
-<p><code>git commit --amend --author=&quot;Author Name &lt;email@address.com&gt;&quot;</code> 重新提交<code>D</code></p>
-</li>
-<li>
-<p><code>rebae</code>完成</p>
-</li>
-<li>
-<p><code>git push -f</code> 更新<code>origin</code></p>
-</li>
-</ol>
-<h2 id="更改提交顺序"><a class="markdownIt-Anchor" href="#更改提交顺序"></a> 更改提交顺序</h2>
-<p>假设有提交<code>A-B-C-D-E-F</code>, <code>HEAD</code>指向<code>F</code>, 需要修改<code>C</code>和<code>D</code>的顺序</p>
-<ol>
-<li>
-<p><code>git rebase -i B</code>, 将<code>C-D-E-F</code>取出, 并将<code>B</code>作为base</p>
-</li>
-<li>
-<p><code>C</code>和<code>D</code> 两行进行替换即可</p>
-</li>
-</ol>
-<h2 id="合并多次提交"><a class="markdownIt-Anchor" href="#合并多次提交"></a> 合并多次提交</h2>
-<p>假设有提交<code>A-B-C-D-E-F</code>, <code>HEAD</code>指向<code>F</code>, 需要将<code>C</code>,<code>D</code>,<code>E</code>进行合并</p>
-<ol>
-<li>
-<p><code>git rebase -i B</code>, 将<code>C-D-E-F</code>取出, 并将<code>B</code>作为base</p>
-</li>
-<li>
-<p>将<code>C</code>,<code>D</code>,<code>E</code>之前的个<code>pick</code>更改为<code>squash</code></p>
-</li>
-</ol>
-<h2 id="分开一次提交"><a class="markdownIt-Anchor" href="#分开一次提交"></a> 分开一次提交</h2>
-<h2 id="替代-amend"><a class="markdownIt-Anchor" href="#替代-amend"></a> 替代<code>--amend</code></h2>
-<p><code>--amend</code>只能合并上一次的提交, 而<code>git rebase</code>可以合并指定的提交</p>
-<p>假设有提交<code>A-B-C-D-E-F</code>, <code>HEAD</code>指向<code>F</code>, 需要使用<code>F</code>的提交和<code>C</code>的提交进行合并</p>
-<ol>
-<li>
-<p><code>git rebase -i B</code>, 将<code>C-D-E-F</code>取出, 并将<code>B</code>作为base</p>
-</li>
-<li>
-<p>将<code>F</code>提交放在<code>C</code>后, 并将<code>F</code>前面的<code>pick</code>更改为<code>fixup</code>(修复上面的的)</p>
-</li>
-</ol>
-<h1 id="-root"><a class="markdownIt-Anchor" href="#-root"></a> <code>--root</code></h1>
-<p>当我们进行3次提交后, 使用<code>git rebase -i HEAD^3</code>会报错, 因为第一个提交是<code>root</code>, 也就是说只能<code>git rebase -i HEAD~2</code>, <code>root commit</code>不能获得, 如果想获得, 需要执行<code>git rebase -i --root</code></p>
-<h1 id="continue"><a class="markdownIt-Anchor" href="#continue"></a> continue</h1>
-<p><code>git reabse --continue --abort</code><br />
-在使用-i交互模式时,处理conflict会中断,要使用–continue来恢复交互模式<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<p><a target="_blank" rel="noopener" href="https://git-rebase.io/">https://git-rebase.io/</a><br />
-<a target="_blank" rel="noopener" href="https://www.educative.io/answers/what-is-the-git-rebase-branch-name-command">https://www.educative.io/answers/what-is-the-git-rebase-branch-name-command</a><br />
-<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3042437/how-to-change-the-commit-author-for-one-specific-commit">https://stackoverflow.com/questions/3042437/how-to-change-the-commit-author-for-one-specific-commit</a><br />
-<a target="_blank" rel="noopener" href="https://git-scm.com/docs/git-rebase">https://git-scm.com/docs/git-rebase</a></p>
-<hr class="footnotes-sep" />
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>测试 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vue_%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/vue_%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>安装, 参考<a target="_blank" rel="noopener" href="https://vuejs.org/guide/quick-start.html#with-build-tools">官网</a>. 仅安装插件:</p>
-<ul>
-<li>ESLint</li>
-<li>Prettier</li>
 </ul>
+<h1 id="tokenize"><a class="markdownIt-Anchor" href="#tokenize"></a> tokenize</h1>
 <ol>
-<li>
-<p>IDE选择vscode, 并安装插件:</p>
-<ul>
-<li>Vue Language Features (Volar): 语法高亮, 及代码提示</li>
-<li>ESLint: 代码规范(比如行的最大长度), 语法检查(错误提示). 能自动读取项目中的<code>eslintrc.js</code>配置. 注意和我们创建项目安装eslint不是一回事, 创建安装的是代码, 在运行时报错</li>
-</ul>
-</li>
-<li>
-<p>Vue CLI: v5.0.0-rc.1<br />
-Vue version: 3.x<br />
-linter: ESLint<br />
-formatter: Prettier</p>
-</li>
-<li>
-<p>插件</p>
-</li>
+<li>注意tokenizer又可能将token继续分割成subToken.比如原始数据中的一个token <code>&quot;'s&quot;</code>, 在tokenize之后, 变成了<code>&quot;'&quot;</code>和<code>&quot;s&quot;</code>.</li>
+<li>增加了<code>[CLS]</code>和<code>[SEP]</code><br />
+也就是说标注的内容和送入模型的内容是有差异的, 我们需要处理.</li>
 </ol>
-<p>npm install -g @vue/cli<br />
-vue create xxxx</p>
-<p><a target="_blank" rel="noopener" href="http://strapi.gridsome.bruski.wang/vue-vscode-eslint-min-config/">参考</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">example <span class="token operator">=</span> datasets<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span>
+<span class="token comment"># ['Germany', "'s", 'representative', 'to', 'the', 'European', 'Union', "'s", 'veterinary', 'committee', 'Werner', 'Zwingmann', 'said', 'on', 'Wednesday', 'consumers', 'should', 'buy', 'sheepmeat', 'from', 'countries', 'other', 'than', 'Britain', 'until', 'the', 'scientific', 'advice', 'was', 'clearer', '.']</span>
+tokenized_input <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>example<span class="token punctuation">[</span><span class="token string">"tokens"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> is_split_into_words<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+tokens <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>convert_ids_to_tokens<span class="token punctuation">(</span>tokenized_input<span class="token punctuation">[</span><span class="token string">"input_ids"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># ['[CLS]', 'germany', "'", 's', 'representative', 'to', 'the', 'european', 'union', "'", 's', 'veterinary', 'committee', 'werner', 'z', '##wing', '##mann', 'said', 'on', 'wednesday', 'consumers', 'should', 'buy', 'sheep', '##me', '##at', 'from', 'countries', 'other', 'than', 'britain', 'until', 'the', 'scientific', 'advice', 'was', 'clearer', '.', '[SEP]']</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 通过word_ids可以解决这个问题, </span>
+<span class="token comment"># 1. 它返回了tokenize之后 相同数量的索引id, 比如`"'s"`索引是1, 那么subToken的`"'"`和`"s"`的id都是1. </span>
+<span class="token comment"># 2. 另外将特殊的token标记为None</span>
+word_ids <span class="token operator">=</span> tokenized_input<span class="token punctuation">.</span>word_ids<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># [None, 0, 1, 1, 2, 3, 4, 5, 6, 7, 7, 8, 9, 10, 11, 11, 11, 12, 13, 14, 15, 16, 17, 18, 18, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, None]</span>
+aligned_labels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">100</span> <span class="token keyword">if</span> i <span class="token keyword">is</span> <span class="token boolean">None</span> <span class="token keyword">else</span> example<span class="token punctuation">[</span><span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>task<span class="token punctuation">&#125;</span></span><span class="token string">_tags"</span></span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> word_ids<span class="token punctuation">]</span>  <span class="token comment"># 将洗标为None的设置成-100, pytorch会忽略. 将subToken进行填充</span>
 
 
+label_all_tokens <span class="token operator">=</span> <span class="token boolean">True</span>
+<span class="token keyword">def</span> <span class="token function">tokenize_and_align_labels</span><span class="token punctuation">(</span>examples<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    tokenized_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>examples<span class="token punctuation">[</span><span class="token string">"tokens"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> is_split_into_words<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    labels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> i<span class="token punctuation">,</span> label <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>examples<span class="token punctuation">[</span><span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>task<span class="token punctuation">&#125;</span></span><span class="token string">_tags"</span></span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        word_ids <span class="token operator">=</span> tokenized_inputs<span class="token punctuation">.</span>word_ids<span class="token punctuation">(</span>batch_index<span class="token operator">=</span>i<span class="token punctuation">)</span>
+        previous_word_idx <span class="token operator">=</span> <span class="token boolean">None</span>
+        label_ids <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> word_idx <span class="token keyword">in</span> word_ids<span class="token punctuation">:</span>
+            <span class="token comment"># Special tokens have a word id that is None. We set the label to -100 so they are automatically</span>
+            <span class="token comment"># ignored in the loss function.</span>
+            <span class="token keyword">if</span> word_idx <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+                label_ids<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">)</span>
+            <span class="token comment"># We set the label for the first token of each word.</span>
+            <span class="token keyword">elif</span> word_idx <span class="token operator">!=</span> previous_word_idx<span class="token punctuation">:</span>
+                label_ids<span class="token punctuation">.</span>append<span class="token punctuation">(</span>label<span class="token punctuation">[</span>word_idx<span class="token punctuation">]</span><span class="token punctuation">)</span>
+            <span class="token comment"># For the other tokens in a word, we set the label to either the current label or -100, depending on</span>
+            <span class="token comment"># the label_all_tokens flag.</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                label_ids<span class="token punctuation">.</span>append<span class="token punctuation">(</span>label<span class="token punctuation">[</span>word_idx<span class="token punctuation">]</span> <span class="token keyword">if</span> label_all_tokens <span class="token keyword">else</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">)</span>
+            previous_word_idx <span class="token operator">=</span> word_idx
+        labels<span class="token punctuation">.</span>append<span class="token punctuation">(</span>label_ids<span class="token punctuation">)</span>
+    tokenized_inputs<span class="token punctuation">[</span><span class="token string">"labels"</span><span class="token punctuation">]</span> <span class="token operator">=</span> labels
+    <span class="token keyword">return</span> tokenized_inputs
+
+tokenized_datasets <span class="token operator">=</span> datasets<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>tokenize_and_align_labels<span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="fine-tunning"><a class="markdownIt-Anchor" href="#fine-tunning"></a> Fine-tunning</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForTokenClassification<span class="token punctuation">,</span> TrainingArguments<span class="token punctuation">,</span> Trainer
+model <span class="token operator">=</span> AutoModelForTokenClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>model_checkpoint<span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token builtin">len</span><span class="token punctuation">(</span>label_list<span class="token punctuation">)</span><span class="token punctuation">)</span>
+model_name <span class="token operator">=</span> model_checkpoint<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+
+<span class="token comment"># 设置训练的超参数</span>
+args <span class="token operator">=</span> TrainingArguments<span class="token punctuation">(</span> 
+    <span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>model_name<span class="token punctuation">&#125;</span></span><span class="token string">-finetuned-</span><span class="token interpolation"><span class="token punctuation">&#123;</span>task<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">,</span>
+    evaluation_strategy <span class="token operator">=</span> <span class="token string">"epoch"</span><span class="token punctuation">,</span>
+    learning_rate<span class="token operator">=</span><span class="token number">2e-5</span><span class="token punctuation">,</span>
+    per_device_train_batch_size<span class="token operator">=</span>batch_size<span class="token punctuation">,</span>
+    per_device_eval_batch_size<span class="token operator">=</span>batch_size<span class="token punctuation">,</span>
+    num_train_epochs<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span>
+    weight_decay<span class="token operator">=</span><span class="token number">0.01</span><span class="token punctuation">,</span>
+    push_to_hub<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
 
 
-    
+<span class="token comment"># 相当于pytorch的DataLoader</span>
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> DataCollatorForTokenClassification
+data_collator <span class="token operator">=</span> DataCollatorForTokenClassification<span class="token punctuation">(</span>tokenizer<span class="token punctuation">)</span>  
 
+<span class="token comment"># 设置评估指标</span>
+metric <span class="token operator">=</span> load_metric<span class="token punctuation">(</span><span class="token string">"seqeval"</span><span class="token punctuation">)</span>  
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
 
-<div class="post-block">
-  
-  
+<span class="token keyword">def</span> <span class="token function">compute_metrics</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    predictions<span class="token punctuation">,</span> labels <span class="token operator">=</span> p
+    predictions <span class="token operator">=</span> np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vue_event/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/vue_event/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://vuejs.org/guide/essentials/event-handling.html#accessing-event-argument-in-inline-handlers">https://vuejs.org/guide/essentials/event-handling.html#accessing-event-argument-in-inline-handlers</a><br />
-<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/59973296/vue-js-reference-error-event-target-not-defined">https://stackoverflow.com/questions/59973296/vue-js-reference-error-event-target-not-defined</a></p>
-<p>在vue中想要获取原生的event对象，需要使用<code>$event</code>, 官网只简单提了一句，坑。</p>
-<p>Sometimes we also need to access the original DOM event in an inline handler. You can pass it into a method using the special $event variable, or use an inline arrow function:</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vue_css/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/vue_css/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>参考：<a target="_blank" rel="noopener" href="https://vuejs.org/api/sfc-css-features.html">https://vuejs.org/api/sfc-css-features.html</a></p>
-<h1 id="vue控制style的两种写法"><a class="markdownIt-Anchor" href="#vue控制style的两种写法"></a> vue控制style的两种写法</h1>
-<ol>
-<li>引用变量的方式，注意是普通对象的写法
-<ul>
-<li>间隔符号是<code>,</code></li>
-<li>所有的值(value)都是字符串</li>
-<li>多字母的属性遵循的是驼峰命名 <code>backgroundColor</code></li>
-</ul>
-</li>
-<li>直接书写<code>style</code>
-<ul>
-<li>间隔符号是<code>;</code></li>
-<li>所有的值都不需要用引号，既不是字符串</li>
-<li>多字母的属性遵循的是横杠命名<br />
-而无论哪种方式都遵循<code>key:value</code>的写法 <code>background-color</code></li>
-</ul>
-</li>
-</ol>
-<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;script setup&gt;
-let style &#x3D; reactive(&#123;
-    width: &quot;50px&quot;, &#x2F;&#x2F; 不能写成 width:50, 纯数字无法解析
-    backgroundColor: &quot;red&quot;,
-&#125;)
-&lt;&#x2F;script&gt;
-&lt;template&gt;
-&lt;div :style&#x3D;&quot;style&quot;&gt;
-&lt;div style&#x3D;&quot;width: 50px; background-color: red;&quot;&gt;
-&lt;&#x2F;template&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="数字与px"><a class="markdownIt-Anchor" href="#数字与px"></a> 数字与px</h1>
-<p>vue中</p>
-<ul>
-<li><code>div</code>等普通元素 不能将width的<code>数字</code>自动转为css中的<code>数字+px</code>，形式，需要自己手动处理</li>
-<li><code>svg</code>元素及其内部元素 可以将width<code>数字</code>自动转换为<code>数字+px</code></li>
-</ul>
-<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;script setup&gt;
-import &#123;reactive&#125; from &quot;vue&quot;
-let style &#x3D; reactive(&#123;
-    width: &quot;50px&quot;, &#x2F;&#x2F; 不能写成 width:50, 纯数字无法解析
-    backgroundColor: &quot;red&quot;,
-&#125;)
-&lt;&#x2F;script&gt;
-&lt;template&gt;
-    &lt;div :style&#x3D;&quot;style&quot;&gt;haha&lt;&#x2F;div&gt;
-&lt;&#x2F;template&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol start="3">
-<li><code>&lt;style&gt;</code>中可以使用<code>v-bing</code>来绑定<code>script</code>中的变量</li>
-</ol>
-<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;script setup&gt;
-import &#123;reactive&#125; from &quot;vue&quot;
-let style &#x3D; reactive(&#123;
-    width: &quot;50px&quot;, &#x2F;&#x2F; 不能写成 width:50, 纯数字无法解析
-    backgroundColor: &quot;red&quot;,
-&#125;)
-
-let num &#x3D; reactive(&#123;
-    height: 50,
-&#125;)
-&lt;&#x2F;script&gt;
-&lt;template&gt;
-    &lt;div class&#x3D;&quot;test&quot; :style&#x3D;&quot;style&quot;&gt;haha&lt;&#x2F;div&gt;
-&lt;&#x2F;template&gt;
-&lt;style scoped&gt;
-.test &#123;
-    &#x2F;* height: v-bind(&quot;num.height&quot;) px; *&#x2F;
-    height: v-bind(&quot;num.height+&#39;px&#39;&quot;);
-&#125;
-&lt;&#x2F;style&gt;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vscode_python/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/vscode_python/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>安装<code>python</code>插件，会附带安装<code>pylance</code>插件。</p>
-<p><code>Python: Select Linter</code> 选择<code>pylint</code>格式化工具，并进行安装。</p>
-<p>Alt + e | 在python console中运行代码<br />
-Alt + r | 执行python文件<br />
-Alt + ← | 回到上一次鼠标位置<br />
-Alt + → | 回到下一次鼠标位置<br />
-F12 | 去往定义处<br />
-Ctrl + F12 | 去往实现处</p>
-<h1 id="debug传参"><a class="markdownIt-Anchor" href="#debug传参"></a> debug传参</h1>
-<ol>
-<li>点击Debug框 -&gt; 点击 <code>create a launch.json file</code> -&gt; 选择python</li>
-</ol>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
-    <span class="token comment">// Use IntelliSense to learn about possible attributes.</span>
-    <span class="token comment">// Hover to view descriptions of existing attributes.</span>
-    <span class="token comment">// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387</span>
-    <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.2.0"</span><span class="token punctuation">,</span>
-    <span class="token property">"configurations"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Python: 当前文件"</span><span class="token punctuation">,</span>
-            <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"python"</span><span class="token punctuation">,</span>
-            <span class="token property">"request"</span><span class="token operator">:</span> <span class="token string">"launch"</span><span class="token punctuation">,</span>
-            <span class="token property">"program"</span><span class="token operator">:</span> <span class="token string">"$&#123;file&#125;"</span><span class="token punctuation">,</span>
-            <span class="token property">"console"</span><span class="token operator">:</span> <span class="token string">"integratedTerminal"</span>
-        <span class="token punctuation">&#125;</span>
+    <span class="token comment"># Remove ignored index (special tokens)</span>
+    true_predictions <span class="token operator">=</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">[</span>label_list<span class="token punctuation">[</span>p<span class="token punctuation">]</span> <span class="token keyword">for</span> <span class="token punctuation">(</span>p<span class="token punctuation">,</span> l<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>prediction<span class="token punctuation">,</span> label<span class="token punctuation">)</span> <span class="token keyword">if</span> l <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> prediction<span class="token punctuation">,</span> label <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
     <span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    true_labels <span class="token operator">=</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">[</span>label_list<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token keyword">for</span> <span class="token punctuation">(</span>p<span class="token punctuation">,</span> l<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>prediction<span class="token punctuation">,</span> label<span class="token punctuation">)</span> <span class="token keyword">if</span> l <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> prediction<span class="token punctuation">,</span> label <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
+    <span class="token punctuation">]</span>
+
+    results <span class="token operator">=</span> metric<span class="token punctuation">.</span>compute<span class="token punctuation">(</span>predictions<span class="token operator">=</span>true_predictions<span class="token punctuation">,</span> references<span class="token operator">=</span>true_labels<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"precision"</span><span class="token punctuation">:</span> results<span class="token punctuation">[</span><span class="token string">"overall_precision"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"recall"</span><span class="token punctuation">:</span> results<span class="token punctuation">[</span><span class="token string">"overall_recall"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"f1"</span><span class="token punctuation">:</span> results<span class="token punctuation">[</span><span class="token string">"overall_f1"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token string">"accuracy"</span><span class="token punctuation">:</span> results<span class="token punctuation">[</span><span class="token string">"overall_accuracy"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>开始训练</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">trainer <span class="token operator">=</span> Trainer<span class="token punctuation">(</span>
+    model<span class="token punctuation">,</span>
+    args<span class="token punctuation">,</span>
+    train_dataset<span class="token operator">=</span>tokenized_datasets<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    eval_dataset<span class="token operator">=</span>tokenized_datasets<span class="token punctuation">[</span><span class="token string">"validation"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    data_collator<span class="token operator">=</span>data_collator<span class="token punctuation">,</span>
+    tokenizer<span class="token operator">=</span>tokenizer<span class="token punctuation">,</span>
+    compute_metrics<span class="token operator">=</span>compute_metrics
+<span class="token punctuation">)</span>
+trainer<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span>
+trainer<span class="token punctuation">.</span>evaluate<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 获得每个种类的评估指标</span>
+predictions<span class="token punctuation">,</span> labels<span class="token punctuation">,</span> _ <span class="token operator">=</span> trainer<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>tokenized_datasets<span class="token punctuation">[</span><span class="token string">"validation"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+predictions <span class="token operator">=</span> np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token comment"># Remove ignored index (special tokens)</span>
+true_predictions <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">[</span>label_list<span class="token punctuation">[</span>p<span class="token punctuation">]</span> <span class="token keyword">for</span> <span class="token punctuation">(</span>p<span class="token punctuation">,</span> l<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>prediction<span class="token punctuation">,</span> label<span class="token punctuation">)</span> <span class="token keyword">if</span> l <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> prediction<span class="token punctuation">,</span> label <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
+<span class="token punctuation">]</span>
+true_labels <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">[</span>label_list<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token keyword">for</span> <span class="token punctuation">(</span>p<span class="token punctuation">,</span> l<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>prediction<span class="token punctuation">,</span> label<span class="token punctuation">)</span> <span class="token keyword">if</span> l <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> prediction<span class="token punctuation">,</span> label <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
+<span class="token punctuation">]</span>
+
+results <span class="token operator">=</span> metric<span class="token punctuation">.</span>compute<span class="token punctuation">(</span>predictions<span class="token operator">=</span>true_predictions<span class="token punctuation">,</span> references<span class="token operator">=</span>true_labels<span class="token punctuation">)</span>
+results<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://colab.research.google.com/github/huggingface/notebooks/blob/main/examples/token_classification.ipynb">https://colab.research.google.com/github/huggingface/notebooks/blob/main/examples/token_classification.ipynb</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_datasets/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_datasets/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-07 09:41:04 / 修改时间：10:24:10" itemprop="dateCreated datePublished" datetime="2022-07-07T09:41:04+08:00">2022-07-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="下载数据"><a class="markdownIt-Anchor" href="#下载数据"></a> 下载数据</h1>
+<ol>
+<li>首先使用<code>load_dataset_builder</code>来获得数据集的描述信息, 比如<code>description</code>和<code>features</code></li>
+<li>使用<code>load_dataset</code>下载数据.
+<ul>
+<li>如果不指定<code>split</code>参数, 则是获得<code>DatasetDict</code>对象, 包含了<code>train</code>,<code>validation</code>,<code>test</code>三组样本</li>
+<li>如果指定<code>split</code>参数, 可以获得<code>Dataset</code>对象, 既<code>train</code>样本 或者<code>validation</code>或<code>test</code></li>
+</ul>
+</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset<span class="token punctuation">,</span>load_dataset_builder
+
+ds_builder <span class="token operator">=</span> load_dataset_builder<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">)</span>
+ds_builder<span class="token punctuation">.</span>info<span class="token punctuation">.</span>description
+<span class="token triple-quoted-string string">"""
+Movie Review Dataset. This is a dataset of containing 5,331 positive and 5,331 negative processed sentences from... 
+"""</span>
+ds_builder<span class="token punctuation">.</span>info<span class="token punctuation">.</span>features
+<span class="token triple-quoted-string string">"""
+&#123;'label': ClassLabel(num_classes=2, names=['neg', 'pos'], id=None),
+ 'text': Value(dtype='string', id=None)&#125;
+"""</span>
+
+
+<span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
+dataset_dict <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+DatasetDict(&#123;
+    train: Dataset(&#123;
+        features: ['text', 'label'],
+        num_rows: 8530
+    &#125;)
+    validation: Dataset(&#123;
+        features: ['text', 'label'],
+        num_rows: 1066
+    &#125;)
+    test: Dataset(&#123;
+        features: ['text', 'label'],
+        num_rows: 1066
+    &#125;)
+&#125;)
+"""</span>
+dataset <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">,</span> split<span class="token operator">=</span><span class="token string">"train"</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+Dataset(&#123;
+    features: ['text', 'label'],
+    num_rows: 8530
+&#125;)
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="操作数据"><a class="markdownIt-Anchor" href="#操作数据"></a> 操作数据</h1>
+<p>一个<code>Dataset</code>对象, 既可以看做是一个list, 也可以看做是dict</p>
+<h2 id="list"><a class="markdownIt-Anchor" href="#list"></a> list</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Get the first row in the dataset</span>
+<span class="token operator">>></span><span class="token operator">></span> dataset<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+<span class="token punctuation">&#123;</span><span class="token string">'label'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+ <span class="token string">'text'</span><span class="token punctuation">:</span> <span class="token string">'the rock is destined to be the 21st century\'s ...'</span><span class="token punctuation">&#125;</span>
+dataset<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span>
+<span class="token string">'the rock is destined to be the 21st century\'s ...'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>是使用<code>slice</code>方式取数时, 结果和普通list不同, 应该是重写了list的方法</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">dataset<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">:</span><span class="token number">6</span><span class="token punctuation">]</span>
+<span class="token punctuation">&#123;</span><span class="token string">'label'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+ <span class="token string">'text'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'if you sometimes like...'</span><span class="token punctuation">,</span>
+  <span class="token string">"emerges as something rare , an..."</span><span class="token punctuation">,</span>
+  'the film provides some great<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="dict"><a class="markdownIt-Anchor" href="#dict"></a> dict</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">dataset<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token string">'the rock is destined to be the 21st...'</span><span class="token punctuation">,</span>
+ <span class="token string">'the gorgeously elaborate continuation...'</span><span class="token punctuation">,</span>
+ <span class="token string">'effective but too-tepid biopic...'</span><span class="token punctuation">,</span>
+ <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>
+ 'things really get weird <span class="token punctuation">,</span> though <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="二者对比"><a class="markdownIt-Anchor" href="#二者对比"></a> 二者对比</h2>
+<p>先按list取要比先按dict取效率高</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">with</span> Timer<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+   dataset<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'text'</span><span class="token punctuation">]</span>
+<span class="token comment"># Elapsed time: 0.0031 seconds</span>
+
+<span class="token keyword">with</span> Timer<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  dataset<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+<span class="token comment"># Elapsed time: 0.0094 seconds</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="process"><a class="markdownIt-Anchor" href="#process"></a> process</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+<span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
+
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-uncased"</span><span class="token punctuation">)</span>
+dataset <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">,</span> split<span class="token operator">=</span><span class="token string">"train"</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+Dataset(&#123;
+    features: ['text', 'label'],
+    num_rows: 8530
+&#125;)
+"""</span>
+
+<span class="token comment"># tokenizer(dataset[0]["text"])  # 处理一个数据</span>
+<span class="token comment"># &#123;'input_ids': [101, 1103, 2067, 1110, 17348...],</span>
+<span class="token comment">#  'token_type_ids': [0, 0, 0, 0, 0, 0...],</span>
+<span class="token comment">#  'attention_mask': [1, 1, 1, 1, 1, 1, 1...]&#125;</span>
+
+dataset <span class="token operator">=</span> dataset<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> example<span class="token punctuation">:</span> tokenizer<span class="token punctuation">(</span>example<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># 进行了特殊处理, 直接是增加了features, 而不是仅仅在"text"中替换</span>
+<span class="token triple-quoted-string string">"""
+Dataset(&#123;
+    features: ['text', 'label', 'input_ids', 'token_type_ids', 'attention_mask'],
+    num_rows: 8530
+&#125;)
+"""</span>
+
+dataset<span class="token punctuation">.</span>set_format<span class="token punctuation">(</span><span class="token builtin">type</span><span class="token operator">=</span><span class="token string">"torch"</span><span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"input_ids"</span><span class="token punctuation">,</span> <span class="token string">"token_type_ids"</span><span class="token punctuation">,</span> <span class="token string">"attention_mask"</span><span class="token punctuation">,</span> <span class="token string">"label"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment"># 将相应字段设置为tensor</span>
+<span class="token triple-quoted-string string">"""
+Dataset(&#123;
+    features: ['text', 'label', 'input_ids', 'token_type_ids', 'attention_mask'],
+    num_rows: 8530
+&#125;)
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="evaluate"><a class="markdownIt-Anchor" href="#evaluate"></a> evaluate</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> list_metrics<span class="token punctuation">,</span> load_metric
+metrics_list <span class="token operator">=</span> list_metrics<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># ['accuracy', 'bertscore', 'bleu', 'bleurt', 'cer']</span>
+metric <span class="token operator">=</span> load_metric<span class="token punctuation">(</span><span class="token string">'glue'</span><span class="token punctuation">,</span> <span class="token string">'mrpc'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>metric<span class="token punctuation">.</span>inputs_description<span class="token punctuation">)</span>  <span class="token comment"># 查看说明</span>
+model_predictions <span class="token operator">=</span> model<span class="token punctuation">(</span>model_inputs<span class="token punctuation">)</span>
+final_score <span class="token operator">=</span> metric<span class="token punctuation">.</span>compute<span class="token punctuation">(</span>predictions<span class="token operator">=</span>model_predictions<span class="token punctuation">,</span> references<span class="token operator">=</span>gold_references<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="pytorch"><a class="markdownIt-Anchor" href="#pytorch"></a> pytorch</h1>
+<p>Contrary to datasets.Dataset.set_format(), with_format returns a new Dataset object.</p>
+<p>将PyTorch DataLoader 和 Hugging Face Dataset结合使用</p>
+<p>datasets return regular python objects: integers, floats, strings, lists, etc.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
+ds <span class="token operator">=</span> ds<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> tokenizer<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">.</span>set_format<span class="token punctuation">(</span><span class="token builtin">type</span><span class="token operator">=</span><span class="token string">"numpy"</span><span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'input_ids'</span><span class="token punctuation">,</span> <span class="token string">'token_type_ids'</span><span class="token punctuation">,</span> <span class="token string">'attention_mask'</span><span class="token punctuation">,</span> <span class="token string">'label'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">format</span>
+<span class="token comment"># &#123;'columns': ['input_ids', 'token_type_ids', 'attention_mask', 'label'],</span>
+<span class="token comment">#  'format_kwargs': &#123;&#125;,</span>
+<span class="token comment">#  'output_all_columns': False,</span>
+<span class="token comment">#  'type': 'numpy'&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+ds <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">,</span> split<span class="token operator">=</span><span class="token string">"validation"</span><span class="token punctuation">)</span>
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
+ds <span class="token operator">=</span> ds<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> tokenizer<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">'text'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">.</span><span class="token builtin">format</span>
+<span class="token comment"># &#123;'columns': ['text', 'label', 'input_ids', 'token_type_ids', 'attention_mask'],</span>
+<span class="token comment">#  'format_kwargs': &#123;&#125;,</span>
+<span class="token comment">#  'output_all_columns': False,</span>
+<span class="token comment">#  'type': None&#125;</span>
+ds <span class="token operator">=</span> ds<span class="token punctuation">.</span>with_format<span class="token punctuation">(</span><span class="token builtin">type</span><span class="token operator">=</span><span class="token string">'tensorflow'</span><span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'input_ids'</span><span class="token punctuation">,</span> <span class="token string">'token_type_ids'</span><span class="token punctuation">,</span> <span class="token string">'attention_mask'</span><span class="token punctuation">,</span> <span class="token string">'label'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">.</span><span class="token builtin">format</span>
+<span class="token comment"># &#123;'columns': ['input_ids', 'token_type_ids', 'attention_mask', 'label'],</span>
+<span class="token comment">#  'format_kwargs': &#123;&#125;,</span>
+<span class="token comment">#  'output_all_columns': False,</span>
+<span class="token comment">#  'type': 'tensorflow'&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/index">https://huggingface.co/docs/datasets/index</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/access">https://huggingface.co/docs/datasets/access</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/use_dataset">https://huggingface.co/docs/datasets/use_dataset</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/use_with_pytorch">https://huggingface.co/docs/datasets/use_with_pytorch</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_task_textClassification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_task_textClassification/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-06 19:23:44" itemprop="dateCreated datePublished" datetime="2022-07-06T19:23:44+08:00">2022-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-07 10:31:55" itemprop="dateModified" datetime="2022-07-07T10:31:55+08:00">2022-07-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>transformers_task_textClassification</p>
+<h1 id="应用方向"><a class="markdownIt-Anchor" href="#应用方向"></a> 应用方向</h1>
+<ol>
+<li>sentiment analysis(positive, negative, neutral)</li>
+</ol>
+<h1 id="数据集"><a class="markdownIt-Anchor" href="#数据集"></a> 数据集</h1>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/datasets/imdb">imdb</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/distilbert-base-uncased">DistilBERT</a></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
+imdb <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"imdb"</span><span class="token punctuation">)</span>
+imdb<span class="token punctuation">[</span><span class="token string">"test"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token string">"label"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token string">"text"</span><span class="token punctuation">:</span> <span class="token string">"I love sci-fi and am willing to put up with a lot...."</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一个<code>dataset</code>中包含了两个字段:<br />
+<code>text</code>: 电影的评论<br />
+<code>label</code>: 0表示<code>negative</code>, 1表示<code>positive</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"distilbert-base-uncased"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">preprocess_function</span><span class="token punctuation">(</span>examples<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> tokenizer<span class="token punctuation">(</span>examples<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span> <span class="token comment"># 这里不进行padding, 在下面使用DataCollatorWithPadding, 进行动态padding</span>
+tokenized_imdb <span class="token operator">=</span> imdb<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>preprocess_function<span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># batched批处理可以加快速度</span>
+
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> DataCollatorWithPadding
+data_collator <span class="token operator">=</span> DataCollatorWithPadding<span class="token punctuation">(</span>tokenizer<span class="token operator">=</span>tokenizer<span class="token punctuation">)</span>  <span class="token comment"># 创建batch, 并以batch动态进行padding, 这样比tokenizer的padding更加的高效</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForSequenceClassification<span class="token punctuation">,</span> TrainingArguments<span class="token punctuation">,</span> Trainer
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"distilbert-base-uncased"</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">training_args <span class="token operator">=</span> TrainingArguments<span class="token punctuation">(</span>
+    output_dir<span class="token operator">=</span><span class="token string">"./results"</span><span class="token punctuation">,</span>
+    learning_rate<span class="token operator">=</span><span class="token number">2e-5</span><span class="token punctuation">,</span>
+    per_device_train_batch_size<span class="token operator">=</span><span class="token number">16</span><span class="token punctuation">,</span>
+    per_device_eval_batch_size<span class="token operator">=</span><span class="token number">16</span><span class="token punctuation">,</span>
+    num_train_epochs<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span>
+    weight_decay<span class="token operator">=</span><span class="token number">0.01</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+trainer <span class="token operator">=</span> Trainer<span class="token punctuation">(</span>
+    model<span class="token operator">=</span>model<span class="token punctuation">,</span>
+    args<span class="token operator">=</span>training_args<span class="token punctuation">,</span>
+    train_dataset<span class="token operator">=</span>tokenized_imdb<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    eval_dataset<span class="token operator">=</span>tokenized_imdb<span class="token punctuation">[</span><span class="token string">"test"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    tokenizer<span class="token operator">=</span>tokenizer<span class="token punctuation">,</span>
+    data_collator<span class="token operator">=</span>data_collator<span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+trainer<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/tasks/sequence_classification">https://huggingface.co/docs/transformers/v4.20.1/en/tasks/sequence_classification</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_evaluate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_evaluate/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-06 17:48:30 / 修改时间：17:49:08" itemprop="dateCreated datePublished" datetime="2022-07-06T17:48:30+08:00">2022-07-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>transformers_evaluate</p>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/metrics">https://huggingface.co/docs/datasets/metrics</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_fineTune/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_fineTune/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-06 17:35:22 / 修改时间：18:00:58" itemprop="dateCreated datePublished" datetime="2022-07-06T17:35:22+08:00">2022-07-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>transformers_fineTune</p>
+<h1 id="获取数据"><a class="markdownIt-Anchor" href="#获取数据"></a> 获取数据</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 获得数据</span>
+<span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
+dataset <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"yelp_review_full"</span><span class="token punctuation">)</span>
+dataset<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">]</span>
+<span class="token punctuation">&#123;</span><span class="token string">'label'</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+ <span class="token string">'text'</span><span class="token punctuation">:</span> <span class="token string">'My expectations for McDonalds are t rarely high. ...'</span><span class="token punctuation">&#125;</span>
+
+<span class="token comment"># tokenize</span>
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">tokenize_function</span><span class="token punctuation">(</span>examples<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> tokenizer<span class="token punctuation">(</span>examples<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token string">"max_length"</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+tokenized_datasets <span class="token operator">=</span> dataset<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>tokenize_function<span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># 遍历每一条数据</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="trainer进行训练"><a class="markdownIt-Anchor" href="#trainer进行训练"></a> trainer进行训练</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 训练</span>
+
+<span class="token comment">## 加载模型</span>
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForSequenceClassification
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span>  <span class="token comment"># 指定了output的个数是5</span>
+
+<span class="token comment">## 设定hyperparameters</span>
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> TrainingArguments
+training_args <span class="token operator">=</span> TrainingArguments<span class="token punctuation">(</span>output_dir<span class="token operator">=</span><span class="token string">"test_trainer"</span><span class="token punctuation">)</span> <span class="token comment"># 包含了默认的设定hyperparameters</span>
+<span class="token comment"># training_args = TrainingArguments(output_dir="test_trainer", evaluation_strategy="epoch") # 可以设置每个epoch进行评估</span>
+
+
+<span class="token comment">## 设定evaluate的方法</span>
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_metric
+
+metric <span class="token operator">=</span> load_metric<span class="token punctuation">(</span><span class="token string">"accuracy"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">compute_metrics</span><span class="token punctuation">(</span>eval_pred<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    logits<span class="token punctuation">,</span> labels <span class="token operator">=</span> eval_pred
+    predictions <span class="token operator">=</span> np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>logits<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> metric<span class="token punctuation">.</span>compute<span class="token punctuation">(</span>predictions<span class="token operator">=</span>predictions<span class="token punctuation">,</span> references<span class="token operator">=</span>labels<span class="token punctuation">)</span>
+
+
+<span class="token comment">## 开始训练</span>
+trainer <span class="token operator">=</span> Trainer<span class="token punctuation">(</span>
+    model<span class="token operator">=</span>model<span class="token punctuation">,</span>
+    args<span class="token operator">=</span>training_args<span class="token punctuation">,</span>
+    train_dataset<span class="token operator">=</span>small_train_dataset<span class="token punctuation">,</span>
+    eval_dataset<span class="token operator">=</span>small_eval_dataset<span class="token punctuation">,</span>
+    compute_metrics<span class="token operator">=</span>compute_metrics<span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+trainer<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="pytorch进行训练"><a class="markdownIt-Anchor" href="#pytorch进行训练"></a> pytorch进行训练</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenized_datasets <span class="token operator">=</span> tokenized_datasets<span class="token punctuation">.</span>remove_columns<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+tokenized_datasets <span class="token operator">=</span> tokenized_datasets<span class="token punctuation">.</span>rename_column<span class="token punctuation">(</span><span class="token string">"label"</span><span class="token punctuation">,</span> <span class="token string">"labels"</span><span class="token punctuation">)</span>
+tokenized_datasets<span class="token punctuation">.</span>set_format<span class="token punctuation">(</span><span class="token string">"torch"</span><span class="token punctuation">)</span>  <span class="token comment"># 设置返回tensor</span>
+
+
+<span class="token keyword">from</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data <span class="token keyword">import</span> DataLoader
+train_dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>small_train_dataset<span class="token punctuation">,</span> shuffle<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span>
+eval_dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>small_eval_dataset<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span>
+
+
+<span class="token comment"># 训练</span>
+<span class="token comment">## 创建模型</span>
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForSequenceClassification
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">from</span> torch<span class="token punctuation">.</span>optim <span class="token keyword">import</span> AdamW
+optimizer <span class="token operator">=</span> AdamW<span class="token punctuation">(</span>model<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> lr<span class="token operator">=</span><span class="token number">5e-5</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> get_scheduler
+num_epochs <span class="token operator">=</span> <span class="token number">3</span>
+num_training_steps <span class="token operator">=</span> num_epochs <span class="token operator">*</span> <span class="token builtin">len</span><span class="token punctuation">(</span>train_dataloader<span class="token punctuation">)</span>
+lr_scheduler <span class="token operator">=</span> get_scheduler<span class="token punctuation">(</span>
+    name<span class="token operator">=</span><span class="token string">"linear"</span><span class="token punctuation">,</span> optimizer<span class="token operator">=</span>optimizer<span class="token punctuation">,</span> num_warmup_steps<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> num_training_steps<span class="token operator">=</span>num_training_steps
+<span class="token punctuation">)</span>
+
+<span class="token keyword">import</span> torch
+device <span class="token operator">=</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">"cuda"</span><span class="token punctuation">)</span> <span class="token keyword">if</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>is_available<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">else</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">"cpu"</span><span class="token punctuation">)</span>
+model<span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+
+
+<span class="token keyword">from</span> tqdm<span class="token punctuation">.</span>auto <span class="token keyword">import</span> tqdm
+
+progress_bar <span class="token operator">=</span> tqdm<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span>num_training_steps<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+model<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> epoch <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>num_epochs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> batch <span class="token keyword">in</span> train_dataloader<span class="token punctuation">:</span>
+        batch <span class="token operator">=</span> <span class="token punctuation">&#123;</span>k<span class="token punctuation">:</span> v<span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span> <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> batch<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span>
+        outputs <span class="token operator">=</span> model<span class="token punctuation">(</span><span class="token operator">**</span>batch<span class="token punctuation">)</span>
+        loss <span class="token operator">=</span> outputs<span class="token punctuation">.</span>loss
+        loss<span class="token punctuation">.</span>backward<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        optimizer<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        lr_scheduler<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        optimizer<span class="token punctuation">.</span>zero_grad<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        progress_bar<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+
+
+<span class="token comment"># 模型评估</span>
+metric <span class="token operator">=</span> load_metric<span class="token punctuation">(</span><span class="token string">"accuracy"</span><span class="token punctuation">)</span>
+model<span class="token punctuation">.</span><span class="token builtin">eval</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> batch <span class="token keyword">in</span> eval_dataloader<span class="token punctuation">:</span>
+    batch <span class="token operator">=</span> <span class="token punctuation">&#123;</span>k<span class="token punctuation">:</span> v<span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span> <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> batch<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">with</span> torch<span class="token punctuation">.</span>no_grad<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        outputs <span class="token operator">=</span> model<span class="token punctuation">(</span><span class="token operator">**</span>batch<span class="token punctuation">)</span>
+
+    logits <span class="token operator">=</span> outputs<span class="token punctuation">.</span>logits
+    predictions <span class="token operator">=</span> torch<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>logits<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    metric<span class="token punctuation">.</span>add_batch<span class="token punctuation">(</span>predictions<span class="token operator">=</span>predictions<span class="token punctuation">,</span> references<span class="token operator">=</span>batch<span class="token punctuation">[</span><span class="token string">"labels"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+metric<span class="token punctuation">.</span>compute<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/training">https://huggingface.co/docs/transformers/training</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_saveModel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_saveModel/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-06 17:30:06 / 修改时间：17:31:28" itemprop="dateCreated datePublished" datetime="2022-07-06T17:30:06+08:00">2022-07-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>transformers_saveModel</p>
+<h1 id="保存"><a class="markdownIt-Anchor" href="#保存"></a> 保存</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">pt_save_directory <span class="token operator">=</span> <span class="token string">"./pt_save_pretrained"</span>
+tokenizer<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span>pt_save_directory<span class="token punctuation">)</span>
+pt_model<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span>pt_save_directory<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="加载"><a class="markdownIt-Anchor" href="#加载"></a> 加载</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">pt_model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"./pt_save_pretrained"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_autoModel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_autoModel/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-06 17:23:17 / 修改时间：17:32:51" itemprop="dateCreated datePublished" datetime="2022-07-06T17:23:17+08:00">2022-07-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>transformers_autoModel</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_tokenizer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_tokenizer/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-06 17:06:12" itemprop="dateCreated datePublished" datetime="2022-07-06T17:06:12+08:00">2022-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-07 14:08:14" itemprop="dateModified" datetime="2022-07-07T14:08:14+08:00">2022-07-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>transformers_tokenizer</p>
+<h1 id="nlp"><a class="markdownIt-Anchor" href="#nlp"></a> NLP</h1>
+<h2 id="tokenize"><a class="markdownIt-Anchor" href="#tokenize"></a> Tokenize</h2>
+<p>tokenizer是将自然语言处理成模型能都理解的格式.</p>
+<ol>
+<li>首先tokenizer将句子分割成词语(token), 每一个模型都有不同的分割算法, 可<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/tokenizer_summary">参考官网</a>. 所以tokenizer要和model保持一致</li>
+<li>然后tokenizer会将词语转换为数字, 做成模型需要的<code>tensor</code></li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
+encoded_input <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span><span class="token string">"Do not meddle in the affairs of wizards, for they are subtle and quick to anger."</span><span class="token punctuation">)</span>
+<span class="token comment"># &#123;'input_ids': [101, 2079, 2025, 19960, 10362, 1999, 1996, 3821, 1997, 16657, 1010, 2005, 2027, 2024, 11259, 1998, 4248, 2000, 4963, 1012, 102], </span>
+<span class="token comment">#  'token_type_ids': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], </span>
+<span class="token comment">#  'attention_mask': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>返回值的解释, 可<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/preprocessing">参考官网</a></p>
+<ul>
+<li>input_ids: 词汇表中的索引</li>
+<li>token_type_ids: 当有多个句子时, 表示所在的句子的编号</li>
+<li>atttention_mask: 哪些词语需要attention</li>
+</ul>
+<p>也可以通过<code>decode</code>方法将编码的句子复原</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>decode<span class="token punctuation">(</span>encoded_input<span class="token punctuation">[</span><span class="token string">"input_ids"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># '[CLS] Do not meddle in the affairs of wizards, for they are subtle and quick to anger. [SEP]'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>返回值包含了CLS and SEP (classifier and separator), 并不是所有的模型都需要, 如果模型需要会自动添加.</p>
+<h2 id="pad"><a class="markdownIt-Anchor" href="#pad"></a> pad</h2>
+<h2 id="truncation"><a class="markdownIt-Anchor" href="#truncation"></a> truncation</h2>
+<h2 id="build-tensors"><a class="markdownIt-Anchor" href="#build-tensors"></a> build-tensors</h2>
+<h1 id="audio"><a class="markdownIt-Anchor" href="#audio"></a> audio</h1>
+<p>参考文献:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/preprocessing">https://huggingface.co/docs/transformers/preprocessing</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_autoClasses/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_autoClasses/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-06 16:35:42" itemprop="dateCreated datePublished" datetime="2022-07-06T16:35:42+08:00">2022-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-07 10:32:28" itemprop="dateModified" datetime="2022-07-07T10:32:28+08:00">2022-07-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="初始化模型"><a class="markdownIt-Anchor" href="#初始化模型"></a> 初始化模型</h1>
+<p><code>from_retrained()</code>方法通过pretrained model的name和path来加载模型</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModel<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>以上代码加载了<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert#transformers.BertModel">BertModel</a>, 主要包含了</p>
+<p>BertConfig: 存储了bert模型的配置.比如: vocab_size(语料库的大小, 决定了inputs_ids的范围),hidden_size(隐藏层的大小),num_hidden_layers(隐藏层的层数)等.<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert#transformers.BertConfig">参考官网</a><br />
+BertModel: 输出raw hidden-states, 没有最终的softmax等. 是<code>torch.nn.Module</code>的子类, 可以像<code>pytorch</code>一样操作. <a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert#transformers.BertModel">参考官网</a></p>
+<ol>
+<li>加载模型配置</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoConfig
+config <span class="token operator">=</span> AutoConfig<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-uncased"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>加载model</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoConfig<span class="token punctuation">,</span> AutoModel
+config <span class="token operator">=</span> AutoConfig<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-uncased"</span><span class="token punctuation">)</span>
+model <span class="token operator">=</span> AutoModel<span class="token punctuation">.</span>from_config<span class="token punctuation">(</span>config<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="初始化-tokenizer"><a class="markdownIt-Anchor" href="#初始化-tokenizer"></a> 初始化 Tokenizer</h1>
+<p>BertTokenizer: 在pretrained model vocabulary初始化制作token的类. <a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert#transformers.BertTokenizer">参考官网</a></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-uncased"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="输出结果"><a class="markdownIt-Anchor" href="#输出结果"></a> 输出结果</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForSequenceClassification
+pt_batch <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span><span class="token string">"We are very happy to show you the 🤗 Transformers library."</span><span class="token punctuation">,</span> <span class="token string">"We hope you don't hate it."</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    padding<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+    truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+    max_length<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">,</span>
+    return_tensors<span class="token operator">=</span><span class="token string">"pt"</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+model_name <span class="token operator">=</span> <span class="token string">"nlptown/bert-base-multilingual-uncased-sentiment"</span>
+pt_model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>model_name<span class="token punctuation">)</span>
+pt_outputs <span class="token operator">=</span> pt_model<span class="token punctuation">(</span><span class="token operator">**</span>pt_batch<span class="token punctuation">)</span>
+<span class="token keyword">from</span> torch <span class="token keyword">import</span> nn
+pt_predictions <span class="token operator">=</span> nn<span class="token punctuation">.</span>functional<span class="token punctuation">.</span>softmax<span class="token punctuation">(</span>pt_outputs<span class="token punctuation">.</span>logits<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>pt_predictions<span class="token punctuation">)</span>
+<span class="token comment"># tensor([[0.0021, 0.0018, 0.0115, 0.2121, 0.7725],</span>
+<span class="token comment">#         [0.2084, 0.1826, 0.1969, 0.1755, 0.2365]], grad_fn=&lt;SoftmaxBackward0>)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="automodelforsequenceclassification-vs-automodel"><a class="markdownIt-Anchor" href="#automodelforsequenceclassification-vs-automodel"></a> automodelforsequenceclassification-vs-automodel</h1>
+<p>建议使用<code>AutoTokenizer</code>类和<code>AutoModelFor</code>类来加载模型, 而不是使用<code>AutoModel</code>类来加载.<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/autoclass_tutorial#automodel">参考官网</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/69907682/what-are-differences-between-automodelforsequenceclassification-vs-automodel">https://stackoverflow.com/questions/69907682/what-are-differences-between-automodelforsequenceclassification-vs-automodel</a></p>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert">https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/model_doc/auto">https://huggingface.co/docs/transformers/model_doc/auto</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_pipeline/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_pipeline/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-06 14:18:08 / 修改时间：16:31:21" itemprop="dateCreated datePublished" datetime="2022-07-06T14:18:08+08:00">2022-07-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><code>pipeline()</code>会自动在Model Hub上加载对应<code>task</code>的<code>model</code>和<code>tokenizer</code>.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> pipeline
+classifier <span class="token operator">=</span> pipeline<span class="token punctuation">(</span><span class="token string">"sentiment-analysis"</span><span class="token punctuation">)</span>
+classifier<span class="token punctuation">(</span><span class="token string">"We are very happy to show you the 🤗 Transformers library."</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token punctuation">&#123;</span><span class="token string">'label'</span><span class="token punctuation">:</span> <span class="token string">'POSITIVE'</span><span class="token punctuation">,</span> <span class="token string">'score'</span><span class="token punctuation">:</span> <span class="token number">0.9998</span><span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也可以手动指定</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model_name <span class="token operator">=</span> <span class="token string">"nlptown/bert-base-multilingual-uncased-sentiment"</span>
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer<span class="token punctuation">,</span> AutoModelForSequenceClassification
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>model_name<span class="token punctuation">)</span>
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>model_name<span class="token punctuation">)</span>
+classifier <span class="token operator">=</span> pipeline<span class="token punctuation">(</span><span class="token string">"sentiment-analysis"</span><span class="token punctuation">,</span> model<span class="token operator">=</span>model<span class="token punctuation">,</span> tokenizer<span class="token operator">=</span>tokenizer<span class="token punctuation">)</span>
+<span class="token comment"># classifier = pipeline("sentiment-analysis", model=model_name, tokenizer=model_name) # model和tokenizer也可以直接使用字符串形式</span>
+classifier<span class="token punctuation">(</span><span class="token string">"Nous sommes très heureux de vous présenter la bibliothèque 🤗 Transformers."</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token punctuation">&#123;</span><span class="token string">'label'</span><span class="token punctuation">:</span> <span class="token string">'5 stars'</span><span class="token punctuation">,</span> <span class="token string">'score'</span><span class="token punctuation">:</span> <span class="token number">0.7273</span><span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="api"><a class="markdownIt-Anchor" href="#api"></a> API</h1>
+<h2 id="参数"><a class="markdownIt-Anchor" href="#参数"></a> 参数</h2>
 <table>
 <thead>
 <tr>
@@ -946,1034 +1478,122 @@ Ctrl + F12 | 去往实现处</p>
 </thead>
 <tbody>
 <tr>
-<td>name</td>
-<td>配置的名称</td>
+<td>task</td>
+<td>任务的种类</td>
 </tr>
 <tr>
-<td>type</td>
-<td>类型, 这里是python</td>
+<td>model</td>
+<td>PreTrainedModel对象 或 字符串</td>
 </tr>
 <tr>
-<td>request</td>
-<td><code>launch</code>是本地的文件, <code>attach</code>是连接一运行的进程</td>
+<td>config</td>
+<td>PretrainedConfig对象 或 字符串</td>
 </tr>
 <tr>
-<td>program</td>
-<td>要debug的程序文件</td>
-</tr>
-<tr>
-<td>python</td>
-<td>解释器的路径</td>
-</tr>
-<tr>
-<td>pythonArgs</td>
-<td>传递给解释器的参数, 一般不用</td>
-</tr>
-<tr>
-<td>args</td>
-<td>传递给python程序的参数, <code>&quot;args&quot;: [&quot;--port&quot;, &quot;1593&quot;]</code></td>
+<td>tokenizer</td>
+<td>PreTrainedTokenizer 或 字符串</td>
 </tr>
 </tbody>
 </table>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/main_classes/pipelines#transformers.pipeline">参考官网</a></p>
+<h2 id="task"><a class="markdownIt-Anchor" href="#task"></a> task</h2>
 <table>
 <thead>
 <tr>
-<th>debug快捷键</th>
+<th>字符串</th>
+<th>对象</th>
 <th>描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>F5</td>
-<td>开启debug or continue</td>
+<td>“audio-classification”</td>
+<td>AudioClassificationPipeline</td>
+<td>音频分类</td>
 </tr>
 <tr>
-<td>Shift + F5</td>
-<td>停止debug</td>
+<td>“automatic-speech-recognition”</td>
+<td>AutomaticSpeechRecognitionPipeline</td>
+<td>语音识别</td>
 </tr>
 <tr>
-<td>F6</td>
-<td>restart debug</td>
-</tr>
-<tr>
-<td>F7</td>
-<td>step over</td>
-</tr>
-<tr>
-<td>F8</td>
-<td>step into</td>
-</tr>
-<tr>
-<td>Shift F8</td>
-<td>step out</td>
-</tr>
-<tr>
-<td>Ctrl + d t</td>
-<td>定位到debug console</td>
-</tr>
-<tr>
-<td>Ctrl + d e</td>
-<td>在debug console 中执行</td>
-</tr>
-<tr>
-<td>Ctrl + d w</td>
-<td>将选中变量添加到watch，需要配合visual模式使用</td>
-</tr>
-<tr>
-<td>Ctrl + d d</td>
-<td>disable 所有breakpoint</td>
-</tr>
-<tr>
-<td>Ctrl + d a</td>
-<td>enable 所有breakpoint</td>
-</tr>
-<tr>
-<td>Ctrl + d r</td>
-<td>删除所有breakpoint</td>
-</tr>
-<tr>
-<td>Ctrl + d b</td>
-<td>增加 或 删除断点</td>
-</tr>
-<tr>
-<td>Ctrl + d n</td>
-<td>定位到下一个断点</td>
-</tr>
-<tr>
-<td>Ctrl + d p</td>
-<td>定位到上一个断点</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Alt + e</td>
-<td>在python console中执行选中语句</td>
-</tr>
-</tbody>
-</table>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vscode%E5%BF%AB%E6%8D%B7%E9%94%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/vscode%E5%BF%AB%E6%8D%B7%E9%94%AE/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>#　前提<br />
-在vscode中<code>ctrl + p</code> 输入<code>&gt; open keyboard shortcuts(JSON)</code>, 打开<code>keybings.json</code>文件</p>
-<h1 id="文件操作"><a class="markdownIt-Anchor" href="#文件操作"></a> 文件操作</h1>
-<ol>
-<li>新建文件</li>
-</ol>
-<ul>
-<li><code>Ctrl+n</code></li>
-<li><code>Ctrl+s</code> 保存时输入文件名</li>
-</ul>
-<ol start="2">
-<li>重命名文件</li>
-</ol>
-<ul>
-<li><code>Ctrl+b e</code>跳转到左边的导航</li>
-<li><code>F2</code>重命名文件</li>
-<li><code>Ctrl+e g</code>回到文件编辑器<br />
-注意: 关闭vscode默认的<code>ctrl+w</code>快捷键, 不然可能会以外关闭编辑器</li>
-</ul>
-<ol start="3">
-<li>删除文件</li>
-</ol>
-<ul>
-<li><code>Ctrl+b e</code>跳转到左边的导航</li>
-<li><code>Shift + Del</code>删除文件</li>
-</ul>
-<ol start="4">
-<li>搜索文件名<br />
-使用vscode快捷键<code>ctrl+p</code>进行搜索</li>
-</ol>
-<h1 id="编辑器相关"><a class="markdownIt-Anchor" href="#编辑器相关"></a> 编辑器相关</h1>
-<p>因为编辑器的英文名是<code>editor</code>,所以先导快捷键以<code>e</code>开头</p>
-<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
-<table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Ctrl + e Enter</code></td>
-<td>定位到编辑器</td>
-</tr>
-<tr>
-<td><code>Ctrl + e h</code></td>
-<td>前一个编辑器</td>
-</tr>
-<tr>
-<td><code>Ctrl + e l</code></td>
-<td>后一个编辑器</td>
-</tr>
-<tr>
-<td><code>Ctrl + e s</code></td>
-<td>分割编辑器组（分成两组）</td>
-</tr>
-<tr>
-<td><code>Ctrl+e Ctrl+h</code></td>
-<td>前一组编辑器</td>
-</tr>
-<tr>
-<td><code>Ctrl+e Ctrl+j</code></td>
-<td>后一个编辑器</td>
-</tr>
-<tr>
-<td><code>Ctrl + c</code></td>
-<td>复制, 不建议使用yy进行复制, 因为不能在不同的vscode程序中切换</td>
-</tr>
-<tr>
-<td><code>Ctrl + v</code></td>
-<td>粘贴, 不建议使用p进行粘贴, 因为不能在不同的vscode程序中切换</td>
-</tr>
-</tbody>
-</table>
-<h2 id="移动"><a class="markdownIt-Anchor" href="#移动"></a> 移动</h2>
-<p><code>Alt</code>表示移动<br />
-<code>Alt+Shift</code>表示移动和选择<br />
-<code>Ctrl+Alt+Shift</code>表示特殊光标动作</p>
-<p>一下快捷键根据vim进行操作</p>
-<table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Alt+h,j,k,l</code></td>
-<td>光标左下上右移动</td>
-</tr>
-<tr>
-<td><code>Alt+6,4</code></td>
-<td>光标移动到行最前和最后(模仿vim的shift+6和shift+4)</td>
-</tr>
-<tr>
-<td><code>Alt+Shift+h,j,k,l</code></td>
-<td>光标左下上右移动并选择</td>
-</tr>
-<tr>
-<td><code>Ctrl+Alt+Shit+j,k</code></td>
-<td>光标多行选择</td>
-</tr>
-</tbody>
-</table>
-<h2 id="查找和替换"><a class="markdownIt-Anchor" href="#查找和替换"></a> 查找和替换</h2>
-<ol start="2">
-<li>单文件搜索和替换文件内容</li>
-</ol>
-<ul>
-<li>使用vim的搜索和替换</li>
-<li>使用<code>Ctrl + F</code> + <code>Ctrl+H</code>
-<ul>
-<li><code>TAB</code>來切換搜索和替換</li>
-<li><code>Enter</code> 下一個搜索結果 <code>Shift+Enter</code> 上一個搜索結果</li>
-</ul>
-</li>
-</ul>
-<ol start="3">
-<li>多个文件搜索和替换文件内容</li>
-</ol>
-<ul>
-<li><code>Ctrl+Shift+H</code> 搜索和替換 <code>Ctrl+Shift+F</code> 搜索</li>
-<li><code>Alt + r</code> 切換正則表達式</li>
-<li><code>TAB</code> 來切換搜索框和替換框</li>
-<li><code>Alt + Enter</code> 打開搜索結果</li>
-</ul>
-<h1 id="侧边栏"><a class="markdownIt-Anchor" href="#侧边栏"></a> 侧边栏</h1>
-<p>因为侧边栏的英文是<code>side bar</code>, 所以先导快捷键以<code>b</code>开头</p>
-<table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Ctrl + b Enter</code></td>
-<td>定位到侧边栏</td>
-</tr>
-<tr>
-<td><code>Ctrl + b Ctrl + b</code></td>
-<td>侧边栏显示</td>
-</tr>
-<tr>
-<td><code>Ctrl + b e</code></td>
-<td>侧边栏文件</td>
-</tr>
-<tr>
-<td><code>Ctrl + b g</code></td>
-<td>侧边栏git</td>
-</tr>
-<tr>
-<td><code>Ctrl + b d</code></td>
-<td>侧边栏debug</td>
-</tr>
-</tbody>
-</table>
-<h1 id="控制台相关"><a class="markdownIt-Anchor" href="#控制台相关"></a> 控制台相关</h1>
-<p>控制台英文名是<code>terminal</code>, 所以先导快捷键以<code>t</code>开头</p>
-<table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Ctrl + t Ctrl + t</code></td>
-<td>开关控制台</td>
-</tr>
-<tr>
-<td><code>Ctrl + t Enter</code></td>
-<td>定焦到控制台</td>
-</tr>
-<tr>
-<td><code>Ctrl + t s </code></td>
-<td>分割并创建控制台</td>
-</tr>
-<tr>
-<td><code>Ctrl + t l </code></td>
-<td>移动到右边的控制台</td>
-</tr>
-<tr>
-<td><code>Ctrl + t h </code></td>
-<td>移动到左边的控制台</td>
-</tr>
-<tr>
-<td><code>Ctrl + t k </code></td>
-<td>杀死当前控制台</td>
-</tr>
-<tr>
-<td><code>Ctrl + t c </code></td>
-<td>清空控制台</td>
-</tr>
-</tbody>
-</table>
-<p>只有<code>Ctrl+h</code>和<code>Ctrl+l</code>需要先定位到控制台才能执行, 其他命令都不需要</p>
-<h1 id="debug"><a class="markdownIt-Anchor" href="#debug"></a> debug</h1>
-<p><code>Ctrl+d Ctrl+b</code> conditionalBreakpoint<br />
-<code>Ctrl+d b</code> toggleBreakpoint<br />
-<code>Ctrl+d d</code> disableAllBreakpoints<br />
-<code>Ctrl+d r</code> removeAllBreakpoints<br />
-<code>Ctrl+d w</code> selectionToWatch<br />
-<code>Ctrl+d n</code> goToNextBreakpoint<br />
-<code>Ctrl+d p</code> goToPreviousBreakpoint<br />
-<code>Ctrl+d t</code> focusRepl<br />
-<code>Ctrl+d e</code> selectionToRepl<br />
-<code>Ctrl+d a</code> enableAllBreakpoints</p>
-<p><code>F6</code> restart<br />
-<code>F7</code> stepOver<br />
-<code>F8</code> stepInto<br />
-<code>Shift+F8</code> stepOut</p>
-<h1 id="整体的快捷键配置"><a class="markdownIt-Anchor" href="#整体的快捷键配置"></a> 整体的快捷键配置</h1>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">[</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+w"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-workbench.action.closeActiveEditor"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-workbench.action.quickOpen"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e Enter"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.focusActiveEditorGroup"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e l"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.nextEditorInGroup"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e h"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.previousEditorInGroup"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e s"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.splitEditor"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e ctrl+h"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.focusLeftGroup"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e ctrl+l"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.focusRightGroup"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-workbench.action.toggleSidebarVisibility"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b ctrl+b"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.toggleSidebarVisibility"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b Enter"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.focusSideBar"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b e"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.view.explorer"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"viewContainer.workbench.view.explorer.enabled"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b g"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.view.scm"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"workbench.scm.active"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b d"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.view.debug"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"viewContainer.workbench.view.debug.enabled"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-workbench.action.showAllSymbols"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t h"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.focusPreviousPane"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"terminalFocus &amp;&amp; terminalHasBeenCreated || terminalFocus &amp;&amp; terminalProcessSupported"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t l"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.focusNextPane"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"terminalFocus &amp;&amp; terminalHasBeenCreated || terminalFocus &amp;&amp; terminalProcessSupported"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t Enter"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.focus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t k"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.kill"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t ctrl+t"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.toggleTerminal"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"terminal.active"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t c"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.clear"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t s"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.splitInActiveWorkspace"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> 
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+e"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"python.execSelectionInTerminal"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"editorTextFocus &amp;&amp; !findInputFocussed &amp;&amp; !jupyter.ownsSelection &amp;&amp; !notebookEditorFocused &amp;&amp; !replaceInputFocussed &amp;&amp; editorLangId == 'python'"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-editor.action.addSelectionToNextFindMatch"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"editorFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d ctrl+b"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.conditionalBreakpoint"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d b"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.toggleBreakpoint"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"debuggersAvailable &amp;&amp; editorTextFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d d"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.debug.viewlet.action.disableAllBreakpoints"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d r"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.debug.viewlet.action.removeAllBreakpoints"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d w"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.selectionToWatch"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d n"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.goToNextBreakpoint"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d p"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.goToPreviousBreakpoint"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d t"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.debug.action.focusRepl"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d e"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.selectionToRepl"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d a"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.debug.viewlet.action.enableAllBreakpoints"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"f6"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.debug.restart"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"inDebugMode"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"f6"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-workbench.action.debug.pause"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"debugState == 'running'"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"f7"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.debug.stepOver"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"debugState == 'stopped'"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"f8"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.debug.stepInto"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"debugState != 'inactive'"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"shift+f8"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.debug.stepOut"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"debugState == 'stopped'"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+h"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-gitlens.showQuickFileHistory"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"!gitlens:disabled &amp;&amp; config.gitlens.keymap == 'alternate'"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+h"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-testing.toggleTestingPeekHistory"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"testing.isPeekVisible"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+h"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorLeft"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"shift+alt+h"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorLeftSelect"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+l"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorRight"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"shift+alt+l"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorRightSelect"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+k"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorUp"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"shift+alt+k"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorUpSelect"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+j"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorDown"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"shift+alt+j"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorDownSelect"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+4"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorLineEnd"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+6"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorLineStart"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+shift+alt+j"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorColumnSelectDown"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+shift+alt+k"</span><span class="token punctuation">,</span>
-    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorColumnSelectUp"</span><span class="token punctuation">,</span>
-    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vscode%E6%8F%92%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/vscode%E6%8F%92%E4%BB%B6/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="vscode插件"><a class="markdownIt-Anchor" href="#vscode插件"></a> vscode插件</h1>
-<p><a target="_blank" rel="noopener" href="https://www.panyanbin.com/article/47d1c4a4.html">VSCode与npm同名插件区别</a><br />
-以eslint为例, vscode安装的eslint插件是只是做可视化的展示, 展示的内容扔依赖于npm安装的eslint包. 也既是说, 如果vscode不安装eslint插件, 那么eslint的检查结果, 只能使用npm安装的eslint包,通过命令行的形式输出.</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>通用插件</td>
+<td>“conversational”</td>
+<td>ConversationalPipeline</td>
 <td></td>
 </tr>
 <tr>
-<td>Remote Development</td>
-<td>远程操作,包含SSH, WSL(win下的linux), Containers(直接进入docker容器)</td>
-</tr>
-<tr>
-<td>SFTP</td>
-<td>同于同步本地和远程文件</td>
-</tr>
-<tr>
-<td>Local History</td>
-<td>本地历史</td>
-</tr>
-<tr>
-<td>Vim</td>
-<td>Vim快捷键</td>
-</tr>
-<tr>
-<td>vscode-icons</td>
+<td>“feature-extraction”</td>
+<td>FeatureExtractionPipeline</td>
 <td></td>
 </tr>
 <tr>
-<td>编程相关</td>
+<td>“fill-mask”</td>
+<td>FillMaskPipeline:</td>
 <td></td>
 </tr>
 <tr>
-<td>Bracket Pair Colorizer2</td>
-<td>已经更新到第二个版本</td>
+<td>“image-classification”</td>
+<td>ImageClassificationPipeline</td>
+<td>图像份额里</td>
 </tr>
 <tr>
-<td>Indent-Rainbow</td>
+<td>“question-answering”</td>
+<td>QuestionAnsweringPipeline</td>
 <td></td>
 </tr>
 <tr>
-<td>Path Intellisense</td>
-<td>自动填充文件名</td>
-</tr>
-<tr>
-<td>Code Spell Checker</td>
+<td>“table-question-answering”</td>
+<td>TableQuestionAnsweringPipeline</td>
 <td></td>
 </tr>
 <tr>
-<td>Code alignment</td>
+<td>“text2text-generation”</td>
+<td>Text2TextGenerationPipeline</td>
 <td></td>
 </tr>
 <tr>
-<td>Prettier</td>
-<td>格式美化</td>
+<td>“text-classification” (alias “sentiment-analysis” available)</td>
+<td>TextClassificationPipeline</td>
+<td>文本分类</td>
 </tr>
 <tr>
-<td>Todo Tree</td>
-<td>显示TODO和FIXME</td>
+<td>“text-generation”</td>
+<td>TextGenerationPipeline:</td>
+<td>文本生成</td>
 </tr>
 <tr>
-<td>ESLint</td>
-<td>前端开发用</td>
+<td>“token-classification” (alias “ner” available)</td>
+<td>TokenClassificationPipeline</td>
+<td>命名实体识别</td>
 </tr>
 <tr>
-<td>Vue Language Features(Volar)</td>
-<td>Vue插件</td>
+<td>“translation”</td>
+<td>TranslationPipeline</td>
+<td>翻译</td>
 </tr>
 <tr>
-<td>Python</td>
-<td>当有<code>.py</code>文件时自动提示下载(包含Jupyter, Pylance)</td>
-</tr>
-<tr>
-<td>Pylance</td>
-<td>代码的提示</td>
-</tr>
-<tr>
-<td>Git</td>
-<td>相关</td>
-</tr>
-<tr>
-<td>Git Graph</td>
-<td>git 管理</td>
-</tr>
-<tr>
-<td>GitLens</td>
-<td>Git的增强插件</td>
-</tr>
-</tbody>
-</table>
-<h2 id="sftp"><a class="markdownIt-Anchor" href="#sftp"></a> sftp</h2>
-<table>
-<thead>
-<tr>
-<th>属性</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>name</td>
-<td>配置文件的名称, 随意</td>
-</tr>
-<tr>
-<td>context</td>
-<td>本地文件夹地址，默认为vscode工作区根目录</td>
-</tr>
-<tr>
-<td>protocol</td>
-<td>协议, 默认sftp, 可选ftp</td>
-</tr>
-<tr>
-<td>host</td>
-<td>远程IP地址</td>
-</tr>
-<tr>
-<td>port</td>
-<td>远程端口, 默认22</td>
-</tr>
-<tr>
-<td>username</td>
-<td>用户名</td>
-</tr>
-<tr>
-<td>password</td>
-<td>密码</td>
-</tr>
-<tr>
-<td>remotePath</td>
-<td>远程文件夹地址, 默认&quot;/&quot;, 一般未和本地路径同名, 比如<code>*/localdir/</code></td>
-</tr>
-<tr>
-<td>uploadOnSave</td>
-<td>保存自动上传, 默认false</td>
-</tr>
-<tr>
-<td>downloadOnOpen</td>
-<td>打开自动下, 默认false</td>
-</tr>
-<tr>
-<td>syncOption</td>
-<td>配置同步, 默认<code>&#123;&#125;</code>空</td>
-</tr>
-<tr>
-<td>syncOption.delete</td>
-<td>删除远程多余文件</td>
-</tr>
-<tr>
-<td>syncOption.skipCreate</td>
-<td>不在远程创建新文件</td>
-</tr>
-<tr>
-<td>syncOption.ignoreExisting</td>
-<td>不更新远程存在的文件</td>
-</tr>
-<tr>
-<td>syncOption.update</td>
-<td>仅在??</td>
-</tr>
-<tr>
-<td>ignore</td>
-<td>类似gitignore,根目录从context开始, 默认<code>[]</code>空</td>
-</tr>
-<tr>
-<td>ignoreFile</td>
-<td>用ignore即可</td>
-</tr>
-<tr>
-<td>watcher</td>
-<td>默认<code>&#123;&#125;</code>空</td>
-</tr>
-<tr>
-<td>watcher.files</td>
-<td>使用<code>glob</code>语法监控文件, 当监控所有时关闭<code>uploadOnSave</code></td>
-</tr>
-<tr>
-<td>watcher.autoUpload</td>
-<td>自动上传</td>
-</tr>
-<tr>
-<td>watcher.autoDelete</td>
-<td>自动删除</td>
-</tr>
-<tr>
-<td>remoteTimeOffsetInHours</td>
-<td>本地和远程的时间偏差,默认为0</td>
-</tr>
-<tr>
-<td>remoteExplorer</td>
-<td>默认<code>&#123;&#125;</code>空</td>
-</tr>
-<tr>
-<td>remoteExplorer.filesExclude</td>
+<td>“translation_xx_to_yy”</td>
+<td>TranslationPipeline</td>
 <td></td>
 </tr>
 <tr>
-<td>concurrency</td>
-<td>并发数, 默认4</td>
+<td>“summarization”</td>
+<td>SummarizationPipeline</td>
+<td>概括</td>
 </tr>
 <tr>
-<td>connectTimeout</td>
-<td>超时时间, 默认10000</td>
-</tr>
-<tr>
-<td>limitOpenFilesOnRemote</td>
-<td>远程打开文件数, 默认false(222)</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://github.com/liximomo/vscode-sftp/wiki/Common-Config">参考</a></td>
+<td>“zero-shot-classification”</td>
+<td>ZeroShotClassificationPipeline</td>
 <td></td>
 </tr>
 </tbody>
 </table>
-<p>ignore 语法<br />
-<code>**</code>:表示路径 <code>**/data</code>忽略任何路径下的data文件夹<br />
-<code>*</code>:通配符 <code>*.zip</code> 忽略<code>zip</code>类型文件<br />
-<code>data/*</code>:忽略data路径下的文件, 但是不忽略data路径<br />
-<code>data/</code>:忽略data路径(当然下面的文件也不会有)</p>
-<h2 id="vim"><a class="markdownIt-Anchor" href="#vim"></a> vim</h2>
-<p>默认vim的快捷键会覆盖vscode的快捷键, 使用以下配置禁止覆盖</p>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"vim.handleKeys"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">"&lt;C-c>"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
-    <span class="token property">"&lt;C-v>"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
-    <span class="token property">"&lt;C-x>"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vite/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/vite/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://vitejs.dev/guide/#scaffolding-your-first-vite-project">安装</a><br />
-<a target="_blank" rel="noopener" href="https://vitejs.dev/config/">配置</a></p>
-<p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10270465?sc=iThelpR">配置案例参考</a></p>
-<h1 id="配置代理"><a class="markdownIt-Anchor" href="#配置代理"></a> <a target="_blank" rel="noopener" href="https://vitejs.dev/config/#server-proxy">配置代理</a></h1>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// vite.config.js</span>
-<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> defineConfig <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"vite"</span><span class="token punctuation">;</span>
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defineConfig</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  <span class="token literal-property property">server</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token literal-property property">proxy</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      <span class="token string-property property">"/api"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">// 将前端访问的http://localhost:3000/api, 转发</span>
-        <span class="token literal-property property">target</span><span class="token operator">:</span> <span class="token string">"http://localhost:3001"</span><span class="token punctuation">,</span> <span class="token comment">// 转发的目的地，完整的url是`http://localhost:3001/api`</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>以上配置如果我们前端发送请求<code>http://localhost:3000/api/login</code>，后端收到的是<code>http://localhost:3001/api/login</code>, 如果想后端收到的去掉<code>/api</code>, 可以添加<code>rewrite</code>属性:</p>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token string-property property">"/api"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-  <span class="token comment">// 将前端访问的http://localhost:3000/api, 转发, `/api`path路径会镜像复制到新的端口</span>
-  <span class="token literal-property property">target</span><span class="token operator">:</span> <span class="token string">"http://localhost:3001"</span><span class="token punctuation">,</span> <span class="token comment">// 转发的目的地，完整的url是`http://localhost:3001/api`</span>
-  <span class="token function-variable function">rewrite</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">path</span><span class="token punctuation">)</span> <span class="token operator">=></span> path<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">^\/api</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/main_classes/pipelines#transformers.pipeline.task">参考官网</a></p>
+<p>参考文献:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/quicktour">quicktour</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/pipeline_tutorial">pipeline_tutorial</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/main_classes/pipelines">pipelines</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/models">models</a></p>
 
       
     </div>
@@ -1993,7 +1613,7 @@ Ctrl + F12 | 去往实现处</p>
 
 
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/other/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/45/">45</a><a class="extend next" rel="next" href="/other/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/other/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/46/">46</a><a class="extend next" rel="next" href="/other/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

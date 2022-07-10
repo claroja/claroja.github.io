@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="pandas_index index的使用 loc[index] groupby[indexName]">
+    <meta name="description" content="通过dataFrame.index可以获得数据框的索引  准备数据 import pandas as pd df &#x3D; pd.DataFrame(&amp;#123;&#39;a&#39;: [1, 2, 3], &#39;b&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;],&#39;c&#39;: [&quot;A&quot;,&quot;B&quot;,&quot;C&quot;],&#39;d&#39;:[3,2,1]&amp;#125;) &quot;&quot;&quot;    a  b  c  d 0  1  a  A  3 1  2  b  B  2 2">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Claroja">
 <meta property="og:url" content="https://claroja.github.io/pandas_index/index.html">
 <meta property="og:site_name" content="Claroja">
-<meta property="og:description" content="pandas_index index的使用 loc[index] groupby[indexName]">
+<meta property="og:description" content="通过dataFrame.index可以获得数据框的索引  准备数据 import pandas as pd df &#x3D; pd.DataFrame(&amp;#123;&#39;a&#39;: [1, 2, 3], &#39;b&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;],&#39;c&#39;: [&quot;A&quot;,&quot;B&quot;,&quot;C&quot;],&#39;d&#39;:[3,2,1]&amp;#125;) &quot;&quot;&quot;    a  b  c  d 0  1  a  A  3 1  2  b  B  2 2">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-04T05:40:02.407Z">
-<meta property="article:modified_time" content="2022-07-04T05:40:02.407Z">
+<meta property="article:modified_time" content="2022-07-05T06:01:12.125Z">
 <meta property="article:author" content="Claroja">
 <meta name="twitter:card" content="summary">
 
@@ -102,7 +102,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -115,6 +115,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="nav-number">1.</span> <span class="nav-text"> 准备数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#set_index"><span class="nav-number">2.</span> <span class="nav-text"> set_index</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E5%8D%95%E5%88%97%E8%AE%BE%E7%BD%AE%E6%88%90%E7%B4%A2%E5%BC%95"><span class="nav-number">2.1.</span> <span class="nav-text"> 将单列设置成索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E5%A4%9A%E5%88%97%E8%AE%BE%E7%BD%AE%E6%88%90%E7%B4%A2%E5%BC%95"><span class="nav-number">2.2.</span> <span class="nav-text"> 将多列设置成索引</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reset_index"><span class="nav-number">3.</span> <span class="nav-text"> reset_index</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -127,7 +128,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-count">456</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -213,6 +214,13 @@
 
       <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-05 14:01:12" itemprop="dateModified" datetime="2022-07-05T14:01:12+08:00">2022-07-05</time>
+    </span>
 
   
 </div>
@@ -224,10 +232,98 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>pandas_index</p>
-<p>index的使用</p>
-<p>loc[index]<br />
-groupby[indexName]</p>
+        <p>通过<code>dataFrame.index</code>可以获得数据框的索引</p>
+<h1 id="准备数据"><a class="markdownIt-Anchor" href="#准备数据"></a> 准备数据</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token string">'a'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token string">'c'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"A"</span><span class="token punctuation">,</span><span class="token string">"B"</span><span class="token punctuation">,</span><span class="token string">"C"</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token string">'d'</span><span class="token punctuation">:</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+   a  b  c  d
+0  1  a  A  3
+1  2  b  B  2
+2  3  c  C  1
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="set_index"><a class="markdownIt-Anchor" href="#set_index"></a> set_index</h1>
+<h2 id="将单列设置成索引"><a class="markdownIt-Anchor" href="#将单列设置成索引"></a> 将单列设置成索引</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">df1 <span class="token operator">=</span> df<span class="token punctuation">.</span>set_index<span class="token punctuation">(</span><span class="token string">'c'</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+   a  b  d
+c         
+A  1  a  3
+B  2  b  2
+C  3  c  1
+"""</span>
+df1<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token string">'B'</span><span class="token punctuation">]</span>
+<span class="token triple-quoted-string string">"""
+a    2
+b    b
+d    2
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="将多列设置成索引"><a class="markdownIt-Anchor" href="#将多列设置成索引"></a> 将多列设置成索引</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">df2 <span class="token operator">=</span> df<span class="token punctuation">.</span>set_index<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'b'</span><span class="token punctuation">,</span><span class="token string">'c'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment">#　将两列设置成索引</span>
+<span class="token triple-quoted-string string">"""
+     a  d
+b c      
+a A  1  3
+b B  2  2
+c C  3  1
+"""</span>
+
+df2<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'b'</span><span class="token punctuation">,</span><span class="token string">'B'</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token comment"># 双列索引取值</span>
+
+<span class="token triple-quoted-string string">"""
+a    2
+d    2
+"""</span>
+
+df2<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'b'</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token triple-quoted-string string">"""
+   a  d
+c      
+B  2  2
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>keys</td>
+<td>type:list of labels, 作为索引的列</td>
+</tr>
+<tr>
+<td>deop</td>
+<td>type:bool;default:True, 是否丢弃作为索引的列</td>
+</tr>
+</tbody>
+</table>
+<h1 id="reset_index"><a class="markdownIt-Anchor" href="#reset_index"></a> reset_index</h1>
+<p><code>reset_index</code>是<code>set_index</code>的逆向操作, 索引列被重新使用数字排序, 之前的索引列, 被当成一个一个普通列对待.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">df1<span class="token punctuation">.</span>reset_index<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token triple-quoted-string string">"""
+   c  a  b  d
+0  A  1  a  3
+1  B  2  b  2
+2  C  3  c  1
+"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>drop</td>
+<td>default False, 是否丢弃索引列</td>
+</tr>
+</tbody>
+</table>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reset_index.html#pandas.DataFrame.reset_index">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reset_index.html#pandas.DataFrame.reset_index</a></p>
 
     </div>
 
@@ -246,7 +342,7 @@ groupby[indexName]</p>
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/pandas_groupby/" rel="next" title="">
+                <a href="/pandas_merge/" rel="next" title="">
                    <i class="fa fa-chevron-right"></i>
                 </a>
             </div>

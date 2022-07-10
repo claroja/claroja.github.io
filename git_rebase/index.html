@@ -20,16 +20,16 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="git rebase: Move the base of a branch 更改当前分支的根基  命令 git rebase -i [&lt;upstream&gt; [&lt;branch&gt;]]    参数 描述     branch 默认停留在当前的分支, 如果指定branch, 则自动执行git switch &lt;branch&gt;   &lt;upstream&gt; 默认指向">
+    <meta name="description" content="git rebase: 更改当前分支的根基(Move the base of a branch)  命令 git rebase -i [&lt;upstream&gt; [&lt;branch&gt;]]    参数 描述     branch 默认停留在当前的分支, 如果指定branch, 则自动执行git switch &lt;branch&gt;   &lt;upstream&gt; 默认指">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Claroja">
 <meta property="og:url" content="https://claroja.github.io/git_rebase/index.html">
 <meta property="og:site_name" content="Claroja">
-<meta property="og:description" content="git rebase: Move the base of a branch 更改当前分支的根基  命令 git rebase -i [&lt;upstream&gt; [&lt;branch&gt;]]    参数 描述     branch 默认停留在当前的分支, 如果指定branch, 则自动执行git switch &lt;branch&gt;   &lt;upstream&gt; 默认指向">
+<meta property="og:description" content="git rebase: 更改当前分支的根基(Move the base of a branch)  命令 git rebase -i [&lt;upstream&gt; [&lt;branch&gt;]]    参数 描述     branch 默认停留在当前的分支, 如果指定branch, 则自动执行git switch &lt;branch&gt;   &lt;upstream&gt; 默认指">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://claroja.github.io/git_rebase/1.png">
 <meta property="article:published_time" content="2022-07-04T08:29:55.607Z">
-<meta property="article:modified_time" content="2022-07-04T11:45:36.689Z">
+<meta property="article:modified_time" content="2022-07-05T01:43:13.839Z">
 <meta property="article:author" content="Claroja">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://claroja.github.io/git_rebase/1.png">
@@ -117,7 +117,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text"> 命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text"> 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2merge"><span class="nav-number">2.1.</span> <span class="nav-text"> 替换merge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E6%8C%87%E5%AE%9A%E6%8F%90%E4%BA%A4%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-number">2.2.</span> <span class="nav-text"> 更改指定提交的信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E6%8F%90%E4%BA%A4%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.3.</span> <span class="nav-text"> 更改提交顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4"><span class="nav-number">2.4.</span> <span class="nav-text"> 合并多次提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%BC%80%E4%B8%80%E6%AC%A1%E6%8F%90%E4%BA%A4"><span class="nav-number">2.5.</span> <span class="nav-text"> 分开一次提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E4%BB%A3-amend"><span class="nav-number">2.6.</span> <span class="nav-text"> 替代--amend</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-root"><span class="nav-number">3.</span> <span class="nav-text"> --root</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#continue"><span class="nav-number">4.</span> <span class="nav-text"> continue</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text"> 命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text"> 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2merge"><span class="nav-number">2.1.</span> <span class="nav-text"> 替换merge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E6%8C%87%E5%AE%9A%E6%8F%90%E4%BA%A4%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-number">2.2.</span> <span class="nav-text"> 更改指定提交的信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E6%8F%90%E4%BA%A4%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.3.</span> <span class="nav-text"> 更改提交顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4"><span class="nav-number">2.4.</span> <span class="nav-text"> 合并多次提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%BC%80%E4%B8%80%E6%AC%A1%E6%8F%90%E4%BA%A4"><span class="nav-number">2.5.</span> <span class="nav-text"> 分开一次提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E4%BB%A3-amend"><span class="nav-number">2.6.</span> <span class="nav-text"> 替代--amend</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-root"><span class="nav-number">3.</span> <span class="nav-text"> --root</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#continue"><span class="nav-number">4.</span> <span class="nav-text"> continue</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4-2"><span class="nav-number">5.</span> <span class="nav-text"> 命令</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -130,7 +130,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-count">456</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -213,9 +213,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-07-04 16:29:55 / 修改时间：19:45:36" itemprop="dateCreated datePublished" datetime="2022-07-04T16:29:55+08:00">2022-07-04</time>
+      <time title="创建时间：2022-07-04 16:29:55" itemprop="dateCreated datePublished" datetime="2022-07-04T16:29:55+08:00">2022-07-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-05 09:43:13" itemprop="dateModified" datetime="2022-07-05T09:43:13+08:00">2022-07-05</time>
     </span>
 
   
@@ -228,8 +234,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>git rebase: Move the base of a branch<br />
-更改当前分支的根基</p>
+        <p>git rebase: 更改当前分支的根基(Move the base of a branch)</p>
 <h1 id="命令"><a class="markdownIt-Anchor" href="#命令"></a> 命令</h1>
 <p><code>git rebase -i [&lt;upstream&gt; [&lt;branch&gt;]]</code></p>
 <table>
@@ -252,6 +257,7 @@
 </table>
 <h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
 <h2 id="替换merge"><a class="markdownIt-Anchor" href="#替换merge"></a> 替换<code>merge</code></h2>
+<p><code>git rebase branch</code></p>
 <p><img src="1.png" alt="1.png" /></p>
 <h2 id="更改指定提交的信息"><a class="markdownIt-Anchor" href="#更改指定提交的信息"></a> 更改指定提交的信息</h2>
 <p>假设有提交<code>A-B-C-D-E-F</code>, <code>HEAD</code>指向<code>F</code>, 需要修改<code>C</code>和<code>D</code>的 author.</p>
@@ -323,18 +329,19 @@
 <p>当我们进行3次提交后, 使用<code>git rebase -i HEAD^3</code>会报错, 因为第一个提交是<code>root</code>, 也就是说只能<code>git rebase -i HEAD~2</code>, <code>root commit</code>不能获得, 如果想获得, 需要执行<code>git rebase -i --root</code></p>
 <h1 id="continue"><a class="markdownIt-Anchor" href="#continue"></a> continue</h1>
 <p><code>git reabse --continue --abort</code><br />
-在使用-i交互模式时,处理conflict会中断,要使用–continue来恢复交互模式<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+在使用-i交互模式时,处理conflict会中断,要使用–continue来恢复交互模式</p>
+<h1 id="命令-2"><a class="markdownIt-Anchor" href="#命令-2"></a> 命令</h1>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">pick：保留该commit（缩写:p）
+reword：保留该commit，但我需要修改该commit的注释（缩写:r）
+edit：保留该commit, 但我要停下来修改该提交(不仅仅修改注释)（缩写:e）
+squash：将该commit和前一个commit合并（缩写:s）
+fixup：将该commit和前一个commit合并，但我不要保留该提交的注释信息（缩写:f）
+exec：执行shell命令（缩写:x）
+drop：我要丢弃该commit（缩写:d）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><a target="_blank" rel="noopener" href="https://git-rebase.io/">https://git-rebase.io/</a><br />
 <a target="_blank" rel="noopener" href="https://www.educative.io/answers/what-is-the-git-rebase-branch-name-command">https://www.educative.io/answers/what-is-the-git-rebase-branch-name-command</a><br />
 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3042437/how-to-change-the-commit-author-for-one-specific-commit">https://stackoverflow.com/questions/3042437/how-to-change-the-commit-author-for-one-specific-commit</a><br />
 <a target="_blank" rel="noopener" href="https://git-scm.com/docs/git-rebase">https://git-scm.com/docs/git-rebase</a></p>
-<hr class="footnotes-sep" />
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>测试 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
 
     </div>
 

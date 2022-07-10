@@ -123,7 +123,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">442</span>
+          <span class="site-state-item-count">456</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_process_pipes&queues/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_io_epoll/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -195,7 +195,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/python_process_pipes&queues/" class="post-title-link" itemprop="url">python_process_pipes&queues</a>
+          <a href="/python_io_epoll/" class="post-title-link" itemprop="url">python_io_epoll</a>
         </h2>
 
         <div class="post-meta-container">
@@ -226,501 +226,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>待补充</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_process_multiprocessing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_process_multiprocessing/" class="post-title-link" itemprop="url">python_process_multiprocessing</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="1.png" alt="1.png" /></p>
-<p>Ready：进程已分配到除CPU以为的所有必要的资源，只要获得处理机便可立即执行<br />
-Running：当进程已获得处理机，其程序正在处理机上执行<br />
-Blocked：引起进程阻塞的时间有多种，例如：等待I/O完成、申请缓冲区不能满足、等待信件（信号）</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#程序开始,进入ready状态(注意不是running)</span>
-<span class="token keyword">import</span> time <span class="token comment"># 程序开始运行</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"running"</span><span class="token punctuation">)</span>
-time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token comment"># 进入blocked状态,input方法也是blocked状态</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"over"</span><span class="token punctuation">)</span><span class="token comment">#sleep后进入running状态</span>
-<span class="token comment">#结束</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>multiprocessing.Process</code>的接口设计类似于<code>threading.Thread</code></p>
-<p>进程主要模块包括:</p>
-<ol>
-<li>
-<p>进程<br />
-Process</p>
-</li>
-<li>
-<p>进程通信<br />
-Pipes<br />
-Queues</p>
-</li>
-<li>
-<p>共享对象<br />
-Value<br />
-Array<br />
-dict</p>
-</li>
-<li>
-<p>锁<br />
-lock: 最基本的锁<br />
-rlock: 可重入锁<br />
-semaphore: 计数锁, 当小于规定阈值线程数量时, 可执行, 并获得锁<br />
-barrier: 计数锁, 当小于规定阈值线程数量时, 会阻塞, 知道大于阈值时, 才可执行<br />
-condition: 调用wait()来进入等待室, 调用notify()方法来唤醒, 好处是一个线程可以反复使用<br />
-event: 类似于condition</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_process_semaphore/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_process_semaphore/" class="post-title-link" itemprop="url">python_process_semaphore</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Semaphore信号量相比Lock锁，可以控制进入进程的数量<br />
-Lock一次只允许一个进程进入<br />
-Semaphore(n)则可以允许n个进程进入</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Process<span class="token punctuation">,</span>Lock<span class="token punctuation">,</span>Semaphore
-<span class="token keyword">import</span> os<span class="token punctuation">,</span>time
-<span class="token keyword">def</span> <span class="token function">work</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span>lock<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    lock<span class="token punctuation">.</span>acquire<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%s: %s is running'</span> <span class="token operator">%</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span>os<span class="token punctuation">.</span>getpid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%s:%s is done'</span> <span class="token operator">%</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span>os<span class="token punctuation">.</span>getpid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    lock<span class="token punctuation">.</span>release<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    lock<span class="token operator">=</span>Semaphore<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        p<span class="token operator">=</span>Process<span class="token punctuation">(</span>target<span class="token operator">=</span>work<span class="token punctuation">,</span>args<span class="token operator">=</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span>lock<span class="token punctuation">)</span><span class="token punctuation">)</span>
-        p<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_process_pool/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_process_pool/" class="post-title-link" itemprop="url">python_process_pool</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>常规创建多个子进程的方式是通过循环, 但这种方式有个缺点是: 每次都要申请进程的资源, 比如内存空间</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> multiprocessing
-<span class="token keyword">import</span> time
-<span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Process
-
-<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-   <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"线程 %d执行"</span> <span class="token operator">%</span> multiprocessing<span class="token punctuation">.</span>current_process<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>pid <span class="token punctuation">)</span>
-   time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-   t_lst <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-   <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-       t <span class="token operator">=</span> Process<span class="token punctuation">(</span>target<span class="token operator">=</span>func<span class="token punctuation">)</span>
-       t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
-       t_lst<span class="token punctuation">.</span>append<span class="token punctuation">(</span>t<span class="token punctuation">)</span>
-   <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"父线程结束"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>通过线程池<code>multiprocessing.Pool</code>, 可以预先创建几个进程, 复用, 省去了反复创建的时间.</p>
-<h2 id="apply与apply_async"><a class="markdownIt-Anchor" href="#apply与apply_async"></a> apply与apply_async</h2>
-<p>apply:同步, 立刻阻塞主进程, 每次从线程池取一个进程<br />
-apply_async: 异步, 不阻塞主进程, 每次从线程池取所有进程</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
-<span class="token keyword">import</span> multiprocessing
-<span class="token keyword">import</span> time
-<span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
-      <span class="token keyword">print</span><span class="token punctuation">(</span>multiprocessing<span class="token punctuation">.</span>current_process<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>pid <span class="token punctuation">,</span>p<span class="token punctuation">)</span>
-      time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
-<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">"__main__"</span><span class="token punctuation">:</span>
-   pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span>processes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
-   <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-       pool<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span>test<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 同步, 每次从池子里取出一个进程, 执行结束后, 再取另一个进程, 不需要阻塞主进程.</span>
-   <span class="token comment">#    pool.apply_async(test, args=(i,)) # 异步, 每次从池子里把可用进程全部取出</span>
-   <span class="token comment"># pool.close() # apply_async时, join前必须先close(停止向池子中继续添加任务)</span>
-   <span class="token comment"># pool.join() # apply_async时, 如果没有join则子进程会立刻结束</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="map-与-map_async"><a class="markdownIt-Anchor" href="#map-与-map_async"></a> map 与 map_async</h2>
-<p>map: 同步, 立刻阻塞主进程, 每次从线程池取所有进程(区别于apply, 每次只取一个进程)<br />
-map_async: 异步, 不阻塞主进程, 每次从线程池取所有进程</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
-<span class="token keyword">import</span> time
-<span class="token keyword">import</span> multiprocessing
-<span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
-   <span class="token keyword">print</span><span class="token punctuation">(</span>multiprocessing<span class="token punctuation">.</span>current_process<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>pid<span class="token punctuation">,</span>i<span class="token punctuation">)</span>
-   time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
-   lists <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
-   pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span>processes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
-   <span class="token comment"># pool.map(test, lists)</span>
-   pool<span class="token punctuation">.</span>map_async<span class="token punctuation">(</span>target<span class="token operator">=</span>test<span class="token punctuation">,</span> lists<span class="token punctuation">)</span>
-   pool<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
-   pool<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="接受子进程的返回结果"><a class="markdownIt-Anchor" href="#接受子进程的返回结果"></a> 接受子进程的返回结果</h2>
-<h3 id="apply_async"><a class="markdownIt-Anchor" href="#apply_async"></a> <code>apply_async</code></h3>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
-<span class="token keyword">import</span> time
-<span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
-   time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-   <span class="token keyword">return</span> p<span class="token operator">*</span>p
-<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">"__main__"</span><span class="token punctuation">:</span>
-   res_lst <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-   pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span>processes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
-   <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-       res <span class="token operator">=</span> pool<span class="token punctuation">.</span>apply_async<span class="token punctuation">(</span>test<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-       res_lst<span class="token punctuation">.</span>append<span class="token punctuation">(</span>res<span class="token punctuation">)</span>
-   pool<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
-   pool<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
-   <span class="token punctuation">[</span><span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> result <span class="token keyword">in</span> res_lst<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="map"><a class="markdownIt-Anchor" href="#map"></a> map</h3>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
-<span class="token keyword">import</span> time
-<span class="token keyword">import</span> multiprocessing
-<span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
-   <span class="token keyword">print</span><span class="token punctuation">(</span>multiprocessing<span class="token punctuation">.</span>current_process<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>pid<span class="token punctuation">,</span>i<span class="token punctuation">)</span>
-   time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-   <span class="token keyword">return</span> i<span class="token operator">*</span>i
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
-   lists <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
-   pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span>processes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
-   res <span class="token operator">=</span> pool<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>test<span class="token punctuation">,</span> lists<span class="token punctuation">)</span> <span class="token comment"># 列表对应位置</span>
-   <span class="token keyword">print</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="回调函数"><a class="markdownIt-Anchor" href="#回调函数"></a> 回调函数</h2>
-<p>进程池中一个进程处理完任务之后，这进程可以调用一个函数去处理该进程返回的结果，这个函数就是回调函数。</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
-<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span>info<span class="token punctuation">)</span><span class="token punctuation">:</span>
-   <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"回调加工subp方法的返回结果:"</span><span class="token operator">+</span><span class="token builtin">str</span><span class="token punctuation">(</span>info<span class="token operator">/</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token keyword">def</span> <span class="token function">subp</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">:</span>
-   <span class="token keyword">return</span> i <span class="token operator">*</span> i
-
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-   pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span><span class="token punctuation">)</span>
-   <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-       res <span class="token operator">=</span> pool<span class="token punctuation">.</span>apply_async<span class="token punctuation">(</span>subp<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> <span class="token punctuation">)</span><span class="token punctuation">,</span> callback<span class="token operator">=</span>func<span class="token punctuation">)</span> <span class="token comment"># subp的返回值作为func的参数传递</span>
-   pool<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
-   pool<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_process_signal/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_process_signal/" class="post-title-link" itemprop="url">python_process_signal</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>signal.SIG_DFL</td>
-<td>执行信号的默认函数</td>
-</tr>
-<tr>
-<td>signal.SIG_IGN</td>
-<td>忽略信号</td>
-</tr>
-<tr>
-<td>signal.NSIG</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.ITIMER_REAL</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.ITIMER_VIRTUAL</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.ITIMER_PROF</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.SIG_BLOC</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.SIG_UNBLOCK</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.SIG_SETMASK</td>
-<td></td>
-</tr>
-</tbody>
-</table>
+          <p>1.Linux2.6出现epoll,西能最好的多路I/O就绪通知方法<br />
+2.epoll同时支持水平触发和边缘触发(只触发1次,再发生变化不会告知)<br />
+3.使用mmap技术,省去了fd在系统调用时复制的开销<br />
+4.epoll采用事件就绪通知方式,类似于callback机制</p>
 <table>
 <thead>
 <tr>
@@ -730,106 +239,66 @@ map_async: 异步, 不阻塞主进程, 每次从线程池取所有进程</p>
 </thead>
 <tbody>
 <tr>
-<td>signal.alarm(time)</td>
-<td>定时发送<code>SIGALAEM</code>信号,</td>
+<td>select.epoll([sizehint=-1])</td>
+<td>返回epoll对象</td>
 </tr>
 <tr>
-<td>signal.getsignal(signalnum)</td>
-<td>返回信号处理函数(python对象, signal.SIG_IGN, signal.SIG_DFL,None)</td>
+<td>epoll.poll(timeout=-1[, maxevnets=-1])</td>
+<td>等待事件，timeout(float)的单位是秒（second）</td>
 </tr>
 <tr>
-<td>signal.strsignal(signalnum)</td>
-<td>对信号的描述</td>
+<td>epoll.close()</td>
+<td>关闭epoll对象的文件描述符。</td>
 </tr>
 <tr>
-<td>signal.valid_signals()</td>
-<td>当前系统可用的信号</td>
+<td>epoll.fileno</td>
+<td>返回control fd的文件描述符number。</td>
 </tr>
 <tr>
-<td>signal.pause()</td>
-<td>阻塞,直到收到信号</td>
+<td>epoll.fromfd(fd)</td>
+<td>用给予的fd来创建一个epoll对象。</td>
 </tr>
 <tr>
-<td>signal.raise_signal(signum)</td>
-<td>给当前进程发送信号</td>
+<td>epoll.register(fd[, eventmask])</td>
+<td>在epoll对象中注册一个文件描述符。（如果文件描述符已经存在，将会引起一个IOError）</td>
 </tr>
 <tr>
-<td>signal.pthread_kill(thread_id, signalnum)</td>
-<td>向线程发送信号</td>
+<td>epoll.modify(fd, eventmask)</td>
+<td>修改一个已经注册的文件描述符。</td>
 </tr>
 <tr>
-<td>signal.pthread_sigmask(how, mask)</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.setitimer(which, seconds, interval=0.0)</td>
-<td>定时发送SIGALRM</td>
-</tr>
-<tr>
-<td>signal.getitimer(which)</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.set_wakeup_fd(fd, *, warn_on_full_buffer=True)</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.siginterrupt(signalnum, flag)</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.signal(signalnum, handler)</td>
-<td>捕获信号,设置处理方法</td>
-</tr>
-<tr>
-<td>signal.sigpending()</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.sigwait(sigset)</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.sigwaitinfo(sigset)</td>
-<td></td>
-</tr>
-<tr>
-<td>signal.sigtimedwait(sigset, timeout)</td>
-<td></td>
+<td>epoll.unregister(fd)</td>
+<td>注销一个文件描述符。</td>
 </tr>
 </tbody>
 </table>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> signal
-<span class="token comment"># Define signal handler function</span>
-<span class="token keyword">def</span> <span class="token function">myHandler</span><span class="token punctuation">(</span>signum<span class="token punctuation">,</span> frame<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'I received: '</span><span class="token punctuation">,</span> signum<span class="token punctuation">)</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> socket <span class="token keyword">import</span> <span class="token operator">*</span>
+<span class="token keyword">import</span> select
+serSocket <span class="token operator">=</span> socket<span class="token punctuation">(</span>AF_INET<span class="token punctuation">,</span> SOCK_STREAM<span class="token punctuation">)</span>
+serSocket<span class="token punctuation">.</span>bind<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">,</span> <span class="token number">8000</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+epoll <span class="token operator">=</span> select<span class="token punctuation">.</span>epoll<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 注意win环境下是没有epoll的</span>
+epoll<span class="token punctuation">.</span>register<span class="token punctuation">(</span>serSocket<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> select<span class="token punctuation">.</span>EPOLLIN<span class="token operator">|</span>select<span class="token punctuation">.</span>EPOLLET<span class="token punctuation">)</span>  <span class="token comment"># 读就绪|边缘触发</span>
+connections <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+adress <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
 
-<span class="token comment"># register signal.SIGTSTP's handler</span>
-signal<span class="token punctuation">.</span>signal<span class="token punctuation">(</span>signal<span class="token punctuation">.</span>SIGTSTP<span class="token punctuation">,</span> myHandler<span class="token punctuation">)</span>
-signal<span class="token punctuation">.</span>pause<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'End of Signal Demo'</span><span class="token punctuation">)</span>
-
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+    epoll_list <span class="token operator">=</span> epoll<span class="token punctuation">.</span>epoll<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># epoll 进行 fd 扫描的地方 扫描出能满足条件的套接字，添加进列表中</span>
+    <span class="token keyword">for</span> fd<span class="token punctuation">,</span> events <span class="token keyword">in</span> epoll_list<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> fd <span class="token operator">==</span> serSocket<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment">#对epoll列表中的文件描述符、事件进行扫描</span>
+            conn<span class="token punctuation">,</span> addr <span class="token operator">=</span> serSocket<span class="token punctuation">.</span>accept<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment">#表示有客户端连接了服务器套接字</span>
+            connections<span class="token punctuation">[</span>conn<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> conn
+            adress<span class="token punctuation">[</span>addr<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> addr
+            epoll<span class="token punctuation">.</span>register<span class="token punctuation">(</span>conn<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> select<span class="token punctuation">.</span>EPOLLIN<span class="token operator">|</span>select<span class="token punctuation">.</span>EPOLLET<span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> events <span class="token operator">==</span> select<span class="token punctuation">.</span>EPOLLIN<span class="token punctuation">:</span> <span class="token comment"># 读就绪,既客户端发来信息</span>
+            recvData <span class="token operator">=</span> connections<span class="token punctuation">[</span>fd<span class="token punctuation">]</span><span class="token punctuation">.</span>recv<span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>recvData<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+                <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%s %s'</span><span class="token operator">%</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>addr<span class="token punctuation">)</span><span class="token punctuation">,</span> recvData<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                epoll<span class="token punctuation">.</span>unregister<span class="token punctuation">(</span>fd<span class="token punctuation">)</span>
+                connections<span class="token punctuation">[</span>fd<span class="token punctuation">]</span><span class="token punctuation">.</span>colse<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>参考:<br />
-<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/signal.html#module-signal">https://docs.python.org/3/library/signal.html#module-signal</a><br />
-<a target="_blank" rel="noopener" href="https://www.cnblogs.com/madsnotes/articles/5688681.html">https://www.cnblogs.com/madsnotes/articles/5688681.html</a><br />
-<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c8edab99173d">https://www.jianshu.com/p/c8edab99173d</a></p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>which</td>
-<td>ITIMER_REAL:系统真实时间;ITIMER_VIRTUAL:用户态花费的时间;ITIMER_PROF:用户态内核态总时间</td>
-</tr>
-</tbody>
-</table>
-<p>signal.CTRL_C_EVENT|win|Ctrl+C 击键事件的信号<br />
-signal.CTRL_BREAK_EVENT|win|<code> Ctrl+Break</code></p>
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/wangbowj123/article/details/77885294">https://blog.csdn.net/wangbowj123/article/details/77885294</a></p>
 
       
     </div>
@@ -856,7 +325,7 @@ signal.CTRL_BREAK_EVENT|win|<code> Ctrl+Break</code></p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_process_shareval/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_io_poll/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -874,7 +343,7 @@ signal.CTRL_BREAK_EVENT|win|<code> Ctrl+Break</code></p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/python_process_shareval/" class="post-title-link" itemprop="url">python_process_shareval</a>
+          <a href="/python_io_poll/" class="post-title-link" itemprop="url">python_io_poll</a>
         </h2>
 
         <div class="post-meta-container">
@@ -905,132 +374,7 @@ signal.CTRL_BREAK_EVENT|win|<code> Ctrl+Break</code></p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="1共享数值型"><a class="markdownIt-Anchor" href="#1共享数值型"></a> 1.共享数值型</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Process<span class="token punctuation">,</span> Value
-<span class="token keyword">def</span>  <span class="token function">func</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">:</span>  
-    num<span class="token punctuation">.</span>value<span class="token operator">=</span><span class="token number">11</span>  <span class="token comment">#子进程改变数值的值，主进程跟着改变  </span>
-  
-<span class="token keyword">if</span>  __name__<span class="token operator">==</span><span class="token string">"__main__"</span><span class="token punctuation">:</span>  
-    num<span class="token operator">=</span>multiprocessing<span class="token punctuation">.</span>Value<span class="token punctuation">(</span><span class="token string">"d"</span><span class="token punctuation">,</span><span class="token number">10.0</span><span class="token punctuation">)</span> <span class="token comment">#在内存中开辟共享空间，所以要指定类型"d"</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>num<span class="token punctuation">.</span>value<span class="token punctuation">)</span>  
-    p<span class="token operator">=</span>multiprocessing<span class="token punctuation">.</span>Process<span class="token punctuation">(</span>target<span class="token operator">=</span>func<span class="token punctuation">,</span>args<span class="token operator">=</span><span class="token punctuation">(</span>num<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  
-    p<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>  
-    p<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>  
-    <span class="token keyword">print</span><span class="token punctuation">(</span>num<span class="token punctuation">.</span>value<span class="token punctuation">)</span>  
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="2共享数组型"><a class="markdownIt-Anchor" href="#2共享数组型"></a> 2.共享数组型</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> multiprocessing  
-  
-<span class="token keyword">def</span>  <span class="token function">func</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">:</span>  
-    num<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">0</span>
-<span class="token keyword">if</span>  __name__<span class="token operator">==</span><span class="token string">"__main__"</span><span class="token punctuation">:</span>  
-    num<span class="token operator">=</span>multiprocessing<span class="token punctuation">.</span>Array<span class="token punctuation">(</span><span class="token string">"i"</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>num<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-  
-    p<span class="token operator">=</span>multiprocessing<span class="token punctuation">.</span>Process<span class="token punctuation">(</span>target<span class="token operator">=</span>func<span class="token punctuation">,</span>args<span class="token operator">=</span><span class="token punctuation">(</span>num<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  
-    p<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>   
-    p<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>  
-    <span class="token keyword">print</span><span class="token punctuation">(</span>num<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="3共享字典"><a class="markdownIt-Anchor" href="#3共享字典"></a> 3.共享字典</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> multiprocessing
-  
-<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span>mydict<span class="token punctuation">)</span><span class="token punctuation">:</span>  
-    mydict<span class="token punctuation">[</span><span class="token string">"index1"</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token string">"aaaaaa"</span>  
-
-<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">"__main__"</span><span class="token punctuation">:</span>  
-    mydict<span class="token operator">=</span>multiprocessing<span class="token punctuation">.</span>Manager<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">dict</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
-    p<span class="token operator">=</span>multiprocessing<span class="token punctuation">.</span>Process<span class="token punctuation">(</span>target<span class="token operator">=</span>func<span class="token punctuation">,</span>args<span class="token operator">=</span><span class="token punctuation">(</span>mydict<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  
-    p<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>  
-    p<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>  
-    <span class="token keyword">print</span><span class="token punctuation">(</span>mydict<span class="token punctuation">)</span>  
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_process_subprocess/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_process_subprocess/" class="post-title-link" itemprop="url">python_process_subprocess</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>运行linux的shell命令, 用来替代<code>os.system()</code>和<code>os.popen()</code>.</p>
-<ul>
-<li><code>os.system()</code>:将结果输出到屏幕，只返回命令执行状态(0：成功，非 0 ： 失败)</li>
-<li><code>os.popen()</code>:将结果保存在内存当中，可以用<code>read()</code>方法读取出来</li>
-</ul>
-<h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> subprocess
-res <span class="token operator">=</span> subprocess<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"df"</span><span class="token punctuation">,</span> <span class="token string">"-h"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>stdout<span class="token operator">=</span>subprocess<span class="token punctuation">.</span>PIPE<span class="token punctuation">,</span>stderr<span class="token operator">=</span>subprocess<span class="token punctuation">.</span>PIPE<span class="token punctuation">)</span>  <span class="token comment"># 指定stdout和stderr才能获取结果,否则直接打印到标准输出</span>
-res<span class="token punctuation">.</span>args
-res<span class="token punctuation">.</span>returncode
-res<span class="token punctuation">.</span>stderr
-res<span class="token punctuation">.</span>stdout<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="api"><a class="markdownIt-Anchor" href="#api"></a> API</h1>
+          <p>本质上和select没有区别,只是没了最大文件描述符的限制</p>
 <table>
 <thead>
 <tr>
@@ -1040,194 +384,998 @@ res<span class="token punctuation">.</span>stdout<span aria-hidden="true" class=
 </thead>
 <tbody>
 <tr>
-<td>run(args,shell,returncode)</td>
-<td>args传入参数<code>[&quot;df&quot;,&quot;-h&quot;]</code>,shell为true则args可以传入shell命令行，shell自己解析参数</td>
+<td>select.poll()</td>
+<td>返回poll对象,用来注册文件描述符和事件</td>
 </tr>
 <tr>
-<td>call()</td>
-<td>返回命令的结果和执行状态，0或者非0</td>
+<td>poll.register(fd[, eventmask])</td>
+<td>fd是整数,可以是fileno()方法返回;eventmask:事件类型</td>
 </tr>
 <tr>
-<td>check_call()</td>
-<td>返回结果和状态，正常为0 ，执行错误则抛出异常</td>
+<td>poll.modify(fd, eventmask)</td>
+<td>更新注册信息</td>
 </tr>
 <tr>
-<td>getstatusoutput()</td>
-<td>返回 一个元组(命令执行状态,执行结果)</td>
+<td>poll.unregister(fd)</td>
+<td>注销fd</td>
 </tr>
 <tr>
-<td>getoutput()</td>
-<td>执行结果</td>
+<td>poll.poll([timeout])</td>
+<td>检测注册后的fd,返回[(fd,event),()…];如果返回空说明超时,且没有事件发生,否则阻塞</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>事件类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POLLIN</td>
+<td>读就绪</td>
 </tr>
 <tr>
-<td>check_output()</td>
-<td>执行结果,以自己的的形式</td>
+<td>POLLOUT</td>
+<td>写就绪</td>
 </tr>
 <tr>
-<td>Popen()</td>
-<td>基础方法，以上方法都是对此方法的封装，以下是Popen方法返回对象的方法</td>
+<td>POLLHUP</td>
+<td>挂起</td>
 </tr>
 <tr>
-<td>poll()</td>
-<td>定时检查命令有没有执行完毕，完毕返回0，否则返回None</td>
+<td>POLLPRT</td>
+<td>有数据紧急读取</td>
 </tr>
 <tr>
-<td>wait()</td>
-<td>等待命令执行完成，回结果状态</td>
+<td>POLLERR</td>
+<td>某些错误情况出现</td>
 </tr>
 <tr>
-<td>terminate()</td>
-<td>结束进程</td>
+<td>POLLNVAL</td>
+<td>无效请求:描述无法打开</td>
+</tr>
+</tbody>
+</table>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> select<span class="token punctuation">,</span> socket
+
+response <span class="token operator">=</span> <span class="token string">b"hello world"</span>
+
+serversocket <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span> socket<span class="token punctuation">.</span>SOCK_STREAM<span class="token punctuation">)</span>
+serversocket<span class="token punctuation">.</span>setsockopt<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>SOL_SOCKET<span class="token punctuation">,</span> socket<span class="token punctuation">.</span>SO_REUSEADDR<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+serversocket<span class="token punctuation">.</span>bind<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'localhost'</span><span class="token punctuation">,</span> <span class="token number">8000</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+serversocket<span class="token punctuation">.</span>listen<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+serversocket<span class="token punctuation">.</span>setblocking<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+
+poll <span class="token operator">=</span> select<span class="token punctuation">.</span>poll<span class="token punctuation">(</span><span class="token punctuation">)</span>
+poll<span class="token punctuation">.</span>register<span class="token punctuation">(</span>serversocket<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> select<span class="token punctuation">.</span>POLLIN<span class="token punctuation">)</span>  <span class="token comment"># 监听数据读取事件</span>
+
+connections <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+<span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> fd<span class="token punctuation">,</span> event <span class="token keyword">in</span> poll<span class="token punctuation">.</span>poll<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> event <span class="token operator">==</span> select<span class="token punctuation">.</span>POLLIN<span class="token punctuation">:</span> <span class="token comment"># 读就绪</span>
+            <span class="token keyword">if</span> fd <span class="token operator">==</span> serversocket<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 注意这个是监听描述符,不是连接文件描述符,这个是用来判断有没有连接进来</span>
+                con<span class="token punctuation">,</span> addr <span class="token operator">=</span> serversocket<span class="token punctuation">.</span>accept<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                poll<span class="token punctuation">.</span>register<span class="token punctuation">(</span>con<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> select<span class="token punctuation">.</span>POLLIN<span class="token punctuation">)</span> <span class="token comment"># 这个是用来监听连接的文件描述符,服务端和客户端创建连接后,会使用新的文件描述符</span>
+                connections<span class="token punctuation">[</span>con<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> con  <span class="token comment"># 将连接描述符放入字典管理</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                con <span class="token operator">=</span> connections<span class="token punctuation">[</span>fd<span class="token punctuation">]</span>  <span class="token comment"># 获取连接的fd,和连接对象</span>
+                data <span class="token operator">=</span> con<span class="token punctuation">.</span>recv<span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span>
+                <span class="token keyword">if</span> data<span class="token punctuation">:</span>  <span class="token comment"># 如果获得客户端发来的数据,就将连接的注册事件更改为写就绪,进入到下面的elif</span>
+                    poll<span class="token punctuation">.</span>modify<span class="token punctuation">(</span>con<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> select<span class="token punctuation">.</span>POLLOUT<span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> event <span class="token operator">==</span> select<span class="token punctuation">.</span>POLLOUT<span class="token punctuation">:</span>  <span class="token comment"># 监听到写就绪事件,就发送消息</span>
+            con <span class="token operator">=</span> connections<span class="token punctuation">[</span>fd<span class="token punctuation">]</span>
+            con<span class="token punctuation">.</span>send<span class="token punctuation">(</span>response<span class="token punctuation">)</span>
+            poll<span class="token punctuation">.</span>unregister<span class="token punctuation">(</span>con<span class="token punctuation">.</span>fileno<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 注销该连接,既从连接池里删除</span>
+            con<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://www.cnblogs.com/qianyuliang/p/6551553.html">https://www.cnblogs.com/qianyuliang/p/6551553.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_io_select/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python_io_select/" class="post-title-link" itemprop="url">python_io_select</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>select作用:<br />
+1.监听哪些文件描述符(最多监听1024个fd)的哪些事件<br />
+(每次调用select,都会会所有的socket进行一次线性扫描)<br />
+2.内核监听到数据后,不告诉是哪个连接有数据,用户只能通过轮询的方式来获取数据<br />
+(如:监视10个socket,当有1个连接有数据后,内核就通知用户10个socket中有数据了)</p>
+<p>select过程:<br />
+1.将fd从用户空间复制到内核空间<br />
+2.遍历所有fd,查看对应事件是否发生<br />
+3.发生:将唤醒,未发生将阻塞<br />
+4.返回遍历后的fd<br />
+5.将fd从内核空间赋值到用户空间</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">fd_r_list<span class="token punctuation">,</span> fd_w_list<span class="token punctuation">,</span> fd_e_list <span class="token operator">=</span> select<span class="token punctuation">.</span>select<span class="token punctuation">(</span>rlist<span class="token punctuation">,</span> wlist<span class="token punctuation">,</span> xlist<span class="token punctuation">,</span> <span class="token punctuation">[</span>timeout<span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rlist</td>
+<td>满足可读条件,获取发生变化的fd,并添加到fd_r_list</td>
+</tr>
+<tr>
+<td>wlist</td>
+<td></td>
+</tr>
+<tr>
+<td>xlist</td>
+<td>满足发生错误时,将发生错误的fd添加到fd_e_list</td>
+</tr>
+<tr>
+<td>timeout</td>
+<td>为空,select会一直阻塞,直到监听的fd发生变化.如果设置为n,则过n秒,且没有检测到变化,则返回三个空列表</td>
+</tr>
+</tbody>
+</table>
+<p>服务端</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
+<span class="token keyword">import</span> select
+
+server1 <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span><span class="token punctuation">)</span>
+server1<span class="token punctuation">.</span>bind<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'0.0.0.0'</span><span class="token punctuation">,</span> <span class="token number">8001</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+server1<span class="token punctuation">.</span>listen<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+server2 <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span><span class="token punctuation">)</span>
+server2<span class="token punctuation">.</span>bind<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'0.0.0.0'</span><span class="token punctuation">,</span> <span class="token number">8002</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+server2<span class="token punctuation">.</span>listen<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+inputs <span class="token operator">=</span> <span class="token punctuation">[</span>server1<span class="token punctuation">,</span> server2<span class="token punctuation">,</span> <span class="token punctuation">]</span>
+
+<span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+    r_list<span class="token punctuation">,</span> w_list<span class="token punctuation">,</span> e_list <span class="token operator">=</span> select<span class="token punctuation">.</span>select<span class="token punctuation">(</span>inputs<span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'r_list:</span><span class="token interpolation"><span class="token punctuation">&#123;</span>r_list<span class="token punctuation">&#125;</span></span><span class="token string">'</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> ser <span class="token keyword">in</span> r_list<span class="token punctuation">:</span>
+        conn<span class="token punctuation">,</span> address <span class="token operator">=</span> ser<span class="token punctuation">.</span>accept<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        conn<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'您好'</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        conn<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>客户端</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
+
+client <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span><span class="token punctuation">)</span>
+client<span class="token punctuation">.</span>connect<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'127.0.0.1'</span><span class="token punctuation">,</span> <span class="token number">8001</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>client<span class="token punctuation">.</span>recv<span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://www.jb51.net/article/111899.htm">https://www.jb51.net/article/111899.htm</a><br />
+<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e26594304e11">https://www.jianshu.com/p/e26594304e11</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_io_stdio/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python_io_stdio/" class="post-title-link" itemprop="url">python_io_stdio</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="stdin"><a class="markdownIt-Anchor" href="#stdin"></a> stdin</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+a<span class="token operator">=</span>sys<span class="token punctuation">.</span>stdin<span class="token punctuation">.</span>readline<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 包含了换行符,一般都要使用strip</span>
+b<span class="token operator">=</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 不包含换行符`\n`</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">len</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 5 4</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="stdout"><a class="markdownIt-Anchor" href="#stdout"></a> stdout</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token operator">*</span>objects<span class="token punctuation">,</span> sep<span class="token operator">=</span><span class="token string">' '</span><span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token punctuation">,</span> <span class="token builtin">file</span><span class="token operator">=</span>sys<span class="token punctuation">.</span>stdout<span class="token punctuation">,</span> flush<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>print</code>默认写入的是标准输出,既控制台</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">sys<span class="token punctuation">.</span>stdout<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string">'hello'</span> <span class="token operator">+</span> <span class="token string">'\n'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">
+<span class="token keyword">import</span> os
+fd <span class="token operator">=</span> os<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span> <span class="token string">"foo.txt"</span><span class="token punctuation">,</span> os<span class="token punctuation">.</span>O_RDWR<span class="token operator">|</span>os<span class="token punctuation">.</span>O_CREAT <span class="token punctuation">)</span>
+os<span class="token punctuation">.</span>write<span class="token punctuation">(</span>fd<span class="token punctuation">,</span> <span class="token string">b"This is test"</span><span class="token punctuation">)</span>
+fd2 <span class="token operator">=</span> <span class="token number">1000</span>
+os<span class="token punctuation">.</span>dup2<span class="token punctuation">(</span>fd<span class="token punctuation">,</span> fd2<span class="token punctuation">)</span>  <span class="token comment"># 关闭fd2的文件描述符指向的文件,并将fd2文件描述符指向fd文件描述符指向的文件</span>
+os<span class="token punctuation">.</span>lseek<span class="token punctuation">(</span>fd2<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token builtin">str</span> <span class="token operator">=</span> os<span class="token punctuation">.</span>read<span class="token punctuation">(</span>fd2<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
+os<span class="token punctuation">.</span>close<span class="token punctuation">(</span>fd2<span class="token punctuation">)</span>
+
+<span class="token keyword">import</span> os
+fd <span class="token operator">=</span> os<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span> <span class="token string">"foo.txt"</span><span class="token punctuation">,</span> os<span class="token punctuation">.</span>O_RDWR<span class="token operator">|</span>os<span class="token punctuation">.</span>O_CREAT <span class="token punctuation">)</span>
+os<span class="token punctuation">.</span>dup2<span class="token punctuation">(</span>fd<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_io_textio/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python_io_textio/" class="post-title-link" itemprop="url">python_io_textio</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="text-io"><a class="markdownIt-Anchor" href="#text-io"></a> Text I/O</h1>
+<p>本地存储都是字节(硬盘文件)<br />
+硬盘读写</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'hello.txt'</span><span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">)</span>
+
+f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string">"Hello Python!\n"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># f.flush()  # 如果不冲洗,则硬盘没有内容`hello Python`还保存在内存的缓冲区,调用后才写入磁盘</span>
+<span class="token comment"># f.close()  # close方法先调用flush()方法,再写入</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">
+内存读写
+&#96;&#96;&#96;python
+from io import StringIO
+string_io &#x3D; StringIO(&quot;hello\nworld&quot;)
+string_io.readline()  # 获得行
+string_io.getvalue() # 获得存储的值
+
+from io import StringIO
+string_io &#x3D; StringIO()
+string_io.write(&quot;hello&quot;)
+string_io.getvalue()
+string_io.seek(0)  # 回到起始位置,每次写入指针都会后移动
+string_io.readline()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
+<p>Text I/O 对象<br />
+StringIO可以当成open打开文件返回的对象来使用</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"myfile.txt"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token string">"utf-8"</span><span class="token punctuation">)</span>
+f <span class="token operator">=</span> io<span class="token punctuation">.</span>StringIO<span class="token punctuation">(</span><span class="token string">"some initial text data"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">
+<span class="token keyword">import</span> io
+f <span class="token operator">=</span> io<span class="token punctuation">.</span>StringIO<span class="token punctuation">(</span><span class="token string">"id,name\n1,brian\n2,amanda\n3,zoey\n"</span><span class="token punctuation">)</span>
+df <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span>f<span class="token punctuation">)</span> <span class="token comment"># pandas takes a file path or a file-like object</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/7996479/what-is-stringio-in-python-used-for-in-reality">https://stackoverflow.com/questions/7996479/what-is-stringio-in-python-used-for-in-reality</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_io_rawio/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python_io_rawio/" class="post-title-link" itemprop="url">python_io_rawio</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="raw-io"><a class="markdownIt-Anchor" href="#raw-io"></a> Raw I/O</h1>
+<p>原始I/O(无缓冲I/O)</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"myfile,jpg"</span><span class="token punctuation">,</span> <span class="token string">"rb"</span><span class="token punctuation">,</span> buffering <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_json/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python_json/" class="post-title-link" itemprop="url">python_json</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h1>
+<p>Json,全名 JavaScript Object Notation,是一种轻量级的数据交换格式.Json最广泛的应用是作为AJAX中web服务器和客户端的通讯的数据格式,现在也常用于http请求中.<br />
+简单理解就是json库可以把python中的字典(dict)解析为字符串(str),又可以把字符(str)编译为(dict).其实自己也可以写个类似的程序.</p>
+<h1 id="模块方法"><a class="markdownIt-Anchor" href="#模块方法"></a> 模块方法</h1>
+<h2 id="编码encode将python对象转换为文件或字符串"><a class="markdownIt-Anchor" href="#编码encode将python对象转换为文件或字符串"></a> 编码(encode),将python对象转换为文件或字符串</h2>
+<p><strong>将对象转换为json字符串</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">json.dumps(obj, skipkeys&#x3D;False, ensure_ascii&#x3D;True, check_circular&#x3D;True, allow_nan&#x3D;True, cls&#x3D;None, indent&#x3D;None, separators&#x3D;None, default&#x3D;None, sort_keys&#x3D;False, **kw)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>将对象转换为json文件</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">json.dump(obj, fp, skipkeys&#x3D;False, ensure_ascii&#x3D;True, check_circular&#x3D;True, allow_nan&#x3D;True, cls&#x3D;None, indent&#x3D;None, separators&#x3D;None, default&#x3D;None, sort_keys&#x3D;False, **kw)
+json.dumps(obj, skipkeys&#x3D;False, ensure_ascii&#x3D;True, check_circular&#x3D;True, allow_nan&#x3D;True, cls&#x3D;None, indent&#x3D;None, separators&#x3D;None, default&#x3D;None, sort_keys&#x3D;False, **kw)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>obj</td>
+<td>序列化对象</td>
+</tr>
+<tr>
+<td>fp</td>
+<td>json模块总是产生str对象，而不是bytes对象。因此，fp.write()必须支持str输入。</td>
+</tr>
+<tr>
+<td>ensure_ascii</td>
+<td>为true（默认值），则输出将保证所有传入的非ASCII字符都转义。如果ensure_ascii为false，则这些字符将按原样输出。</td>
+</tr>
+<tr>
+<td>check_circular</td>
+<td>为false（默认值：True），则将跳过容器类型的循环引用检查</td>
+</tr>
+<tr>
+<td>allow_nan</td>
+<td>false（默认值：True），则将是ValueError序列化超出范围float值（nan，inf，-inf），严格遵守JSON规范。如果allow_nan为true，则将使用与其等效的JavaScript代码（NaN，Infinity，-Infinity）</td>
+</tr>
+<tr>
+<td>sort_keys</td>
+<td>为真（默认值：False），则字典的输出将按键排序。</td>
+</tr>
+<tr>
+<td>编码对应:</td>
+<td></td>
+</tr>
+<tr>
+<td>JSON</td>
+<td>Python</td>
+</tr>
+<tr>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr>
+<td>object</td>
+<td>dict</td>
+</tr>
+<tr>
+<td>array</td>
+<td>list</td>
+</tr>
+<tr>
+<td>string</td>
+<td>str</td>
+</tr>
+<tr>
+<td>number (int)</td>
+<td>int</td>
+</tr>
+<tr>
+<td>number (real)</td>
+<td>float</td>
+</tr>
+<tr>
+<td>TRUE</td>
+<td>TRUE</td>
+</tr>
+<tr>
+<td>FALSE</td>
+<td>FALSE</td>
+</tr>
+<tr>
+<td>null</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h2 id="解码decode将文件或字符串转换为python对象"><a class="markdownIt-Anchor" href="#解码decode将文件或字符串转换为python对象"></a> 解码(decode),将文件或字符串转换为python对象</h2>
+<p><strong>将json字符串转换为对象</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">json.loads(s, encoding&#x3D;None, cls&#x3D;None, object_hook&#x3D;None, parse_float&#x3D;None, parse_int&#x3D;None, parse_constant&#x3D;None, object_pairs_hook&#x3D;None, **kw)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>将json文件转换为对象</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">json.load(fp, cls&#x3D;None, object_hook&#x3D;None, parse_float&#x3D;None, parse_int&#x3D;None, parse_constant&#x3D;None, object_pairs_hook&#x3D;None, **kw)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>解码对应:</p>
+<table>
+<thead>
+<tr>
+<th>Python</th>
+<th>JSON</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dict</td>
+<td>object</td>
+</tr>
+<tr>
+<td>list, tuple</td>
+<td>array</td>
+</tr>
+<tr>
+<td>str</td>
+<td>string</td>
+</tr>
+<tr>
+<td>int, float, int- &amp; float-derived Enums</td>
+<td>number</td>
+</tr>
+<tr>
+<td>TRUE</td>
+<td>TRUE</td>
+</tr>
+<tr>
+<td>FALSE</td>
+<td>FALSE</td>
+</tr>
+<tr>
+<td>None</td>
+<td>null</td>
+</tr>
+</tbody>
+</table>
+<h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
+<p><strong>字符串之间的转换</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">import json
+# 字典编译为字符串(dumps)
+x&#x3D;json.dumps(&#123;&quot;name&quot;:&quot;wang&quot;,&quot;age&quot;:18&#125;)
+print(x,type(x))
+&#123;&quot;name&quot;: &quot;wang&quot;, &quot;age&quot;: 18&#125; &lt;class &#39;str&#39;&gt;
+# 字符串编译为字典(loads)
+y&#x3D;json.loads(&#39;&#123;&quot;name&quot;:&quot;wang&quot;,&quot;age&quot;:18&#125;&#39;)
+print(y,type(y))
+&#123;&#39;name&#39;: &#39;wang&#39;, &#39;age&#39;: 18&#125; &lt;class &#39;dict&#39;&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>文件之间的转换</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">file &#x3D; open(&#39;test.json&#39;,&#39;w&#39;,encoding&#x3D;&#39;utf-8&#39;)  
+json.dump(&#123;&quot;name&quot;:&quot;wang&quot;,&quot;age&quot;:18&#125;,file,ensure_ascii&#x3D;False)
+file.close() 
+file &#x3D; open(&#39;test.json&#39;,&#39;r&#39;,encoding&#x3D;&#39;utf-8&#39;)
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考文献:<br />
+<a target="_blank" rel="noopener" href="http://www.cnblogs.com/loleina/p/5623968.html">http://www.cnblogs.com/loleina/p/5623968.html</a><br />
+<a target="_blank" rel="noopener" href="http://python.usyiyi.cn/translate/python_352/library/json.html">http://python.usyiyi.cn/translate/python_352/library/json.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_pickle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python_pickle/" class="post-title-link" itemprop="url">python_pickle</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h1>
+<p>pickle模块实现了用于对Python对象结构进行序列化和反序列化的二进制协议。“Pickling”是将Python对象转换为字节流的过程，“unpickling”是反向操作，由此字节流二进制文件或字节对象）转换回对象结构。</p>
+<h1 id="模块方法"><a class="markdownIt-Anchor" href="#模块方法"></a> 模块方法</h1>
+<p>pickle.dump(obj, file, protocol=None, *, fix_imports=True)<br />
+将obj以二进制形式写入file-object文件<br />
+pickle.dumps(obj, protocol=None, *, fix_imports=True)<br />
+将obj编译为二进制对象<br />
+pickle.load(file, *, fix_imports=True, encoding=“ASCII”, errors=“strict”)<br />
+dump的反向操作<br />
+pickle.loads(bytes_object, *, fix_imports=True, encoding=“ASCII”, errors=“strict”)<br />
+dumps的反向操作</p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/claroja/article/details/72465703">python读写序列（pickle）</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_process/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python_process/" class="post-title-link" itemprop="url">python_process</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>进程是资源分配的最⼩单位<br />
+进程间不能共享全局变量, 每个进程都会复制一份主进程的变量到自己的空间</p>
+<h2 id="构造方法"><a class="markdownIt-Anchor" href="#构造方法"></a> 构造方法</h2>
+<p><code>class multiprocessing.Process(group=None, target=None, name=None, args=(), kwargs=&#123;&#125;, *, daemon=None)</code><br />
+<code>multiprocessing.Process</code> 和 <code>threading.Thread</code> 有相同的设计.</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>run()</td>
+<td>不直接操作, 只重写</td>
+</tr>
+<tr>
+<td>start()</td>
+<td>启动进程</td>
+</tr>
+<tr>
+<td>join([timeout])</td>
+<td>阻塞主进程(调用进程), 等待被调用了<code>join()</code>的<code>process</code>执行玩完毕</td>
+</tr>
+<tr>
+<td>name</td>
+<td>进程名称</td>
+</tr>
+<tr>
+<td>is_alive()</td>
+<td>是否存活</td>
+</tr>
+<tr>
+<td>daemon</td>
+<td>在<code>start()</code>方法之前设置</td>
 </tr>
 <tr>
 <td>pid</td>
-<td>子shell的pid</td>
+<td>进程的id, 在开始前为<code>None</code></td>
+</tr>
+<tr>
+<td>exitcode</td>
+<td>进程退出时的code</td>
+</tr>
+<tr>
+<td>authkey</td>
+<td></td>
+</tr>
+<tr>
+<td>sentinel</td>
+<td></td>
+</tr>
+<tr>
+<td>terminate()</td>
+<td>使用<code>SIGTERM</code>结束进程, 其子进程不会结束, 而会成为orphaned</td>
+</tr>
+<tr>
+<td>kill()</td>
+<td>使用<code>SIGKILL</code>结束进程</td>
+</tr>
+<tr>
+<td>close()</td>
+<td>关闭进程,并释放所有资源</td>
 </tr>
 </tbody>
 </table>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_socket/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_socket/" class="post-title-link" itemprop="url">python_socket</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>socket(简称 套接字) 是进程间通信的一种方式，实现不同主机间的进程间通信，比如QQ</p>
-<pre class="line-numbers language-none"><code class="language-none">socket.socket(AddressFamily, Type)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>Address Family：可以选择 AF_INET（用于 Internet 进程间通信） 或者 AF_UNIX（用于同一台机器进程间通信）,实际工作中常用AF_INET<br />
-Type：套接字类型，可以是 SOCK_STREAM（流式套接字，主要用于 TCP 协议）或者 SOCK_DGRAM（数据报套接字，主要用于 UDP 协议）</p>
-<h1 id="udp发送数据"><a class="markdownIt-Anchor" href="#udp发送数据"></a> UDP发送数据</h1>
-<pre class="line-numbers language-none"><code class="language-none">from socket import *
-udpSocket &#x3D; socket(AF_INET, SOCK_DGRAM)# 创建套接字
-sendAddr &#x3D; (&#39;192.168.1.1&#39;, 8080)# 发送到的ip和端口
-sendData &#x3D; &quot;hello&quot; # 发送的内容
-udpSocket.sendto(sendData, sendAddr) #发送
-udpSocket.close() # 关闭套接字<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="udp接收数据"><a class="markdownIt-Anchor" href="#udp接收数据"></a> UDP接收数据</h1>
-<pre class="line-numbers language-none"><code class="language-none">from socket import *
-udpSocket &#x3D; socket(AF_INET, SOCK_DGRAM)# 创建套接字
-bindAddr &#x3D; (&#39;&#39;, 7788)# 绑定本机的端口，ip地址为空表示本机的任何一个ip
-udpSocket.bind(bindAddr)#绑定本机的端口
-recvData &#x3D; udpSocket.recvfrom(1024)# 等待接收的数据，1024表示本次接收的最大字节数
-print(recvData)
-udpSocket.close()# 关闭套接字<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="udp广播"><a class="markdownIt-Anchor" href="#udp广播"></a> udp广播</h1>
-<pre class="line-numbers language-none"><code class="language-none">import socket, sys
-dest &#x3D; (&#39;&lt;broadcast&gt;&#39;, 7788)# 这里&lt;broadcst&gt;可以写成当前网段的广播地址
-s &#x3D; socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # 创建udp套接字
-s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST,1)# 设置成能发送广播数据
-s.sendto(&quot;Hi&quot;, dest)# 发送广播<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>TCP：传输控制协议，稳定，慢一些，web服务器（HTTP）使用tcp<br />
-UDP：用户数据包协议，不稳定，快一些<br />
-TCP三次握手，四次挥手<br />
-TCP十种状态<br />
-TTL是指经过路由器的个数<br />
-MSL数据包在网络上存活的最长时间</p>
-<h1 id="tcp"><a class="markdownIt-Anchor" href="#tcp"></a> TCP</h1>
-<p>socket默认是TCP</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> family<span class="token operator">=</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span> <span class="token builtin">type</span><span class="token operator">=</span>socket<span class="token punctuation">.</span>SOCK_STREAM<span class="token punctuation">,</span>
-             proto<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">*</span>args<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h1 id="tcp服务端"><a class="markdownIt-Anchor" href="#tcp服务端"></a> TCP服务端</h1>
-<p>1.socket创建一个套接字<br />
-2.bind绑定ip和port<br />
-3.listen使套接字变为监听状态<br />
-4.accept等待客户端的信息<br />
-5.recv/send接收发送数据</p>
-<pre class="line-numbers language-none"><code class="language-none">from socket import *
-tcpSerSocket &#x3D; socket(AF_INET, SOCK_STREAM) # 创建TCPsocket
-address &#x3D; (&#39;&#39;, 7788) #绑定本地的ip和端口
-tcpSerSocket.bind(address) 
-tcpSerSocket.listen(5)# 将socket变为监听状态，listen是建立连接的**队列**的个数，linux之中这个值是默认的，更改无效，阻塞
-newSocket, clientAddr &#x3D; tcpSerSocket.accept()#如果有客户端连接，则生成一个专门的套接字进行通讯，阻塞
-recvData &#x3D; newSocket.recv(1024) #获得客户端发送过来的消息
-newSocket.send(&quot;thank you !&quot;)# 向客户端发送消息
-newSocket.close() #关闭该客户端的套接字
-tcpSerSocket.close() #关闭监听的套接字<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="tcp客户端"><a class="markdownIt-Anchor" href="#tcp客户端"></a> TCP客户端</h1>
-<pre class="line-numbers language-none"><code class="language-none">from socket import *
-tcpClientSocket &#x3D; socket(AF_INET, SOCK_STREAM)# 创建TCP socket
-serAddr &#x3D; (&#39;192.168.1.102&#39;, 7788)
-tcpClientSocket.connect(serAddr) #连接服务器
-tcpClientSocket.send(&quot;hello&quot;) #向服务器发送消息
-recvData &#x3D; tcpClientSocket.recv(1024) # 接收消息
-tcpClientSocket.close() # 关闭套接字<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="常见tcp攻击"><a class="markdownIt-Anchor" href="#常见tcp攻击"></a> 常见TCP攻击</h1>
-<p>DDOS SYN洪水攻击<br />
-客户端发完SYN，不发ACK<br />
-DNS攻击<br />
-DNS服务器劫持，换域名对应的IP<br />
-arp 中间人攻击</p>
-<h1 id="api"><a class="markdownIt-Anchor" href="#api"></a> API</h1>
-<h2 id="socket类"><a class="markdownIt-Anchor" href="#socket类"></a> socket类</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>family<span class="token operator">=</span>AF_INET<span class="token punctuation">,</span> <span class="token builtin">type</span><span class="token operator">=</span>SOCK_STREAM<span class="token punctuation">,</span> proto<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> fileno<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span> <span class="token comment"># 返回socket对象</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h2>
+<h3 id="1获得进程信息"><a class="markdownIt-Anchor" href="#1获得进程信息"></a> 1.获得进程信息</h3>
+<p>通过<code>multiprocessing.current_process()</code>来获得当前进程的信息, 比如id和name等</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
+<span class="token keyword">import</span> multiprocessing
+<span class="token keyword">def</span> <span class="token function">work1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"running work1"</span><span class="token punctuation">,</span> multiprocessing<span class="token punctuation">.</span>current_process<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>pid<span class="token punctuation">)</span>
+        time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">0.5</span><span class="token punctuation">)</span>
+        
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    process_obj <span class="token operator">=</span> multiprocessing<span class="token punctuation">.</span>Process<span class="token punctuation">(</span>target<span class="token operator">=</span>work1<span class="token punctuation">)</span>
+    process_obj<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"main end"</span><span class="token punctuation">,</span>multiprocessing<span class="token punctuation">.</span>current_process<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>pid<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2传参"><a class="markdownIt-Anchor" href="#2传参"></a> 2.传参</h3>
+<p><code>Process([group	[,target[,name[,args[,kwargs]]]]])</code></p>
 <table>
 <thead>
 <tr>
@@ -1237,236 +1385,136 @@ arp 中间人攻击</p>
 </thead>
 <tbody>
 <tr>
-<td>family</td>
-<td>AF_INET(默认值),AF_INET6,AF_UNIX,AF_CAN</td>
+<td>target</td>
+<td>如果传递了函数的引⽤，这个⼦进程就执⾏这⾥(函数)的代码</td>
 </tr>
 <tr>
-<td>type</td>
-<td>SOCK_STREAM(默认值),SOCK_DGRAM,SOCK_RAW</td>
+<td>args</td>
+<td>给target指定的函数传递的参数，以元组的⽅式传递</td>
 </tr>
 <tr>
-<td>proto</td>
-<td>默认为0,只有在AF_CAN的情况下,协议应为CAN_RAW或CAN_BCM之一</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/socket.html#socket.socket">fileno</a></td>
-<td>如果指定了fileno,则其他参数将被忽略,导致带有指定文件描述符的套接字返回</td>
+<td>kwargs</td>
+<td>给target指定的函数传递命名参数</td>
 </tr>
 </tbody>
 </table>
-<h2 id="socket-families网络层"><a class="markdownIt-Anchor" href="#socket-families网络层"></a> Socket Families(网络层)</h2>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>socket.AF_INET</td>
-<td>IPV4</td>
-</tr>
-<tr>
-<td>socket.AF_INET6</td>
-<td>IPV6</td>
-</tr>
-<tr>
-<td>socket.AF_UNIX</td>
-<td>unix本地通信(多进程通信)</td>
-</tr>
-<tr>
-<td>socket.AF_CAN</td>
-<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/FZLGYZ/p/11750462.html">总线套接</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="socket-types传输层"><a class="markdownIt-Anchor" href="#socket-types传输层"></a> Socket Types(传输层)</h2>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SOCK_STREAM</td>
-<td>使用TCP(Transmission Control Protocol)</td>
-</tr>
-<tr>
-<td>SOCK_DGRAM</td>
-<td>使用UDP(User Datagram Protocol)</td>
-</tr>
-<tr>
-<td>SOCK_RAW</td>
-<td>未处理的IP数据包, 而流套接字只能读取TCP协议的数据, 数据报套接字只能读取UDP协议的数据</td>
-</tr>
-<tr>
-<td>SOCK_RAW可以处理ICMP/IGMP,可以通过DP_HDRIMCL选项构造IP头,模拟洪水攻击,伪装大量源地址</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="socket对象"><a class="markdownIt-Anchor" href="#socket对象"></a> socket对象</h2>
-<h3 id="服务端套接字方法"><a class="markdownIt-Anchor" href="#服务端套接字方法"></a> 服务端套接字方法</h3>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>bind(address)</td>
-<td><code>('0.0.0.0', 8001)</code>,绑定主机和端口,并占用,传入主机,端口号</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/gaohuayan/p/11139397.html">listen([backlog])</a></td>
-<td>默认空,建立连接池,没有一个连接就放入队列中,参数是限制可连接的个数,如果不填会默认合理值</td>
-</tr>
-<tr>
-<td>accept()</td>
-<td>默认空,从<code>listen</code>连接池中顺序取出连接,阻塞等待消息,返回(conn, address),conn是连接对象，可以用来接收和发送数据。address是连接客户端的地址。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="客户端套接字方法"><a class="markdownIt-Anchor" href="#客户端套接字方法"></a> 客户端套接字方法</h3>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>connect(address)</td>
-<td>连接远程服务端socket,可能抛出socket.timeout</td>
-</tr>
-<tr>
-<td>connect_ex(address)</td>
-<td>客户端连接,出错返回错误码</td>
-</tr>
-</tbody>
-</table>
-<h3 id="公共用途套接字"><a class="markdownIt-Anchor" href="#公共用途套接字"></a> 公共用途套接字</h3>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>send(bytes[,flags])</td>
-<td>发送数据,返回值是发送数据的量</td>
-</tr>
-<tr>
-<td>sendall(bytes[,flags])</td>
-<td>它会一直发送完为止,发送成功返回None,否则报错</td>
-</tr>
-<tr>
-<td>sendto(bytes, flags, address)</td>
-<td>和send相同</td>
-</tr>
-<tr>
-<td>sendmsg(buffers[, ancdata[, flags[, address]]])</td>
-<td></td>
-</tr>
-<tr>
-<td>sendfile(file, offset=0, count=None)</td>
-<td></td>
-</tr>
-<tr>
-<td>recv(bufsize[, flags])</td>
-<td>接收数据,byte类型,bufsize指定最多可以接收的数量</td>
-</tr>
-<tr>
-<td>recvfrom(bufsize[, flags])</td>
-<td>除了接收数据,还有发送的地址(data,address)</td>
-</tr>
-<tr>
-<td>recvmsg(bufsize[, ancbufsize[, flags]])</td>
-<td>接收文件，附件,ancbufsize设定附件接收缓冲区类似于bufsize.,返回<code>(data, ancdata, msg_flags, address)</code></td>
-</tr>
-<tr>
-<td>close()</td>
-<td>底层操作也会关闭(如文件描述符)</td>
-</tr>
-<tr>
-<td>getpeername()</td>
-<td>连接到当前套接字的远端的地址</td>
-</tr>
-<tr>
-<td>getsockname()</td>
-<td>当前套接字的地址</td>
-</tr>
-<tr>
-<td>detach()</td>
-<td>关闭,但底层的文件描述符并没关,返回文件描述符</td>
-</tr>
-<tr>
-<td>dup()</td>
-<td>复制socket</td>
-</tr>
-<tr>
-<td>fileno()</td>
-<td>返回文件描述符</td>
-</tr>
-<tr>
-<td>makefile()</td>
-<td>返回文件对象和<code>open()</code>函数一样</td>
-</tr>
-</tbody>
-</table>
-<h3 id="面向锁的套接字"><a class="markdownIt-Anchor" href="#面向锁的套接字"></a> 面向锁的套接字</h3>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>s.setblocking()</td>
-<td>设置套接字的阻塞与非阻塞模式</td>
-</tr>
-<tr>
-<td>s.settimeout()</td>
-<td>设置阻塞套接字操作的超时时间</td>
-</tr>
-<tr>
-<td>s.gettimeout()</td>
-<td>得到阻塞套接字操作的超时时间</td>
-</tr>
-</tbody>
-</table>
-<h3 id="面向文件的套接字"><a class="markdownIt-Anchor" href="#面向文件的套接字"></a> 面向文件的套接字</h3>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>s.fileno()</td>
-<td>套接字的文件描述符</td>
-</tr>
-<tr>
-<td>s.makefile()</td>
-<td>创建一个与该套接字相关的文件</td>
-</tr>
-</tbody>
-</table>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Xuuuuuu/p/10321696.html">https://www.cnblogs.com/Xuuuuuu/p/10321696.html</a></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
+<span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Process
 
+<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span>age<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"子进程"</span><span class="token punctuation">,</span>name<span class="token punctuation">,</span>age<span class="token punctuation">)</span>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    p <span class="token operator">=</span> Process<span class="token punctuation">(</span>target<span class="token operator">=</span>func<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'wang'</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span>kwargs<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"age"</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2获得子进程执行结果"><a class="markdownIt-Anchor" href="#2获得子进程执行结果"></a> 2.获得子进程执行结果</h3>
+<ol>
+<li>手动process创建子进程无法获得执行的结果</li>
+<li>使用pool可以</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Pool
+<span class="token keyword">import</span> time
+<span class="token keyword">def</span> <span class="token function">test</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> p<span class="token operator">*</span>p
+<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    res_lst <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    pool <span class="token operator">=</span> Pool<span class="token punctuation">(</span>processes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        res <span class="token operator">=</span> pool<span class="token punctuation">.</span>apply_async<span class="token punctuation">(</span>test<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        res_lst<span class="token punctuation">.</span>append<span class="token punctuation">(</span>res<span class="token punctuation">)</span>
+    pool<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    pool<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">[</span><span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> result <span class="token keyword">in</span> res_lst<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3父子进程关系"><a class="markdownIt-Anchor" href="#3父子进程关系"></a> 3.父子进程关系</h3>
+<h4 id="默认-主进程结束-等待子进程"><a class="markdownIt-Anchor" href="#默认-主进程结束-等待子进程"></a> 默认: 主进程结束, 等待子进程</h4>
+<p>默认<code>Process.daemon=false</code>: 主进程结束后, 等待子进程结束. 子进程全部结束后, 主进程结束.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
+<span class="token keyword">import</span> multiprocessing
+<span class="token keyword">def</span> <span class="token function">work1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"running work1"</span><span class="token punctuation">)</span>
+        time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">0.5</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    process_obj <span class="token operator">=</span> multiprocessing<span class="token punctuation">.</span>Process<span class="token punctuation">(</span>target<span class="token operator">=</span>work1<span class="token punctuation">,</span>args<span class="token punctuation">)</span>
+    process_obj<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"main end"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="主进程结束-不等待子进程"><a class="markdownIt-Anchor" href="#主进程结束-不等待子进程"></a> 主进程结束, 不等待子进程</h4>
+<p>设置<code>Process.daemon=true</code>: 主进程结束后, 直接杀死子进程.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
+<span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Process
+
+<span class="token keyword">def</span> <span class="token function">work1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"running work1"</span><span class="token punctuation">)</span>
+        time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">0.5</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"work1 end"</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    p <span class="token operator">=</span> Process<span class="token punctuation">(</span>target<span class="token operator">=</span>work1<span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span>daemon <span class="token operator">=</span> <span class="token boolean">True</span>
+    p<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"main end"</span><span class="token punctuation">)</span> <span class="token comment"># 主进程结束后,子进程立刻结束</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="主进程任意地方等待子进程"><a class="markdownIt-Anchor" href="#主进程任意地方等待子进程"></a> 主进程任意地方等待子进程</h4>
+<p><code>Process.deamon=false</code>, 子进程只有在主进程执行到最后一行时, 才能阻塞主进程.<br />
+<code>Process.join()</code>, 可以让子进程在主进程的任何位置阻塞主进程</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
+<span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Process
+
+<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"running work1"</span><span class="token punctuation">)</span>
+        time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">0.5</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"work1 end"</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    p <span class="token operator">=</span> Process<span class="token punctuation">(</span>target<span class="token operator">=</span>func<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'xiaobai'</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"父进程执行"</span><span class="token punctuation">)</span>
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">0.5</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"父进程阻塞, 等待子进程"</span><span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"父进程结束"</span><span class="token punctuation">)</span>
+    <span class="token comment"># p.join() # 默认deamon=false, 相当于在最后加了join</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4创建多个线程"><a class="markdownIt-Anchor" href="#4创建多个线程"></a> 4.创建多个线程</h3>
+<ol>
+<li>手工循环创建<br />
+用列表保存每个子线程对象<br />
+当然子线程也可以使用join来让主进程等待</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
+<span class="token keyword">from</span> threading <span class="token keyword">import</span> Thread
+
+<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"线程 %d执行"</span> <span class="token operator">%</span> name <span class="token punctuation">)</span>
+    time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">0.1</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    t_lst <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        t <span class="token operator">=</span> Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>func<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        t<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        t_lst<span class="token punctuation">.</span>append<span class="token punctuation">(</span>p<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"父线程结束"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>使用线程池<br />
+创建进程需要消耗时间，销毁进程（空间，变量，文件信息等等的内容）也需要消耗时间。<br />
+定义一个池子，在里面放上固定数量的进程，有需求来了，就拿一个池中的进程来处理任务，等到处理完毕，进程并不关闭，而是将进程再放回进程池中继续等待任务。<br />
+不会增加操作系统的调度难度，还节省了开闭进程的时间，也一定程度上能够实现并发效果。</li>
+</ol>
+<h3 id="5其他"><a class="markdownIt-Anchor" href="#5其他"></a> 5.其他</h3>
+<p>通过<code>os.getpid()</code>获得当前进程id<br />
+通过<code>os.getppid()</code>获得父进程id</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
+<span class="token keyword">from</span> multiprocessing <span class="token keyword">import</span> Process
+
+<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">,</span> name<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"我是子进程: %d；我的父进程是：%d"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>os<span class="token punctuation">.</span>getpid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> os<span class="token punctuation">.</span>getppid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    p <span class="token operator">=</span> Process<span class="token punctuation">(</span>target<span class="token operator">=</span>func<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'xiaobai'</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    p<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"我是父进程：%d"</span> <span class="token operator">%</span> os<span class="token punctuation">.</span>getpid<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
       
     </div>
 
@@ -1492,7 +1540,7 @@ arp 中间人攻击</p>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_socket_tcp/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_process_communication/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1510,7 +1558,7 @@ arp 中间人攻击</p>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/python_socket_tcp/" class="post-title-link" itemprop="url">python_socket_tcp</a>
+          <a href="/python_process_communication/" class="post-title-link" itemprop="url">python_process_communication</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1541,156 +1589,18 @@ arp 中间人攻击</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="样例1-基本使用"><a class="markdownIt-Anchor" href="#样例1-基本使用"></a> 样例1-基本使用</h1>
-<h2 id="服务端"><a class="markdownIt-Anchor" href="#服务端"></a> 服务端</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
-server <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span>socket<span class="token punctuation">.</span>SOCK_STREAM<span class="token punctuation">)</span>
-server<span class="token punctuation">.</span>bind<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'localhost'</span><span class="token punctuation">,</span><span class="token number">8000</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 绑定端口</span>
-server<span class="token punctuation">.</span>listen<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 开始监听,既建立连接池</span>
-conn<span class="token punctuation">,</span>addr <span class="token operator">=</span> server<span class="token punctuation">.</span>accept<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 取出连接池的连接三次握手</span>
-conn<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'您好'</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 处理接收信息</span>
-conn<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 四次挥手</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="客户端"><a class="markdownIt-Anchor" href="#客户端"></a> 客户端</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
-client <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span><span class="token punctuation">)</span>
-client<span class="token punctuation">.</span>connect<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'localhost'</span><span class="token punctuation">,</span><span class="token number">8000</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 三次握手</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>client<span class="token punctuation">.</span>recv<span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 处理消息</span>
-client<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="样例2-listen与accept"><a class="markdownIt-Anchor" href="#样例2-listen与accept"></a> 样例2 listen与accept</h2>
-<p><code>listen</code>方法开始监听端口,等待客户端连接<code>connect</code>,如果收到客户端连接则放在队列FIFO里.listen参数是队列的长度,最大容纳的连接数?这个还不确定<br />
-<code>accept</code>方法从队列里取连接,返回连接对象和地址,使用连接对象来发送消息</p>
-<p>1.服务端建立监听端口,等待链接</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
-server <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span>socket<span class="token punctuation">.</span>SOCK_STREAM<span class="token punctuation">)</span>
-server<span class="token punctuation">.</span>bind<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'localhost'</span><span class="token punctuation">,</span><span class="token number">8001</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-server<span class="token punctuation">.</span>listen<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># client.connect(('localhost',8001))</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>2.客户端1进行连接</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
-client1 <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span>socket<span class="token punctuation">.</span>SOCK_STREAM<span class="token punctuation">)</span>
-client1<span class="token punctuation">.</span>connect<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'localhost'</span><span class="token punctuation">,</span><span class="token number">8001</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>3.客户端2进行连接</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
-client2 <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span>socket<span class="token punctuation">.</span>SOCK_STREAM<span class="token punctuation">)</span>
-client2<span class="token punctuation">.</span>connect<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'localhost'</span><span class="token punctuation">,</span><span class="token number">8001</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>4.目前服务器,已经收到两个连接请求,两个请求放在FIFO队列里,使用accept来顺序取出<br />
-如果使用accpet后,没有发现有链接存在,则阻塞,一直到有连接为止<br />
-conn可以使用send和recv来发送和接收信息,本质上是全双工的管道,一端写,一端读</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">conn1<span class="token punctuation">,</span>addr1 <span class="token operator">=</span> server<span class="token punctuation">.</span>accept<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">#  获得第一个客户端连接,文件描述符fd=1204,端口7192</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>conn1<span class="token punctuation">,</span>addr1<span class="token punctuation">)</span> <span class="token comment"># &lt;socket.socket fd=1204, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8001), raddr=('127.0.0.1', 7192)> ('127.0.0.1', 7192)</span>
-conn2<span class="token punctuation">,</span>addr2 <span class="token operator">=</span> server<span class="token punctuation">.</span>accept<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">#  获得第二个客户端连接,文件描述符fd=1256,端口7212</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>conn2<span class="token punctuation">,</span>addr2<span class="token punctuation">)</span> <span class="token comment"># &lt;socket.socket fd=1256, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8001), raddr=('127.0.0.1', 7212)> ('127.0.0.1', 7212)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="样例3-sendrecv"><a class="markdownIt-Anchor" href="#样例3-sendrecv"></a> 样例3 send&amp;recv</h2>
-<p>1.服务端建立监听端口,等待链接</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
-server <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span>socket<span class="token punctuation">.</span>SOCK_STREAM<span class="token punctuation">)</span>
-server<span class="token punctuation">.</span>bind<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'localhost'</span><span class="token punctuation">,</span><span class="token number">8001</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-server<span class="token punctuation">.</span>listen<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># client.connect(('localhost',8001))</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>2.客户端链接,并发送消息</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
-client1 <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span>socket<span class="token punctuation">.</span>SOCK_STREAM<span class="token punctuation">)</span>
-client1<span class="token punctuation">.</span>connect<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'localhost'</span><span class="token punctuation">,</span><span class="token number">8001</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-client1<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'client1-1'</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 向管道里写入,可以多次写入,写入操作不会阻塞</span>
-client1<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'client1-2'</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>3.服务端接收消息</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">conn1<span class="token punctuation">,</span>addr1 <span class="token operator">=</span> server<span class="token punctuation">.</span>accept<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">#  获得第一个客户端连接</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>conn1<span class="token punctuation">,</span>addr1<span class="token punctuation">)</span> <span class="token comment"># &lt;socket.socket fd=1036, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8001), raddr=('127.0.0.1', 7623)> ('127.0.0.1', 7623)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>conn1<span class="token punctuation">.</span>recv<span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># client1-1client1-2 直接受到客户端所有发送的信息(如果没有消息则阻塞)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h1 id="tcp-udp区别"><a class="markdownIt-Anchor" href="#tcp-udp区别"></a> TCP UDP区别</h1>
-<p><img src="1.png" alt="1.png" /></p>
+          <p>IPC(Inter-Process Communication)<br />
+RPC(Remote Procedure Call)<br />
+参考|级别|<br />
+–|–|–<br />
+fifo|IPC|<br />
+mmap|IPC|<br />
+RPC|应用层|<br />
+socket|网络层|网络io<br />
+htttp|应用层|网络io+<br />
+kafka,RabbitMQ|http|网络io<br />
+数据库或文件|硬盘io</p>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_socket_udp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_socket_udp/" class="post-title-link" itemprop="url">python_socket_udp</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-02 08:14:54" itemprop="dateCreated datePublished" datetime="2021-11-02T08:14:54+08:00">2021-11-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="udp连接"><a class="markdownIt-Anchor" href="#udp连接"></a> UDP连接</h1>
-<p>服务端</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
-server <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span> socket<span class="token punctuation">.</span>SOCK_DGRAM<span class="token punctuation">)</span>
-server<span class="token punctuation">.</span>bind<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">,</span> <span class="token number">8000</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>server<span class="token punctuation">.</span>recv<span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-server<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment"># 关闭套接字</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>客户端</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
-server <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span> socket<span class="token punctuation">.</span>SOCK_DGRAM<span class="token punctuation">)</span>
-server<span class="token punctuation">.</span>sendto<span class="token punctuation">(</span><span class="token string">'server'</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'localhost'</span><span class="token punctuation">,</span> <span class="token number">8000</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 这里要用sendto,因为udp没有建立链接</span>
-server<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 关闭套接字</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="1.png" alt="1.png" /></p>
-<h1 id="udp广播"><a class="markdownIt-Anchor" href="#udp广播"></a> UDP广播</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
-dest <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'&lt;broadcast>'</span><span class="token punctuation">,</span> <span class="token number">7788</span><span class="token punctuation">)</span><span class="token comment"># 这里&lt;broadcst>可以写成当前网段的广播地址</span>
-s <span class="token operator">=</span> socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>AF_INET<span class="token punctuation">,</span> socket<span class="token punctuation">.</span>SOCK_DGRAM<span class="token punctuation">)</span> <span class="token comment"># 创建udp套接字</span>
-s<span class="token punctuation">.</span>setsockopt<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>SOL_SOCKET<span class="token punctuation">,</span> socket<span class="token punctuation">.</span>SO_BROADCAST<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token comment"># 设置成能发送广播数据</span>
-s<span class="token punctuation">.</span>sendto<span class="token punctuation">(</span><span class="token string">"Hi"</span><span class="token punctuation">,</span> dest<span class="token punctuation">)</span><span class="token comment"># 发送广播</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
       
     </div>
 
@@ -1709,7 +1619,7 @@ s<span class="token punctuation">.</span>sendto<span class="token punctuation">(
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/other/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/other/">1</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/other/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/45/">45</a><a class="extend next" rel="next" href="/other/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/other/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/other/">1</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/other/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/46/">46</a><a class="extend next" rel="next" href="/other/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
