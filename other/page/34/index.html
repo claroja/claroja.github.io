@@ -123,7 +123,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">456</span>
+          <span class="site-state-item-count">468</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/Hexo_NexT%E4%B8%BB%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/Tomcat/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -195,7 +195,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/Hexo_NexT%E4%B8%BB%E9%A2%98/" class="post-title-link" itemprop="url">Hexo_NexT主题</a>
+          <a href="/Tomcat/" class="post-title-link" itemprop="url">Tomcat</a>
         </h2>
 
         <div class="post-meta-container">
@@ -206,7 +206,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-05-13 18:37:34" itemprop="dateCreated datePublished" datetime="2021-05-13T18:37:34+08:00">2021-05-13</time>
+      <time title="创建时间：2021-05-24 16:22:22" itemprop="dateCreated datePublished" datetime="2021-05-24T16:22:22+08:00">2021-05-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -226,10 +226,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>安装Hexo与NexT</p>
+          <p>Tomcat：由 Apache 组织提供的一种 Web 服务器，提供对 jsp 和 Servlet 的支持。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/Hexo_NexT%E4%B8%BB%E9%A2%98/#more" rel="contents">
+              <a class="btn" href="/Tomcat/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -260,7 +260,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/FaceEncoding/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/SpringBoot/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -278,7 +278,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/FaceEncoding/" class="post-title-link" itemprop="url">FaceEncoding</a>
+          <a href="/SpringBoot/" class="post-title-link" itemprop="url">SpringBoot</a>
         </h2>
 
         <div class="post-meta-container">
@@ -289,7 +289,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+      <time title="创建时间：2021-05-23 09:07:28" itemprop="dateCreated datePublished" datetime="2021-05-23T09:07:28+08:00">2021-05-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -309,28 +309,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> dlib
-<span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
-
-<span class="token comment"># 1. 读取图片</span>
-face_image <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'zhourui.png'</span><span class="token punctuation">)</span>
-
-<span class="token comment"># 2. 人脸检测</span>
-face_detector <span class="token operator">=</span> dlib<span class="token punctuation">.</span>get_frontal_face_detector<span class="token punctuation">(</span><span class="token punctuation">)</span>
-face_locations <span class="token operator">=</span> face_detector<span class="token punctuation">(</span>face_image<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-
-<span class="token comment"># 3. 计算landmarks</span>
-pose_predictor_68_point <span class="token operator">=</span> dlib<span class="token punctuation">.</span>shape_predictor<span class="token punctuation">(</span><span class="token string">"shape_predictor_68_face_landmarks.dat"</span><span class="token punctuation">)</span>
-landmarks <span class="token operator">=</span> pose_predictor_68_point<span class="token punctuation">(</span>face_image<span class="token punctuation">,</span> face_locations<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-
-<span class="token comment"># 4. 人脸编码</span>
-face_encoder <span class="token operator">=</span> dlib<span class="token punctuation">.</span>face_recognition_model_v1<span class="token punctuation">(</span><span class="token string">"dlib_face_recognition_resnet_model_v1.dat"</span><span class="token punctuation">)</span>
-res <span class="token operator">=</span> face_encoder<span class="token punctuation">.</span>compute_face_descriptor<span class="token punctuation">(</span>face_image<span class="token punctuation">,</span> landmarks<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><a target="_blank" rel="noopener" href="http://dlib.net/files/">http://dlib.net/files/</a><br />
-<a target="_blank" rel="noopener" href="http://dlib.net/python/index.html">http://dlib.net/python/index.html</a></p>
-
+          <p>整合了SpringWeb的相关组件</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/SpringBoot/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -356,7 +343,7 @@ res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/FaceDetection/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/Spring/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -374,7 +361,7 @@ res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/FaceDetection/" class="post-title-link" itemprop="url">FaceDetection</a>
+          <a href="/Spring/" class="post-title-link" itemprop="url">Spring</a>
         </h2>
 
         <div class="post-meta-container">
@@ -385,7 +372,7 @@ res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span>
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+      <time title="创建时间：2021-05-17 20:50:16" itemprop="dateCreated datePublished" datetime="2021-05-17T20:50:16+08:00">2021-05-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -405,136 +392,15 @@ res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>人脸检测是计算机视觉一个问题：如何在图片中定位人脸。<br />
-传统算法已经很好的解决了这个问题，比如Opencv中提供的Cascade Classifier算法与Dlib提供的HOG算法。在深度学习领域，最先进的算法是MTCNN(Multi-task Cascade Convolutional Neural Network)，Dlib也提供了深度学习的模型，不过速度很慢。</p>
-<h1 id="opencv"><a class="markdownIt-Anchor" href="#opencv"></a> opencv</h1>
-<h2 id="传统方法"><a class="markdownIt-Anchor" href="#传统方法"></a> 传统方法</h2>
-<p>基于特征的（Feature-based）人脸检测算法是快速和有效的，在过去的几十年应用比较多。最成功的的算法就是<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/990517">Rapid object detection using a boosted cascade of simple features</a>，在Opencv的(python库)[<a target="_blank" rel="noopener" href="https://pypi.org/project/opencv-python/">https://pypi.org/project/opencv-python/</a>]中实现了<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cascading_classifiers">Cascading classifiers</a>。</p>
-<p>安装opencv-python：</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">pip install opencv<span class="token operator">-</span>python<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>Opencv中的<a target="_blank" rel="noopener" href="https://docs.opencv.org/3.4.3/d1/de5/classcv_1_1CascadeClassifier.html">CascadeClassifier class</a>进行人脸检测。在进行人脸检测之前需要首先进行模型载入的初始化。模型可以到<a target="_blank" rel="noopener" href="https://github.com/opencv/opencv/tree/master/data/haarcascades">OpenCV GitHub project</a>下载。这里使用前脸(frontalaface)检测。</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
-classifier <span class="token operator">=</span> cv<span class="token punctuation">.</span>CascadeClassifier<span class="token punctuation">(</span><span class="token string">'haarcascade_frontalface_default.xml'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>检测输入图片中的人脸</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">pixels <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'weihai.png'</span><span class="token punctuation">)</span>
-bboxes <span class="token operator">=</span> classifier<span class="token punctuation">.</span>detectMultiScale<span class="token punctuation">(</span>pixels<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>bboxes<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><code>detectMultiScale</code>方法会返回一组人脸的盒型边界(bounding boxes), 每个盒子包含了人脸左下角的坐标(x,y), 以及人脸的宽度和高度(width,height). 我们可以使用opencv的<code>rectangle()</code>方法绘制出盒子边界.<br />
-参数<code>scaleFactor</code>该值越高能检测到的人脸越少, 默认为1.1<br />
-参数<code>minNeighbors</code>该值越搞能检测到的人脸越少, 默认为 3<br />
-一个调整的策略是先降低<code>scaleFactor</code>直到所有的人脸都被检测出来, 然后增加<code>minNeighbors</code>直到所有的FP(False Positive)人脸消失.</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">drawBB</span><span class="token punctuation">(</span>bboxes<span class="token punctuation">,</span> img<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">for</span> bbox <span class="token keyword">in</span> bboxes<span class="token punctuation">:</span>
-        x0<span class="token punctuation">,</span> y0<span class="token punctuation">,</span> width<span class="token punctuation">,</span> height <span class="token operator">=</span> bbox
-        x1<span class="token punctuation">,</span> y1 <span class="token operator">=</span> x0 <span class="token operator">+</span> width<span class="token punctuation">,</span> y0 <span class="token operator">+</span> height
-        cv<span class="token punctuation">.</span>rectangle<span class="token punctuation">(</span>img<span class="token punctuation">,</span> <span class="token punctuation">(</span>x0<span class="token punctuation">,</span> y0<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> img<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">img <span class="token operator">=</span> drawBB<span class="token punctuation">(</span>bboxes<span class="token punctuation">,</span> pixels<span class="token punctuation">)</span>
-<span class="token comment"># show the image</span>
-cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> img<span class="token punctuation">)</span>
-<span class="token comment"># keep the window open until we press a key</span>
-cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token comment"># close the window</span>
-cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="深度学习方法"><a class="markdownIt-Anchor" href="#深度学习方法"></a> 深度学习方法</h2>
-<p>目前最前沿的技术是<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1604.02878">Joint Face Detection and Alignment Using Multitask Cascaded Convolutional Networks</a>. 级联结构(cascade structure)神经网络包含三个部分:</p>
-<ol>
-<li>Proposal Network or P-Net: 建议候选的人脸区域</li>
-<li>Refine Network or R-Net: 过滤边界盒子</li>
-<li>Output Network or O-Net: 输出人脸标志(facial landmarks)</li>
-</ol>
-<p>当然在输入网络首先要进行图片的缩放(image pyramid).<br />
-<a href="1.png">1.png</a></p>
-<p>之所以叫做多任务网络(multi-task network), 是因为每个模型对应了不同的任务:</p>
-<ol>
-<li>P-Net -&gt; 人脸分类(face classification)</li>
-<li>R-Net -&gt; 边界盒子退化(bounding box regression)</li>
-<li>O-Net -&gt; 人脸标志定位(facial landmark localization)</li>
-</ol>
-<p>这三个模型不是直接相连, 而是前一个的输出, 作为后一个输入. 模型可以在<a target="_blank" rel="noopener" href="https://github.com/kpzhang93/MTCNN_face_detection_alignment">官方下载</a>, 这里面就是论文里面用到的代码和模型. python中也有<a target="_blank" rel="noopener" href="https://github.com/ipazc/mtcnn">实现</a></p>
-<p>MTCNN返回的一个字典,包含:<br />
-‘box’: 人脸左下角的坐标(x,y), 以及宽和高, 既(x,y,width,height)<br />
-‘confidence’: 置信度<br />
-‘keypoints’: 人脸标志(landmark), 包含了:‘left_eye‘, ‘right_eye‘, ‘nose‘, ‘mouth_left‘, and ‘mouth_right‘</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
-
-<span class="token keyword">def</span> <span class="token function">drawBound</span><span class="token punctuation">(</span>bboxes<span class="token punctuation">,</span> img<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">for</span> bbox <span class="token keyword">in</span> bboxes<span class="token punctuation">:</span>
-        x0<span class="token punctuation">,</span> y0<span class="token punctuation">,</span> width<span class="token punctuation">,</span> height <span class="token operator">=</span> bbox
-        x1<span class="token punctuation">,</span> y1 <span class="token operator">=</span> x0 <span class="token operator">+</span> width<span class="token punctuation">,</span> y0 <span class="token operator">+</span> height
-        cv<span class="token punctuation">.</span>rectangle<span class="token punctuation">(</span>img<span class="token punctuation">,</span> <span class="token punctuation">(</span>x0<span class="token punctuation">,</span> y0<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> img
-
-<span class="token keyword">from</span> mtcnn<span class="token punctuation">.</span>mtcnn <span class="token keyword">import</span> MTCNN
-pixels <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'weihai.png'</span><span class="token punctuation">)</span>
-detector <span class="token operator">=</span> MTCNN<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-faces <span class="token operator">=</span> detector<span class="token punctuation">.</span>detect_faces<span class="token punctuation">(</span>pixels<span class="token punctuation">)</span>
-bboxes <span class="token operator">=</span> <span class="token punctuation">[</span>x<span class="token punctuation">[</span><span class="token string">"box"</span><span class="token punctuation">]</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> faces<span class="token punctuation">]</span>
-img <span class="token operator">=</span> drawBound<span class="token punctuation">(</span>bboxes<span class="token punctuation">,</span> pixels<span class="token punctuation">)</span>
-
-cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> pixels<span class="token punctuation">)</span>
-cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="dlib"><a class="markdownIt-Anchor" href="#dlib"></a> Dlib</h1>
-<h2 id="传统方法hog"><a class="markdownIt-Anchor" href="#传统方法hog"></a> 传统方法HOG</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> dlib
-<span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
-
-image <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'weihai.png'</span><span class="token punctuation">)</span>
-<span class="token comment"># Create a HOG face detector using the built-in dlib class</span>
-face_detector <span class="token operator">=</span> dlib<span class="token punctuation">.</span>get_frontal_face_detector<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-<span class="token comment"># The result will be the bounding boxes of the faces in our image.</span>
-detected_faces <span class="token operator">=</span> face_detector<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-
-<span class="token keyword">for</span> face_rect <span class="token keyword">in</span> detected_faces<span class="token punctuation">:</span>
-    x0<span class="token punctuation">,</span>y0<span class="token punctuation">,</span>x1<span class="token punctuation">,</span>y1 <span class="token operator">=</span>  face_rect<span class="token punctuation">.</span>left<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>top<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>right<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>bottom<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    cv<span class="token punctuation">.</span>rectangle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span>x0<span class="token punctuation">,</span> y0<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-
-<span class="token comment"># show the image</span>
-cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> image<span class="token punctuation">)</span>
-<span class="token comment"># keep the window open until we press a key</span>
-cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token comment"># close the window</span>
-cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="深度学习方法-2"><a class="markdownIt-Anchor" href="#深度学习方法-2"></a> 深度学习方法</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> dlib
-<span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
-
-img <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'weihai.png'</span><span class="token punctuation">)</span>
-
-
-<span class="token comment"># face_detector = dlib.get_frontal_face_detector()</span>
-<span class="token comment"># detected_faces = face_detector(img, 1)</span>
-
-<span class="token comment"># 参考http://dlib.net/cnn_face_detector.py.html</span>
-cnn_face_detector <span class="token operator">=</span> dlib<span class="token punctuation">.</span>cnn_face_detection_model_v1<span class="token punctuation">(</span><span class="token string">"mmod_human_face_detector.dat"</span><span class="token punctuation">)</span>
-detected_faces <span class="token operator">=</span> cnn_face_detector<span class="token punctuation">(</span>img<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-
-<span class="token keyword">for</span> face_rect <span class="token keyword">in</span> detected_faces<span class="token punctuation">:</span>
-    face_rect <span class="token operator">=</span> face_rect<span class="token punctuation">.</span>rect
-    x0<span class="token punctuation">,</span>y0<span class="token punctuation">,</span>x1<span class="token punctuation">,</span>y1 <span class="token operator">=</span> face_rect<span class="token punctuation">.</span>left<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>top<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>right<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>bottom<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    cv<span class="token punctuation">.</span>rectangle<span class="token punctuation">(</span>img<span class="token punctuation">,</span> <span class="token punctuation">(</span>x0<span class="token punctuation">,</span> y0<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-
-<span class="token comment"># show the image</span>
-cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> img<span class="token punctuation">)</span>
-<span class="token comment"># keep the window open until we press a key</span>
-cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token comment"># close the window</span>
-cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://machinelearningmastery.com/how-to-perform-face-detection-with-classical-and-deep-learning-methods-in-python-with-keras/">https://machinelearningmastery.com/how-to-perform-face-detection-with-classical-and-deep-learning-methods-in-python-with-keras/</a><br />
-<a target="_blank" rel="noopener" href="https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78">https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78</a></p>
-<p>中英翻译对照：<br />
-人脸检测(face detection)<br />
-基于特征的(Feature-based)<br />
-边界盒子(bounding boxes)<br />
-级联结构(cascade structure)<br />
-人脸标志(facial landmarks)<br />
-多任务网络(multi-task network)</p>
-
+          <p>IOC(Inversion of Control, 控制反转):把对象创建和对象之间的调用过程，交给 Spring 进行管理</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Spring/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -560,7 +426,7 @@ cv<span class="token punctuation">.</span>destroyAllWindows<span class="token pu
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/FaceAlign/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/SpringSecurity/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -578,7 +444,7 @@ cv<span class="token punctuation">.</span>destroyAllWindows<span class="token pu
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/FaceAlign/" class="post-title-link" itemprop="url">FaceAlign</a>
+          <a href="/SpringSecurity/" class="post-title-link" itemprop="url">SpringSecurity</a>
         </h2>
 
         <div class="post-meta-container">
@@ -589,7 +455,7 @@ cv<span class="token punctuation">.</span>destroyAllWindows<span class="token pu
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
+      <time title="创建时间：2021-05-17 11:21:03" itemprop="dateCreated datePublished" datetime="2021-05-17T11:21:03+08:00">2021-05-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -609,900 +475,614 @@ cv<span class="token punctuation">.</span>destroyAllWindows<span class="token pu
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="1-实现"><a class="markdownIt-Anchor" href="#1-实现"></a> 1. 实现</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
-<span class="token keyword">import</span> dlib
-<span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
-
-<span class="token comment"># 1. 制作标准脸</span>
-TEMPLATE <span class="token operator">=</span> np<span class="token punctuation">.</span>float32<span class="token punctuation">(</span>
-    <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0.</span>        <span class="token punctuation">,</span> <span class="token number">0.17856914</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.00412831</span><span class="token punctuation">,</span> <span class="token number">0.31259227</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.0196793</span> <span class="token punctuation">,</span> <span class="token number">0.44770938</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.04809872</span><span class="token punctuation">,</span> <span class="token number">0.5800727</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.10028344</span><span class="token punctuation">,</span> <span class="token number">0.70349526</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.17999782</span><span class="token punctuation">,</span> <span class="token number">0.81208664</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.27627307</span><span class="token punctuation">,</span> <span class="token number">0.90467805</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.38463727</span><span class="token punctuation">,</span> <span class="token number">0.98006284</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.5073561</span> <span class="token punctuation">,</span> <span class="token number">1.</span>        <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.63014114</span><span class="token punctuation">,</span> <span class="token number">0.9761118</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.7386777</span> <span class="token punctuation">,</span> <span class="token number">0.89921385</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.8354747</span> <span class="token punctuation">,</span> <span class="token number">0.80513287</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.91434467</span><span class="token punctuation">,</span> <span class="token number">0.6945623</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.9643504</span> <span class="token punctuation">,</span> <span class="token number">0.56826204</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.9887058</span> <span class="token punctuation">,</span> <span class="token number">0.432444</span>  <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.9993123</span> <span class="token punctuation">,</span> <span class="token number">0.29529294</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">1.</span>        <span class="token punctuation">,</span> <span class="token number">0.15909716</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.09485531</span><span class="token punctuation">,</span> <span class="token number">0.07603313</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.15534875</span><span class="token punctuation">,</span> <span class="token number">0.02492465</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.2377474</span> <span class="token punctuation">,</span> <span class="token number">0.01139098</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.32313403</span><span class="token punctuation">,</span> <span class="token number">0.02415778</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.4036699</span> <span class="token punctuation">,</span> <span class="token number">0.05780071</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.56864655</span><span class="token punctuation">,</span> <span class="token number">0.0521157</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.65128165</span><span class="token punctuation">,</span> <span class="token number">0.01543965</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.7379608</span> <span class="token punctuation">,</span> <span class="token number">0.</span>        <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.82290924</span><span class="token punctuation">,</span> <span class="token number">0.01191543</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.88739765</span><span class="token punctuation">,</span> <span class="token number">0.06025707</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.48893312</span><span class="token punctuation">,</span> <span class="token number">0.15513189</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.48991537</span><span class="token punctuation">,</span> <span class="token number">0.24343018</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.49092147</span><span class="token punctuation">,</span> <span class="token number">0.33176517</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.49209353</span><span class="token punctuation">,</span> <span class="token number">0.422107</span>  <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.397399</span>  <span class="token punctuation">,</span> <span class="token number">0.48004663</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.4442625</span> <span class="token punctuation">,</span> <span class="token number">0.49906778</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.4949509</span> <span class="token punctuation">,</span> <span class="token number">0.5144414</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.54558265</span><span class="token punctuation">,</span> <span class="token number">0.49682876</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.59175086</span><span class="token punctuation">,</span> <span class="token number">0.47722608</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.194157</span>  <span class="token punctuation">,</span> <span class="token number">0.16926692</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.24600308</span><span class="token punctuation">,</span> <span class="token number">0.13693026</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.31000495</span><span class="token punctuation">,</span> <span class="token number">0.13735634</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.36378494</span><span class="token punctuation">,</span> <span class="token number">0.17794687</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.3063696</span> <span class="token punctuation">,</span> <span class="token number">0.19082251</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.24390514</span><span class="token punctuation">,</span> <span class="token number">0.19138186</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.6189632</span> <span class="token punctuation">,</span> <span class="token number">0.17277813</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.67249435</span><span class="token punctuation">,</span> <span class="token number">0.12988105</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.7362857</span> <span class="token punctuation">,</span> <span class="token number">0.1279085</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.7888591</span> <span class="token punctuation">,</span> <span class="token number">0.15817115</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.74115133</span><span class="token punctuation">,</span> <span class="token number">0.18155812</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.6791372</span> <span class="token punctuation">,</span> <span class="token number">0.18370388</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.30711025</span><span class="token punctuation">,</span> <span class="token number">0.6418497</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.3759703</span> <span class="token punctuation">,</span> <span class="token number">0.6109595</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.44670257</span><span class="token punctuation">,</span> <span class="token number">0.5970508</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.49721557</span><span class="token punctuation">,</span> <span class="token number">0.60872644</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.5500201</span> <span class="token punctuation">,</span> <span class="token number">0.5954327</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.6233016</span> <span class="token punctuation">,</span> <span class="token number">0.6070911</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.69541407</span><span class="token punctuation">,</span> <span class="token number">0.6341429</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.628068</span>  <span class="token punctuation">,</span> <span class="token number">0.70906836</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.5573954</span> <span class="token punctuation">,</span> <span class="token number">0.7434471</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.50020397</span><span class="token punctuation">,</span> <span class="token number">0.7505844</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.44528747</span><span class="token punctuation">,</span> <span class="token number">0.74580276</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.37508208</span><span class="token punctuation">,</span> <span class="token number">0.7145425</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.3372878</span> <span class="token punctuation">,</span> <span class="token number">0.64616466</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.44701463</span><span class="token punctuation">,</span> <span class="token number">0.64064664</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.49795204</span><span class="token punctuation">,</span> <span class="token number">0.6449633</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.5513943</span> <span class="token punctuation">,</span> <span class="token number">0.6385937</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.6650228</span> <span class="token punctuation">,</span> <span class="token number">0.63955915</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.5530556</span> <span class="token punctuation">,</span> <span class="token number">0.67647934</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.4986481</span> <span class="token punctuation">,</span> <span class="token number">0.68417645</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">[</span><span class="token number">0.44657204</span><span class="token punctuation">,</span> <span class="token number">0.6786047</span> <span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-<span class="token comment"># 2. 放射变换时用到的点(仿射变换需要用到3个点)</span>
-INNER_EYES_AND_BOTTOM_LIP <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">39</span><span class="token punctuation">,</span> <span class="token number">42</span><span class="token punctuation">,</span> <span class="token number">57</span><span class="token punctuation">]</span>
-OUTER_EYES_AND_NOSE <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">36</span><span class="token punctuation">,</span> <span class="token number">45</span><span class="token punctuation">,</span> <span class="token number">33</span><span class="token punctuation">]</span>
-AffinePoint <span class="token operator">=</span> OUTER_EYES_AND_NOSE
-
-<span class="token comment"># 3. 制作并展示标准脸(放射变换三个点黑色, 其他红色)</span>
-image_template <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>uint8<span class="token punctuation">)</span>
-image_template<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">]</span>
-<span class="token keyword">for</span> i<span class="token punctuation">,</span> point <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>TEMPLATE<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> i <span class="token keyword">in</span> AffinePoint<span class="token punctuation">:</span>
-        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image_template<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image_template<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'image_template'</span><span class="token punctuation">,</span> image_template<span class="token punctuation">)</span>
-
-<span class="token comment"># 4.1 读取图片, 并展示</span>
-image <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'waitou.png'</span><span class="token punctuation">)</span>
-image2 <span class="token operator">=</span> image<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
-cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'image'</span><span class="token punctuation">,</span> image<span class="token punctuation">)</span>
-
-<span class="token comment"># 4.2 定位人脸</span>
-face_detector <span class="token operator">=</span> dlib<span class="token punctuation">.</span>get_frontal_face_detector<span class="token punctuation">(</span><span class="token punctuation">)</span>
-face_locations <span class="token operator">=</span> face_detector<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token comment"># 4.3 获取定人人脸标志</span>
-predictor <span class="token operator">=</span> dlib<span class="token punctuation">.</span>shape_predictor<span class="token punctuation">(</span><span class="token string">"shape_predictor_68_face_landmarks.dat"</span><span class="token punctuation">)</span>
-landmark <span class="token operator">=</span> predictor<span class="token punctuation">(</span>image<span class="token punctuation">,</span> face_locations<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-points <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>x<span class="token punctuation">,</span> p<span class="token punctuation">.</span>y<span class="token punctuation">)</span> <span class="token keyword">for</span> p <span class="token keyword">in</span> landmark<span class="token punctuation">.</span>parts<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span class="token keyword">for</span> i<span class="token punctuation">,</span> point <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>points<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> i <span class="token keyword">in</span> AffinePoint<span class="token punctuation">:</span>
-        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'image_landmark'</span><span class="token punctuation">,</span> image<span class="token punctuation">)</span>
-
-<span class="token comment"># 5. 制作并展示当前图片的脸</span>
-image_template2 <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>uint8<span class="token punctuation">)</span>
-image_template2<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">]</span>
-<span class="token keyword">for</span> i<span class="token punctuation">,</span> point <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>points<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> i <span class="token keyword">in</span> AffinePoint<span class="token punctuation">:</span>
-        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image_template2<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image_template2<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'image_template2'</span><span class="token punctuation">,</span> image_template2<span class="token punctuation">)</span>
-
-<span class="token comment"># 6. 展示放射变换之后的脸</span>
-npLandmarks <span class="token operator">=</span> np<span class="token punctuation">.</span>float32<span class="token punctuation">(</span>points<span class="token punctuation">)</span>
-npLandmarkIndices <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>AffinePoint<span class="token punctuation">)</span>
-imgDim <span class="token operator">=</span> <span class="token number">500</span>
-H <span class="token operator">=</span> cv<span class="token punctuation">.</span>getAffineTransform<span class="token punctuation">(</span>npLandmarks<span class="token punctuation">[</span>npLandmarkIndices<span class="token punctuation">]</span><span class="token punctuation">,</span>
-                           imgDim <span class="token operator">*</span> TEMPLATE<span class="token punctuation">[</span>npLandmarkIndices<span class="token punctuation">]</span><span class="token punctuation">)</span>
-thumbnail <span class="token operator">=</span> cv<span class="token punctuation">.</span>warpAffine<span class="token punctuation">(</span>image2<span class="token punctuation">,</span> H<span class="token punctuation">,</span> <span class="token punctuation">(</span>imgDim<span class="token punctuation">,</span> imgDim<span class="token punctuation">)</span><span class="token punctuation">)</span>
-cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'thumbnail_source'</span><span class="token punctuation">,</span> thumbnail<span class="token punctuation">)</span>
-
-<span class="token comment"># 7. 展示放射变换之后带标志的脸</span>
-<span class="token keyword">for</span> i<span class="token punctuation">,</span> point <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>TEMPLATE<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> i <span class="token keyword">in</span> AffinePoint<span class="token punctuation">:</span>
-        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>thumbnail<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>thumbnail<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'thumbnail'</span><span class="token punctuation">,</span> thumbnail<span class="token punctuation">)</span>
-cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="2-直接调用-face_aligneralign"><a class="markdownIt-Anchor" href="#2-直接调用-face_aligneralign"></a> 2. 直接调用 face_aligner.align</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> dlib
-<span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
-<span class="token keyword">import</span> openface
-
-image <span class="token operator">=</span> cv<span class="token punctuation">.</span>imread<span class="token punctuation">(</span><span class="token string">'zhourui.png'</span><span class="token punctuation">)</span>
-face_detector <span class="token operator">=</span> dlib<span class="token punctuation">.</span>get_frontal_face_detector<span class="token punctuation">(</span><span class="token punctuation">)</span>
-detected_faces <span class="token operator">=</span> face_detector<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-
-
-face_pose_predictor <span class="token operator">=</span> dlib<span class="token punctuation">.</span>shape_predictor<span class="token punctuation">(</span><span class="token string">"shape_predictor_68_face_landmarks.dat"</span><span class="token punctuation">)</span>
-face_aligner <span class="token operator">=</span> openface<span class="token punctuation">.</span>AlignDlib<span class="token punctuation">(</span><span class="token string">"shape_predictor_68_face_landmarks.dat"</span><span class="token punctuation">)</span>
-
-<span class="token keyword">for</span> face_rect <span class="token keyword">in</span> detected_faces<span class="token punctuation">:</span>
-    x0<span class="token punctuation">,</span>y0<span class="token punctuation">,</span>x1<span class="token punctuation">,</span>y1 <span class="token operator">=</span>  face_rect<span class="token punctuation">.</span>left<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>top<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>right<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> face_rect<span class="token punctuation">.</span>bottom<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    cv<span class="token punctuation">.</span>rectangle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span>x0<span class="token punctuation">,</span> y0<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>x1<span class="token punctuation">,</span> y1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    landmarks <span class="token operator">=</span> face_pose_predictor<span class="token punctuation">(</span>image<span class="token punctuation">,</span> face_rect<span class="token punctuation">)</span>
-    <span class="token keyword">for</span> pt <span class="token keyword">in</span> landmarks<span class="token punctuation">.</span>parts<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        pt_pos <span class="token operator">=</span> <span class="token punctuation">(</span>pt<span class="token punctuation">.</span>x<span class="token punctuation">,</span> pt<span class="token punctuation">.</span>y<span class="token punctuation">)</span>
-        cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> pt_pos<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>  <span class="token comment"># img, center, radius, color, thickness</span>
-        alignedFace <span class="token operator">=</span> face_aligner<span class="token punctuation">.</span>align<span class="token punctuation">(</span><span class="token number">534</span><span class="token punctuation">,</span> image<span class="token punctuation">,</span> face_rect<span class="token punctuation">,</span> landmarkIndices<span class="token operator">=</span>openface<span class="token punctuation">.</span>AlignDlib<span class="token punctuation">.</span>OUTER_EYES_AND_NOSE<span class="token punctuation">)</span>
-
-<span class="token comment"># show the image</span>
-a <span class="token operator">=</span> cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> image<span class="token punctuation">)</span>
-b <span class="token operator">=</span> cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection2'</span><span class="token punctuation">,</span> alignedFace<span class="token punctuation">)</span>
-<span class="token comment"># keep the window open until we press a key</span>
-cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token comment"># close the window</span>
-cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="21-标准化脸制作"><a class="markdownIt-Anchor" href="#21-标准化脸制作"></a> 2.1 标准化脸制作</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
-<span class="token keyword">import</span> cv2 <span class="token keyword">as</span> cv
-<span class="token comment"># 1. 初始化一张标准landmark脸</span>
-TEMPLATE <span class="token operator">=</span> np<span class="token punctuation">.</span>float32<span class="token punctuation">(</span><span class="token punctuation">[</span>
-    <span class="token punctuation">(</span><span class="token number">0.0792396913815</span><span class="token punctuation">,</span> <span class="token number">0.339223741112</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.0829219487236</span><span class="token punctuation">,</span> <span class="token number">0.456955367943</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.0967927109165</span><span class="token punctuation">,</span> <span class="token number">0.575648016728</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.122141515615</span><span class="token punctuation">,</span> <span class="token number">0.691921601066</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.168687863544</span><span class="token punctuation">,</span> <span class="token number">0.800341263616</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.239789390707</span><span class="token punctuation">,</span> <span class="token number">0.895732504778</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.325662452515</span><span class="token punctuation">,</span> <span class="token number">0.977068762493</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.422318282013</span><span class="token punctuation">,</span> <span class="token number">1.04329000149</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.531777802068</span><span class="token punctuation">,</span> <span class="token number">1.06080371126</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.641296298053</span><span class="token punctuation">,</span> <span class="token number">1.03981924107</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.738105872266</span><span class="token punctuation">,</span> <span class="token number">0.972268833998</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.824444363295</span><span class="token punctuation">,</span> <span class="token number">0.889624082279</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.894792677532</span><span class="token punctuation">,</span> <span class="token number">0.792494155836</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.939395486253</span><span class="token punctuation">,</span> <span class="token number">0.681546643421</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.96111933829</span><span class="token punctuation">,</span> <span class="token number">0.562238253072</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.970579841181</span><span class="token punctuation">,</span> <span class="token number">0.441758925744</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.971193274221</span><span class="token punctuation">,</span> <span class="token number">0.322118743967</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.163846223133</span><span class="token punctuation">,</span> <span class="token number">0.249151738053</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.21780354657</span><span class="token punctuation">,</span> <span class="token number">0.204255863861</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.291299351124</span><span class="token punctuation">,</span> <span class="token number">0.192367318323</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.367460241458</span><span class="token punctuation">,</span> <span class="token number">0.203582210627</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.4392945113</span><span class="token punctuation">,</span> <span class="token number">0.233135599851</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.586445962425</span><span class="token punctuation">,</span> <span class="token number">0.228141644834</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.660152671635</span><span class="token punctuation">,</span> <span class="token number">0.195923841854</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.737466449096</span><span class="token punctuation">,</span> <span class="token number">0.182360984545</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.813236546239</span><span class="token punctuation">,</span> <span class="token number">0.192828009114</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.8707571886</span><span class="token punctuation">,</span> <span class="token number">0.235293377042</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.51534533827</span><span class="token punctuation">,</span> <span class="token number">0.31863546193</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.516221448289</span><span class="token punctuation">,</span> <span class="token number">0.396200446263</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.517118861835</span><span class="token punctuation">,</span> <span class="token number">0.473797687758</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.51816430343</span><span class="token punctuation">,</span> <span class="token number">0.553157797772</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.433701156035</span><span class="token punctuation">,</span> <span class="token number">0.604054457668</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.475501237769</span><span class="token punctuation">,</span> <span class="token number">0.62076344024</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.520712933176</span><span class="token punctuation">,</span> <span class="token number">0.634268222208</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.565874114041</span><span class="token punctuation">,</span> <span class="token number">0.618796581487</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.607054002672</span><span class="token punctuation">,</span> <span class="token number">0.60157671656</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.252418718401</span><span class="token punctuation">,</span> <span class="token number">0.331052263829</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.298663015648</span><span class="token punctuation">,</span> <span class="token number">0.302646354002</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.355749724218</span><span class="token punctuation">,</span> <span class="token number">0.303020650651</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.403718978315</span><span class="token punctuation">,</span> <span class="token number">0.33867711083</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.352507175597</span><span class="token punctuation">,</span> <span class="token number">0.349987615384</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.296791759886</span><span class="token punctuation">,</span> <span class="token number">0.350478978225</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.631326076346</span><span class="token punctuation">,</span> <span class="token number">0.334136672344</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.679073381078</span><span class="token punctuation">,</span> <span class="token number">0.29645404267</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.73597236153</span><span class="token punctuation">,</span> <span class="token number">0.294721285802</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.782865376271</span><span class="token punctuation">,</span> <span class="token number">0.321305281656</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.740312274764</span><span class="token punctuation">,</span> <span class="token number">0.341849376713</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.68499850091</span><span class="token punctuation">,</span> <span class="token number">0.343734332172</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.353167761422</span><span class="token punctuation">,</span> <span class="token number">0.746189164237</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.414587777921</span><span class="token punctuation">,</span> <span class="token number">0.719053835073</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.477677654595</span><span class="token punctuation">,</span> <span class="token number">0.706835892494</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.522732900812</span><span class="token punctuation">,</span> <span class="token number">0.717092275768</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.569832064287</span><span class="token punctuation">,</span> <span class="token number">0.705414478982</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.635195811927</span><span class="token punctuation">,</span> <span class="token number">0.71565572516</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.69951672331</span><span class="token punctuation">,</span> <span class="token number">0.739419187253</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.639447159575</span><span class="token punctuation">,</span> <span class="token number">0.805236879972</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.576410514055</span><span class="token punctuation">,</span> <span class="token number">0.835436670169</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.525398405766</span><span class="token punctuation">,</span> <span class="token number">0.841706377792</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.47641545769</span><span class="token punctuation">,</span> <span class="token number">0.837505914975</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.41379548902</span><span class="token punctuation">,</span> <span class="token number">0.810045601727</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.380084785646</span><span class="token punctuation">,</span> <span class="token number">0.749979603086</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.477955996282</span><span class="token punctuation">,</span> <span class="token number">0.74513234612</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.523389793327</span><span class="token punctuation">,</span> <span class="token number">0.748924302636</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.571057789237</span><span class="token punctuation">,</span> <span class="token number">0.74332894691</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.672409137852</span><span class="token punctuation">,</span> <span class="token number">0.744177032192</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.572539621444</span><span class="token punctuation">,</span> <span class="token number">0.776609286626</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token number">0.5240106503</span><span class="token punctuation">,</span> <span class="token number">0.783370783245</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0.477561227414</span><span class="token punctuation">,</span> <span class="token number">0.778476346951</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-TPL_MIN<span class="token punctuation">,</span> TPL_MAX <span class="token operator">=</span> np<span class="token punctuation">.</span><span class="token builtin">min</span><span class="token punctuation">(</span>TEMPLATE<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span>TEMPLATE<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token comment">#2. 进行标准化</span>
-MINMAX_TEMPLATE <span class="token operator">=</span> <span class="token punctuation">(</span>TEMPLATE <span class="token operator">-</span> TPL_MIN<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token punctuation">(</span>TPL_MAX <span class="token operator">-</span> TPL_MIN<span class="token punctuation">)</span>
-<span class="token comment"># 3. 画出这些点</span>
-image <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">500</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>uint8<span class="token punctuation">)</span>
-image<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">]</span>
-<span class="token keyword">for</span> point <span class="token keyword">in</span> MINMAX_TEMPLATE<span class="token punctuation">:</span>
-    cv<span class="token punctuation">.</span>circle<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">int</span><span class="token punctuation">(</span>point<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token comment"># show the image</span>
-cv<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">'face detection'</span><span class="token punctuation">,</span> image<span class="token punctuation">)</span>
-<span class="token comment"># keep the window open until we press a key</span>
-cv<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token comment"># close the window</span>
-cv<span class="token punctuation">.</span>destroyAllWindows<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><a target="_blank" rel="noopener" href="https://openface-api.readthedocs.io/en/latest/openface.html">https://openface-api.readthedocs.io/en/latest/openface.html</a><br />
-<a target="_blank" rel="noopener" href="https://www.pyimagesearch.com/2017/04/03/facial-landmarks-dlib-opencv-python/">https://www.pyimagesearch.com/2017/04/03/facial-landmarks-dlib-opencv-python/</a><br />
-<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39507748/article/details/104448700">https://blog.csdn.net/qq_39507748/article/details/104448700</a></p>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://gist.github.com/ageitgey/82d0ea0fdb56dc93cb9b716e7ceb364b">https://gist.github.com/ageitgey/82d0ea0fdb56dc93cb9b716e7ceb364b</a><br />
-<a target="_blank" rel="noopener" href="https://www.dazhuanlan.com/tsing_95/topics/1664887">https://www.dazhuanlan.com/tsing_95/topics/1664887</a><br />
-<a target="_blank" rel="noopener" href="https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78">https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/ImageSimilarity/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/ImageSimilarity/" class="post-title-link" itemprop="url">ImageSimilarity</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="传统方法"><a class="markdownIt-Anchor" href="#传统方法"></a> 传统方法</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> skimage<span class="token punctuation">.</span>measure <span class="token keyword">import</span> compare_ssim <span class="token keyword">as</span> ssim 
-s <span class="token operator">=</span> ssim<span class="token punctuation">(</span>img1<span class="token punctuation">,</span>img2<span class="token punctuation">,</span> multichannel <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">)</span>  
-<span class="token comment">#Set multichannel False if black and white image. </span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://www.quora.com/What-is-the-best-method-to-measure-similarity-between-two-images-using-OpenCV">https://www.quora.com/What-is-the-best-method-to-measure-similarity-between-two-images-using-OpenCV</a><br />
-<a target="_blank" rel="noopener" href="https://towardsdatascience.com/measuring-similarity-in-two-images-using-python-b72233eb53c6">https://towardsdatascience.com/measuring-similarity-in-two-images-using-python-b72233eb53c6</a></p>
-<h1 id="深度学习方法-faceencoder"><a class="markdownIt-Anchor" href="#深度学习方法-faceencoder"></a> 深度学习方法 faceencoder</h1>
-<p><a target="_blank" rel="noopener" href="http://xn--FaceEncoding-wg0ui029b.md">参考FaceEncoding.md</a></p>
-<p><a target="_blank" rel="noopener" href="https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78">https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/bom_history/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/bom_history/" class="post-title-link" itemprop="url">bom_history</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="history"><a class="markdownIt-Anchor" href="#history"></a> history</h1>
-<p>window 对象给我们提供了一个 history 对象，与浏览器历史记录进行交互。该对象包含用户（在浏览器窗口中）访问过的 URL。</p>
-<p>history对象方法|作用<br />
-back()|可以后退功能<br />
-forward()|前进功能<br />
-go(参数)|前进后退功能参数如果是1前进1个页面如果是-1后退1个页面</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/bom_intro/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/bom_intro/" class="post-title-link" itemprop="url">bom_intro</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>BOM（Browser Object Model）即浏览器对象模型，它提供了独立于内容而与浏览器窗口进行交互的对象，其核心对象是 window。</p>
-<p>DOM:</p>
+          <p>安全框架<br />
+Web 应用的安全性包括</p>
 <ul>
-<li>文档对象模型</li>
-<li>DOM 就是把「文档」当做一个「对象」来看待</li>
-<li>DOM 的顶级对象是 document</li>
-<li>DOM 主要学习的是操作页面元素</li>
-<li>DOM 是 W3C 标准规范</li>
+<li>用户认证（Authentication）<br />
+通俗点说就是系统认为用户是否能登录</li>
+<li>用户授权（Authorization）两个部分<br />
+通俗点讲就是系统判断用户是否有权限去做某些事情</li>
 </ul>
-<p>BOM:</p>
+<p>相关概念:<br />
+主体(principal): 就是指用户<br />
+认证(authentication): 登录操作<br />
+授权(authorization): 分配权限</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/SpringSecurity/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/js_mudule/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/js_mudule/" class="post-title-link" itemprop="url">JS模块化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-17 09:57:01" itemprop="dateCreated datePublished" datetime="2021-05-17T09:57:01+08:00">2021-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>早期,JS没有模块化的概念(Python中有module,Java中有Package).是直接引入整个JS代码.<br />
+<code>&lt;script type=&quot;text/javascript&quot; src=&quot;index.js&quot;&gt;&lt;/script&gt;</code><br />
+缺点:</p>
 <ul>
-<li>浏览器对象模型</li>
-<li>把「浏览器」当做一个「对象」来看待</li>
-<li>BOM 的顶级对象是 window</li>
-<li>BOM 学习的是浏览器窗口交互的一些对象</li>
-<li>BOM 是浏览器厂商在各自浏览器上定义的，兼容性较差</li>
+<li>污染全局变量,相当于将所有JS文本拼贴到一起</li>
+<li>加载有顺序:
+<ul>
+<li>使用getElement等方法会报错, 因为html文件还没加载</li>
+<li>如果JS文件有依赖关系, 则需要把被依赖的JS文件放前面, 先加载</li>
 </ul>
-<p>BOM包含:document/location/navigation/screen/history</p>
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
-        <span class="token comment">// window.document.querySelector()</span>
-        <span class="token keyword">var</span> num <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
-        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</li>
+</ul>
+<h1 id="es6"><a class="markdownIt-Anchor" href="#es6"></a> ES6</h1>
+<p>ES6规范了整个JS的语法, 而不仅仅是模块化部分. 各个浏览器和Node.js都几乎原生支持该规范.CommonJS都会被取代. 以后ES6会成为前后端的通用规范.</p>
+<h2 id="按需导入方法和对象"><a class="markdownIt-Anchor" href="#按需导入方法和对象"></a> 按需导入方法和对象</h2>
+<p>通过<code>export</code>关键字, 指定具体变量和方法名, 在导入的时候也要使用<code>特定</code>的变量和方法名接收</p>
+<ul>
+<li>导出</li>
+</ul>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//demo1.js</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> str <span class="token operator">=</span> <span class="token string">'hello world'</span>
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span>b</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> a<span class="token operator">+</span>b
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>导入</li>
+</ul>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//demo2.js</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> str<span class="token punctuation">,</span> f <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'demo1'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="导出整个模块"><a class="markdownIt-Anchor" href="#导出整个模块"></a> 导出整个模块</h2>
+<p>使用<code>export default</code>关键字, 将其后的<code>&#123;&#125;</code>所有内容作为<code>一个对象整体</code>导出, 接收者在导入时可以自定义名称</p>
+<ul>
+<li>导出</li>
+</ul>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//demo1.js</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">a</span><span class="token operator">:</span> <span class="token string">'hello'</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">b</span><span class="token operator">:</span> <span class="token string">'world'</span>      
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>导入</li>
+</ul>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//demo2.js</span>
+<span class="token keyword">import</span> obj <span class="token keyword">from</span> <span class="token string">'demo1'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="commonjs规范"><a class="markdownIt-Anchor" href="#commonjs规范"></a> CommonJS规范</h1>
+<p>由Node.js推广使用, 通过<code>requeire</code>来引入模块, 通过<code>module.exports</code>来导出模块.</p>
+<ul>
+<li>引入模块例子</li>
+</ul>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//add.js</span>
+<span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">add</span><span class="token operator">:</span> add <span class="token comment">// key可以被其他模块获得</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>加载模块例子</li>
+</ul>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> math <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./add.js'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+math<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>缺点:</p>
+<ul>
+<li>由于是服务端的规范(Node.js), 所以无法应用在浏览器, 可以通过Babel来转换为ES</li>
+<li>同步, 可能会产生阻塞</li>
+</ul>
+<h1 id="将es6语法转换为commonjs"><a class="markdownIt-Anchor" href="#将es6语法转换为commonjs"></a> 将ES6语法转换为CommonJS</h1>
+<h2 id="查看nodejs对es6的支持情况"><a class="markdownIt-Anchor" href="#查看nodejs对es6的支持情况"></a> 查看Node.js对ES6的支持情况</h2>
+<p>通过<code>npm install -g es-checker</code>,运行<code>es-checker</code>可以查看Node.js现在对ES6的支持率.</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">...</span>
 
-        <span class="token keyword">function</span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        window<span class="token punctuation">.</span><span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">// alert(11);</span>
-        <span class="token comment">// window.alert(11)</span>
-        console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span>window<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">// var name = 10;</span>
-        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+Class
+  √ Class
+  √ <span class="token keyword">super</span> allowed <span class="token keyword">in</span> object methods
+  √ <span class="token keyword">class</span> <span class="token class-name">ABC</span> <span class="token keyword">extends</span> <span class="token class-name">Array</span> <span class="token punctuation">&#123;</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">&#125;</span>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/bom_location/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/bom_location/" class="post-title-link" itemprop="url">bom_location</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="location"><a class="markdownIt-Anchor" href="#location"></a> location</h1>
-<p>window 对象给我们提供了一个 location 属性用于获取或设置窗体的 URL，并且可以用于解析 URL 。</p>
-<h2 id="location对象属性"><a class="markdownIt-Anchor" href="#location对象属性"></a> location对象属性</h2>
-<table>
-<thead>
-<tr>
-<th>location对象属性</th>
-<th>返回值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>location.href</td>
-<td>获取或者设置整个URL</td>
-</tr>
-<tr>
-<td>location.host</td>
-<td>返回主机 (域名)  <a target="_blank" rel="noopener" href="http://www.itheima.com">www.itheima.com</a></td>
-</tr>
-<tr>
-<td>location.port</td>
-<td>返回端口号如果未写返回空字符串</td>
-</tr>
-<tr>
-<td>location.pathname</td>
-<td>返回路径</td>
-</tr>
-<tr>
-<td>location.search</td>
-<td>返回参数</td>
-</tr>
-<tr>
-<td>location.hash</td>
-<td>返回片段  #后面内容常见于链接锚点</td>
-</tr>
-</tbody>
-</table>
-<p>以上属性, 对应了url的格式:</p>
-<pre class="line-numbers language-none"><code class="language-none">protocol:&#x2F;&#x2F;host[:port]&#x2F;path&#x2F;[?query]#fragment
-http:&#x2F;&#x2F;www.xxx.cn&#x2F;index.html?name&#x3D;andy&amp;age&#x3D;18#link<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<table>
-<thead>
-<tr>
-<th>组成</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>protocol</td>
-<td>通信协议常用的http,ftp,maito等</td>
-</tr>
-<tr>
-<td>host</td>
-<td>主机(域名)<a target="_blank" rel="noopener" href="http://www.xxx.com">www.xxx.com</a></td>
-</tr>
-<tr>
-<td>port</td>
-<td>端口号可选,省略时使用方案的默认端口如http的默认端口为80</td>
-</tr>
-<tr>
-<td>path</td>
-<td>路径由零或多个/符号隔开的字符串，一般用来表示主机上的一个目录或文件地址</td>
-</tr>
-<tr>
-<td>query</td>
-<td>参数以键值对的形式，通过&amp;符号分隔开来</td>
-</tr>
-<tr>
-<td>fragment</td>
-<td>片段#后面内容常见于链接 锚点</td>
-</tr>
-</tbody>
-</table>
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span><span class="token punctuation">></span></span>点击<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
-        <span class="token keyword">var</span> btn <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'button'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> div <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        btn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token comment">// console.log(location.href);</span>
-            location<span class="token punctuation">.</span>href <span class="token operator">=</span> <span class="token string">'http://www.baidu.com'</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-        <span class="token keyword">var</span> timer <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
-        <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>timer <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                location<span class="token punctuation">.</span>href <span class="token operator">=</span> <span class="token string">'http://www.baidu.com'</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-                div<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> <span class="token string">'您将在'</span> <span class="token operator">+</span> timer <span class="token operator">+</span> <span class="token string">'秒钟之后跳转到首页'</span><span class="token punctuation">;</span>
-                timer<span class="token operator">--</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="location对象的方法"><a class="markdownIt-Anchor" href="#location对象的方法"></a> location对象的方法</h2>
-<table>
-<thead>
-<tr>
-<th>location对象方法</th>
-<th>返回值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>location.assign()</td>
-<td>跟href一样,可以跳转页面(也称为重定向页面)（记录浏览历史，所以可以实现后退功能）</td>
-</tr>
-<tr>
-<td>location.replace()</td>
-<td>替换当前页面，因为不记录历史，所以不能后退页面</td>
-</tr>
-<tr>
-<td>location.reload()</td>
-<td>重新加载页面，相当于刷新按钮或者f5 如果参数为true强制刷新ctrl+f5</td>
-</tr>
-</tbody>
-</table>
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span><span class="token punctuation">></span></span>点击<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
-        <span class="token keyword">var</span> btn <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'button'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        btn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token comment">// 记录浏览历史，所以可以实现后退功能</span>
-            <span class="token comment">// location.assign('http://www.baidu.cn');</span>
-            <span class="token comment">// 不记录浏览历史，所以不可以实现后退功能</span>
-            <span class="token comment">// location.replace('http://www.baidu.cn');</span>
-            location<span class="token punctuation">.</span><span class="token function">reload</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/bom_navigator/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/bom_navigator/" class="post-title-link" itemprop="url">bom_navigator</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="navigator-对象"><a class="markdownIt-Anchor" href="#navigator-对象"></a> navigator 对象</h1>
-<p>navigator 对象包含有关浏览器的信息，它有很多属性，我们最常用的是 userAgent，该属性可以返回由客户机发送服务器的 user-agent 头部的值。<br />
-判断用户那个终端打开页面，实现跳转</p>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>userAgent<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span><span class="token string">"/(phone|pad|pod|iPhone|)"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    window<span class="token punctuation">.</span>location<span class="token punctuation">.</span>href <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>     <span class="token comment">//手机</span>
- <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-    window<span class="token punctuation">.</span>location<span class="token punctuation">.</span>href <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>     <span class="token comment">//电脑</span>
- <span class="token punctuation">&#125;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/bom_onload/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/bom_onload/" class="post-title-link" itemprop="url">bom_onload</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-01-20 22:03:54" itemprop="dateCreated datePublished" datetime="2021-01-20T22:03:54+08:00">2021-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>window.onload 是窗口 (页面）加载事件,当文档内容完全加载完成会触发该事件(包括图像、脚本文件、CSS 文件等), 就调用的处理函数。<br />
-语法:<br />
-<code>window.onload = function()&#123;&#125;</code><br />
-或者<br />
-<code>window.addEventListener(&quot;load&quot;,function()&#123;&#125;);</code></p>
-<p>注意：</p>
+Module
+  × Module <span class="token keyword">export</span> command
+  × Module <span class="token keyword">import</span> command<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>node环境中的模块导入导出是CommonJS规范实现的, 现在还不支持写<code>import</code>和<code>export</code>.</p>
+<h2 id="使用babel-将es6语法转换为commonjs"><a class="markdownIt-Anchor" href="#使用babel-将es6语法转换为commonjs"></a> 使用babel, 将ES6语法转换为CommonJS</h2>
+<p><a target="_blank" rel="noopener" href="https://www.jb51.net/article/184136.htm">详细参考</a></p>
 <ol>
-<li>有了 window.onload 就可以把 JS 代码写到页面元素的上方，因为 onload 是等页面内容全部加载完毕，再去执行处理函数。</li>
-<li>window.onload 传统注册事件方式 只能写一次，如果有多个，会以最后一个 window.onload 为准。</li>
-<li>如果使用 addEventListener 则没有限制</li>
+<li>安装<br />
+<code>npm install --save-dev babel-cli babel-preset-es2015 babel-preset-es2017</code><br />
+<code>babel-cli</code>如同<code>webpack-cli</code>, 可以让我们使用命令行<br />
+<code>babel-preset-es*</code>, 就是转换规则<code>2015</code>对应<code>ES6</code>(ES后面的数字比年份大一)</li>
+<li>使用<code>babel index.js</code>进行转化</li>
 </ol>
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
-    window<span class="token punctuation">.</span><span class="token function-variable function">onload</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">alert</span><span class="token punctuation">(</span><span class="token number">22</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'load'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<h3 id="webpack中的es6和commonjs"><a class="markdownIt-Anchor" href="#webpack中的es6和commonjs"></a> webpack中的ES6和CommonJS</h3>
+<p><a target="_blank" rel="noopener" href="https://webpack.docschina.org/api/module-methods/">详细参考</a></p>
+<p>webpack 2 支持原生的 ES6 模块语法，意味着你无须额外引入 babel这样的工具，就可以使用<code>import</code>和<code>export</code>。但是注意，如果使用其他的 ES6+ 特性，仍然需要引入 babel。</p>
+<p>另外,<code>webpack.config.js</code>中只能用CommonJS的语法, <code>module.exports</code>和<code>require()</code>, 因为是由Node.js运行的.</p>
 
-        <span class="token function">alert</span><span class="token punctuation">(</span><span class="token number">22</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-    document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'DOMContentLoaded'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token function">alert</span><span class="token punctuation">(</span><span class="token number">33</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-    <span class="token comment">// load 等页面内容全部加载完毕，包含页面dom元素 图片 flash  css 等等</span>
-    <span class="token comment">// DOMContentLoaded 是DOM 加载完毕，不包含图片 falsh css 等就可以执行 加载速度比 load更快一些</span>
-</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/webpack%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/webpack%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">Webpack性能优化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-16 15:29:59" itemprop="dateCreated datePublished" datetime="2021-05-16T15:29:59+08:00">2021-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>性能优化</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/webpack%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/webpack%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/webpack%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Webpack开发环境</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-16 15:12:56" itemprop="dateCreated datePublished" datetime="2021-05-16T15:12:56+08:00">2021-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>详情参考:<a target="_blank" rel="noopener" href="https://webpack.docschina.org/">官网</a>,本文使用<code>v5.37.0</code>版本</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/webpack%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/Webpack%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Webpack%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Webpack生产环境</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-16 14:05:37" itemprop="dateCreated datePublished" datetime="2021-05-16T14:05:37+08:00">2021-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>详情参考:<a target="_blank" rel="noopener" href="https://webpack.docschina.org/">官网</a>,本文使用<code>v5.37.0</code>版本</p>
+<ul>
+<li>开发环境中将CSS打包进js文件,体积太大</li>
+<li>生产环境要对代码进行压缩(开发环境进行压缩会很慢,所以一般不进行压缩)</li>
+<li>兼容性,比如css的浏览器前缀</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Webpack%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/Webpack%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Webpack%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">Webpack入门</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-16 10:47:18" itemprop="dateCreated datePublished" datetime="2021-05-16T10:47:18+08:00">2021-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>详情参考:<a target="_blank" rel="noopener" href="https://webpack.docschina.org/">官网</a>,本文使用<code>v5.37.0</code>版本</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Webpack%E5%85%A5%E9%97%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/Three-js%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Three-js%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">Three-js入门</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-16 10:07:36" itemprop="dateCreated datePublished" datetime="2021-05-16T10:07:36+08:00">2021-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-04 13:40:02" itemprop="dateModified" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Three入门</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Three-js%E5%85%A5%E9%97%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1521,7 +1101,7 @@ http:&#x2F;&#x2F;www.xxx.cn&#x2F;index.html?name&#x3D;andy&amp;age&#x3D;18#link<
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/other/page/33/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/other/">1</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/33/">33</a><span class="page-number current">34</span><a class="page-number" href="/other/page/35/">35</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/46/">46</a><a class="extend next" rel="next" href="/other/page/35/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/other/page/33/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/other/">1</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/33/">33</a><span class="page-number current">34</span><a class="page-number" href="/other/page/35/">35</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/47/">47</a><a class="extend next" rel="next" href="/other/page/35/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

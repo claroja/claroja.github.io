@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="get pre_trained model. from transformers import AutoModel checkpoint &#x3D; &quot;distilbert-base-uncased-finetuned-sst-2-english&quot; model &#x3D; AutoModel.from_pretrained(checkpoint) This architecture contains only t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claroja">
+<meta property="og:url" content="https://claroja.github.io/transformers_model/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="get pre_trained model. from transformers import AutoModel checkpoint &#x3D; &quot;distilbert-base-uncased-finetuned-sst-2-english&quot; model &#x3D; AutoModel.from_pretrained(checkpoint) This architecture contains only t">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter2/transformer_and_head.svg">
+<meta property="article:published_time" content="2022-07-13T03:38:49.062Z">
+<meta property="article:modified_time" content="2022-07-14T08:06:07.819Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter2/transformer_and_head.svg">
+
+
+<link rel="canonical" href="https://claroja.github.io/transformers_model/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/transformers_model/","path":"transformers_model/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#input"><span class="nav-number">1.</span> <span class="nav-text"> input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#output"><span class="nav-number">2.</span> <span class="nav-text"> output</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#head"><span class="nav-number">3.</span> <span class="nav-text"> head</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#output-head"><span class="nav-number">4.</span> <span class="nav-text"> output &amp; head</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#load-save"><span class="nav-number">5.</span> <span class="nav-text"> load &amp; save</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#predict"><span class="nav-number">6.</span> <span class="nav-text"> predict</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">468</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_model/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-13 11:38:49" itemprop="dateCreated datePublished" datetime="2022-07-13T11:38:49+08:00">2022-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-14 16:06:07" itemprop="dateModified" datetime="2022-07-14T16:06:07+08:00">2022-07-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>get pre_trained model.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModel
+checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased-finetuned-sst-2-english"</span>
+model <span class="token operator">=</span> AutoModel<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>This architecture contains only the base Transformer module: given some inputs, it outputs what we’ll call <code>hidden states</code>, also known as <code>features</code>.</p>
+<h2 id="input"><a class="markdownIt-Anchor" href="#input"></a> input</h2>
+<p>For each model <code>input</code>, we’ll retrieve a high-dimensional vector representing the contextual understanding of that input by the Transformer model.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
+encoded_input <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span><span class="token string">"Do not meddle in the affairs of wizards, for they are subtle and quick to anger."</span><span class="token punctuation">)</span>
+<span class="token comment"># &#123;'input_ids': [101, 2079, 2025, 19960, 10362, 1999, 1996, 3821, 1997, 16657, 1010, 2005, 2027, 2024, 11259, 1998, 4248, 2000, 4963, 1012, 102], </span>
+<span class="token comment">#  'token_type_ids': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], </span>
+<span class="token comment">#  'attention_mask': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="output"><a class="markdownIt-Anchor" href="#output"></a> output</h2>
+<p>output always contains:</p>
+<ul>
+<li>Batch size: The number of sequences processed at a time (2 in our example).</li>
+<li>Sequence length: The length of the numerical representation of the sequence (16 in our example).</li>
+<li>Hidden size: The vector dimension of each model input.<br />
+It is said to be <code>high dimensional</code> because of the last value. The hidden size can be very large (768 is common for smaller models, and in larger models this can reach 3072 or more).</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModel
+checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased-finetuned-sst-2-english"</span>
+model <span class="token operator">=</span> AutoModel<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span>
+outputs <span class="token operator">=</span> model<span class="token punctuation">(</span><span class="token operator">**</span>inputs<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>outputs<span class="token punctuation">.</span>last_hidden_state<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+torch<span class="token punctuation">.</span>Size<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">768</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="head"><a class="markdownIt-Anchor" href="#head"></a> head</h2>
+<p>While these <code>hidden states</code> can be useful on their own, they’re usually inputs to another part of the model, known as the <code>head</code>.The different tasks could have been performed with the same <code>architecture</code>, but each of these tasks will have a different <code>head</code> associated with it.</p>
+<p><img src="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter2/transformer_and_head.svg" alt="diagram" /><br />
+In this diagram, the model is represented by its embeddings layer and the subsequent layers. The embeddings layer converts each input ID in the tokenized input into a vector that represents the associated token. The subsequent layers manipulate those vectors using the attention mechanism to produce the final representation of the sentences.<br />
+For our example, we will need a model with a sequence classification head (to be able to classify the sentences as positive or negative)</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForSequenceClassification
+checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased-finetuned-sst-2-english"</span>
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span>
+outputs <span class="token operator">=</span> model<span class="token punctuation">(</span><span class="token operator">**</span>inputs<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>outputs<span class="token punctuation">.</span>logits<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+<span class="token comment"># torch.Size([2, 2])</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="output-head"><a class="markdownIt-Anchor" href="#output-head"></a> output &amp; head</h2>
+<p><code>AutoModel</code>’s output is <code>hidden state</code><br />
+<code>AutoModelForSequenceClassification</code> 's output is <code>head</code><br />
+<a href="/transformers_bert/">ref</a></p>
+<h2 id="load-save"><a class="markdownIt-Anchor" href="#load-save"></a> load &amp; save</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> BertConfig<span class="token punctuation">,</span> BertModel
+config <span class="token operator">=</span> BertConfig<span class="token punctuation">(</span><span class="token punctuation">)</span>
+model <span class="token operator">=</span> BertModel<span class="token punctuation">(</span>config<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>this model will output gibberish, it needs to be trained first. it will cost a lot.<br />
+so, we should reuse models that have already been trained.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> BertModel
+model <span class="token operator">=</span> BertModel<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>BertModel</code> is equal <code>AutoModel</code> class.<br />
+we don’t need to use <code>BertConfig</code>, instead load a pretrained mode via <code>bert-base-cased</code> identifier.</p>
+<p>after finetuning, we can use <code>save_pretrained()</code> to save the model. it is analogous to <code>from_pretrained()</code> method.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span><span class="token string">"directory_on_my_computer"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>this method will create two file:<br />
+<code>config.json</code> : including some attributes to build the model architecture and some information about version.<br />
+<code>pytorch_model.bin</code> : known as <code>state dictionary</code>, contains all weights.</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">ls directory_on_my_computer
+config.json pytorch_model.bin<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="predict"><a class="markdownIt-Anchor" href="#predict"></a> predict</h2>
+<p>when you first load pretraining model from <a target="_blank" rel="noopener" href="https://huggingface.co/models">hub</a>:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'mode_name'</span><span class="token punctuation">)</span>
+<span class="token comment"># Some weights of the model checkpoint at ./pretraind_model/distilbert-base-uncased were not used when initializing DistilBertForSequenceClassification: ['vocab_transform.bias', 'vocab_transform.weight', 'vocab_layer_norm.bias', 'vocab_projector.bias', 'vocab_layer_norm.weight', 'vocab_projector.weight']</span>
+<span class="token comment"># - This IS expected if you are initializing DistilBertForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).</span>
+<span class="token comment"># - This IS NOT expected if you are initializing DistilBertForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).</span>
+<span class="token comment"># Some weights of DistilBertForSequenceClassification were not initialized from the model checkpoint at ./pretraind_model/distilbert-base-uncased and are newly initialized: ['pre_classifier.weight', 'pre_classifier.bias', 'classifier.bias', 'classifier.weight']</span>
+<span class="token comment"># You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>you will see the red warnings. It tells that the model doesn’t fit your customized task, you should finetuning it before you use it. every time we load the model, the <code>model.classifier.weight</code> is random initialization. the default <code>num_labels</code> is 2, but even if you specify the <code>num_lables</code> as 8, it still randomly init.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">.</span>classifier<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>after you finetuning the model, and save it:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'pretraining_model'</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span>
+<span class="token comment"># Assume training code here...</span>
+model<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span><span class="token string">"./finetuning_model"</span><span class="token punctuation">)</span>
+tokenizer<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span><span class="token string">"./finetuning_model"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>then you load the finetuning model:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'finetuning_model'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Notice: this time, the console doesn’t output the red warnings, because we load the finetuning(training in out task) model.</p>
+<p>this time, regardless how many times you load the mode, the <code>model.classifier.weight</code> is always same. and you can’t change the <code>num_labels</code> from the finetuning model.huggingface is smart to tell <code>pretrained</code> model and <code>finetuning</code> model. I didn’t find how huggingface do this, but it is what it is.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'finetuning_model'</span><span class="token punctuation">)</span> <span class="token comment">#  num_labels=8</span>
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'finetuning_model'</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token comment">#  num_labels=8</span>
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'finetuning_model'</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment">#  error</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>ref:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/2?fw=pt">Behind the pipeline</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/3?fw=pt">Models</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/transformers_course/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/transformers_postprocessing/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

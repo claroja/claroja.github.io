@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="models can only process numbers, so we need to convert the raw text to numbers by using tokenizer.  Tokenization Tokenization include three steps, Behind the pipeline  splitting the input into words,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claroja">
+<meta property="og:url" content="https://claroja.github.io/transformers_tokenizer_NLP/index.html">
+<meta property="og:site_name" content="Claroja">
+<meta property="og:description" content="models can only process numbers, so we need to convert the raw text to numbers by using tokenizer.  Tokenization Tokenization include three steps, Behind the pipeline  splitting the input into words,">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-06T09:06:12.874Z">
+<meta property="article:modified_time" content="2022-07-15T08:37:41.497Z">
+<meta property="article:author" content="Claroja">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://claroja.github.io/transformers_tokenizer_NLP/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/transformers_tokenizer_NLP/","path":"transformers_tokenizer_NLP/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Claroja</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Claroja</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tokenization"><span class="nav-number">1.</span> <span class="nav-text"> Tokenization</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#splitting-into-tokens"><span class="nav-number">1.1.</span> <span class="nav-text"> splitting into tokens</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#word-based-tokenizer"><span class="nav-number">1.1.1.</span> <span class="nav-text"> word-based tokenizer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#character-based-tokenizers"><span class="nav-number">1.1.2.</span> <span class="nav-text"> Character-based tokenizers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#subword-tokenization"><span class="nav-number">1.1.3.</span> <span class="nav-text"> subword-tokenization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mapping-token-to-integer"><span class="nav-number">1.2.</span> <span class="nav-text"> Mapping token to integer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adding-additional-inputs"><span class="nav-number">1.3.</span> <span class="nav-text"> Adding additional inputs</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#use-tokenizer"><span class="nav-number">2.</span> <span class="nav-text"> use tokenizer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#padding"><span class="nav-number">2.1.</span> <span class="nav-text"> padding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#why-padding"><span class="nav-number">2.1.1.</span> <span class="nav-text"> why padding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#attention-mask"><span class="nav-number">2.1.2.</span> <span class="nav-text"> attention mask</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#application"><span class="nav-number">2.1.3.</span> <span class="nav-text"> application</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#truncation"><span class="nav-number">2.2.</span> <span class="nav-text"> truncation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#return"><span class="nav-number">2.3.</span> <span class="nav-text"> return</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#special-tokens"><span class="nav-number">2.4.</span> <span class="nav-text"> Special tokens</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loading-and-saving"><span class="nav-number">2.5.</span> <span class="nav-text"> loading and saving</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#notice"><span class="nav-number">3.</span> <span class="nav-text"> Notice</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Claroja</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">468</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_tokenizer_NLP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-06 17:06:12" itemprop="dateCreated datePublished" datetime="2022-07-06T17:06:12+08:00">2022-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-15 16:37:41" itemprop="dateModified" datetime="2022-07-15T16:37:41+08:00">2022-07-15</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>models can only process numbers, so we need to convert the raw text to numbers by using <code>tokenizer</code>.</p>
+<h1 id="tokenization"><a class="markdownIt-Anchor" href="#tokenization"></a> Tokenization</h1>
+<p>Tokenization include three steps, <a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/2?fw=pt">Behind the pipeline</a></p>
+<ul>
+<li>splitting the input into words, subwords, usually called <code>tokens</code></li>
+<li>Mapping each token to an integer</li>
+<li>Adding additional inputs that may be useful to the model, eg:<code>attention_mask</code></li>
+</ul>
+<h2 id="splitting-into-tokens"><a class="markdownIt-Anchor" href="#splitting-into-tokens"></a> splitting into tokens</h2>
+<h3 id="word-based-tokenizer"><a class="markdownIt-Anchor" href="#word-based-tokenizer"></a> word-based tokenizer</h3>
+<ol>
+<li>
+<p>split sequence</p>
+ <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token string">"Jim Henson was a puppeteer"</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token string">'Jim'</span><span class="token punctuation">,</span> <span class="token string">'Henson'</span><span class="token punctuation">,</span> <span class="token string">'was'</span><span class="token punctuation">,</span> <span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'puppeteer'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li>
+<p>get Id<br />
+Each word gets assigned an Id, starting from 0 and going up to the size of the vocabulary<br />
+unknown words<br />
+often represented as `[UNK] or ``.</p>
+</li>
+</ol>
+<h3 id="character-based-tokenizers"><a class="markdownIt-Anchor" href="#character-based-tokenizers"></a> Character-based tokenizers</h3>
+<p>split the text into characters, rather than words. this has two primary benefits:</p>
+<ol>
+<li>the vocabulary is much smaller</li>
+<li>less unknown tokens</li>
+</ol>
+<p>but it’s not perfect either:</p>
+<ol>
+<li>it’s less meaningful: each character doesn’t mean a lot on its own</li>
+<li>we’ll end up with a very large amount of tokens to be processed by our model</li>
+</ol>
+<h3 id="subword-tokenization"><a class="markdownIt-Anchor" href="#subword-tokenization"></a> subword-tokenization</h3>
+<p>combines the <code>word-based tokenizer</code> and <code>Character-based tokenizers</code></p>
+<p>“Let’s do tokenization!”<br />
+“tokenization” was split into “token” and “ization”, two tokens that have a semantic meaning while being space-efficient (only two tokens are needed to represent a long word).</p>
+<h2 id="mapping-token-to-integer"><a class="markdownIt-Anchor" href="#mapping-token-to-integer"></a> Mapping token to integer</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
+sequence <span class="token operator">=</span> <span class="token string">"Using a Transformer network is simple"</span>
+tokens <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>tokenize<span class="token punctuation">(</span>sequence<span class="token punctuation">)</span>
+<span class="token comment"># ['Using', 'a', 'transform', '##er', 'network', 'is', 'simple']</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>encoding()</code>: The conversion to input IDs is handled by the <code>convert_tokens_to_ids()</code> tokenizer method</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">ids <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>convert_tokens_to_ids<span class="token punctuation">(</span>tokens<span class="token punctuation">)</span>
+<span class="token comment"># [7993, 170, 11303, 1200, 2443, 1110, 3014]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>decode()</code> is going the other way around: from vocabulary indices, we want to get a string.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">decoded_string <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">7993</span><span class="token punctuation">,</span> <span class="token number">170</span><span class="token punctuation">,</span> <span class="token number">11303</span><span class="token punctuation">,</span> <span class="token number">1200</span><span class="token punctuation">,</span> <span class="token number">2443</span><span class="token punctuation">,</span> <span class="token number">1110</span><span class="token punctuation">,</span> <span class="token number">3014</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># 'Using a Transformer network is simple'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>decode method not only converts the indices back to tokens, but also groups together the tokens that were part of the same words to produce a readable sentence.</p>
+<h2 id="adding-additional-inputs"><a class="markdownIt-Anchor" href="#adding-additional-inputs"></a> Adding additional inputs</h2>
+<p>eg: attention mask, see details in next section.</p>
+<h1 id="use-tokenizer"><a class="markdownIt-Anchor" href="#use-tokenizer"></a> use tokenizer</h1>
+<h2 id="padding"><a class="markdownIt-Anchor" href="#padding"></a> padding</h2>
+<h3 id="why-padding"><a class="markdownIt-Anchor" href="#why-padding"></a> why padding</h3>
+<p>The following list of lists cannot be converted to a tensor:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">batched_ids <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">]</span>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>In order to work around this, we’ll use padding to make our tensors have a <code>rectangular shape</code> by adding a special word called the <code>padding token</code> to the sentences with fewer values. For example, if you have 10 sentences with 10 words and 1 sentence with 20 words, padding will ensure all the sentences have 20 words.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">padding_id <span class="token operator">=</span> <span class="token number">100</span>
+
+batched_ids <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> padding_id<span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Let’s use it and send our two sentences through the model individually and batched together:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span>
+
+sequence1_ids <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+sequence2_ids <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+batched_ids <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> tokenizer<span class="token punctuation">.</span>pad_token_id<span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>sequence1_ids<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>logits<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>sequence2_ids<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>logits<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>batched_ids<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>logits<span class="token punctuation">)</span>
+
+<span class="token comment"># tensor([[ 1.5694, -1.3895]], grad_fn=&lt;AddmmBackward>)</span>
+<span class="token comment"># tensor([[ 0.5803, -0.4125]], grad_fn=&lt;AddmmBackward>)</span>
+<span class="token comment"># tensor([[ 1.5694, -1.3895],</span>
+<span class="token comment">#         [ 1.3373, -1.2163]], grad_fn=&lt;AddmmBackward>)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>the second row should be the same as the logits for the second sentence, but we’ve got completely different values!<br />
+Because these will take into account the padding tokens since they attend to all of the tokens of a sequence. we need to tell those attention layers to ignore the padding tokens. This is done by using an <code>attention mask</code>.</p>
+<h3 id="attention-mask"><a class="markdownIt-Anchor" href="#attention-mask"></a> attention mask</h3>
+<p><code>attention mask</code> are tensors with the exact same shape as the input IDs tensor, filled with 0s and 1s: 1s indicate the corresponding tokens should be attended to, and 0s indicate the corresponding tokens should not be attended to.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">batched_ids <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> tokenizer<span class="token punctuation">.</span>pad_token_id<span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+
+attention_mask <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+
+outputs <span class="token operator">=</span> model<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>batched_ids<span class="token punctuation">)</span><span class="token punctuation">,</span> attention_mask<span class="token operator">=</span>torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>attention_mask<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>outputs<span class="token punctuation">.</span>logits<span class="token punctuation">)</span>
+<span class="token comment"># tensor([[ 1.5694, -1.3895],</span>
+<span class="token comment">#         [ 0.5803, -0.4125]], grad_fn=&lt;AddmmBackward>)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="application"><a class="markdownIt-Anchor" href="#application"></a> application</h3>
+<p>we can get the model suggesting <code>max_length</code> by <code>self.tokenizer.max_model_input_sizes</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+
+checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased-finetuned-sst-2-english"</span>
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span>
+
+sequence <span class="token operator">=</span> <span class="token string">"I've been waiting for a HuggingFace course my whole life."</span>
+
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequence<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>model_inputs</code> contains everything that’s necessary for a model to operate well. For <code>DistilBERT</code>, that includes the <code>input IDs</code> as well as the <code>attention mask</code>. Other models that accept additional inputs will also have those output by the tokenizer object.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># one sequences</span>
+sequence <span class="token operator">=</span> <span class="token string">"I've been waiting for a HuggingFace course my whole life."</span>
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequence<span class="token punctuation">)</span>
+
+<span class="token comment"># multiple sequences</span>
+sequences <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"I've been waiting for a HuggingFace course my whole life."</span><span class="token punctuation">,</span> <span class="token string">"So have I!"</span><span class="token punctuation">]</span>
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequences<span class="token punctuation">)</span>
+
+<span class="token comment"># Will pad the sequences up to the maximum sequence length, equal to padding="true"</span>
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequences<span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token string">"longest"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Will pad the sequences up to the model max length</span>
+<span class="token comment"># (512 for BERT or DistilBERT)</span>
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequences<span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token string">"max_length"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Will pad the sequences up to the specified max length</span>
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequences<span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token string">"max_length"</span><span class="token punctuation">,</span> max_length<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="truncation"><a class="markdownIt-Anchor" href="#truncation"></a> truncation</h2>
+<p><code>truncation=True</code> 是按<code>max_length</code>参数来确定的, 而在<code>padding</code>中则是<code>padding='max_length'</code><br />
+we can get the model suggesting <code>max_length</code> by <code>self.tokenizer.max_model_input_sizes</code>.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Will truncate the sequences that are longer than the model max length</span>
+<span class="token comment"># (512 for BERT or DistilBERT)</span>
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequences<span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Will truncate the sequences that are longer than the specified max length</span>
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequences<span class="token punctuation">,</span> max_length<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="return"><a class="markdownIt-Anchor" href="#return"></a> return</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Returns PyTorch tensors</span>
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequences<span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> return_tensors<span class="token operator">=</span><span class="token string">"pt"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Returns TensorFlow tensors</span>
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequences<span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> return_tensors<span class="token operator">=</span><span class="token string">"tf"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Returns NumPy arrays</span>
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequences<span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> return_tensors<span class="token operator">=</span><span class="token string">"np"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="special-tokens"><a class="markdownIt-Anchor" href="#special-tokens"></a> Special tokens</h2>
+<p>The <code>tokenizer</code> added the special word [CLS] at the beginning and the special word [SEP] at the end but <code>tokenizer.tokenize</code> doesn’t. Note that some models don’t add special words, or add different ones; models may also add these special words only at the beginning, or only at the end. In any case, the tokenizer knows which ones are expected and will deal with this for you.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">sequence <span class="token operator">=</span> <span class="token string">"I've been waiting for a HuggingFace course my whole life."</span>
+tokens <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>tokenize<span class="token punctuation">(</span>sequence<span class="token punctuation">)</span>
+ids <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>convert_tokens_to_ids<span class="token punctuation">(</span>tokens<span class="token punctuation">)</span>
+<span class="token comment"># [1045, 1005, 2310, 2042, 3403, 2005, 1037, 17662, 12172, 2607, 2026, 2878, 2166, 1012]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>tokenizer<span class="token punctuation">.</span>decode<span class="token punctuation">(</span>ids<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># "i've been waiting for a huggingface course my whole life."</span>
+
+
+model_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequence<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>model_inputs<span class="token punctuation">[</span><span class="token string">"input_ids"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># [101, 1045, 1005, 2310, 2042, 3403, 2005, 1037, 17662, 12172, 2607, 2026, 2878, 2166, 1012, 102]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>tokenizer<span class="token punctuation">.</span>decode<span class="token punctuation">(</span>model_inputs<span class="token punctuation">[</span><span class="token string">"input_ids"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># "[CLS] i've been waiting for a huggingface course my whole life. [SEP]"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="loading-and-saving"><a class="markdownIt-Anchor" href="#loading-and-saving"></a> loading and saving</h2>
+<p><code>from_pretrained()</code> to load and <code>save_pretrained()</code> to save.<br />
+These methods will load or save the algorithm used by the <code>tokenizer</code> (a bit like the architecture of the model) as well as its <code>vocabulary</code> (a bit like the weights of the model).</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
+tokenizer<span class="token punctuation">(</span><span class="token string">"Using a Transformer network is simple"</span><span class="token punctuation">)</span>
+<span class="token comment"># &#123;'input_ids': [101, 7993, 170, 11303, 1200, 2443, 1110, 3014, 102],</span>
+<span class="token comment">#  'token_type_ids': [0, 0, 0, 0, 0, 0, 0, 0, 0],</span>
+<span class="token comment">#  'attention_mask': [1, 1, 1, 1, 1, 1, 1, 1, 1]&#125;</span>
+tokenizer<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span><span class="token string">"directory_on_my_computer"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="notice"><a class="markdownIt-Anchor" href="#notice"></a> Notice</h1>
+<p>所以tokenizer要和model保持一致<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/tokenizer_summary">参考官网</a>.<br />
+返回值的解释, 可<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/preprocessing">参考官网</a><br />
+<code>distilbert-base-uncased-finetuned-sst-2-english</code>的<code>tokenizer</code>只返回了<code>input_ids</code>和<code>attention_mask</code>.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased-finetuned-sst-2-english"</span>
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span>
+raw_inputs <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">"I've been waiting for a HuggingFace course my whole life."</span><span class="token punctuation">,</span>
+    <span class="token string">"I hate this so much!"</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>raw_inputs<span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> return_tensors<span class="token operator">=</span><span class="token string">"pt"</span><span class="token punctuation">)</span>
+<span class="token comment"># &#123;</span>
+<span class="token comment">#     'input_ids': tensor([</span>
+<span class="token comment">#         [  101,  1045,  1005,  2310,  2042,  3403,  2005,  1037, 17662, 12172, 2607,  2026,  2878,  2166,  1012,   102],</span>
+<span class="token comment">#         [  101,  1045,  5223,  2023,  2061,  2172,   999,   102,     0,     0,     0,     0,     0,     0,     0,     0]</span>
+<span class="token comment">#     ]), </span>
+<span class="token comment">#     'attention_mask': tensor([</span>
+<span class="token comment">#         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],</span>
+<span class="token comment">#         [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]</span>
+<span class="token comment">#     ])</span>
+<span class="token comment"># &#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>bert-base-cased</code> 则返回了<code>input_ids</code>, <code>token_type_ids</code>和<code>attention_mask</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
+encoded_input <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span><span class="token string">"Do not meddle in the affairs of wizards, for they are subtle and quick to anger."</span><span class="token punctuation">)</span>
+<span class="token comment"># &#123;'input_ids': [101, 2079, 2025, 19960, 10362, 1999, 1996, 3821, 1997, 16657, 1010, 2005, 2027, 2024, 11259, 1998, 4248, 2000, 4963, 1012, 102], </span>
+<span class="token comment">#  'token_type_ids': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], </span>
+<span class="token comment">#  'attention_mask': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>refs:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/4?fw=pt">Tokenizers</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/preprocessing">https://huggingface.co/docs/transformers/preprocessing</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/5?fw=pt">Handling multiple sequences</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/6?fw=pt">Putting it all together</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/transformers_autoClasses/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/transformers_autoModel/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Claroja</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha256-J+iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s=" crossorigin="anonymous">
+
+
+
+</body>
+</html>

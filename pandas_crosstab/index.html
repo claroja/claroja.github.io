@@ -20,24 +20,24 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"claroja.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.12.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="transformers_saveModel  保存 pt_save_directory &#x3D; &quot;.&#x2F;pt_save_pretrained&quot; tokenizer.save_pretrained(pt_save_directory) pt_model.save_pretrained(pt_save_directory)  加载 pt_model &#x3D; AutoModelForSequenceClassi">
+    <meta name="description" content="pandas_crosstab.md">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Claroja">
-<meta property="og:url" content="https://claroja.github.io/transformers_saveModel/index.html">
+<meta property="og:url" content="https://claroja.github.io/pandas_crosstab/index.html">
 <meta property="og:site_name" content="Claroja">
-<meta property="og:description" content="transformers_saveModel  保存 pt_save_directory &#x3D; &quot;.&#x2F;pt_save_pretrained&quot; tokenizer.save_pretrained(pt_save_directory) pt_model.save_pretrained(pt_save_directory)  加载 pt_model &#x3D; AutoModelForSequenceClassi">
+<meta property="og:description" content="pandas_crosstab.md">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-07-06T09:30:06.406Z">
-<meta property="article:modified_time" content="2022-07-06T09:31:28.692Z">
+<meta property="article:published_time" content="2022-07-15T05:49:43.729Z">
+<meta property="article:modified_time" content="2022-07-15T05:49:43.789Z">
 <meta property="article:author" content="Claroja">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://claroja.github.io/transformers_saveModel/">
+<link rel="canonical" href="https://claroja.github.io/pandas_crosstab/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/transformers_saveModel/","path":"transformers_saveModel/","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://claroja.github.io/pandas_crosstab/","path":"pandas_crosstab/","title":""}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title> | Claroja</title>
@@ -102,7 +102,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -115,7 +115,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text"> 保存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD"><span class="nav-number">2.</span> <span class="nav-text"> 加载</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -128,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">456</span>
+          <span class="site-state-item-count">468</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,7 +182,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_saveModel/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pandas_crosstab/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -211,9 +210,8 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-07-06 17:30:06 / 修改时间：17:31:28" itemprop="dateCreated datePublished" datetime="2022-07-06T17:30:06+08:00">2022-07-06</time>
+      <time title="创建时间：2022-07-15 13:49:43" itemprop="dateCreated datePublished" datetime="2022-07-15T13:49:43+08:00">2022-07-15</time>
     </span>
 
   
@@ -226,13 +224,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>transformers_saveModel</p>
-<h1 id="保存"><a class="markdownIt-Anchor" href="#保存"></a> 保存</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">pt_save_directory <span class="token operator">=</span> <span class="token string">"./pt_save_pretrained"</span>
-tokenizer<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span>pt_save_directory<span class="token punctuation">)</span>
-pt_model<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span>pt_save_directory<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h1 id="加载"><a class="markdownIt-Anchor" href="#加载"></a> 加载</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">pt_model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"./pt_save_pretrained"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+        <p>pandas_crosstab.md</p>
+
     </div>
 
     
@@ -245,12 +238,12 @@ pt_model<span class="token punctuation">.</span>save_pretrained<span class="toke
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/transformers_autoModel/" rel="prev" title="">
+                <a href="/pandas_apply/" rel="prev" title="">
                   <i class="fa fa-chevron-left"></i> 
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/transformers_fineTune/" rel="next" title="">
+                <a href="/python_set/" rel="next" title="">
                    <i class="fa fa-chevron-right"></i>
                 </a>
             </div>

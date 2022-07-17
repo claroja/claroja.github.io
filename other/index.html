@@ -123,7 +123,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">456</span>
+          <span class="site-state-item-count">468</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_task_tokenClassification/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_set/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -195,7 +195,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/transformers_task_tokenClassification/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/python_set/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -207,7 +207,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-07-07 10:35:24 / 修改时间：14:39:20" itemprop="dateCreated datePublished" datetime="2022-07-07T10:35:24+08:00">2022-07-07</time>
+      <time title="创建时间：2022-07-15 14:03:54 / 修改时间：14:21:31" itemprop="dateCreated datePublished" datetime="2022-07-15T14:03:54+08:00">2022-07-15</time>
     </span>
 
   
@@ -220,194 +220,40 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>token classification tasks:</p>
-<ul>
-<li>NER (Named-entity recognition) Classify the entities in the text (person, organization, location…).</li>
-<li>POS (Part-of-speech tagging) Grammatically classify the tokens (noun, verb, adjective…)</li>
-<li>Chunk (Chunking) Grammatically classify the tokens and group them into “chunks” that go together</li>
-</ul>
-<h1 id="ner"><a class="markdownIt-Anchor" href="#ner"></a> NER</h1>
-<h2 id="数据准备"><a class="markdownIt-Anchor" href="#数据准备"></a> 数据准备</h2>
-<p>数据初始化配置</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">task <span class="token operator">=</span> <span class="token string">"ner"</span> <span class="token comment"># Should be one of "ner", "pos" or "chunk"</span>
-model_checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased"</span>
-batch_size <span class="token operator">=</span> <span class="token number">16</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>查看训练数据</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset<span class="token punctuation">,</span> load_metric
-datasets <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"conll2003"</span><span class="token punctuation">)</span>
-<span class="token comment"># DatasetDict(&#123;</span>
-<span class="token comment">#     train: Dataset(&#123;</span>
-<span class="token comment">#         features: ['id', 'tokens', 'pos_tags', 'chunk_tags', 'ner_tags'],</span>
-<span class="token comment">#         num_rows: 14041</span>
-<span class="token comment">#     &#125;)</span>
-<span class="token comment">#     validation: Dataset(&#123;</span>
-<span class="token comment">#         features: ['id', 'tokens', 'pos_tags', 'chunk_tags', 'ner_tags'],</span>
-<span class="token comment">#         num_rows: 3250</span>
-<span class="token comment">#     &#125;)</span>
-<span class="token comment">#     test: Dataset(&#123;</span>
-<span class="token comment">#         features: ['id', 'tokens', 'pos_tags', 'chunk_tags', 'ner_tags'],</span>
-<span class="token comment">#         num_rows: 3453</span>
-<span class="token comment">#     &#125;)</span>
-<span class="token comment"># &#125;)</span>
+          <p>python_set</p>
+<h1 id="operation"><a class="markdownIt-Anchor" href="#operation"></a> operation</h1>
+<p><img src="http://res.cloudinary.com/dyd911kmh/image/upload/f_auto,q_auto:best/v1526998740/15_union_intersection_difference_symmetric.png" alt="image" /></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">dataScientist <span class="token operator">=</span> <span class="token builtin">set</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'Python'</span><span class="token punctuation">,</span> <span class="token string">'R'</span><span class="token punctuation">,</span> <span class="token string">'SQL'</span><span class="token punctuation">,</span> <span class="token string">'Git'</span><span class="token punctuation">,</span> <span class="token string">'Tableau'</span><span class="token punctuation">,</span> <span class="token string">'SAS'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+dataEngineer <span class="token operator">=</span> <span class="token builtin">set</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'Python'</span><span class="token punctuation">,</span> <span class="token string">'Java'</span><span class="token punctuation">,</span> <span class="token string">'Scala'</span><span class="token punctuation">,</span> <span class="token string">'Git'</span><span class="token punctuation">,</span> <span class="token string">'SQL'</span><span class="token punctuation">,</span> <span class="token string">'Hadoop'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="union"><a class="markdownIt-Anchor" href="#union"></a> union</h2>
+<p>A union, denoted dataScientist <code>∪</code> dataEngineer, is the set of all values that are values of dataScientist, or dataEngineer, or both.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># set built-in function union</span>
+dataScientist<span class="token punctuation">.</span>union<span class="token punctuation">(</span>dataEngineer<span class="token punctuation">)</span>
+<span class="token comment"># Equivalent Result</span>
+dataScientist <span class="token operator">|</span> dataEngineer<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="intersection"><a class="markdownIt-Anchor" href="#intersection"></a> intersection</h2>
+<p>An intersection of two sets dataScientist and dataEngineer, denoted dataScientist ∩ dataEngineer, is the set of all values that are values of both dataScientist and dataEngineer.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Intersection operation</span>
+dataScientist<span class="token punctuation">.</span>intersection<span class="token punctuation">(</span>dataEngineer<span class="token punctuation">)</span>
 
-datasets<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-<span class="token comment"># &#123;'chunk_tags': [11, 21, 11, 12, 21, 22, 11, 12, 0],</span>
-<span class="token comment">#  'id': '0',</span>
-<span class="token comment">#  'ner_tags': [3, 0, 7, 0, 0, 0, 7, 0, 0],</span>
-<span class="token comment">#  'pos_tags': [22, 42, 16, 21, 35, 37, 16, 21, 7],</span>
-<span class="token comment">#  'tokens': ['EU',</span>
-<span class="token comment">#   'rejects',</span>
-<span class="token comment">#   'German',</span>
-<span class="token comment">#   'call',</span>
-<span class="token comment">#   'to',</span>
-<span class="token comment">#   'boycott',</span>
-<span class="token comment">#   'British',</span>
-<span class="token comment">#   'lamb',</span>
-<span class="token comment">#   '.']&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>字段解释:<br />
-<code>chunk_tags</code>: 用于chunk任务的标注<br />
-<code>id</code>: 句子的Id<br />
-<code>ner_tags</code>: 用于ner任务的标注<br />
-<code>pos_tags</code>: 用于pos任务的标注<br />
-<code>tokens</code>: 句子, 列表的形式. 一个<code>token</code>就是一个<code>word</code></p>
-<p>查看特征数据</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">datasets<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>features<span class="token punctuation">[</span><span class="token string-interpolation"><span class="token string">f"ner_tags"</span></span><span class="token punctuation">]</span>
+<span class="token comment"># Equivalent Result</span>
+dataScientist <span class="token operator">&amp;</span> dataEngineer<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="difference"><a class="markdownIt-Anchor" href="#difference"></a> difference</h2>
+<p>A difference of two sets dataScientist and dataEngineer, denoted dataScientist \ dataEngineer, is the set of all values of dataScientist that are not values of dataEngineer.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Difference Operation</span>
+dataScientist<span class="token punctuation">.</span>difference<span class="token punctuation">(</span>dataEngineer<span class="token punctuation">)</span>
 
-<span class="token comment"># Sequence(feature=ClassLabel(num_classes=9, names=['O', 'B-PER', 'I-PER', 'B-ORG', 'I-ORG', 'B-LOC', 'I-LOC', 'B-MISC', 'I-MISC'], names_file=None, id=None), length=-1, id=None)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>对于NER tags:</p>
-<ul>
-<li>0对应’O’, 1对应’B-PER’…</li>
-<li>有4个labels, ‘B-’(beginning), ‘I-’(intermediate)
-<ul>
-<li>‘PER’ for person</li>
-<li>‘ORG’ for organization</li>
-<li>‘LOC’ for location</li>
-<li>‘MISC’ for miscellaneous</li>
-</ul>
-</li>
-</ul>
-<h1 id="tokenize"><a class="markdownIt-Anchor" href="#tokenize"></a> tokenize</h1>
-<ol>
-<li>注意tokenizer又可能将token继续分割成subToken.比如原始数据中的一个token <code>&quot;'s&quot;</code>, 在tokenize之后, 变成了<code>&quot;'&quot;</code>和<code>&quot;s&quot;</code>.</li>
-<li>增加了<code>[CLS]</code>和<code>[SEP]</code><br />
-也就是说标注的内容和送入模型的内容是有差异的, 我们需要处理.</li>
-</ol>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">example <span class="token operator">=</span> datasets<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span>
-<span class="token comment"># ['Germany', "'s", 'representative', 'to', 'the', 'European', 'Union', "'s", 'veterinary', 'committee', 'Werner', 'Zwingmann', 'said', 'on', 'Wednesday', 'consumers', 'should', 'buy', 'sheepmeat', 'from', 'countries', 'other', 'than', 'Britain', 'until', 'the', 'scientific', 'advice', 'was', 'clearer', '.']</span>
-tokenized_input <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>example<span class="token punctuation">[</span><span class="token string">"tokens"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> is_split_into_words<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-tokens <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>convert_ids_to_tokens<span class="token punctuation">(</span>tokenized_input<span class="token punctuation">[</span><span class="token string">"input_ids"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token comment"># ['[CLS]', 'germany', "'", 's', 'representative', 'to', 'the', 'european', 'union', "'", 's', 'veterinary', 'committee', 'werner', 'z', '##wing', '##mann', 'said', 'on', 'wednesday', 'consumers', 'should', 'buy', 'sheep', '##me', '##at', 'from', 'countries', 'other', 'than', 'britain', 'until', 'the', 'scientific', 'advice', 'was', 'clearer', '.', '[SEP]']</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 通过word_ids可以解决这个问题, </span>
-<span class="token comment"># 1. 它返回了tokenize之后 相同数量的索引id, 比如`"'s"`索引是1, 那么subToken的`"'"`和`"s"`的id都是1. </span>
-<span class="token comment"># 2. 另外将特殊的token标记为None</span>
-word_ids <span class="token operator">=</span> tokenized_input<span class="token punctuation">.</span>word_ids<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment"># [None, 0, 1, 1, 2, 3, 4, 5, 6, 7, 7, 8, 9, 10, 11, 11, 11, 12, 13, 14, 15, 16, 17, 18, 18, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, None]</span>
-aligned_labels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">100</span> <span class="token keyword">if</span> i <span class="token keyword">is</span> <span class="token boolean">None</span> <span class="token keyword">else</span> example<span class="token punctuation">[</span><span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>task<span class="token punctuation">&#125;</span></span><span class="token string">_tags"</span></span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> word_ids<span class="token punctuation">]</span>  <span class="token comment"># 将洗标为None的设置成-100, pytorch会忽略. 将subToken进行填充</span>
+<span class="token comment"># Equivalent Result</span>
+dataScientist <span class="token operator">-</span> dataEngineer<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="symmetric_difference"><a class="markdownIt-Anchor" href="#symmetric_difference"></a> symmetric_difference</h2>
+<p>A symmetric difference of two sets dataScientist and dataEngineer, denoted dataScientist △ dataEngineer, is the set of all values that are values of exactly one of two sets, but not both.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Symmetric Difference Operation</span>
+dataScientist<span class="token punctuation">.</span>symmetric_difference<span class="token punctuation">(</span>dataEngineer<span class="token punctuation">)</span>
 
-
-label_all_tokens <span class="token operator">=</span> <span class="token boolean">True</span>
-<span class="token keyword">def</span> <span class="token function">tokenize_and_align_labels</span><span class="token punctuation">(</span>examples<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    tokenized_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>examples<span class="token punctuation">[</span><span class="token string">"tokens"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> is_split_into_words<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-    labels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    <span class="token keyword">for</span> i<span class="token punctuation">,</span> label <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>examples<span class="token punctuation">[</span><span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>task<span class="token punctuation">&#125;</span></span><span class="token string">_tags"</span></span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        word_ids <span class="token operator">=</span> tokenized_inputs<span class="token punctuation">.</span>word_ids<span class="token punctuation">(</span>batch_index<span class="token operator">=</span>i<span class="token punctuation">)</span>
-        previous_word_idx <span class="token operator">=</span> <span class="token boolean">None</span>
-        label_ids <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-        <span class="token keyword">for</span> word_idx <span class="token keyword">in</span> word_ids<span class="token punctuation">:</span>
-            <span class="token comment"># Special tokens have a word id that is None. We set the label to -100 so they are automatically</span>
-            <span class="token comment"># ignored in the loss function.</span>
-            <span class="token keyword">if</span> word_idx <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
-                label_ids<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">)</span>
-            <span class="token comment"># We set the label for the first token of each word.</span>
-            <span class="token keyword">elif</span> word_idx <span class="token operator">!=</span> previous_word_idx<span class="token punctuation">:</span>
-                label_ids<span class="token punctuation">.</span>append<span class="token punctuation">(</span>label<span class="token punctuation">[</span>word_idx<span class="token punctuation">]</span><span class="token punctuation">)</span>
-            <span class="token comment"># For the other tokens in a word, we set the label to either the current label or -100, depending on</span>
-            <span class="token comment"># the label_all_tokens flag.</span>
-            <span class="token keyword">else</span><span class="token punctuation">:</span>
-                label_ids<span class="token punctuation">.</span>append<span class="token punctuation">(</span>label<span class="token punctuation">[</span>word_idx<span class="token punctuation">]</span> <span class="token keyword">if</span> label_all_tokens <span class="token keyword">else</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">)</span>
-            previous_word_idx <span class="token operator">=</span> word_idx
-        labels<span class="token punctuation">.</span>append<span class="token punctuation">(</span>label_ids<span class="token punctuation">)</span>
-    tokenized_inputs<span class="token punctuation">[</span><span class="token string">"labels"</span><span class="token punctuation">]</span> <span class="token operator">=</span> labels
-    <span class="token keyword">return</span> tokenized_inputs
-
-tokenized_datasets <span class="token operator">=</span> datasets<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>tokenize_and_align_labels<span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="fine-tunning"><a class="markdownIt-Anchor" href="#fine-tunning"></a> Fine-tunning</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForTokenClassification<span class="token punctuation">,</span> TrainingArguments<span class="token punctuation">,</span> Trainer
-model <span class="token operator">=</span> AutoModelForTokenClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>model_checkpoint<span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token builtin">len</span><span class="token punctuation">(</span>label_list<span class="token punctuation">)</span><span class="token punctuation">)</span>
-model_name <span class="token operator">=</span> model_checkpoint<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
-
-<span class="token comment"># 设置训练的超参数</span>
-args <span class="token operator">=</span> TrainingArguments<span class="token punctuation">(</span> 
-    <span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>model_name<span class="token punctuation">&#125;</span></span><span class="token string">-finetuned-</span><span class="token interpolation"><span class="token punctuation">&#123;</span>task<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">,</span>
-    evaluation_strategy <span class="token operator">=</span> <span class="token string">"epoch"</span><span class="token punctuation">,</span>
-    learning_rate<span class="token operator">=</span><span class="token number">2e-5</span><span class="token punctuation">,</span>
-    per_device_train_batch_size<span class="token operator">=</span>batch_size<span class="token punctuation">,</span>
-    per_device_eval_batch_size<span class="token operator">=</span>batch_size<span class="token punctuation">,</span>
-    num_train_epochs<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span>
-    weight_decay<span class="token operator">=</span><span class="token number">0.01</span><span class="token punctuation">,</span>
-    push_to_hub<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span>
-
-
-<span class="token comment"># 相当于pytorch的DataLoader</span>
-<span class="token keyword">from</span> transformers <span class="token keyword">import</span> DataCollatorForTokenClassification
-data_collator <span class="token operator">=</span> DataCollatorForTokenClassification<span class="token punctuation">(</span>tokenizer<span class="token punctuation">)</span>  
-
-<span class="token comment"># 设置评估指标</span>
-metric <span class="token operator">=</span> load_metric<span class="token punctuation">(</span><span class="token string">"seqeval"</span><span class="token punctuation">)</span>  
-<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
-
-<span class="token keyword">def</span> <span class="token function">compute_metrics</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    predictions<span class="token punctuation">,</span> labels <span class="token operator">=</span> p
-    predictions <span class="token operator">=</span> np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
-
-    <span class="token comment"># Remove ignored index (special tokens)</span>
-    true_predictions <span class="token operator">=</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">[</span>label_list<span class="token punctuation">[</span>p<span class="token punctuation">]</span> <span class="token keyword">for</span> <span class="token punctuation">(</span>p<span class="token punctuation">,</span> l<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>prediction<span class="token punctuation">,</span> label<span class="token punctuation">)</span> <span class="token keyword">if</span> l <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">]</span>
-        <span class="token keyword">for</span> prediction<span class="token punctuation">,</span> label <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
-    <span class="token punctuation">]</span>
-    true_labels <span class="token operator">=</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">[</span>label_list<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token keyword">for</span> <span class="token punctuation">(</span>p<span class="token punctuation">,</span> l<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>prediction<span class="token punctuation">,</span> label<span class="token punctuation">)</span> <span class="token keyword">if</span> l <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">]</span>
-        <span class="token keyword">for</span> prediction<span class="token punctuation">,</span> label <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
-    <span class="token punctuation">]</span>
-
-    results <span class="token operator">=</span> metric<span class="token punctuation">.</span>compute<span class="token punctuation">(</span>predictions<span class="token operator">=</span>true_predictions<span class="token punctuation">,</span> references<span class="token operator">=</span>true_labels<span class="token punctuation">)</span>
-    <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
-        <span class="token string">"precision"</span><span class="token punctuation">:</span> results<span class="token punctuation">[</span><span class="token string">"overall_precision"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-        <span class="token string">"recall"</span><span class="token punctuation">:</span> results<span class="token punctuation">[</span><span class="token string">"overall_recall"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-        <span class="token string">"f1"</span><span class="token punctuation">:</span> results<span class="token punctuation">[</span><span class="token string">"overall_f1"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-        <span class="token string">"accuracy"</span><span class="token punctuation">:</span> results<span class="token punctuation">[</span><span class="token string">"overall_accuracy"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>开始训练</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">trainer <span class="token operator">=</span> Trainer<span class="token punctuation">(</span>
-    model<span class="token punctuation">,</span>
-    args<span class="token punctuation">,</span>
-    train_dataset<span class="token operator">=</span>tokenized_datasets<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    eval_dataset<span class="token operator">=</span>tokenized_datasets<span class="token punctuation">[</span><span class="token string">"validation"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    data_collator<span class="token operator">=</span>data_collator<span class="token punctuation">,</span>
-    tokenizer<span class="token operator">=</span>tokenizer<span class="token punctuation">,</span>
-    compute_metrics<span class="token operator">=</span>compute_metrics
-<span class="token punctuation">)</span>
-trainer<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span>
-trainer<span class="token punctuation">.</span>evaluate<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-<span class="token comment"># 获得每个种类的评估指标</span>
-predictions<span class="token punctuation">,</span> labels<span class="token punctuation">,</span> _ <span class="token operator">=</span> trainer<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>tokenized_datasets<span class="token punctuation">[</span><span class="token string">"validation"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-predictions <span class="token operator">=</span> np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token comment"># Remove ignored index (special tokens)</span>
-true_predictions <span class="token operator">=</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">[</span>label_list<span class="token punctuation">[</span>p<span class="token punctuation">]</span> <span class="token keyword">for</span> <span class="token punctuation">(</span>p<span class="token punctuation">,</span> l<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>prediction<span class="token punctuation">,</span> label<span class="token punctuation">)</span> <span class="token keyword">if</span> l <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">]</span>
-    <span class="token keyword">for</span> prediction<span class="token punctuation">,</span> label <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
-<span class="token punctuation">]</span>
-true_labels <span class="token operator">=</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">[</span>label_list<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token keyword">for</span> <span class="token punctuation">(</span>p<span class="token punctuation">,</span> l<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>prediction<span class="token punctuation">,</span> label<span class="token punctuation">)</span> <span class="token keyword">if</span> l <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">]</span>
-    <span class="token keyword">for</span> prediction<span class="token punctuation">,</span> label <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>predictions<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
-<span class="token punctuation">]</span>
-
-results <span class="token operator">=</span> metric<span class="token punctuation">.</span>compute<span class="token punctuation">(</span>predictions<span class="token operator">=</span>true_predictions<span class="token punctuation">,</span> references<span class="token operator">=</span>true_labels<span class="token punctuation">)</span>
-results<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://colab.research.google.com/github/huggingface/notebooks/blob/main/examples/token_classification.ipynb">https://colab.research.google.com/github/huggingface/notebooks/blob/main/examples/token_classification.ipynb</a></p>
+<span class="token comment"># Equivalent Result</span>
+dataScientist <span class="token operator">^</span> dataEngineer<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考：<br />
+<a target="_blank" rel="noopener" href="https://www.datacamp.com/tutorial/sets-in-python">https://www.datacamp.com/tutorial/sets-in-python</a></p>
 
       
     </div>
@@ -434,7 +280,7 @@ results<span aria-hidden="true" class="line-numbers-rows"><span></span><span></s
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_datasets/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pandas_crosstab/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -452,7 +298,7 @@ results<span aria-hidden="true" class="line-numbers-rows"><span></span><span></s
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/transformers_datasets/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/pandas_crosstab/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -462,9 +308,8 @@ results<span aria-hidden="true" class="line-numbers-rows"><span></span><span></s
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-07-07 09:41:04 / 修改时间：10:24:10" itemprop="dateCreated datePublished" datetime="2022-07-07T09:41:04+08:00">2022-07-07</time>
+      <time title="创建时间：2022-07-15 13:49:43" itemprop="dateCreated datePublished" datetime="2022-07-15T13:49:43+08:00">2022-07-15</time>
     </span>
 
   
@@ -477,163 +322,7 @@ results<span aria-hidden="true" class="line-numbers-rows"><span></span><span></s
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="下载数据"><a class="markdownIt-Anchor" href="#下载数据"></a> 下载数据</h1>
-<ol>
-<li>首先使用<code>load_dataset_builder</code>来获得数据集的描述信息, 比如<code>description</code>和<code>features</code></li>
-<li>使用<code>load_dataset</code>下载数据.
-<ul>
-<li>如果不指定<code>split</code>参数, 则是获得<code>DatasetDict</code>对象, 包含了<code>train</code>,<code>validation</code>,<code>test</code>三组样本</li>
-<li>如果指定<code>split</code>参数, 可以获得<code>Dataset</code>对象, 既<code>train</code>样本 或者<code>validation</code>或<code>test</code></li>
-</ul>
-</li>
-</ol>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset<span class="token punctuation">,</span>load_dataset_builder
-
-ds_builder <span class="token operator">=</span> load_dataset_builder<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">)</span>
-ds_builder<span class="token punctuation">.</span>info<span class="token punctuation">.</span>description
-<span class="token triple-quoted-string string">"""
-Movie Review Dataset. This is a dataset of containing 5,331 positive and 5,331 negative processed sentences from... 
-"""</span>
-ds_builder<span class="token punctuation">.</span>info<span class="token punctuation">.</span>features
-<span class="token triple-quoted-string string">"""
-&#123;'label': ClassLabel(num_classes=2, names=['neg', 'pos'], id=None),
- 'text': Value(dtype='string', id=None)&#125;
-"""</span>
-
-
-<span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
-dataset_dict <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">)</span>
-<span class="token triple-quoted-string string">"""
-DatasetDict(&#123;
-    train: Dataset(&#123;
-        features: ['text', 'label'],
-        num_rows: 8530
-    &#125;)
-    validation: Dataset(&#123;
-        features: ['text', 'label'],
-        num_rows: 1066
-    &#125;)
-    test: Dataset(&#123;
-        features: ['text', 'label'],
-        num_rows: 1066
-    &#125;)
-&#125;)
-"""</span>
-dataset <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">,</span> split<span class="token operator">=</span><span class="token string">"train"</span><span class="token punctuation">)</span>
-<span class="token triple-quoted-string string">"""
-Dataset(&#123;
-    features: ['text', 'label'],
-    num_rows: 8530
-&#125;)
-"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="操作数据"><a class="markdownIt-Anchor" href="#操作数据"></a> 操作数据</h1>
-<p>一个<code>Dataset</code>对象, 既可以看做是一个list, 也可以看做是dict</p>
-<h2 id="list"><a class="markdownIt-Anchor" href="#list"></a> list</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Get the first row in the dataset</span>
-<span class="token operator">>></span><span class="token operator">></span> dataset<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#123;</span><span class="token string">'label'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
- <span class="token string">'text'</span><span class="token punctuation">:</span> <span class="token string">'the rock is destined to be the 21st century\'s ...'</span><span class="token punctuation">&#125;</span>
-dataset<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span>
-<span class="token string">'the rock is destined to be the 21st century\'s ...'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>是使用<code>slice</code>方式取数时, 结果和普通list不同, 应该是重写了list的方法</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">dataset<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">:</span><span class="token number">6</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#123;</span><span class="token string">'label'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
- <span class="token string">'text'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'if you sometimes like...'</span><span class="token punctuation">,</span>
-  <span class="token string">"emerges as something rare , an..."</span><span class="token punctuation">,</span>
-  'the film provides some great<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="dict"><a class="markdownIt-Anchor" href="#dict"></a> dict</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">dataset<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span>
-<span class="token punctuation">[</span><span class="token string">'the rock is destined to be the 21st...'</span><span class="token punctuation">,</span>
- <span class="token string">'the gorgeously elaborate continuation...'</span><span class="token punctuation">,</span>
- <span class="token string">'effective but too-tepid biopic...'</span><span class="token punctuation">,</span>
- <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>
- 'things really get weird <span class="token punctuation">,</span> though <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="二者对比"><a class="markdownIt-Anchor" href="#二者对比"></a> 二者对比</h2>
-<p>先按list取要比先按dict取效率高</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">with</span> Timer<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-   dataset<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'text'</span><span class="token punctuation">]</span>
-<span class="token comment"># Elapsed time: 0.0031 seconds</span>
-
-<span class="token keyword">with</span> Timer<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-  dataset<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-<span class="token comment"># Elapsed time: 0.0094 seconds</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="process"><a class="markdownIt-Anchor" href="#process"></a> process</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
-<span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
-
-tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-uncased"</span><span class="token punctuation">)</span>
-dataset <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">,</span> split<span class="token operator">=</span><span class="token string">"train"</span><span class="token punctuation">)</span>
-<span class="token triple-quoted-string string">"""
-Dataset(&#123;
-    features: ['text', 'label'],
-    num_rows: 8530
-&#125;)
-"""</span>
-
-<span class="token comment"># tokenizer(dataset[0]["text"])  # 处理一个数据</span>
-<span class="token comment"># &#123;'input_ids': [101, 1103, 2067, 1110, 17348...],</span>
-<span class="token comment">#  'token_type_ids': [0, 0, 0, 0, 0, 0...],</span>
-<span class="token comment">#  'attention_mask': [1, 1, 1, 1, 1, 1, 1...]&#125;</span>
-
-dataset <span class="token operator">=</span> dataset<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> example<span class="token punctuation">:</span> tokenizer<span class="token punctuation">(</span>example<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># 进行了特殊处理, 直接是增加了features, 而不是仅仅在"text"中替换</span>
-<span class="token triple-quoted-string string">"""
-Dataset(&#123;
-    features: ['text', 'label', 'input_ids', 'token_type_ids', 'attention_mask'],
-    num_rows: 8530
-&#125;)
-"""</span>
-
-dataset<span class="token punctuation">.</span>set_format<span class="token punctuation">(</span><span class="token builtin">type</span><span class="token operator">=</span><span class="token string">"torch"</span><span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"input_ids"</span><span class="token punctuation">,</span> <span class="token string">"token_type_ids"</span><span class="token punctuation">,</span> <span class="token string">"attention_mask"</span><span class="token punctuation">,</span> <span class="token string">"label"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment"># 将相应字段设置为tensor</span>
-<span class="token triple-quoted-string string">"""
-Dataset(&#123;
-    features: ['text', 'label', 'input_ids', 'token_type_ids', 'attention_mask'],
-    num_rows: 8530
-&#125;)
-"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="evaluate"><a class="markdownIt-Anchor" href="#evaluate"></a> evaluate</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> list_metrics<span class="token punctuation">,</span> load_metric
-metrics_list <span class="token operator">=</span> list_metrics<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment"># ['accuracy', 'bertscore', 'bleu', 'bleurt', 'cer']</span>
-metric <span class="token operator">=</span> load_metric<span class="token punctuation">(</span><span class="token string">'glue'</span><span class="token punctuation">,</span> <span class="token string">'mrpc'</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>metric<span class="token punctuation">.</span>inputs_description<span class="token punctuation">)</span>  <span class="token comment"># 查看说明</span>
-model_predictions <span class="token operator">=</span> model<span class="token punctuation">(</span>model_inputs<span class="token punctuation">)</span>
-final_score <span class="token operator">=</span> metric<span class="token punctuation">.</span>compute<span class="token punctuation">(</span>predictions<span class="token operator">=</span>model_predictions<span class="token punctuation">,</span> references<span class="token operator">=</span>gold_references<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="pytorch"><a class="markdownIt-Anchor" href="#pytorch"></a> pytorch</h1>
-<p>Contrary to datasets.Dataset.set_format(), with_format returns a new Dataset object.</p>
-<p>将PyTorch DataLoader 和 Hugging Face Dataset结合使用</p>
-<p>datasets return regular python objects: integers, floats, strings, lists, etc.</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
-<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
-tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
-ds <span class="token operator">=</span> ds<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> tokenizer<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-ds<span class="token punctuation">.</span>set_format<span class="token punctuation">(</span><span class="token builtin">type</span><span class="token operator">=</span><span class="token string">"numpy"</span><span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'input_ids'</span><span class="token punctuation">,</span> <span class="token string">'token_type_ids'</span><span class="token punctuation">,</span> <span class="token string">'attention_mask'</span><span class="token punctuation">,</span> <span class="token string">'label'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-ds<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">format</span>
-<span class="token comment"># &#123;'columns': ['input_ids', 'token_type_ids', 'attention_mask', 'label'],</span>
-<span class="token comment">#  'format_kwargs': &#123;&#125;,</span>
-<span class="token comment">#  'output_all_columns': False,</span>
-<span class="token comment">#  'type': 'numpy'&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
-<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
-ds <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">,</span> split<span class="token operator">=</span><span class="token string">"validation"</span><span class="token punctuation">)</span>
-tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
-ds <span class="token operator">=</span> ds<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> tokenizer<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">'text'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-ds<span class="token punctuation">.</span><span class="token builtin">format</span>
-<span class="token comment"># &#123;'columns': ['text', 'label', 'input_ids', 'token_type_ids', 'attention_mask'],</span>
-<span class="token comment">#  'format_kwargs': &#123;&#125;,</span>
-<span class="token comment">#  'output_all_columns': False,</span>
-<span class="token comment">#  'type': None&#125;</span>
-ds <span class="token operator">=</span> ds<span class="token punctuation">.</span>with_format<span class="token punctuation">(</span><span class="token builtin">type</span><span class="token operator">=</span><span class="token string">'tensorflow'</span><span class="token punctuation">,</span> columns<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'input_ids'</span><span class="token punctuation">,</span> <span class="token string">'token_type_ids'</span><span class="token punctuation">,</span> <span class="token string">'attention_mask'</span><span class="token punctuation">,</span> <span class="token string">'label'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-ds<span class="token punctuation">.</span><span class="token builtin">format</span>
-<span class="token comment"># &#123;'columns': ['input_ids', 'token_type_ids', 'attention_mask', 'label'],</span>
-<span class="token comment">#  'format_kwargs': &#123;&#125;,</span>
-<span class="token comment">#  'output_all_columns': False,</span>
-<span class="token comment">#  'type': 'tensorflow'&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/index">https://huggingface.co/docs/datasets/index</a><br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/access">https://huggingface.co/docs/datasets/access</a><br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/use_dataset">https://huggingface.co/docs/datasets/use_dataset</a><br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/use_with_pytorch">https://huggingface.co/docs/datasets/use_with_pytorch</a></p>
+          <p>pandas_crosstab.md</p>
 
       
     </div>
@@ -660,7 +349,7 @@ ds<span class="token punctuation">.</span><span class="token builtin">format</sp
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_task_textClassification/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pandas_apply/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -678,7 +367,290 @@ ds<span class="token punctuation">.</span><span class="token builtin">format</sp
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/transformers_task_textClassification/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/pandas_apply/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-15 13:41:37 / 修改时间：13:49:19" itemprop="dateCreated datePublished" datetime="2022-07-15T13:41:37+08:00">2022-07-15</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>pandas_apply</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> column<span class="token punctuation">:</span>column<span class="token punctuation">)</span>
+df<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> index<span class="token punctuation">:</span>index<span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/python_test/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-14 13:44:03 / 修改时间：14:05:52" itemprop="dateCreated datePublished" datetime="2022-07-14T13:44:03+08:00">2022-07-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="what"><a class="markdownIt-Anchor" href="#what"></a> what</h1>
+<p>Manual Testing(exploratory testing):<br />
+Did you check the features and experiment using them? That’s known as exploratory testing and is a form of manual<br />
+To have a complete set of manual tests, all you need to do is make a list of all the features your application has, the different types of input it can accept, and the expected results.</p>
+<p>automated testing:<br />
+Automated testing is the execution of your test by a script instead of a human.</p>
+<p>You have just seen two types of tests:</p>
+<ol>
+<li>
+<p>An integration test checks that components in your application operate with each other.</p>
+</li>
+<li>
+<p>A unit test checks a small component in your application.</p>
+</li>
+</ol>
+<p>For example, here’s how you check that the <code>sum()</code> of the numbers (1, 2, 3) equals 6:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">assert</span> <span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token string">"Should be 6"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>This will not output anything on the REPL because the values are correct.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">assert</span> <span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token string">"Should be 6"</span>
+<span class="token comment"># Traceback (most recent call last):</span>
+<span class="token comment">#   File "&lt;stdin>", line 1, in &lt;module></span>
+<span class="token comment"># AssertionError: Should be 6</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Instead of testing on the REPL, you’ll want to put this into a new Python file called test_sum.py and execute it again:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">test_sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">assert</span> <span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token string">"Should be 6"</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    test_sum<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Everything passed"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Now you have written a <code>test case</code>, an assertion, and an entry point (the command line).</p>
+<p>Writing tests in this way is okay for a simple check, but what if more than one fails? This is where <code>test runners</code> come in.</p>
+<h1 id="test-runners"><a class="markdownIt-Anchor" href="#test-runners"></a> test runners</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># test_file.py</span>
+<span class="token comment"># Our code to be tested</span>
+<span class="token keyword">class</span> <span class="token class-name">Rectangle</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> width<span class="token punctuation">,</span> height<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>width <span class="token operator">=</span> width
+        self<span class="token punctuation">.</span>height <span class="token operator">=</span> height
+ 
+    <span class="token keyword">def</span> <span class="token function">get_area</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>width <span class="token operator">*</span> self<span class="token punctuation">.</span>height
+ 
+    <span class="token keyword">def</span> <span class="token function">set_width</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> width<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>width <span class="token operator">=</span> width
+ 
+    <span class="token keyword">def</span> <span class="token function">set_height</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> height<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>height <span class="token operator">=</span> height
+ 
+<span class="token comment"># The test function to be executed by PyTest</span>
+<span class="token keyword">def</span> <span class="token function">test_normal_case</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    rectangle <span class="token operator">=</span> Rectangle<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+    <span class="token keyword">assert</span> rectangle<span class="token punctuation">.</span>get_area<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token string">"incorrect area"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>the we can run:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">python -m pytest test_file.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>PyTest’s</code> test discovery procedure will be able to find your tests functions with names prefixed with <code>test</code>. And some IDE will provide run button at the line of <code>test</code> function.</p>
+<p>refs:<br />
+<a target="_blank" rel="noopener" href="https://realpython.com/python-testing/">https://realpython.com/python-testing/</a><br />
+<a target="_blank" rel="noopener" href="https://machinelearningmastery.com/a-gentle-introduction-to-unit-testing-in-python/">https://machinelearningmastery.com/a-gentle-introduction-to-unit-testing-in-python/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_optimization/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-13 18:05:09 / 修改时间：18:17:01" itemprop="dateCreated datePublished" datetime="2022-07-13T18:05:09+08:00">2022-07-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="optimizer"><a class="markdownIt-Anchor" href="#optimizer"></a> optimizer</h1>
+<h2 id="adamw-pytorch"><a class="markdownIt-Anchor" href="#adamw-pytorch"></a> AdamW (PyTorch)</h2>
+<h1 id="schedules"><a class="markdownIt-Anchor" href="#schedules"></a> Schedules</h1>
+<h2 id="warmup"><a class="markdownIt-Anchor" href="#warmup"></a> warmup</h2>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/338066667">神经网络中 warmup 策略为什么有效；有什么理论解释么？</a></p>
+<h2 id="api"><a class="markdownIt-Anchor" href="#api"></a> API</h2>
+<h3 id="get_scheduler"><a class="markdownIt-Anchor" href="#get_scheduler"></a> get_scheduler</h3>
+<p><code>transformers.get_scheduler</code> get <code>scheduler</code> by <code>name</code></p>
+<p><code>get_scheduler(&quot;linear&quot;)</code> is equal to <code>get_linear_schedule_with_warmup()</code></p>
+<h3 id="get_linear_schedule_with_warmup"><a class="markdownIt-Anchor" href="#get_linear_schedule_with_warmup"></a> get_linear_schedule_with_warmup</h3>
+<p><code>transformers.get_linear_schedule_with_warmup</code></p>
+<p>Create a schedule with a learning rate that<br />
+decreases linearly from the initial lr set in the optimizer to 0,<br />
+after a warmup period during which it increases linearly from 0 to the initial lr set in the optimizer.</p>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/main_classes/optimizer_schedules">https://huggingface.co/docs/transformers/main_classes/optimizer_schedules</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_datasets_features/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_datasets_features/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -689,14 +661,14 @@ ds<span class="token punctuation">.</span><span class="token builtin">format</sp
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-07-06 19:23:44" itemprop="dateCreated datePublished" datetime="2022-07-06T19:23:44+08:00">2022-07-06</time>
+      <time title="创建时间：2022-07-13 15:13:32" itemprop="dateCreated datePublished" datetime="2022-07-13T15:13:32+08:00">2022-07-13</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-07 10:31:55" itemprop="dateModified" datetime="2022-07-07T10:31:55+08:00">2022-07-07</time>
+      <time title="修改时间：2022-07-15 16:22:24" itemprop="dateModified" datetime="2022-07-15T16:22:24+08:00">2022-07-15</time>
     </span>
 
   
@@ -709,126 +681,56 @@ ds<span class="token punctuation">.</span><span class="token builtin">format</sp
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>transformers_task_textClassification</p>
-<h1 id="应用方向"><a class="markdownIt-Anchor" href="#应用方向"></a> 应用方向</h1>
-<ol>
-<li>sentiment analysis(positive, negative, neutral)</li>
-</ol>
-<h1 id="数据集"><a class="markdownIt-Anchor" href="#数据集"></a> 数据集</h1>
-<p><a target="_blank" rel="noopener" href="https://huggingface.co/datasets/imdb">imdb</a><br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/distilbert-base-uncased">DistilBERT</a></p>
+          <h1 id="what"><a class="markdownIt-Anchor" href="#what"></a> what</h1>
+<p>Features defines the internal structure of a dataset. It is used to specify the underlying serialization format.<br />
+The Features format is simple: <code>dict[column_name, column_type]</code></p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
-imdb <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"imdb"</span><span class="token punctuation">)</span>
-imdb<span class="token punctuation">[</span><span class="token string">"test"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token string">"label"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
-    <span class="token string">"text"</span><span class="token punctuation">:</span> <span class="token string">"I love sci-fi and am willing to put up with a lot...."</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>一个<code>dataset</code>中包含了两个字段:<br />
-<code>text</code>: 电影的评论<br />
-<code>label</code>: 0表示<code>negative</code>, 1表示<code>positive</code></p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
-tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"distilbert-base-uncased"</span><span class="token punctuation">)</span>
-<span class="token keyword">def</span> <span class="token function">preprocess_function</span><span class="token punctuation">(</span>examples<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> tokenizer<span class="token punctuation">(</span>examples<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span> <span class="token comment"># 这里不进行padding, 在下面使用DataCollatorWithPadding, 进行动态padding</span>
-tokenized_imdb <span class="token operator">=</span> imdb<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>preprocess_function<span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># batched批处理可以加快速度</span>
-
-<span class="token keyword">from</span> transformers <span class="token keyword">import</span> DataCollatorWithPadding
-data_collator <span class="token operator">=</span> DataCollatorWithPadding<span class="token punctuation">(</span>tokenizer<span class="token operator">=</span>tokenizer<span class="token punctuation">)</span>  <span class="token comment"># 创建batch, 并以batch动态进行padding, 这样比tokenizer的padding更加的高效</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForSequenceClassification<span class="token punctuation">,</span> TrainingArguments<span class="token punctuation">,</span> Trainer
-model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"distilbert-base-uncased"</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">training_args <span class="token operator">=</span> TrainingArguments<span class="token punctuation">(</span>
-    output_dir<span class="token operator">=</span><span class="token string">"./results"</span><span class="token punctuation">,</span>
-    learning_rate<span class="token operator">=</span><span class="token number">2e-5</span><span class="token punctuation">,</span>
-    per_device_train_batch_size<span class="token operator">=</span><span class="token number">16</span><span class="token punctuation">,</span>
-    per_device_eval_batch_size<span class="token operator">=</span><span class="token number">16</span><span class="token punctuation">,</span>
-    num_train_epochs<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span>
-    weight_decay<span class="token operator">=</span><span class="token number">0.01</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span>
-
-trainer <span class="token operator">=</span> Trainer<span class="token punctuation">(</span>
-    model<span class="token operator">=</span>model<span class="token punctuation">,</span>
-    args<span class="token operator">=</span>training_args<span class="token punctuation">,</span>
-    train_dataset<span class="token operator">=</span>tokenized_imdb<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    eval_dataset<span class="token operator">=</span>tokenized_imdb<span class="token punctuation">[</span><span class="token string">"test"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    tokenizer<span class="token operator">=</span>tokenizer<span class="token punctuation">,</span>
-    data_collator<span class="token operator">=</span>data_collator<span class="token punctuation">,</span>
-<span class="token punctuation">)</span>
-trainer<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/tasks/sequence_classification">https://huggingface.co/docs/transformers/v4.20.1/en/tasks/sequence_classification</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_evaluate/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/transformers_evaluate/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-07-06 17:48:30 / 修改时间：17:49:08" itemprop="dateCreated datePublished" datetime="2022-07-06T17:48:30+08:00">2022-07-06</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>transformers_evaluate</p>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/metrics">https://huggingface.co/docs/datasets/metrics</a></p>
+dataset <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">'glue'</span><span class="token punctuation">,</span> <span class="token string">'mrpc'</span><span class="token punctuation">,</span> split<span class="token operator">=</span><span class="token string">'train'</span><span class="token punctuation">)</span>
+dataset<span class="token punctuation">.</span>features
+<span class="token comment"># &#123;'idx': Value(dtype='int32', id=None),</span>
+<span class="token comment">#  'label': ClassLabel(num_classes=2, names=['not_equivalent', 'equivalent'], names_file=None, id=None),</span>
+<span class="token comment">#  'sentence1': Value(dtype='string', id=None),</span>
+<span class="token comment">#  'sentence2': Value(dtype='string', id=None),</span>
+<span class="token comment"># &#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Value</code> feature tells:</p>
+<ul>
+<li>The idx data type is int32.</li>
+<li>The sentence1 and sentence2 data types are string.</li>
+</ul>
+<p><code>ClassLabel</code> feature tells:<br />
+Datasets the label column contains two classes. The classes are labeled <code>not_equivalent</code> and <code>equivalent</code>. Labels are stored as integers in the dataset. When you retrieve the labels, <code>ClassLabel.int2str()</code> and <code>ClassLabel.str2int()</code> carries out the conversion from integer value to label name, and vice versa.</p>
+<h1 id="create-features"><a class="markdownIt-Anchor" href="#create-features"></a> create features</h1>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> ClassLabel<span class="token punctuation">,</span> Value
+new_features <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"label"</span><span class="token punctuation">:</span>ClassLabel<span class="token punctuation">(</span>names<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'negative'</span><span class="token punctuation">,</span> <span class="token string">'positive'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token string">"idx"</span><span class="token punctuation">:</span>Value<span class="token punctuation">(</span><span class="token string">'int64'</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="cast"><a class="markdownIt-Anchor" href="#cast"></a> cast</h1>
+<ol>
+<li><code>cast(Features)</code> 整体转换Features, 再进行转换</li>
+<li><code>cast_column(name,newtype)</code> 转换指定的某一个column</li>
+</ol>
+<p>注意:<br />
+不要使用 <code>dataset['column_name']=ClassLabel(names=[&quot;negative&quot;, &quot;positive&quot;]) </code>这种写法</p>
+<p>refs <a href="/transformers_datasets_process/">transformers_datasets_process</a></p>
+<h1 id="classlabel"><a class="markdownIt-Anchor" href="#classlabel"></a> ClassLabel</h1>
+<p>handle string lable and int label</p>
+<p><code>create</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">ClassLabel<span class="token punctuation">(</span>names<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'bad'</span><span class="token punctuation">,</span> <span class="token string">'ok'</span><span class="token punctuation">,</span> <span class="token string">'good'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>int2str</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
+ds <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">,</span> split<span class="token operator">=</span><span class="token string">"train"</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">.</span>features<span class="token punctuation">[</span><span class="token string">"label"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>int2str<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token string">'neg'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>str2int</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
+ds <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"rotten_tomatoes"</span><span class="token punctuation">,</span> split<span class="token operator">=</span><span class="token string">"train"</span><span class="token punctuation">)</span>
+ds<span class="token punctuation">.</span>features<span class="token punctuation">[</span><span class="token string">"label"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>str2int<span class="token punctuation">(</span><span class="token string">'neg'</span><span class="token punctuation">)</span>
+<span class="token number">0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>refs:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/about_dataset_features">https://huggingface.co/docs/datasets/about_dataset_features</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/v2.3.2/en/package_reference/main_classes#datasets.Features">https://huggingface.co/docs/datasets/v2.3.2/en/package_reference/main_classes#datasets.Features</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/v2.3.2/en/package_reference/main_classes#datasets.ClassLabel">https://huggingface.co/docs/datasets/v2.3.2/en/package_reference/main_classes#datasets.ClassLabel</a></p>
 
       
     </div>
@@ -855,7 +757,7 @@ trainer<span class="token punctuation">.</span>train<span class="token punctuati
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_fineTune/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_datasets_load/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -873,337 +775,7 @@ trainer<span class="token punctuation">.</span>train<span class="token punctuati
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/transformers_fineTune/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-07-06 17:35:22 / 修改时间：18:00:58" itemprop="dateCreated datePublished" datetime="2022-07-06T17:35:22+08:00">2022-07-06</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>transformers_fineTune</p>
-<h1 id="获取数据"><a class="markdownIt-Anchor" href="#获取数据"></a> 获取数据</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 获得数据</span>
-<span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
-dataset <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"yelp_review_full"</span><span class="token punctuation">)</span>
-dataset<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">]</span>
-<span class="token punctuation">&#123;</span><span class="token string">'label'</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
- <span class="token string">'text'</span><span class="token punctuation">:</span> <span class="token string">'My expectations for McDonalds are t rarely high. ...'</span><span class="token punctuation">&#125;</span>
-
-<span class="token comment"># tokenize</span>
-<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
-tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
-<span class="token keyword">def</span> <span class="token function">tokenize_function</span><span class="token punctuation">(</span>examples<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> tokenizer<span class="token punctuation">(</span>examples<span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token string">"max_length"</span><span class="token punctuation">,</span> truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-tokenized_datasets <span class="token operator">=</span> dataset<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>tokenize_function<span class="token punctuation">,</span> batched<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>  <span class="token comment"># 遍历每一条数据</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="trainer进行训练"><a class="markdownIt-Anchor" href="#trainer进行训练"></a> trainer进行训练</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 训练</span>
-
-<span class="token comment">## 加载模型</span>
-<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForSequenceClassification
-model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span>  <span class="token comment"># 指定了output的个数是5</span>
-
-<span class="token comment">## 设定hyperparameters</span>
-<span class="token keyword">from</span> transformers <span class="token keyword">import</span> TrainingArguments
-training_args <span class="token operator">=</span> TrainingArguments<span class="token punctuation">(</span>output_dir<span class="token operator">=</span><span class="token string">"test_trainer"</span><span class="token punctuation">)</span> <span class="token comment"># 包含了默认的设定hyperparameters</span>
-<span class="token comment"># training_args = TrainingArguments(output_dir="test_trainer", evaluation_strategy="epoch") # 可以设置每个epoch进行评估</span>
-
-
-<span class="token comment">## 设定evaluate的方法</span>
-<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
-<span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_metric
-
-metric <span class="token operator">=</span> load_metric<span class="token punctuation">(</span><span class="token string">"accuracy"</span><span class="token punctuation">)</span>
-<span class="token keyword">def</span> <span class="token function">compute_metrics</span><span class="token punctuation">(</span>eval_pred<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    logits<span class="token punctuation">,</span> labels <span class="token operator">=</span> eval_pred
-    predictions <span class="token operator">=</span> np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>logits<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> metric<span class="token punctuation">.</span>compute<span class="token punctuation">(</span>predictions<span class="token operator">=</span>predictions<span class="token punctuation">,</span> references<span class="token operator">=</span>labels<span class="token punctuation">)</span>
-
-
-<span class="token comment">## 开始训练</span>
-trainer <span class="token operator">=</span> Trainer<span class="token punctuation">(</span>
-    model<span class="token operator">=</span>model<span class="token punctuation">,</span>
-    args<span class="token operator">=</span>training_args<span class="token punctuation">,</span>
-    train_dataset<span class="token operator">=</span>small_train_dataset<span class="token punctuation">,</span>
-    eval_dataset<span class="token operator">=</span>small_eval_dataset<span class="token punctuation">,</span>
-    compute_metrics<span class="token operator">=</span>compute_metrics<span class="token punctuation">,</span>
-<span class="token punctuation">)</span>
-
-trainer<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="pytorch进行训练"><a class="markdownIt-Anchor" href="#pytorch进行训练"></a> pytorch进行训练</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenized_datasets <span class="token operator">=</span> tokenized_datasets<span class="token punctuation">.</span>remove_columns<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-tokenized_datasets <span class="token operator">=</span> tokenized_datasets<span class="token punctuation">.</span>rename_column<span class="token punctuation">(</span><span class="token string">"label"</span><span class="token punctuation">,</span> <span class="token string">"labels"</span><span class="token punctuation">)</span>
-tokenized_datasets<span class="token punctuation">.</span>set_format<span class="token punctuation">(</span><span class="token string">"torch"</span><span class="token punctuation">)</span>  <span class="token comment"># 设置返回tensor</span>
-
-
-<span class="token keyword">from</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data <span class="token keyword">import</span> DataLoader
-train_dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>small_train_dataset<span class="token punctuation">,</span> shuffle<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span>
-eval_dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>small_eval_dataset<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span>
-
-
-<span class="token comment"># 训练</span>
-<span class="token comment">## 创建模型</span>
-<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForSequenceClassification
-model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span>
-
-
-<span class="token keyword">from</span> torch<span class="token punctuation">.</span>optim <span class="token keyword">import</span> AdamW
-optimizer <span class="token operator">=</span> AdamW<span class="token punctuation">(</span>model<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> lr<span class="token operator">=</span><span class="token number">5e-5</span><span class="token punctuation">)</span>
-
-
-<span class="token keyword">from</span> transformers <span class="token keyword">import</span> get_scheduler
-num_epochs <span class="token operator">=</span> <span class="token number">3</span>
-num_training_steps <span class="token operator">=</span> num_epochs <span class="token operator">*</span> <span class="token builtin">len</span><span class="token punctuation">(</span>train_dataloader<span class="token punctuation">)</span>
-lr_scheduler <span class="token operator">=</span> get_scheduler<span class="token punctuation">(</span>
-    name<span class="token operator">=</span><span class="token string">"linear"</span><span class="token punctuation">,</span> optimizer<span class="token operator">=</span>optimizer<span class="token punctuation">,</span> num_warmup_steps<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> num_training_steps<span class="token operator">=</span>num_training_steps
-<span class="token punctuation">)</span>
-
-<span class="token keyword">import</span> torch
-device <span class="token operator">=</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">"cuda"</span><span class="token punctuation">)</span> <span class="token keyword">if</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>is_available<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">else</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">"cpu"</span><span class="token punctuation">)</span>
-model<span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
-
-
-<span class="token keyword">from</span> tqdm<span class="token punctuation">.</span>auto <span class="token keyword">import</span> tqdm
-
-progress_bar <span class="token operator">=</span> tqdm<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span>num_training_steps<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-model<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> epoch <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>num_epochs<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">for</span> batch <span class="token keyword">in</span> train_dataloader<span class="token punctuation">:</span>
-        batch <span class="token operator">=</span> <span class="token punctuation">&#123;</span>k<span class="token punctuation">:</span> v<span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span> <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> batch<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span>
-        outputs <span class="token operator">=</span> model<span class="token punctuation">(</span><span class="token operator">**</span>batch<span class="token punctuation">)</span>
-        loss <span class="token operator">=</span> outputs<span class="token punctuation">.</span>loss
-        loss<span class="token punctuation">.</span>backward<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        optimizer<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        lr_scheduler<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        optimizer<span class="token punctuation">.</span>zero_grad<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        progress_bar<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-
-
-
-<span class="token comment"># 模型评估</span>
-metric <span class="token operator">=</span> load_metric<span class="token punctuation">(</span><span class="token string">"accuracy"</span><span class="token punctuation">)</span>
-model<span class="token punctuation">.</span><span class="token builtin">eval</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> batch <span class="token keyword">in</span> eval_dataloader<span class="token punctuation">:</span>
-    batch <span class="token operator">=</span> <span class="token punctuation">&#123;</span>k<span class="token punctuation">:</span> v<span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span> <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> batch<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span>
-    <span class="token keyword">with</span> torch<span class="token punctuation">.</span>no_grad<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        outputs <span class="token operator">=</span> model<span class="token punctuation">(</span><span class="token operator">**</span>batch<span class="token punctuation">)</span>
-
-    logits <span class="token operator">=</span> outputs<span class="token punctuation">.</span>logits
-    predictions <span class="token operator">=</span> torch<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>logits<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-    metric<span class="token punctuation">.</span>add_batch<span class="token punctuation">(</span>predictions<span class="token operator">=</span>predictions<span class="token punctuation">,</span> references<span class="token operator">=</span>batch<span class="token punctuation">[</span><span class="token string">"labels"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-metric<span class="token punctuation">.</span>compute<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/training">https://huggingface.co/docs/transformers/training</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_saveModel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/transformers_saveModel/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-07-06 17:30:06 / 修改时间：17:31:28" itemprop="dateCreated datePublished" datetime="2022-07-06T17:30:06+08:00">2022-07-06</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>transformers_saveModel</p>
-<h1 id="保存"><a class="markdownIt-Anchor" href="#保存"></a> 保存</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">pt_save_directory <span class="token operator">=</span> <span class="token string">"./pt_save_pretrained"</span>
-tokenizer<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span>pt_save_directory<span class="token punctuation">)</span>
-pt_model<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span>pt_save_directory<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h1 id="加载"><a class="markdownIt-Anchor" href="#加载"></a> 加载</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">pt_model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"./pt_save_pretrained"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_autoModel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/transformers_autoModel/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-07-06 17:23:17 / 修改时间：17:32:51" itemprop="dateCreated datePublished" datetime="2022-07-06T17:23:17+08:00">2022-07-06</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>transformers_autoModel</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_tokenizer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/transformers_tokenizer/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/transformers_datasets_load/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1214,14 +786,14 @@ pt_model<span class="token punctuation">.</span>save_pretrained<span class="toke
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-07-06 17:06:12" itemprop="dateCreated datePublished" datetime="2022-07-06T17:06:12+08:00">2022-07-06</time>
+      <time title="创建时间：2022-07-13 14:40:11" itemprop="dateCreated datePublished" datetime="2022-07-13T14:40:11+08:00">2022-07-13</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-07 14:08:14" itemprop="dateModified" datetime="2022-07-07T14:08:14+08:00">2022-07-07</time>
+      <time title="修改时间：2022-07-14 16:58:23" itemprop="dateModified" datetime="2022-07-14T16:58:23+08:00">2022-07-14</time>
     </span>
 
   
@@ -1234,36 +806,282 @@ pt_model<span class="token punctuation">.</span>save_pretrained<span class="toke
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>transformers_tokenizer</p>
-<h1 id="nlp"><a class="markdownIt-Anchor" href="#nlp"></a> NLP</h1>
-<h2 id="tokenize"><a class="markdownIt-Anchor" href="#tokenize"></a> Tokenize</h2>
-<p>tokenizer是将自然语言处理成模型能都理解的格式.</p>
+          <p>ways for loading data:</p>
 <ol>
-<li>首先tokenizer将句子分割成词语(token), 每一个模型都有不同的分割算法, 可<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/tokenizer_summary">参考官网</a>. 所以tokenizer要和model保持一致</li>
-<li>然后tokenizer会将词语转换为数字, 做成模型需要的<code>tensor</code></li>
+<li>The Hub without a dataset loading script</li>
+<li>Local loading script</li>
+<li>Local files</li>
+<li>In-memory data</li>
+<li>Offline</li>
+<li>A specific slice of a split</li>
 </ol>
+<p>in practice, loading in-memory data, eg: pandas, dict is common</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> Dataset
+my_dict <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">"a"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span>
+dataset <span class="token operator">=</span> Dataset<span class="token punctuation">.</span>from_dict<span class="token punctuation">(</span>my_dict<span class="token punctuation">)</span>
+
+<span class="token comment"># Dataset(&#123;</span>
+<span class="token comment">#     features: ['a'],</span>
+<span class="token comment">#     num_rows: 3</span>
+<span class="token comment"># &#125;)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> Dataset
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token string">"a"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+dataset <span class="token operator">=</span> Dataset<span class="token punctuation">.</span>from_pandas<span class="token punctuation">(</span>df<span class="token punctuation">)</span>
+
+<span class="token comment"># Dataset(&#123;</span>
+<span class="token comment">#     features: ['a'],</span>
+<span class="token comment">#     num_rows: 3</span>
+<span class="token comment"># &#125;)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>refs:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/loading">https://huggingface.co/docs/datasets/loading</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_postprocessing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_postprocessing/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-07-13 11:59:31 / 修改时间：13:40:36" itemprop="dateCreated datePublished" datetime="2022-07-13T11:59:31+08:00">2022-07-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForSequenceClassification
+checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased-finetuned-sst-2-english"</span>
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span>
+outputs <span class="token operator">=</span> model<span class="token punctuation">(</span><span class="token operator">**</span>inputs<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>outputs<span class="token punctuation">.</span>logits<span class="token punctuation">)</span>
+tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1.5607</span><span class="token punctuation">,</span>  <span class="token number">1.6123</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span> <span class="token number">4.1692</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">3.3464</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> grad_fn<span class="token operator">=</span><span class="token operator">&lt;</span>AddmmBackward<span class="token operator">></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Our model predicted [-1.5607, 1.6123] for the first sentence and [ 4.1692, -3.3464] for the second one. Those are not <code>probabilities</code> but <code>logits</code>, the raw, unnormalized scores outputted by the last layer of the model. To be converted to probabilities, they need to go through a SoftMax layer.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch
+predictions <span class="token operator">=</span> torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>functional<span class="token punctuation">.</span>softmax<span class="token punctuation">(</span>outputs<span class="token punctuation">.</span>logits<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>predictions<span class="token punctuation">)</span>
+<span class="token comment"># tensor([[4.0195e-02, 9.5980e-01],</span>
+<span class="token comment">#         [9.9946e-01, 5.4418e-04]], grad_fn=&lt;SoftmaxBackward>)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Now we can see that the model predicted [0.0402, 0.9598] for the first sentence and [0.9995, 0.0005] for the second one. These are recognizable probability scores.<br />
+To get the labels corresponding to each position, we can inspect the <code>id2label</code> attribute of the model config</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model<span class="token punctuation">.</span>config<span class="token punctuation">.</span>id2label
+<span class="token comment"># &#123;0: 'NEGATIVE', 1: 'POSITIVE'&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>refs:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/2?fw=pt#postprocessing-the-output">Models</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_model/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/transformers_model/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-13 11:38:49" itemprop="dateCreated datePublished" datetime="2022-07-13T11:38:49+08:00">2022-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-14 16:06:07" itemprop="dateModified" datetime="2022-07-14T16:06:07+08:00">2022-07-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>get pre_trained model.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModel
+checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased-finetuned-sst-2-english"</span>
+model <span class="token operator">=</span> AutoModel<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>This architecture contains only the base Transformer module: given some inputs, it outputs what we’ll call <code>hidden states</code>, also known as <code>features</code>.</p>
+<h2 id="input"><a class="markdownIt-Anchor" href="#input"></a> input</h2>
+<p>For each model <code>input</code>, we’ll retrieve a high-dimensional vector representing the contextual understanding of that input by the Transformer model.</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
 tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span>
 encoded_input <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span><span class="token string">"Do not meddle in the affairs of wizards, for they are subtle and quick to anger."</span><span class="token punctuation">)</span>
 <span class="token comment"># &#123;'input_ids': [101, 2079, 2025, 19960, 10362, 1999, 1996, 3821, 1997, 16657, 1010, 2005, 2027, 2024, 11259, 1998, 4248, 2000, 4963, 1012, 102], </span>
 <span class="token comment">#  'token_type_ids': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], </span>
 <span class="token comment">#  'attention_mask': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>返回值的解释, 可<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/preprocessing">参考官网</a></p>
+<h2 id="output"><a class="markdownIt-Anchor" href="#output"></a> output</h2>
+<p>output always contains:</p>
 <ul>
-<li>input_ids: 词汇表中的索引</li>
-<li>token_type_ids: 当有多个句子时, 表示所在的句子的编号</li>
-<li>atttention_mask: 哪些词语需要attention</li>
+<li>Batch size: The number of sequences processed at a time (2 in our example).</li>
+<li>Sequence length: The length of the numerical representation of the sequence (16 in our example).</li>
+<li>Hidden size: The vector dimension of each model input.<br />
+It is said to be <code>high dimensional</code> because of the last value. The hidden size can be very large (768 is common for smaller models, and in larger models this can reach 3072 or more).</li>
 </ul>
-<p>也可以通过<code>decode</code>方法将编码的句子复原</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>decode<span class="token punctuation">(</span>encoded_input<span class="token punctuation">[</span><span class="token string">"input_ids"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token comment"># '[CLS] Do not meddle in the affairs of wizards, for they are subtle and quick to anger. [SEP]'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>返回值包含了CLS and SEP (classifier and separator), 并不是所有的模型都需要, 如果模型需要会自动添加.</p>
-<h2 id="pad"><a class="markdownIt-Anchor" href="#pad"></a> pad</h2>
-<h2 id="truncation"><a class="markdownIt-Anchor" href="#truncation"></a> truncation</h2>
-<h2 id="build-tensors"><a class="markdownIt-Anchor" href="#build-tensors"></a> build-tensors</h2>
-<h1 id="audio"><a class="markdownIt-Anchor" href="#audio"></a> audio</h1>
-<p>参考文献:<br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/preprocessing">https://huggingface.co/docs/transformers/preprocessing</a></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModel
+checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased-finetuned-sst-2-english"</span>
+model <span class="token operator">=</span> AutoModel<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span>
+outputs <span class="token operator">=</span> model<span class="token punctuation">(</span><span class="token operator">**</span>inputs<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>outputs<span class="token punctuation">.</span>last_hidden_state<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+torch<span class="token punctuation">.</span>Size<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">768</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="head"><a class="markdownIt-Anchor" href="#head"></a> head</h2>
+<p>While these <code>hidden states</code> can be useful on their own, they’re usually inputs to another part of the model, known as the <code>head</code>.The different tasks could have been performed with the same <code>architecture</code>, but each of these tasks will have a different <code>head</code> associated with it.</p>
+<p><img src="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter2/transformer_and_head.svg" alt="diagram" /><br />
+In this diagram, the model is represented by its embeddings layer and the subsequent layers. The embeddings layer converts each input ID in the tokenized input into a vector that represents the associated token. The subsequent layers manipulate those vectors using the attention mechanism to produce the final representation of the sentences.<br />
+For our example, we will need a model with a sequence classification head (to be able to classify the sentences as positive or negative)</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForSequenceClassification
+checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased-finetuned-sst-2-english"</span>
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span>
+outputs <span class="token operator">=</span> model<span class="token punctuation">(</span><span class="token operator">**</span>inputs<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>outputs<span class="token punctuation">.</span>logits<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+<span class="token comment"># torch.Size([2, 2])</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="output-head"><a class="markdownIt-Anchor" href="#output-head"></a> output &amp; head</h2>
+<p><code>AutoModel</code>’s output is <code>hidden state</code><br />
+<code>AutoModelForSequenceClassification</code> 's output is <code>head</code><br />
+<a href="/transformers_bert/">ref</a></p>
+<h2 id="load-save"><a class="markdownIt-Anchor" href="#load-save"></a> load &amp; save</h2>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> BertConfig<span class="token punctuation">,</span> BertModel
+config <span class="token operator">=</span> BertConfig<span class="token punctuation">(</span><span class="token punctuation">)</span>
+model <span class="token operator">=</span> BertModel<span class="token punctuation">(</span>config<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>this model will output gibberish, it needs to be trained first. it will cost a lot.<br />
+so, we should reuse models that have already been trained.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> BertModel
+model <span class="token operator">=</span> BertModel<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>BertModel</code> is equal <code>AutoModel</code> class.<br />
+we don’t need to use <code>BertConfig</code>, instead load a pretrained mode via <code>bert-base-cased</code> identifier.</p>
+<p>after finetuning, we can use <code>save_pretrained()</code> to save the model. it is analogous to <code>from_pretrained()</code> method.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span><span class="token string">"directory_on_my_computer"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>this method will create two file:<br />
+<code>config.json</code> : including some attributes to build the model architecture and some information about version.<br />
+<code>pytorch_model.bin</code> : known as <code>state dictionary</code>, contains all weights.</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">ls directory_on_my_computer
+config.json pytorch_model.bin<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="predict"><a class="markdownIt-Anchor" href="#predict"></a> predict</h2>
+<p>when you first load pretraining model from <a target="_blank" rel="noopener" href="https://huggingface.co/models">hub</a>:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'mode_name'</span><span class="token punctuation">)</span>
+<span class="token comment"># Some weights of the model checkpoint at ./pretraind_model/distilbert-base-uncased were not used when initializing DistilBertForSequenceClassification: ['vocab_transform.bias', 'vocab_transform.weight', 'vocab_layer_norm.bias', 'vocab_projector.bias', 'vocab_layer_norm.weight', 'vocab_projector.weight']</span>
+<span class="token comment"># - This IS expected if you are initializing DistilBertForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).</span>
+<span class="token comment"># - This IS NOT expected if you are initializing DistilBertForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).</span>
+<span class="token comment"># Some weights of DistilBertForSequenceClassification were not initialized from the model checkpoint at ./pretraind_model/distilbert-base-uncased and are newly initialized: ['pre_classifier.weight', 'pre_classifier.bias', 'classifier.bias', 'classifier.weight']</span>
+<span class="token comment"># You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>you will see the red warnings. It tells that the model doesn’t fit your customized task, you should finetuning it before you use it. every time we load the model, the <code>model.classifier.weight</code> is random initialization. the default <code>num_labels</code> is 2, but even if you specify the <code>num_lables</code> as 8, it still randomly init.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">.</span>classifier<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>after you finetuning the model, and save it:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'pretraining_model'</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span>
+<span class="token comment"># Assume training code here...</span>
+model<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span><span class="token string">"./finetuning_model"</span><span class="token punctuation">)</span>
+tokenizer<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span><span class="token string">"./finetuning_model"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>then you load the finetuning model:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'finetuning_model'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Notice: this time, the console doesn’t output the red warnings, because we load the finetuning(training in out task) model.</p>
+<p>this time, regardless how many times you load the mode, the <code>model.classifier.weight</code> is always same. and you can’t change the <code>num_labels</code> from the finetuning model.huggingface is smart to tell <code>pretrained</code> model and <code>finetuning</code> model. I didn’t find how huggingface do this, but it is what it is.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'finetuning_model'</span><span class="token punctuation">)</span> <span class="token comment">#  num_labels=8</span>
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'finetuning_model'</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token comment">#  num_labels=8</span>
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">'finetuning_model'</span><span class="token punctuation">,</span> num_labels<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment">#  error</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>ref:<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/2?fw=pt">Behind the pipeline</a><br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/3?fw=pt">Models</a></p>
 
       
     </div>
@@ -1290,7 +1108,7 @@ encoded_input <span class="token operator">=</span> tokenizer<span class="token 
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_autoClasses/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_course/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1308,7 +1126,7 @@ encoded_input <span class="token operator">=</span> tokenizer<span class="token 
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/transformers_autoClasses/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/transformers_course/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1319,14 +1137,14 @@ encoded_input <span class="token operator">=</span> tokenizer<span class="token 
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-07-06 16:35:42" itemprop="dateCreated datePublished" datetime="2022-07-06T16:35:42+08:00">2022-07-06</time>
+      <time title="创建时间：2022-07-12 19:15:15" itemprop="dateCreated datePublished" datetime="2022-07-12T19:15:15+08:00">2022-07-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-07 10:32:28" itemprop="dateModified" datetime="2022-07-07T10:32:28+08:00">2022-07-07</time>
+      <time title="修改时间：2022-07-13 14:32:34" itemprop="dateModified" datetime="2022-07-13T14:32:34+08:00">2022-07-13</time>
     </span>
 
   
@@ -1339,261 +1157,34 @@ encoded_input <span class="token operator">=</span> tokenizer<span class="token 
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="初始化模型"><a class="markdownIt-Anchor" href="#初始化模型"></a> 初始化模型</h1>
-<p><code>from_retrained()</code>方法通过pretrained model的name和path来加载模型</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModel<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-cased"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>以上代码加载了<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert#transformers.BertModel">BertModel</a>, 主要包含了</p>
-<p>BertConfig: 存储了bert模型的配置.比如: vocab_size(语料库的大小, 决定了inputs_ids的范围),hidden_size(隐藏层的大小),num_hidden_layers(隐藏层的层数)等.<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert#transformers.BertConfig">参考官网</a><br />
-BertModel: 输出raw hidden-states, 没有最终的softmax等. 是<code>torch.nn.Module</code>的子类, 可以像<code>pytorch</code>一样操作. <a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert#transformers.BertModel">参考官网</a></p>
-<ol>
-<li>加载模型配置</li>
-</ol>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoConfig
-config <span class="token operator">=</span> AutoConfig<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-uncased"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<ol start="2">
-<li>加载model</li>
-</ol>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoConfig<span class="token punctuation">,</span> AutoModel
-config <span class="token operator">=</span> AutoConfig<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-uncased"</span><span class="token punctuation">)</span>
-model <span class="token operator">=</span> AutoModel<span class="token punctuation">.</span>from_config<span class="token punctuation">(</span>config<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h1 id="初始化-tokenizer"><a class="markdownIt-Anchor" href="#初始化-tokenizer"></a> 初始化 Tokenizer</h1>
-<p>BertTokenizer: 在pretrained model vocabulary初始化制作token的类. <a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert#transformers.BertTokenizer">参考官网</a></p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
-tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"bert-base-uncased"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h1 id="输出结果"><a class="markdownIt-Anchor" href="#输出结果"></a> 输出结果</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForSequenceClassification
-pt_batch <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>
-    <span class="token punctuation">[</span><span class="token string">"We are very happy to show you the 🤗 Transformers library."</span><span class="token punctuation">,</span> <span class="token string">"We hope you don't hate it."</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    padding<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
-    truncation<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
-    max_length<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">,</span>
-    return_tensors<span class="token operator">=</span><span class="token string">"pt"</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span>
-model_name <span class="token operator">=</span> <span class="token string">"nlptown/bert-base-multilingual-uncased-sentiment"</span>
-pt_model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>model_name<span class="token punctuation">)</span>
-pt_outputs <span class="token operator">=</span> pt_model<span class="token punctuation">(</span><span class="token operator">**</span>pt_batch<span class="token punctuation">)</span>
-<span class="token keyword">from</span> torch <span class="token keyword">import</span> nn
-pt_predictions <span class="token operator">=</span> nn<span class="token punctuation">.</span>functional<span class="token punctuation">.</span>softmax<span class="token punctuation">(</span>pt_outputs<span class="token punctuation">.</span>logits<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>pt_predictions<span class="token punctuation">)</span>
-<span class="token comment"># tensor([[0.0021, 0.0018, 0.0115, 0.2121, 0.7725],</span>
-<span class="token comment">#         [0.2084, 0.1826, 0.1969, 0.1755, 0.2365]], grad_fn=&lt;SoftmaxBackward0>)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="automodelforsequenceclassification-vs-automodel"><a class="markdownIt-Anchor" href="#automodelforsequenceclassification-vs-automodel"></a> automodelforsequenceclassification-vs-automodel</h1>
-<p>建议使用<code>AutoTokenizer</code>类和<code>AutoModelFor</code>类来加载模型, 而不是使用<code>AutoModel</code>类来加载.<br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/autoclass_tutorial#automodel">参考官网</a></p>
-<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/69907682/what-are-differences-between-automodelforsequenceclassification-vs-automodel">https://stackoverflow.com/questions/69907682/what-are-differences-between-automodelforsequenceclassification-vs-automodel</a></p>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert">https://huggingface.co/docs/transformers/v4.20.1/en/model_doc/bert</a><br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/model_doc/auto">https://huggingface.co/docs/transformers/model_doc/auto</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/transformers_pipeline/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/transformers_pipeline/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-07-06 14:18:08 / 修改时间：16:31:21" itemprop="dateCreated datePublished" datetime="2022-07-06T14:18:08+08:00">2022-07-06</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><code>pipeline()</code>会自动在Model Hub上加载对应<code>task</code>的<code>model</code>和<code>tokenizer</code>.</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> pipeline
-classifier <span class="token operator">=</span> pipeline<span class="token punctuation">(</span><span class="token string">"sentiment-analysis"</span><span class="token punctuation">)</span>
-classifier<span class="token punctuation">(</span><span class="token string">"We are very happy to show you the 🤗 Transformers library."</span><span class="token punctuation">)</span>
-<span class="token punctuation">[</span><span class="token punctuation">&#123;</span><span class="token string">'label'</span><span class="token punctuation">:</span> <span class="token string">'POSITIVE'</span><span class="token punctuation">,</span> <span class="token string">'score'</span><span class="token punctuation">:</span> <span class="token number">0.9998</span><span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>也可以手动指定</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">model_name <span class="token operator">=</span> <span class="token string">"nlptown/bert-base-multilingual-uncased-sentiment"</span>
+          <p><a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter1/1">transformers course</a></p>
+<p>transformer的历史发展轨迹<br />
+<a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter1/4?fw=pt">Transformer intro</a></p>
+<p>2018年 bert出生,<br />
+2019年 DistilBERT, 相比bert,  60% faster, 40% lighter</p>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/2?fw=pt">Behind the pipeline</a><br />
+介绍了transformer的具体工作流程.<br />
+<img src="https://huggingface.co/datasets/huggingface-course/documentation-images/resolve/main/en/chapter2/full_nlp_pipeline.svg" alt="工作流程" /></p>
+<p>总共分为了三步:tokenize, model, postProcessing</p>
+<h2 id="tokenize"><a class="markdownIt-Anchor" href="#tokenize"></a> tokenize</h2>
+<h2 id="2model"><a class="markdownIt-Anchor" href="#2model"></a> 2.model</h2>
+<h1 id="postprocessing-the-output"><a class="markdownIt-Anchor" href="#postprocessing-the-output"></a> Postprocessing the output</h1>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/5?fw=pt">Handling multiple sequences</a></p>
+<h1 id="batch"><a class="markdownIt-Anchor" href="#batch"></a> batch</h1>
+<p>Transformers models expect multiple sentences by default, called Batching. you’ll see that it didn’t just convert the list of input IDs into a tensor, it added a dimension on top of it:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch
 <span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer<span class="token punctuation">,</span> AutoModelForSequenceClassification
-model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>model_name<span class="token punctuation">)</span>
-tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>model_name<span class="token punctuation">)</span>
-classifier <span class="token operator">=</span> pipeline<span class="token punctuation">(</span><span class="token string">"sentiment-analysis"</span><span class="token punctuation">,</span> model<span class="token operator">=</span>model<span class="token punctuation">,</span> tokenizer<span class="token operator">=</span>tokenizer<span class="token punctuation">)</span>
-<span class="token comment"># classifier = pipeline("sentiment-analysis", model=model_name, tokenizer=model_name) # model和tokenizer也可以直接使用字符串形式</span>
-classifier<span class="token punctuation">(</span><span class="token string">"Nous sommes très heureux de vous présenter la bibliothèque 🤗 Transformers."</span><span class="token punctuation">)</span>
-<span class="token punctuation">[</span><span class="token punctuation">&#123;</span><span class="token string">'label'</span><span class="token punctuation">:</span> <span class="token string">'5 stars'</span><span class="token punctuation">,</span> <span class="token string">'score'</span><span class="token punctuation">:</span> <span class="token number">0.7273</span><span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="api"><a class="markdownIt-Anchor" href="#api"></a> API</h1>
-<h2 id="参数"><a class="markdownIt-Anchor" href="#参数"></a> 参数</h2>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>task</td>
-<td>任务的种类</td>
-</tr>
-<tr>
-<td>model</td>
-<td>PreTrainedModel对象 或 字符串</td>
-</tr>
-<tr>
-<td>config</td>
-<td>PretrainedConfig对象 或 字符串</td>
-</tr>
-<tr>
-<td>tokenizer</td>
-<td>PreTrainedTokenizer 或 字符串</td>
-</tr>
-</tbody>
-</table>
-<p><a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/main_classes/pipelines#transformers.pipeline">参考官网</a></p>
-<h2 id="task"><a class="markdownIt-Anchor" href="#task"></a> task</h2>
-<table>
-<thead>
-<tr>
-<th>字符串</th>
-<th>对象</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>“audio-classification”</td>
-<td>AudioClassificationPipeline</td>
-<td>音频分类</td>
-</tr>
-<tr>
-<td>“automatic-speech-recognition”</td>
-<td>AutomaticSpeechRecognitionPipeline</td>
-<td>语音识别</td>
-</tr>
-<tr>
-<td>“conversational”</td>
-<td>ConversationalPipeline</td>
-<td></td>
-</tr>
-<tr>
-<td>“feature-extraction”</td>
-<td>FeatureExtractionPipeline</td>
-<td></td>
-</tr>
-<tr>
-<td>“fill-mask”</td>
-<td>FillMaskPipeline:</td>
-<td></td>
-</tr>
-<tr>
-<td>“image-classification”</td>
-<td>ImageClassificationPipeline</td>
-<td>图像份额里</td>
-</tr>
-<tr>
-<td>“question-answering”</td>
-<td>QuestionAnsweringPipeline</td>
-<td></td>
-</tr>
-<tr>
-<td>“table-question-answering”</td>
-<td>TableQuestionAnsweringPipeline</td>
-<td></td>
-</tr>
-<tr>
-<td>“text2text-generation”</td>
-<td>Text2TextGenerationPipeline</td>
-<td></td>
-</tr>
-<tr>
-<td>“text-classification” (alias “sentiment-analysis” available)</td>
-<td>TextClassificationPipeline</td>
-<td>文本分类</td>
-</tr>
-<tr>
-<td>“text-generation”</td>
-<td>TextGenerationPipeline:</td>
-<td>文本生成</td>
-</tr>
-<tr>
-<td>“token-classification” (alias “ner” available)</td>
-<td>TokenClassificationPipeline</td>
-<td>命名实体识别</td>
-</tr>
-<tr>
-<td>“translation”</td>
-<td>TranslationPipeline</td>
-<td>翻译</td>
-</tr>
-<tr>
-<td>“translation_xx_to_yy”</td>
-<td>TranslationPipeline</td>
-<td></td>
-</tr>
-<tr>
-<td>“summarization”</td>
-<td>SummarizationPipeline</td>
-<td>概括</td>
-</tr>
-<tr>
-<td>“zero-shot-classification”</td>
-<td>ZeroShotClassificationPipeline</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/main_classes/pipelines#transformers.pipeline.task">参考官网</a></p>
-<p>参考文献:<br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/quicktour">quicktour</a><br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/pipeline_tutorial">pipeline_tutorial</a><br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/v4.20.1/en/main_classes/pipelines">pipelines</a><br />
-<a target="_blank" rel="noopener" href="https://huggingface.co/models">models</a></p>
+
+checkpoint <span class="token operator">=</span> <span class="token string">"distilbert-base-uncased-finetuned-sst-2-english"</span>
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span>
+model <span class="token operator">=</span> AutoModelForSequenceClassification<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span>
+sequence <span class="token operator">=</span> <span class="token string">"I've been waiting for a HuggingFace course my whole life."</span>
+
+tokenized_inputs <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>sequence<span class="token punctuation">,</span> return_tensors<span class="token operator">=</span><span class="token string">"pt"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>tokenized_inputs<span class="token punctuation">[</span><span class="token string">"input_ids"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># tensor([[  101,  1045,  1005,  2310,  2042,  3403,  2005,  1037, 17662, 12172,</span>
+<span class="token comment">#           2607,  2026,  2878,  2166,  1012,   102]])</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/course/chapter2/6?fw=pt">Putting it all together</a></p>
 
       
     </div>
@@ -1613,7 +1204,7 @@ classifier<span class="token punctuation">(</span><span class="token string">"No
 
 
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/other/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/46/">46</a><a class="extend next" rel="next" href="/other/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/other/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/47/">47</a><a class="extend next" rel="next" href="/other/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

@@ -123,7 +123,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">456</span>
+          <span class="site-state-item-count">468</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/scikit_train_test_split/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/git_rebase/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -195,7 +195,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/scikit_train_test_split/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/git_rebase/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -206,14 +206,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+      <time title="创建时间：2022-07-04 16:29:55" itemprop="dateCreated datePublished" datetime="2022-07-04T16:29:55+08:00">2022-07-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-05 10:14:37" itemprop="dateModified" datetime="2022-07-05T10:14:37+08:00">2022-07-05</time>
+      <time title="修改时间：2022-07-05 09:43:13" itemprop="dateModified" datetime="2022-07-05T09:43:13+08:00">2022-07-05</time>
     </span>
 
   
@@ -226,143 +226,114 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>用来分割训练集和测试集.</p>
+          <p>git rebase: 更改当前分支的根基(Move the base of a branch)</p>
+<h1 id="命令"><a class="markdownIt-Anchor" href="#命令"></a> 命令</h1>
+<p><code>git rebase -i [&lt;upstream&gt; [&lt;branch&gt;]]</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>branch</code></td>
+<td>默认停留在当前的分支, 如果指定<code>branch</code>, 则自动执行<code>git switch &lt;branch&gt;</code></td>
+</tr>
+<tr>
+<td><code>&lt;upstream&gt;</code></td>
+<td>默认指向输入的<code>&lt;branch&gt;</code>, 如果不指定<code>&lt;branch&gt;</code>或<code>&lt;upstream&gt;</code>, 则会退出</td>
+</tr>
+</tbody>
+</table>
 <h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
-<h2 id="分割pandasdataframe"><a class="markdownIt-Anchor" href="#分割pandasdataframe"></a> 分割pandas.DataFrame</h2>
-<p><code>train, test = train_test_split(df, test_size=.3, stratify=df['column_name'])</code></p>
-<h2 id="分割xy"><a class="markdownIt-Anchor" href="#分割xy"></a> 分割X,Y</h2>
-<p><code>X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)</code></p>
-<h1 id="api"><a class="markdownIt-Anchor" href="#api"></a> API</h1>
-<p><code>sklearn.model_selection.train_test_split(*arrays, test_size=None, train_size=None, random_state=None, shuffle=True, stratify=None)[source]</code></p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>*arrays</td>
-<td>numpy arrays, pandas dataframes</td>
-</tr>
-<tr>
-<td>test_size</td>
-<td>if float, test_size+train_size=1, If int, represents the absolute number of test samples</td>
-</tr>
-<tr>
-<td>train_size</td>
-<td>if float, test_size+train_size=1, If int, represents the absolute number of test samples</td>
-</tr>
-<tr>
-<td>random_state</td>
-<td>RandomState</td>
-</tr>
-<tr>
-<td>shuffle</td>
-<td>shuffle the data before splitting</td>
-</tr>
-<tr>
-<td>stratify</td>
-<td>让测试集和训练集中的结果集保持源数据的Y的分类比例(分层抽样)</td>
-</tr>
-</tbody>
-</table>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45281949/article/details/102767177">https://blog.csdn.net/weixin_45281949/article/details/102767177</a><br />
-<a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split">https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split</a><br />
-<a target="_blank" rel="noopener" href="https://engineeringfordatascience.com/posts/ml_repeatable_splitting_using_hashing/">https://engineeringfordatascience.com/posts/ml_repeatable_splitting_using_hashing/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_wheel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_wheel/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <ol>
-<li>Egg格式是由setuptools在2004年引入，而Wheel格式是由PEP427在2012年定义。</li>
-<li>wheels是发行版Python的新标准并且要取代.egg。</li>
-<li>Wheel有一个官方的PEP427来定义，而Egg没有PEP定义。</li>
+<h2 id="替换merge"><a class="markdownIt-Anchor" href="#替换merge"></a> 替换<code>merge</code></h2>
+<p><code>git rebase branch</code></p>
+<p><img src="1.png" alt="1.png" /></p>
+<h2 id="更改指定提交的信息"><a class="markdownIt-Anchor" href="#更改指定提交的信息"></a> 更改指定提交的信息</h2>
+<p>假设有提交<code>A-B-C-D-E-F</code>, <code>HEAD</code>指向<code>F</code>, 需要修改<code>C</code>和<code>D</code>的 author.</p>
+<ol>
+<li>
+<p><code>git rebase -i B</code>, 将<code>C-D-E-F</code>取出, 并将<code>B</code>作为base</p>
+</li>
+<li>
+<p>将<code>C</code>和<code>D</code> 之前的<code>pick</code> 更改为<code>edit</code></p>
+</li>
+<li>
+<p>退出编辑器(在<code>vim</code>中是<code>:wq</code>)</p>
+</li>
+<li>
+<p><code>rebase</code>会在<code>C</code>暂停</p>
+</li>
+<li>
+<p>使用<code>git commit --amend --author=&quot;Author Name &lt;email@address.com&gt;&quot;</code> 重新提交<code>C</code></p>
+</li>
+<li>
+<p>再次执行<code>git rebase --continue</code></p>
+</li>
+<li>
+<p><code>rebase</code>会在<code>D</code>暂停</p>
+</li>
+<li>
+<p><code>git commit --amend --author=&quot;Author Name &lt;email@address.com&gt;&quot;</code> 重新提交<code>D</code></p>
+</li>
+<li>
+<p><code>rebae</code>完成</p>
+</li>
+<li>
+<p><code>git push -f</code> 更新<code>origin</code></p>
+</li>
 </ol>
-<p>name : 打包起来的包的文件名<br />
-version : 版本号,添加为打包文件的后缀名<br />
-author : 作者<br />
-author_email : 作者的邮箱<br />
-py_modules : 打包的.py文件<br />
-packages: 打包的python文件夹<br />
-include_package_data : 项目里会有一些非py文件,比如html和js等,这时候就要靠include_package_data 和 package_data 来指定了。package_data:一般写成{‘your_package_name’: [“files”]}, include_package_data还没完,还需要修改MANIFEST.in文件.MANIFEST.in文件的语法为: include xxx/xxx/xxx/.ini/(所有以.ini结尾的文件,也可以直接指定文件名)<br />
-license : 支持的开源协议<br />
-description : 对项目简短的一个形容<br />
-ext_modules : 是一个包含Extension实例的列表,Extension的定义也有一些参数。<br />
-ext_package : 定义extension的相对路径<br />
-requires : 定义依赖哪些模块<br />
-provides : 定义可以为哪些模块提供依赖<br />
-data_files :指定其他的一些文件(如配置文件),规定了哪些文件被安装到哪些目录中。如果目录名是相对路径,则是相对于sys.prefix或sys.exec_prefix的路径。如果没有提供模板,会被添加到MANIFEST文件中。</p>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://wheel.readthedocs.io/en/stable/">https://wheel.readthedocs.io/en/stable/</a><br />
-<a target="_blank" rel="noopener" href="https://www.jb51.net/article/180223.htm">https://www.jb51.net/article/180223.htm</a><br />
-<a target="_blank" rel="noopener" href="https://setuptools.pypa.io/en/latest/">https://setuptools.pypa.io/en/latest/</a></p>
+<h2 id="更改提交顺序"><a class="markdownIt-Anchor" href="#更改提交顺序"></a> 更改提交顺序</h2>
+<p>假设有提交<code>A-B-C-D-E-F</code>, <code>HEAD</code>指向<code>F</code>, 需要修改<code>C</code>和<code>D</code>的顺序</p>
+<ol>
+<li>
+<p><code>git rebase -i B</code>, 将<code>C-D-E-F</code>取出, 并将<code>B</code>作为base</p>
+</li>
+<li>
+<p><code>C</code>和<code>D</code> 两行进行替换即可</p>
+</li>
+</ol>
+<h2 id="合并多次提交"><a class="markdownIt-Anchor" href="#合并多次提交"></a> 合并多次提交</h2>
+<p>假设有提交<code>A-B-C-D-E-F</code>, <code>HEAD</code>指向<code>F</code>, 需要将<code>C</code>,<code>D</code>,<code>E</code>进行合并</p>
+<ol>
+<li>
+<p><code>git rebase -i B</code>, 将<code>C-D-E-F</code>取出, 并将<code>B</code>作为base</p>
+</li>
+<li>
+<p>将<code>C</code>,<code>D</code>,<code>E</code>之前的个<code>pick</code>更改为<code>squash</code></p>
+</li>
+</ol>
+<h2 id="分开一次提交"><a class="markdownIt-Anchor" href="#分开一次提交"></a> 分开一次提交</h2>
+<h2 id="替代-amend"><a class="markdownIt-Anchor" href="#替代-amend"></a> 替代<code>--amend</code></h2>
+<p><code>--amend</code>只能合并上一次的提交, 而<code>git rebase</code>可以合并指定的提交</p>
+<p>假设有提交<code>A-B-C-D-E-F</code>, <code>HEAD</code>指向<code>F</code>, 需要使用<code>F</code>的提交和<code>C</code>的提交进行合并</p>
+<ol>
+<li>
+<p><code>git rebase -i B</code>, 将<code>C-D-E-F</code>取出, 并将<code>B</code>作为base</p>
+</li>
+<li>
+<p>将<code>F</code>提交放在<code>C</code>后, 并将<code>F</code>前面的<code>pick</code>更改为<code>fixup</code>(修复上面的的)</p>
+</li>
+</ol>
+<h1 id="-root"><a class="markdownIt-Anchor" href="#-root"></a> <code>--root</code></h1>
+<p>当我们进行3次提交后, 使用<code>git rebase -i HEAD^3</code>会报错, 因为第一个提交是<code>root</code>, 也就是说只能<code>git rebase -i HEAD~2</code>, <code>root commit</code>不能获得, 如果想获得, 需要执行<code>git rebase -i --root</code></p>
+<h1 id="continue"><a class="markdownIt-Anchor" href="#continue"></a> continue</h1>
+<p><code>git reabse --continue --abort</code><br />
+在使用-i交互模式时,处理conflict会中断,要使用–continue来恢复交互模式</p>
+<h1 id="命令-2"><a class="markdownIt-Anchor" href="#命令-2"></a> 命令</h1>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">pick：保留该commit（缩写:p）
+reword：保留该commit，但我需要修改该commit的注释（缩写:r）
+edit：保留该commit, 但我要停下来修改该提交(不仅仅修改注释)（缩写:e）
+squash：将该commit和前一个commit合并（缩写:s）
+fixup：将该commit和前一个commit合并，但我不要保留该提交的注释信息（缩写:f）
+exec：执行shell命令（缩写:x）
+drop：我要丢弃该commit（缩写:d）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><a target="_blank" rel="noopener" href="https://git-rebase.io/">https://git-rebase.io/</a><br />
+<a target="_blank" rel="noopener" href="https://www.educative.io/answers/what-is-the-git-rebase-branch-name-command">https://www.educative.io/answers/what-is-the-git-rebase-branch-name-command</a><br />
+<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3042437/how-to-change-the-commit-author-for-one-specific-commit">https://stackoverflow.com/questions/3042437/how-to-change-the-commit-author-for-one-specific-commit</a><br />
+<a target="_blank" rel="noopener" href="https://git-scm.com/docs/git-rebase">https://git-scm.com/docs/git-rebase</a></p>
 
       
     </div>
@@ -389,7 +360,7 @@ data_files :指定其他的一些文件(如配置文件),规定了哪些文件�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_treelib/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vue_%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -407,7 +378,7 @@ data_files :指定其他的一些文件(如配置文件),规定了哪些文件�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/python_treelib/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/vue_%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -431,84 +402,1450 @@ data_files :指定其他的一些文件(如配置文件),规定了哪些文件�
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>treelib中主要有两个对象tree和node</p>
-<h1 id="创建树对象"><a class="markdownIt-Anchor" href="#创建树对象"></a> 创建树对象</h1>
-<p><code>class treelib.tree.Tree(tree=None, deep=False, node_class=None)</code></p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>tree</td>
-<td>拷贝另外一棵树</td>
-</tr>
-<tr>
-<td>deep</td>
-<td>是否为深拷贝</td>
-</tr>
-<tr>
-<td>identifier</td>
-<td>树的id, 全局唯一, 不能修改</td>
-</tr>
-<tr>
-<td>node_class</td>
-<td>指定节点类, 不需要使用</td>
-</tr>
-</tbody>
-</table>
-<p>创建一棵树</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> treelib <span class="token keyword">import</span> Tree
-tree <span class="token operator">=</span> Tree<span class="token punctuation">(</span><span class="token punctuation">)</span>
-tree<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h1 id="添加节点"><a class="markdownIt-Anchor" href="#添加节点"></a> 添加节点</h1>
-<p><code>create_node(tag=None, identifier=None, parent=None, data=None)</code></p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>tag</td>
-<td>标签, 在使用<code>show()</code>时打印, 如果没有tag, 则直接打印<code>identifier</code>, 建议不写, 统一使用<code>identifier</code></td>
-</tr>
-<tr>
-<td>identifier</td>
-<td>全树唯一</td>
-</tr>
-<tr>
-<td>parent</td>
-<td>父节点的<code>identifier</code></td>
-</tr>
-<tr>
-<td>data</td>
-<td>节点包含的数据</td>
-</tr>
-</tbody>
-</table>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> treelib <span class="token keyword">import</span> Tree
-tree <span class="token operator">=</span> Tree<span class="token punctuation">(</span><span class="token punctuation">)</span>
-tree<span class="token punctuation">.</span>create_node<span class="token punctuation">(</span>tag<span class="token operator">=</span><span class="token string">'Node-Root'</span><span class="token punctuation">,</span> identifier<span class="token operator">=</span><span class="token string">'node-root'</span><span class="token punctuation">,</span> data<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
-tree<span class="token punctuation">.</span>create_node<span class="token punctuation">(</span>tag<span class="token operator">=</span><span class="token string">'Node-1'</span><span class="token punctuation">,</span> identifier<span class="token operator">=</span><span class="token string">'node-1'</span><span class="token punctuation">,</span> parent<span class="token operator">=</span><span class="token string">'node-root'</span><span class="token punctuation">,</span> data<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
-tree<span class="token punctuation">.</span>create_node<span class="token punctuation">(</span><span class="token string">'Node-21'</span><span class="token punctuation">,</span> <span class="token string">'node-21'</span><span class="token punctuation">,</span> <span class="token string">'node-1'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
-tree<span class="token punctuation">.</span>create_node<span class="token punctuation">(</span><span class="token string">'Node-22'</span><span class="token punctuation">,</span> <span class="token string">'node-22'</span><span class="token punctuation">,</span> <span class="token string">'node-1'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
-tree<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+          <p>安装, 参考<a target="_blank" rel="noopener" href="https://vuejs.org/guide/quick-start.html#with-build-tools">官网</a>. 仅安装插件:</p>
+<ul>
+<li>ESLint</li>
+<li>Prettier</li>
+</ul>
+<ol>
+<li>
+<p>IDE选择vscode, 并安装插件:</p>
+<ul>
+<li>Vue Language Features (Volar): 语法高亮, 及代码提示</li>
+<li>ESLint: 代码规范(比如行的最大长度), 语法检查(错误提示). 能自动读取项目中的<code>eslintrc.js</code>配置. 注意和我们创建项目安装eslint不是一回事, 创建安装的是代码, 在运行时报错</li>
+</ul>
+</li>
+<li>
+<p>Vue CLI: v5.0.0-rc.1<br />
+Vue version: 3.x<br />
+linter: ESLint<br />
+formatter: Prettier</p>
+</li>
+<li>
+<p>插件</p>
+</li>
+</ol>
+<p>npm install -g @vue/cli<br />
+vue create xxxx</p>
+<p><a target="_blank" rel="noopener" href="http://strapi.gridsome.bruski.wang/vue-vscode-eslint-min-config/">参考</a></p>
 
-<span class="token comment"># Node-Root</span>
-<span class="token comment"># └── Node-1</span>
-<span class="token comment">#     ├── Node-21</span>
-<span class="token comment">#     └── Node-22</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="tree方法"><a class="markdownIt-Anchor" href="#tree方法"></a> tree方法</h1>
-<h2 id="结构描述"><a class="markdownIt-Anchor" href="#结构描述"></a> 结构描述</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">tree<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 4, 返回节点的个数</span>
-tree<span class="token punctuation">.</span>depth<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 2, 节点的深度</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h2 id="获取节点"><a class="markdownIt-Anchor" href="#获取节点"></a> 获取节点</h2>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vue_event/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/vue_event/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="https://vuejs.org/guide/essentials/event-handling.html#accessing-event-argument-in-inline-handlers">https://vuejs.org/guide/essentials/event-handling.html#accessing-event-argument-in-inline-handlers</a><br />
+<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/59973296/vue-js-reference-error-event-target-not-defined">https://stackoverflow.com/questions/59973296/vue-js-reference-error-event-target-not-defined</a></p>
+<p>在vue中想要获取原生的event对象，需要使用<code>$event</code>, 官网只简单提了一句，坑。</p>
+<p>Sometimes we also need to access the original DOM event in an inline handler. You can pass it into a method using the special $event variable, or use an inline arrow function:</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vue_css/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/vue_css/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>参考：<a target="_blank" rel="noopener" href="https://vuejs.org/api/sfc-css-features.html">https://vuejs.org/api/sfc-css-features.html</a></p>
+<h1 id="vue控制style的两种写法"><a class="markdownIt-Anchor" href="#vue控制style的两种写法"></a> vue控制style的两种写法</h1>
+<ol>
+<li>引用变量的方式，注意是普通对象的写法
+<ul>
+<li>间隔符号是<code>,</code></li>
+<li>所有的值(value)都是字符串</li>
+<li>多字母的属性遵循的是驼峰命名 <code>backgroundColor</code></li>
+</ul>
+</li>
+<li>直接书写<code>style</code>
+<ul>
+<li>间隔符号是<code>;</code></li>
+<li>所有的值都不需要用引号，既不是字符串</li>
+<li>多字母的属性遵循的是横杠命名<br />
+而无论哪种方式都遵循<code>key:value</code>的写法 <code>background-color</code></li>
+</ul>
+</li>
+</ol>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;script setup&gt;
+let style &#x3D; reactive(&#123;
+    width: &quot;50px&quot;, &#x2F;&#x2F; 不能写成 width:50, 纯数字无法解析
+    backgroundColor: &quot;red&quot;,
+&#125;)
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+&lt;div :style&#x3D;&quot;style&quot;&gt;
+&lt;div style&#x3D;&quot;width: 50px; background-color: red;&quot;&gt;
+&lt;&#x2F;template&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="数字与px"><a class="markdownIt-Anchor" href="#数字与px"></a> 数字与px</h1>
+<p>vue中</p>
+<ul>
+<li><code>div</code>等普通元素 不能将width的<code>数字</code>自动转为css中的<code>数字+px</code>，形式，需要自己手动处理</li>
+<li><code>svg</code>元素及其内部元素 可以将width<code>数字</code>自动转换为<code>数字+px</code></li>
+</ul>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;script setup&gt;
+import &#123;reactive&#125; from &quot;vue&quot;
+let style &#x3D; reactive(&#123;
+    width: &quot;50px&quot;, &#x2F;&#x2F; 不能写成 width:50, 纯数字无法解析
+    backgroundColor: &quot;red&quot;,
+&#125;)
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &lt;div :style&#x3D;&quot;style&quot;&gt;haha&lt;&#x2F;div&gt;
+&lt;&#x2F;template&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="3">
+<li><code>&lt;style&gt;</code>中可以使用<code>v-bing</code>来绑定<code>script</code>中的变量</li>
+</ol>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;script setup&gt;
+import &#123;reactive&#125; from &quot;vue&quot;
+let style &#x3D; reactive(&#123;
+    width: &quot;50px&quot;, &#x2F;&#x2F; 不能写成 width:50, 纯数字无法解析
+    backgroundColor: &quot;red&quot;,
+&#125;)
+
+let num &#x3D; reactive(&#123;
+    height: 50,
+&#125;)
+&lt;&#x2F;script&gt;
+&lt;template&gt;
+    &lt;div class&#x3D;&quot;test&quot; :style&#x3D;&quot;style&quot;&gt;haha&lt;&#x2F;div&gt;
+&lt;&#x2F;template&gt;
+&lt;style scoped&gt;
+.test &#123;
+    &#x2F;* height: v-bind(&quot;num.height&quot;) px; *&#x2F;
+    height: v-bind(&quot;num.height+&#39;px&#39;&quot;);
+&#125;
+&lt;&#x2F;style&gt;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vscode_python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/vscode_python/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>安装<code>python</code>插件，会附带安装<code>pylance</code>插件。</p>
+<p><code>Python: Select Linter</code> 选择<code>pylint</code>格式化工具，并进行安装。</p>
+<p>Alt + e | 在python console中运行代码<br />
+Alt + r | 执行python文件<br />
+Alt + ← | 回到上一次鼠标位置<br />
+Alt + → | 回到下一次鼠标位置<br />
+F12 | 去往定义处<br />
+Ctrl + F12 | 去往实现处</p>
+<h1 id="debug传参"><a class="markdownIt-Anchor" href="#debug传参"></a> debug传参</h1>
+<ol>
+<li>点击Debug框 -&gt; 点击 <code>create a launch.json file</code> -&gt; 选择python</li>
+</ol>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+    <span class="token comment">// Use IntelliSense to learn about possible attributes.</span>
+    <span class="token comment">// Hover to view descriptions of existing attributes.</span>
+    <span class="token comment">// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387</span>
+    <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.2.0"</span><span class="token punctuation">,</span>
+    <span class="token property">"configurations"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">&#123;</span>
+            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Python: 当前文件"</span><span class="token punctuation">,</span>
+            <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"python"</span><span class="token punctuation">,</span>
+            <span class="token property">"request"</span><span class="token operator">:</span> <span class="token string">"launch"</span><span class="token punctuation">,</span>
+            <span class="token property">"program"</span><span class="token operator">:</span> <span class="token string">"$&#123;file&#125;"</span><span class="token punctuation">,</span>
+            <span class="token property">"console"</span><span class="token operator">:</span> <span class="token string">"integratedTerminal"</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>配置的名称</td>
+</tr>
+<tr>
+<td>type</td>
+<td>类型, 这里是python</td>
+</tr>
+<tr>
+<td>request</td>
+<td><code>launch</code>是本地的文件, <code>attach</code>是连接一运行的进程</td>
+</tr>
+<tr>
+<td>program</td>
+<td>要debug的程序文件</td>
+</tr>
+<tr>
+<td>python</td>
+<td>解释器的路径</td>
+</tr>
+<tr>
+<td>pythonArgs</td>
+<td>传递给解释器的参数, 一般不用</td>
+</tr>
+<tr>
+<td>args</td>
+<td>传递给python程序的参数, <code>&quot;args&quot;: [&quot;--port&quot;, &quot;1593&quot;]</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>debug快捷键</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F5</td>
+<td>开启debug or continue</td>
+</tr>
+<tr>
+<td>Shift + F5</td>
+<td>停止debug</td>
+</tr>
+<tr>
+<td>F6</td>
+<td>restart debug</td>
+</tr>
+<tr>
+<td>F7</td>
+<td>step over</td>
+</tr>
+<tr>
+<td>F8</td>
+<td>step into</td>
+</tr>
+<tr>
+<td>Shift F8</td>
+<td>step out</td>
+</tr>
+<tr>
+<td>Ctrl + d t</td>
+<td>定位到debug console</td>
+</tr>
+<tr>
+<td>Ctrl + d e</td>
+<td>在debug console 中执行</td>
+</tr>
+<tr>
+<td>Ctrl + d w</td>
+<td>将选中变量添加到watch，需要配合visual模式使用</td>
+</tr>
+<tr>
+<td>Ctrl + d d</td>
+<td>disable 所有breakpoint</td>
+</tr>
+<tr>
+<td>Ctrl + d a</td>
+<td>enable 所有breakpoint</td>
+</tr>
+<tr>
+<td>Ctrl + d r</td>
+<td>删除所有breakpoint</td>
+</tr>
+<tr>
+<td>Ctrl + d b</td>
+<td>增加 或 删除断点</td>
+</tr>
+<tr>
+<td>Ctrl + d n</td>
+<td>定位到下一个断点</td>
+</tr>
+<tr>
+<td>Ctrl + d p</td>
+<td>定位到上一个断点</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alt + e</td>
+<td>在python console中执行选中语句</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vscode%E5%BF%AB%E6%8D%B7%E9%94%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/vscode%E5%BF%AB%E6%8D%B7%E9%94%AE/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>#　前提<br />
+在vscode中<code>ctrl + p</code> 输入<code>&gt; open keyboard shortcuts(JSON)</code>, 打开<code>keybings.json</code>文件</p>
+<h1 id="文件操作"><a class="markdownIt-Anchor" href="#文件操作"></a> 文件操作</h1>
+<ol>
+<li>新建文件</li>
+</ol>
+<ul>
+<li><code>Ctrl+n</code></li>
+<li><code>Ctrl+s</code> 保存时输入文件名</li>
+</ul>
+<ol start="2">
+<li>重命名文件</li>
+</ol>
+<ul>
+<li><code>Ctrl+b e</code>跳转到左边的导航</li>
+<li><code>F2</code>重命名文件</li>
+<li><code>Ctrl+e g</code>回到文件编辑器<br />
+注意: 关闭vscode默认的<code>ctrl+w</code>快捷键, 不然可能会以外关闭编辑器</li>
+</ul>
+<ol start="3">
+<li>删除文件</li>
+</ol>
+<ul>
+<li><code>Ctrl+b e</code>跳转到左边的导航</li>
+<li><code>Shift + Del</code>删除文件</li>
+</ul>
+<ol start="4">
+<li>搜索文件名<br />
+使用vscode快捷键<code>ctrl+p</code>进行搜索</li>
+</ol>
+<h1 id="编辑器相关"><a class="markdownIt-Anchor" href="#编辑器相关"></a> 编辑器相关</h1>
+<p>因为编辑器的英文名是<code>editor</code>,所以先导快捷键以<code>e</code>开头</p>
+<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl + e Enter</code></td>
+<td>定位到编辑器</td>
+</tr>
+<tr>
+<td><code>Ctrl + e h</code></td>
+<td>前一个编辑器</td>
+</tr>
+<tr>
+<td><code>Ctrl + e l</code></td>
+<td>后一个编辑器</td>
+</tr>
+<tr>
+<td><code>Ctrl + e s</code></td>
+<td>分割编辑器组（分成两组）</td>
+</tr>
+<tr>
+<td><code>Ctrl+e Ctrl+h</code></td>
+<td>前一组编辑器</td>
+</tr>
+<tr>
+<td><code>Ctrl+e Ctrl+j</code></td>
+<td>后一个编辑器</td>
+</tr>
+<tr>
+<td><code>Ctrl + c</code></td>
+<td>复制, 不建议使用yy进行复制, 因为不能在不同的vscode程序中切换</td>
+</tr>
+<tr>
+<td><code>Ctrl + v</code></td>
+<td>粘贴, 不建议使用p进行粘贴, 因为不能在不同的vscode程序中切换</td>
+</tr>
+</tbody>
+</table>
+<h2 id="移动"><a class="markdownIt-Anchor" href="#移动"></a> 移动</h2>
+<p><code>Alt</code>表示移动<br />
+<code>Alt+Shift</code>表示移动和选择<br />
+<code>Ctrl+Alt+Shift</code>表示特殊光标动作</p>
+<p>一下快捷键根据vim进行操作</p>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Alt+h,j,k,l</code></td>
+<td>光标左下上右移动</td>
+</tr>
+<tr>
+<td><code>Alt+6,4</code></td>
+<td>光标移动到行最前和最后(模仿vim的shift+6和shift+4)</td>
+</tr>
+<tr>
+<td><code>Alt+Shift+h,j,k,l</code></td>
+<td>光标左下上右移动并选择</td>
+</tr>
+<tr>
+<td><code>Ctrl+Alt+Shit+j,k</code></td>
+<td>光标多行选择</td>
+</tr>
+</tbody>
+</table>
+<h2 id="查找和替换"><a class="markdownIt-Anchor" href="#查找和替换"></a> 查找和替换</h2>
+<ol start="2">
+<li>单文件搜索和替换文件内容</li>
+</ol>
+<ul>
+<li>使用vim的搜索和替换</li>
+<li>使用<code>Ctrl + F</code> + <code>Ctrl+H</code>
+<ul>
+<li><code>TAB</code>來切換搜索和替換</li>
+<li><code>Enter</code> 下一個搜索結果 <code>Shift+Enter</code> 上一個搜索結果</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>多个文件搜索和替换文件内容</li>
+</ol>
+<ul>
+<li><code>Ctrl+Shift+H</code> 搜索和替換 <code>Ctrl+Shift+F</code> 搜索</li>
+<li><code>Alt + r</code> 切換正則表達式</li>
+<li><code>TAB</code> 來切換搜索框和替換框</li>
+<li><code>Alt + Enter</code> 打開搜索結果</li>
+</ul>
+<h1 id="侧边栏"><a class="markdownIt-Anchor" href="#侧边栏"></a> 侧边栏</h1>
+<p>因为侧边栏的英文是<code>side bar</code>, 所以先导快捷键以<code>b</code>开头</p>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl + b Enter</code></td>
+<td>定位到侧边栏</td>
+</tr>
+<tr>
+<td><code>Ctrl + b Ctrl + b</code></td>
+<td>侧边栏显示</td>
+</tr>
+<tr>
+<td><code>Ctrl + b e</code></td>
+<td>侧边栏文件</td>
+</tr>
+<tr>
+<td><code>Ctrl + b g</code></td>
+<td>侧边栏git</td>
+</tr>
+<tr>
+<td><code>Ctrl + b d</code></td>
+<td>侧边栏debug</td>
+</tr>
+</tbody>
+</table>
+<h1 id="控制台相关"><a class="markdownIt-Anchor" href="#控制台相关"></a> 控制台相关</h1>
+<p>控制台英文名是<code>terminal</code>, 所以先导快捷键以<code>t</code>开头</p>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl + t Ctrl + t</code></td>
+<td>开关控制台</td>
+</tr>
+<tr>
+<td><code>Ctrl + t Enter</code></td>
+<td>定焦到控制台</td>
+</tr>
+<tr>
+<td><code>Ctrl + t s </code></td>
+<td>分割并创建控制台</td>
+</tr>
+<tr>
+<td><code>Ctrl + t l </code></td>
+<td>移动到右边的控制台</td>
+</tr>
+<tr>
+<td><code>Ctrl + t h </code></td>
+<td>移动到左边的控制台</td>
+</tr>
+<tr>
+<td><code>Ctrl + t k </code></td>
+<td>杀死当前控制台</td>
+</tr>
+<tr>
+<td><code>Ctrl + t c </code></td>
+<td>清空控制台</td>
+</tr>
+</tbody>
+</table>
+<p>只有<code>Ctrl+h</code>和<code>Ctrl+l</code>需要先定位到控制台才能执行, 其他命令都不需要</p>
+<h1 id="debug"><a class="markdownIt-Anchor" href="#debug"></a> debug</h1>
+<p><code>Ctrl+d Ctrl+b</code> conditionalBreakpoint<br />
+<code>Ctrl+d b</code> toggleBreakpoint<br />
+<code>Ctrl+d d</code> disableAllBreakpoints<br />
+<code>Ctrl+d r</code> removeAllBreakpoints<br />
+<code>Ctrl+d w</code> selectionToWatch<br />
+<code>Ctrl+d n</code> goToNextBreakpoint<br />
+<code>Ctrl+d p</code> goToPreviousBreakpoint<br />
+<code>Ctrl+d t</code> focusRepl<br />
+<code>Ctrl+d e</code> selectionToRepl<br />
+<code>Ctrl+d a</code> enableAllBreakpoints</p>
+<p><code>F6</code> restart<br />
+<code>F7</code> stepOver<br />
+<code>F8</code> stepInto<br />
+<code>Shift+F8</code> stepOut</p>
+<h1 id="整体的快捷键配置"><a class="markdownIt-Anchor" href="#整体的快捷键配置"></a> 整体的快捷键配置</h1>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">[</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+w"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-workbench.action.closeActiveEditor"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-workbench.action.quickOpen"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e Enter"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.focusActiveEditorGroup"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e l"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.nextEditorInGroup"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e h"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.previousEditorInGroup"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e s"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.splitEditor"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e ctrl+h"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.focusLeftGroup"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+e ctrl+l"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.focusRightGroup"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-workbench.action.toggleSidebarVisibility"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b ctrl+b"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.toggleSidebarVisibility"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b Enter"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.focusSideBar"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b e"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.view.explorer"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"viewContainer.workbench.view.explorer.enabled"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b g"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.view.scm"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"workbench.scm.active"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+b d"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.view.debug"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"viewContainer.workbench.view.debug.enabled"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-workbench.action.showAllSymbols"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t h"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.focusPreviousPane"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"terminalFocus &amp;&amp; terminalHasBeenCreated || terminalFocus &amp;&amp; terminalProcessSupported"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t l"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.focusNextPane"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"terminalFocus &amp;&amp; terminalHasBeenCreated || terminalFocus &amp;&amp; terminalProcessSupported"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t Enter"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.focus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t k"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.kill"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t ctrl+t"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.toggleTerminal"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"terminal.active"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t c"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.clear"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+t s"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.terminal.splitInActiveWorkspace"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> 
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+e"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"python.execSelectionInTerminal"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"editorTextFocus &amp;&amp; !findInputFocussed &amp;&amp; !jupyter.ownsSelection &amp;&amp; !notebookEditorFocused &amp;&amp; !replaceInputFocussed &amp;&amp; editorLangId == 'python'"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-editor.action.addSelectionToNextFindMatch"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"editorFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d ctrl+b"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.conditionalBreakpoint"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d b"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.toggleBreakpoint"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"debuggersAvailable &amp;&amp; editorTextFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d d"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.debug.viewlet.action.disableAllBreakpoints"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d r"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.debug.viewlet.action.removeAllBreakpoints"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d w"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.selectionToWatch"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d n"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.goToNextBreakpoint"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d p"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.goToPreviousBreakpoint"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d t"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.debug.action.focusRepl"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d e"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"editor.debug.action.selectionToRepl"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+d a"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.debug.viewlet.action.enableAllBreakpoints"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"f6"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.debug.restart"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"inDebugMode"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"f6"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-workbench.action.debug.pause"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"debugState == 'running'"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"f7"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.debug.stepOver"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"debugState == 'stopped'"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"f8"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.debug.stepInto"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"debugState != 'inactive'"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"shift+f8"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"workbench.action.debug.stepOut"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"debugState == 'stopped'"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+h"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-gitlens.showQuickFileHistory"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"!gitlens:disabled &amp;&amp; config.gitlens.keymap == 'alternate'"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+h"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"-testing.toggleTestingPeekHistory"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"testing.isPeekVisible"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+h"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorLeft"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"shift+alt+h"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorLeftSelect"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+l"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorRight"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"shift+alt+l"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorRightSelect"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+k"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorUp"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"shift+alt+k"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorUpSelect"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+j"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorDown"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"shift+alt+j"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorDownSelect"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+4"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorLineEnd"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"alt+6"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorLineStart"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+shift+alt+j"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorColumnSelectDown"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"ctrl+shift+alt+k"</span><span class="token punctuation">,</span>
+    <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cursorColumnSelectUp"</span><span class="token punctuation">,</span>
+    <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"textInputFocus"</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vscode%E6%8F%92%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/vscode%E6%8F%92%E4%BB%B6/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="vscode插件"><a class="markdownIt-Anchor" href="#vscode插件"></a> vscode插件</h1>
+<p><a target="_blank" rel="noopener" href="https://www.panyanbin.com/article/47d1c4a4.html">VSCode与npm同名插件区别</a><br />
+以eslint为例, vscode安装的eslint插件是只是做可视化的展示, 展示的内容扔依赖于npm安装的eslint包. 也既是说, 如果vscode不安装eslint插件, 那么eslint的检查结果, 只能使用npm安装的eslint包,通过命令行的形式输出.</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>通用插件</td>
+<td></td>
+</tr>
+<tr>
+<td>Remote Development</td>
+<td>远程操作,包含SSH, WSL(win下的linux), Containers(直接进入docker容器)</td>
+</tr>
+<tr>
+<td>SFTP</td>
+<td>同于同步本地和远程文件</td>
+</tr>
+<tr>
+<td>Local History</td>
+<td>本地历史</td>
+</tr>
+<tr>
+<td>Vim</td>
+<td>Vim快捷键</td>
+</tr>
+<tr>
+<td>vscode-icons</td>
+<td></td>
+</tr>
+<tr>
+<td>编程相关</td>
+<td></td>
+</tr>
+<tr>
+<td>Bracket Pair Colorizer2</td>
+<td>已经更新到第二个版本</td>
+</tr>
+<tr>
+<td>Indent-Rainbow</td>
+<td></td>
+</tr>
+<tr>
+<td>Path Intellisense</td>
+<td>自动填充文件名</td>
+</tr>
+<tr>
+<td>Code Spell Checker</td>
+<td></td>
+</tr>
+<tr>
+<td>Code alignment</td>
+<td></td>
+</tr>
+<tr>
+<td>Prettier</td>
+<td>格式美化</td>
+</tr>
+<tr>
+<td>Todo Tree</td>
+<td>显示TODO和FIXME</td>
+</tr>
+<tr>
+<td>ESLint</td>
+<td>前端开发用</td>
+</tr>
+<tr>
+<td>Vue Language Features(Volar)</td>
+<td>Vue插件</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>当有<code>.py</code>文件时自动提示下载(包含Jupyter, Pylance)</td>
+</tr>
+<tr>
+<td>Pylance</td>
+<td>代码的提示</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>相关</td>
+</tr>
+<tr>
+<td>Git Graph</td>
+<td>git 管理</td>
+</tr>
+<tr>
+<td>GitLens</td>
+<td>Git的增强插件</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sftp"><a class="markdownIt-Anchor" href="#sftp"></a> sftp</h2>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>配置文件的名称, 随意</td>
+</tr>
+<tr>
+<td>context</td>
+<td>本地文件夹地址，默认为vscode工作区根目录</td>
+</tr>
+<tr>
+<td>protocol</td>
+<td>协议, 默认sftp, 可选ftp</td>
+</tr>
+<tr>
+<td>host</td>
+<td>远程IP地址</td>
+</tr>
+<tr>
+<td>port</td>
+<td>远程端口, 默认22</td>
+</tr>
+<tr>
+<td>username</td>
+<td>用户名</td>
+</tr>
+<tr>
+<td>password</td>
+<td>密码</td>
+</tr>
+<tr>
+<td>remotePath</td>
+<td>远程文件夹地址, 默认&quot;/&quot;, 一般未和本地路径同名, 比如<code>*/localdir/</code></td>
+</tr>
+<tr>
+<td>uploadOnSave</td>
+<td>保存自动上传, 默认false</td>
+</tr>
+<tr>
+<td>downloadOnOpen</td>
+<td>打开自动下, 默认false</td>
+</tr>
+<tr>
+<td>syncOption</td>
+<td>配置同步, 默认<code>&#123;&#125;</code>空</td>
+</tr>
+<tr>
+<td>syncOption.delete</td>
+<td>删除远程多余文件</td>
+</tr>
+<tr>
+<td>syncOption.skipCreate</td>
+<td>不在远程创建新文件</td>
+</tr>
+<tr>
+<td>syncOption.ignoreExisting</td>
+<td>不更新远程存在的文件</td>
+</tr>
+<tr>
+<td>syncOption.update</td>
+<td>仅在??</td>
+</tr>
+<tr>
+<td>ignore</td>
+<td>类似gitignore,根目录从context开始, 默认<code>[]</code>空</td>
+</tr>
+<tr>
+<td>ignoreFile</td>
+<td>用ignore即可</td>
+</tr>
+<tr>
+<td>watcher</td>
+<td>默认<code>&#123;&#125;</code>空</td>
+</tr>
+<tr>
+<td>watcher.files</td>
+<td>使用<code>glob</code>语法监控文件, 当监控所有时关闭<code>uploadOnSave</code></td>
+</tr>
+<tr>
+<td>watcher.autoUpload</td>
+<td>自动上传</td>
+</tr>
+<tr>
+<td>watcher.autoDelete</td>
+<td>自动删除</td>
+</tr>
+<tr>
+<td>remoteTimeOffsetInHours</td>
+<td>本地和远程的时间偏差,默认为0</td>
+</tr>
+<tr>
+<td>remoteExplorer</td>
+<td>默认<code>&#123;&#125;</code>空</td>
+</tr>
+<tr>
+<td>remoteExplorer.filesExclude</td>
+<td></td>
+</tr>
+<tr>
+<td>concurrency</td>
+<td>并发数, 默认4</td>
+</tr>
+<tr>
+<td>connectTimeout</td>
+<td>超时时间, 默认10000</td>
+</tr>
+<tr>
+<td>limitOpenFilesOnRemote</td>
+<td>远程打开文件数, 默认false(222)</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/liximomo/vscode-sftp/wiki/Common-Config">参考</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>ignore 语法<br />
+<code>**</code>:表示路径 <code>**/data</code>忽略任何路径下的data文件夹<br />
+<code>*</code>:通配符 <code>*.zip</code> 忽略<code>zip</code>类型文件<br />
+<code>data/*</code>:忽略data路径下的文件, 但是不忽略data路径<br />
+<code>data/</code>:忽略data路径(当然下面的文件也不会有)</p>
+<h2 id="vim"><a class="markdownIt-Anchor" href="#vim"></a> vim</h2>
+<p>默认vim的快捷键会覆盖vscode的快捷键, 使用以下配置禁止覆盖</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"vim.handleKeys"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"&lt;C-c>"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token property">"&lt;C-v>"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token property">"&lt;C-x>"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vite/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/vite/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="https://vitejs.dev/guide/#scaffolding-your-first-vite-project">安装</a><br />
+<a target="_blank" rel="noopener" href="https://vitejs.dev/config/">配置</a></p>
+<p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10270465?sc=iThelpR">配置案例参考</a></p>
+<h1 id="配置代理"><a class="markdownIt-Anchor" href="#配置代理"></a> <a target="_blank" rel="noopener" href="https://vitejs.dev/config/#server-proxy">配置代理</a></h1>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// vite.config.js</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> defineConfig <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"vite"</span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defineConfig</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">server</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">proxy</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string-property property">"/api"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 将前端访问的http://localhost:3000/api, 转发</span>
+        <span class="token literal-property property">target</span><span class="token operator">:</span> <span class="token string">"http://localhost:3001"</span><span class="token punctuation">,</span> <span class="token comment">// 转发的目的地，完整的url是`http://localhost:3001/api`</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上配置如果我们前端发送请求<code>http://localhost:3000/api/login</code>，后端收到的是<code>http://localhost:3001/api/login</code>, 如果想后端收到的去掉<code>/api</code>, 可以添加<code>rewrite</code>属性:</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token string-property property">"/api"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// 将前端访问的http://localhost:3000/api, 转发, `/api`path路径会镜像复制到新的端口</span>
+  <span class="token literal-property property">target</span><span class="token operator">:</span> <span class="token string">"http://localhost:3001"</span><span class="token punctuation">,</span> <span class="token comment">// 转发的目的地，完整的url是`http://localhost:3001/api`</span>
+  <span class="token function-variable function">rewrite</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">path</span><span class="token punctuation">)</span> <span class="token operator">=></span> path<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">^\/api</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vexflow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Claroja">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claroja">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Claroja">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/vexflow/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="renderer"><a class="markdownIt-Anchor" href="#renderer"></a> renderer</h1>
+<p>Vex.Flow.Renderer(div,Vex.Flow.Renderer.Backends.SVG) | 渲染器<br />
+<code>renderer</code>并不参与实际的渲染, 它的主要作用是:</p>
+<ol>
+<li>指定生成的标签(第一个参数)</li>
+<li>渲染的方式<code>svg</code>和<code>canvas</code>(第二个参数)</li>
+<li>生成<code>context</code>对象(<code>getContext()</code>)</li>
+<li>设置界面的大小(`resize())</li>
+</ol>
+<h2 id="方法"><a class="markdownIt-Anchor" href="#方法"></a> 方法</h2>
 <table>
 <thead>
 <tr>
@@ -518,853 +1855,72 @@ tree<span class="token punctuation">.</span>depth<span class="token punctuation"
 </thead>
 <tbody>
 <tr>
-<td>all_nodes()</td>
-<td>返回所有节点的列表，顺序是添加到树中的顺序.</td>
+<td>renderer.resize(500, 500)</td>
+<td>设置svg大小</td>
 </tr>
 <tr>
-<td>all_nodes_itr()</td>
-<td>返回所有节点迭代器，顺序是添加到树中的顺序.</td>
-</tr>
-<tr>
-<td>expand_tree()</td>
-<td>返回所有节点id的生成器，可以指定遍历顺序.</td>
-</tr>
-<tr>
-<td>leaves()</td>
-<td>返回叶子节点</td>
-</tr>
-<tr>
-<td>children(nid)</td>
-<td>返回某个节点的子节点</td>
-</tr>
-<tr>
-<td>ancestor(nid)</td>
-<td>返回某个节点的子孙节点</td>
-</tr>
-<tr>
-<td>siblings(nid)</td>
-<td>返回某个节点的兄弟节点</td>
-</tr>
-<tr>
-<td>parent(nid)</td>
-<td>返回某个节点的父节点</td>
+<td>renderer.getContext()</td>
+<td>获得<code>context</code>对象</td>
 </tr>
 </tbody>
 </table>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1794194">treelib_用法介绍</a><br />
-<a target="_blank" rel="noopener" href="https://github.com/caesar0301/treelib">treelib_github</a><br />
-<a target="_blank" rel="noopener" href="https://treelib.readthedocs.io/en/latest/genindex.html">treelib_api</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python_importlib/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python_importlib/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><code>import_module(name, package=None)</code>函数，和<code>__import__()</code>有一些不同</p>
-<p>这两个函数之间最重要的不同点在于<code>import_module()</code>返回指定的包或模块 (例如 <code>pkg.mod</code>)，而<code>__import__()</code>返回最高层级的包或模块 (例如 <code>pkg</code>)。如果您只想按名称导入模块(可能在包中)，请使用 <code>import_module(name, package=None)</code></p>
-<h1 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h1>
-<ol>
-<li>动态创建对象</li>
-</ol>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> importlib
-
-module <span class="token operator">=</span> importlib<span class="token punctuation">.</span>import_module<span class="token punctuation">(</span><span class="token string">'my_package.my_module'</span><span class="token punctuation">)</span>
-my_class <span class="token operator">=</span> <span class="token builtin">getattr</span><span class="token punctuation">(</span>module<span class="token punctuation">,</span> <span class="token string">'MyClass'</span><span class="token punctuation">)</span>
-my_instance <span class="token operator">=</span> my_class<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol start="2">
-<li><a target="_blank" rel="noopener" href="http://xn--ac-qy2cu0kw8dyrg3vjup3a.py">向a模块中导入c.py</a> 中的对象</li>
-</ol>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">a #文件夹
- │a.py
- │__init__.py
-b #文件夹
- │b.py
- │__init__.py
- ├─c#文件夹
- │c.py
- │__init__.py
-
-# c.py 中内容
-class C:
- 
- def c(self):
-  pass<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> importlib
-
-params <span class="token operator">=</span> importlib<span class="token punctuation">.</span>import_module<span class="token punctuation">(</span><span class="token string">'b.c.c'</span><span class="token punctuation">)</span> <span class="token comment">#绝对导入</span>
-params_ <span class="token operator">=</span> importlib<span class="token punctuation">.</span>import_module<span class="token punctuation">(</span><span class="token string">'.c.c'</span><span class="token punctuation">,</span>package<span class="token operator">=</span><span class="token string">'b'</span><span class="token punctuation">)</span> <span class="token comment">#相对导入</span>
-
-<span class="token comment"># 对象中取出需要的对象</span>
-params<span class="token punctuation">.</span>C <span class="token comment">#取出class C</span>
-params<span class="token punctuation">.</span>C<span class="token punctuation">.</span>c <span class="token comment">#取出class C 中的c 方法</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/python___import__/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/python___import__/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><code>__import__(name, globals=None, locals=None, fromlist=(), level=0)</code></p>
-<ol>
-<li>该函数会导入 name 模块</li>
-<li>有可能使用给定的 globals 和 locals 来确定如何在包的上下文中解读名称。标准实现完全不使用其 locals 参数，而仅使用 globals 参数来确定import语句的包上下文。</li>
-<li>fromlist 给出了应该从由 name 指定的模块导入对象或子模块的名称。当 name 变量的形式为 package.module 时，通常将会返回最高层级的包（第一个点号之前的名称），而 不是 以 name 命名的模块。 但是，当给出了非空的 fromlist 参数时，则将返回以 name 命名的模块。</li>
-<li>level 指定是使用绝对还是相对导入。 0 (默认值) 意味着仅执行绝对导入。 level 为正数值表示相对于模块调用__import__()的目录，</li>
-</ol>
-<p><code>__import__(module)</code>相当于import module<br />
-<code>__import__(package.module)</code>相当于<code>from package import name</code>，如果<code>fromlist</code>不传入值，则返回<code>package</code>对应的模块，如果<code>fromlist</code>传入值，则返回<code>package.module</code>对应的模块。</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> a
-<span class="token comment"># 等价于</span>
-a <span class="token operator">=</span> <span class="token builtin">__import__</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token builtin">globals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">locals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><code>globals()</code>和<code>locals()</code>看起来很奇怪, 在上面的例子中是不需要的, 但是在实现<code>import</code>关键字的时候是传入的, 所以我们这么做.</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> a<span class="token punctuation">.</span>b
-<span class="token comment"># 不等价</span>
-a <span class="token operator">=</span> <span class="token builtin">__import__</span><span class="token punctuation">(</span><span class="token string">"a.b"</span><span class="token punctuation">,</span> <span class="token builtin">globals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">locals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>我们在使用关键字<code>import</code>导入的是<code>a.b</code>, 而使用<code>__import__()</code>方法时仍然是赋值给<code>a</code>, 因为<code>__import__()</code>确认<code>a.b</code>存在后, 让然返回的是<code>a</code></p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> a<span class="token punctuation">.</span>b <span class="token keyword">import</span> c
-<span class="token comment"># 等价于</span>
-c <span class="token operator">=</span> <span class="token builtin">__import__</span><span class="token punctuation">(</span><span class="token string">'a.b'</span><span class="token punctuation">,</span> <span class="token builtin">globals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">locals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'c'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>c<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<ol>
-<li>参数中, 多了<code>['c']</code>, 这仅仅表示<code>__import__()</code>确认<code>a.b</code>中是否包含了<code>c</code></li>
-<li><code>__import__()</code>返回的是<code>a.b</code>(这次返回的不是<code>a</code>)</li>
-<li>因为返回的是<code>a.b</code>所以我们要加上<code>.c</code>才能真正访问到<code>a.b.c</code></li>
-</ol>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> <span class="token punctuation">.</span><span class="token punctuation">.</span>a <span class="token keyword">import</span> b
-<span class="token comment"># 等价于</span>
-b <span class="token operator">=</span> <span class="token builtin">__import__</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token builtin">globals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">locals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'b'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>b<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><code>..a</code>中前两个<code>..</code>作为了<code>__import__()</code>的最后一个参数(这里是2)</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> a <span class="token keyword">as</span> b
-<span class="token comment"># 等价于</span>
-b <span class="token operator">=</span> <span class="token builtin">__import__</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token builtin">globals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">locals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> a<span class="token punctuation">.</span>b <span class="token keyword">import</span> c <span class="token keyword">as</span> d
-<span class="token comment"># 等价于</span>
-d <span class="token operator">=</span> <span class="token builtin">__import__</span><span class="token punctuation">(</span><span class="token string">'a.b'</span><span class="token punctuation">,</span> <span class="token builtin">globals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">locals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'c'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>c<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>参考:<br />
-<a target="_blank" rel="noopener" href="https://snarky.ca/unravelling-the-import-statement/">https://snarky.ca/unravelling-the-import-statement/</a><br />
-<a target="_blank" rel="noopener" href="https://alltodev.com/how-to-use-the-__import__-function-to-import-a-name-from-a-submodule">https://alltodev.com/how-to-use-the-__import__-function-to-import-a-name-from-a-submodule</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pinia/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/pinia/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://pinia.vuejs.org/">官网</a></p>
-<ol>
-<li>state和getters 可以使用<code>storeToRefs</code>来解构. 注意pinia中的actions不能解构出来.</li>
-<li>getter和computed很像, 都是由其他值计算出来的值. 他本质是个值, 不是方法.</li>
-</ol>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// counter.js</span>
-<span class="token keyword">import</span> <span class="token punctuation">&#123;</span>defineStore<span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"pinia"</span>
-
-<span class="token keyword">export</span> <span class="token keyword">const</span> useCounterStore <span class="token operator">=</span> <span class="token function">defineStore</span><span class="token punctuation">(</span><span class="token string">"counter"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
-    <span class="token function-variable function">state</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token literal-property property">count</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token literal-property property">getters</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token function-variable function">double</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">state</span><span class="token punctuation">)</span> <span class="token operator">=></span> state<span class="token punctuation">.</span>count <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token literal-property property">actions</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">this</span><span class="token punctuation">.</span>count<span class="token operator">++</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&#x2F;&#x2F; test.vue
-&lt;script setup&gt;
-import &#123;reqUserLogin&#125; from &quot;@&#x2F;api&quot;
-import &#123;useCounterStore&#125; from &quot;@&#x2F;stores&#x2F;counter&quot;
-import &#123; storeToRefs &#125; from &#39;pinia&#39;
-
-const store &#x3D; useCounterStore()
-const &#123;count,double&#125; &#x3D; storeToRefs(store) &#x2F;&#x2F;结构state和getter, 不能结构action
-
-function testStore() &#123; 
-    store.increment()
-&#125;
-
-&lt;&#x2F;script&gt;
-&lt;template&gt;
-    &lt;button @click&#x3D;&quot;test&quot;&gt;test&lt;&#x2F;button&gt;
-    &lt;button @click&#x3D;&quot;testStore&quot;&gt;&#123;&#123; count &#125;&#125;&lt;&#x2F;button&gt;
-    &lt;button&gt;&#123;&#123; double &#125;&#125;&lt;&#x2F;button&gt;
-&lt;&#x2F;template&gt;
-&lt;style&gt;&lt;&#x2F;style&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><a target="_blank" rel="noopener" href="https://pinia.vuejs.org/core-concepts/#using-the-store">https://pinia.vuejs.org/core-concepts/#using-the-store</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/prettier/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/prettier/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> <a target="_blank" rel="noopener" href="https://prettier.io/docs/en/install.html">安装</a>&amp;<a target="_blank" rel="noopener" href="https://prettier.io/docs/en/index.html">官网</a></h1>
-<h1 id="配置文件"><a class="markdownIt-Anchor" href="#配置文件"></a> <a target="_blank" rel="noopener" href="https://prettier.io/docs/en/configuration.html">配置文件</a></h1>
-<ol>
-<li><code>.prettierrc.cjs</code>自定义配置文件, 自己经常使用的配置</li>
-</ol>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-    <span class="token literal-property property">printWidth</span><span class="token operator">:</span> <span class="token number">180</span><span class="token punctuation">,</span> <span class="token comment">//单行长度</span>
-    <span class="token literal-property property">tabWidth</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token comment">//缩进长度</span>
-    <span class="token literal-property property">semi</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">//句末使用分号</span>
-    <span class="token literal-property property">singleQuote</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">//使用单引号</span>
-    <span class="token literal-property property">bracketSpacing</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">//在对象前后添加空格-eg: &#123; foo: bar &#125;</span>
-    <span class="token literal-property property">quoteProps</span><span class="token operator">:</span> <span class="token string">"preserve"</span><span class="token punctuation">,</span>
-    <span class="token literal-property property">proseWrap</span><span class="token operator">:</span> <span class="token string">'preserve'</span><span class="token punctuation">,</span> <span class="token comment">//不知道怎么翻译</span>
-    <span class="token literal-property property">endOfLine</span><span class="token operator">:</span> <span class="token string">'auto'</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol start="2">
-<li><code>.prettierignore</code> 不需要prettier处理的文件(类似<code>.gitignore</code>)</li>
-</ol>
-<h2 id="配置选项"><a class="markdownIt-Anchor" href="#配置选项"></a> <a target="_blank" rel="noopener" href="https://prettier.io/docs/en/options.html">配置选项</a></h2>
+<h1 id="context"><a class="markdownIt-Anchor" href="#context"></a> context</h1>
+<p><code>context</code>的作用是作用是绘图(path),每个曲谱的渲染都需要<code>context</code>的协助.<br />
+下面的代码是画一个黄色的三角形</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">context<span class="token punctuation">.</span><span class="token function">beginPath</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// start recording our pen's moves</span>
+  <span class="token punctuation">.</span><span class="token function">moveTo</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment">// pickup the pen and set it down at X=0, Y=0. NOTE: Y=0 is the top of the screen.</span>
+  <span class="token punctuation">.</span><span class="token function">lineTo</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment">// now add a line to the right from (0, 0) to (50, 0) to our path</span>
+  <span class="token punctuation">.</span><span class="token function">lineTo</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">)</span> <span class="token comment">// add a line to the left and down from (50, 0) to (25, 50)</span>
+  <span class="token punctuation">.</span><span class="token function">closePath</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// now add a line back to wherever the path started, in this case (0, 0), closing the triangle.</span>
+  <span class="token punctuation">.</span><span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">fill</span><span class="token operator">:</span> <span class="token string">'yellow'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// now fill our triangle in yellow.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述的代码等价于:<code>M0 0L50 0L25 50Z</code></p>
+<p>绘制的上下文<br />
+renderer.getContext()</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/0xfe/vexflow/wiki/Understanding-Renderer-&amp;-Context">官网</a></p>
+<h1 id="stave"><a class="markdownIt-Anchor" href="#stave"></a> stave</h1>
+<p>stave就是五线谱了<br />
+Vex.Flow.Stave(10, 40, 400)</p>
 <table>
 <thead>
 <tr>
-<th>选项</th>
-<th>默认值</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>printWidth</td>
-<td>80</td>
-<td>默认的行长度</td>
-</tr>
-<tr>
-<td>tabWidth</td>
-<td>2</td>
-<td>tab转换为space的个数</td>
-</tr>
-<tr>
-<td>rangeStart</td>
-<td>0</td>
-<td></td>
-</tr>
-<tr>
-<td>rangeEnd</td>
-<td>Infinity</td>
-<td></td>
-</tr>
-<tr>
-<td>useTabs</td>
-<td>false</td>
-<td>将tab转换为space</td>
-</tr>
-<tr>
-<td>semi</td>
-<td>true</td>
-<td>行尾加上分号</td>
-</tr>
-<tr>
-<td>singleQuote</td>
-<td>false</td>
-<td>使用单引号代替双引号</td>
-</tr>
-<tr>
-<td>quoteProps</td>
-<td>“as-needed”</td>
-<td>可选值&quot;&lt;as-needed</td>
-</tr>
-<tr>
-<td>jsxSingleQuote</td>
-<td>false</td>
-<td>jsx中使用单引号代替双引号</td>
-</tr>
-<tr>
-<td>trailingComma</td>
-<td>“es5”</td>
-<td>可选值&quot;&lt;es5</td>
-</tr>
-<tr>
-<td>bracketSpacing</td>
-<td>true</td>
-<td>对象字面量增加空格, true示例结果{ foo: bar }, false示例结果{foo: bar}</td>
-</tr>
-<tr>
-<td>jsxBracketSameLine</td>
-<td>false</td>
-<td>JSX里多行元素的最后一行使用<code>&gt;</code>闭合元素</td>
-</tr>
-<tr>
-<td>arrowParens</td>
-<td>“always”</td>
-<td>箭头函数, 单参数时是否使用括号包裹.“always”:(x) =&gt; x, “avoid”:x =&gt; x</td>
-</tr>
-<tr>
-<td>parser</td>
-<td>None</td>
-<td>指定解析器, prettier自动根据文件名识别, 不需要设置</td>
-</tr>
-<tr>
-<td>filepath</td>
-<td>None</td>
-<td>同上, 指定解析器文件</td>
-</tr>
-<tr>
-<td>requirePragma</td>
-<td>false</td>
-<td>只格式化头部包含特殊注释的文件, 比如<code>/** \n* @prettier \n*/</code></td>
-</tr>
-<tr>
-<td>insertPragma</td>
-<td>false</td>
-<td>格式化文件后, 在头部添上<code>@format</code></td>
-</tr>
-<tr>
-<td>proseWrap</td>
-<td>“preserve”</td>
-<td>&quot;always&quot;当大于printwith时折叠,&quot;never&quot;不进行折叠,&quot;preserve&quot;不进行任何处理</td>
-</tr>
-<tr>
-<td>htmlWhitespaceSensitivity</td>
-<td>“css”</td>
-<td><a target="_blank" rel="noopener" href="https://prettier.io/blog/2018/11/07/1.15.0.html#whitespace-sensitive-formatting">理解</a></td>
-</tr>
-<tr>
-<td>vueIndentScriptAndStyle</td>
-<td>false</td>
-<td>是否对vue的<code>&lt;script&gt;</code>和<code>&lt;style&gt;</code>执行缩进,<a target="_blank" rel="noopener" href="https://github.com/prettier/prettier/issues/3888#issuecomment-459521863">参考</a></td>
-</tr>
-<tr>
-<td>endOfLine</td>
-<td>“lf”</td>
-<td>可选择值&quot;&lt;lf</td>
-</tr>
-<tr>
-<td>embeddedLanguageFormatting</td>
-<td>“auto”</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="对于"><a class="markdownIt-Anchor" href="#对于"></a> <a target="_blank" rel="noopener" href="https://github.com/prettier/prettier/issues/6488">对于<code>printWidth</code>和<code>proseWrap</code>的理解</a>:</h2>
-<p>假设有一下文本:<br />
-第一行56个字符, 第二行69个字符</p>
-<pre class="line-numbers language-none"><code class="language-none">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Curabitur consectetur maximus risus, sed maximus tellus tincidunt et.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>使用<code>--prose-wrap always</code>配置, 第一行被补充到80个字符(printWidth)输出:</p>
-<pre class="line-numbers language-none"><code class="language-none">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur
-maximus risus, sed maximus tellus tincidunt et.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>使用<code>--prose-wrap never</code>配置, 合并成一行</p>
-<pre class="line-numbers language-none"><code class="language-none">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur consectetur maximus risus, sed maximus tellus tincidunt et.<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用<code>--prose-wrap preserve</code>, 则不进行任何修改</p>
-<pre class="line-numbers language-none"><code class="language-none">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Curabitur consectetur maximus risus, sed maximus tellus tincidunt et.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h1 id="和linters一起使用"><a class="markdownIt-Anchor" href="#和linters一起使用"></a> <a target="_blank" rel="noopener" href="https://prettier.io/docs/en/integrating-with-linters.html">和Linters一起使用</a></h1>
-<p>单独安装Linters和Prettier会产生冲突, 因为Linters也会有代码规范, 所以可以将二者结合起来, 就有了:</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/prettier/eslint-config-prettier">eslint-config-prettier</a>, js规范<br />
-如果我们仅需要开发js代码, 则需要安装<code>eslinte</code>, <code>prettier</code>, 和<code>eslint-config-prettier</code>.</li>
-<li><code>@vue/eslint-config-prettier&quot;: &quot;^7.0.0&quot;</code></li>
-<li><code>eslint&quot;: &quot;^8.5.0&quot;</code></li>
-<li><code>prettier&quot;: &quot;^2.5.1&quot;</code></li>
-</ul>
-<p>在<code>.eslintrc.cjs</code>中继承<code>@vue/eslint-config-prettier</code>即可, 既将<code>prettier</code>的规则加入到了<code>eslint</code>中, 并且解决了冲突</p>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token string-property property">"extends"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-<span class="token comment">// "plugin:vue/vue3-essential", //vue3的语法规则</span>
-<span class="token comment">// "eslint:recommended", // eslint的语法规则</span>
-<span class="token string">"@vue/eslint-config-prettier"</span> <span class="token comment">//处理和prettier的冲突</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="vscode集成"><a class="markdownIt-Anchor" href="#vscode集成"></a> <a target="_blank" rel="noopener" href="https://github.com/prettier/prettier-vscode">vscode集成</a></h1>
-<p>vscode已经默认安装了<code>prettier</code>, 可以在Extensions选项的ENABLED栏中查看</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pandas_update/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/pandas_update/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="直接赋值"><a class="markdownIt-Anchor" href="#直接赋值"></a> 直接赋值</h1>
-<ol>
-<li>根据<a href="/pandas_select/">pandas_select</a>先进行选择</li>
-<li>直接使用<code>=</code>号赋值</li>
-</ol>
-<h1 id="apply"><a class="markdownIt-Anchor" href="#apply"></a> apply</h1>
-<p>映射替换一列的所有数据</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">fruitToPrice <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-    <span class="token string">"apple"</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">,</span>
-    <span class="token string">"banana"</span><span class="token punctuation">:</span><span class="token number">4</span><span class="token punctuation">,</span>
-    <span class="token string">"watermelon"</span><span class="token punctuation">:</span><span class="token number">20</span>
-<span class="token punctuation">&#125;</span>
-
-df<span class="token punctuation">[</span><span class="token string">"fruit"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>fruitToPrice<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pandas_select/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Claroja">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Claroja">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Claroja">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/pandas_select/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-04 13:40:02" itemprop="dateCreated datePublished" datetime="2022-07-04T13:40:02+08:00">2022-07-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-05 13:58:36" itemprop="dateModified" datetime="2022-07-05T13:58:36+08:00">2022-07-05</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><code>.loc</code></p>
-<h1 id="准备数据"><a class="markdownIt-Anchor" href="#准备数据"></a> 准备数据</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
-df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token string">'a'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token string">'c'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"A"</span><span class="token punctuation">,</span><span class="token string">"B"</span><span class="token punctuation">,</span><span class="token string">"C"</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token triple-quoted-string string">"""
-   a  b  c
-0  1  a  A
-1  2  b  B
-2  3  c  C
-"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="普通选择"><a class="markdownIt-Anchor" href="#普通选择"></a> 普通选择</h1>
-<ul>
-<li>如果[x,y]中,x,y都是普通数值,则返回一个普通值</li>
-<li>如果[x,y]中,x和y有一个是列表类型(<code>:</code>range列表或<code>[]</code>lable列表或<code>[true,false]</code>布尔列表),则返回的是<code>Series</code>对象</li>
-<li>如果[x,y]中,x和y都是列表类型,则返回的是<code>DataFrame</code>对象</li>
-<li>如果y,不给出,既[x]形式, 则默认选择所有y, 等价于<code>[x,:]</code></li>
-</ul>
-<ol>
-<li>
-<p>选择一行一列,返回的是一个<code>numpy.int64</code>对象</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token string">'a'</span><span class="token punctuation">]</span>
-<span class="token triple-quoted-string string">"""
-2
-"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li>
-<p>选择一行多列数据, 注意此时返回的是一个<code>pandas.core.series.Series</code>对象</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
-<span class="token triple-quoted-string string">"""
-a    2
-b    b
-c    B
-"""</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li>
-<p>选择多行一列数据, 此时返回的是一个<code>pandas.core.series.Series</code>对象</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token string">'a'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li>
-<p>选择多行多列数据, 此时返回的是一个<code>pandas.core.frame.DataFrame</code>对象</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span><span class="token string">'b'</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-</ol>
-<h1 id="条件选择"><a class="markdownIt-Anchor" href="#条件选择"></a> 条件选择</h1>
-<h2 id="基础操作"><a class="markdownIt-Anchor" href="#基础操作"></a> 基础操作</h2>
-<ol>
-<li>
-<p>首先设置条件</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">condition <span class="token operator">=</span> df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token string">"a"</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token number">2</span> <span class="token comment"># 值判断, 等价于df["a"]>2</span>
-condition <span class="token operator">=</span> df<span class="token punctuation">[</span><span class="token string">"a"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>isin<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment"># 包含关系判断</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-<li>
-<p>然后使用<code>loc</code>进行选择</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span>condition<span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token comment"># 这一步就是给[x,y],中的x传入的一个boolean的列表</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li>
-<p>给条件筛选加上逻辑判断</p>
-</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>符号</th>
+<th>方法</th>
 <th>描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>`</td>
-<td>`</td>
+<td>addClef(“treble”)</td>
+<td>谱号</td>
 </tr>
 <tr>
-<td><code>&amp;</code></td>
-<td>and</td>
+<td>addTimeSignature(“4/4”)</td>
+<td>拍好</td>
 </tr>
 <tr>
-<td><code>~</code></td>
-<td>not</td>
+<td>setContext()</td>
+<td>设置context对象</td>
+</tr>
+<tr>
+<td>draw()</td>
+<td>绘制</td>
 </tr>
 </tbody>
 </table>
-   <pre class="line-numbers language-python" data-language="python"><code class="language-python">df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token punctuation">(</span>df<span class="token punctuation">[</span><span class="token string">"a"</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token punctuation">(</span>df<span class="token punctuation">[</span><span class="token string">"a"</span><span class="token punctuation">]</span><span class="token operator">&lt;</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>通过<code>dataFrame.index</code>获得索引, 来参与逻辑运算</p>
-<h1 id="步长选择"><a class="markdownIt-Anchor" href="#步长选择"></a> 步长选择</h1>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token comment">#选择1:2行，slice为1</span>
-   a  b  c
-<span class="token number">1</span>  <span class="token number">2</span>  b  B
-<span class="token number">2</span>  <span class="token number">3</span>  c  C
-<span class="token keyword">print</span><span class="token punctuation">(</span>df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token comment">#选择所有行，slice为-1，所以为倒序</span>
-   a  b  c
-<span class="token number">2</span>  <span class="token number">3</span>  c  C
-<span class="token number">1</span>  <span class="token number">2</span>  b  B
-<span class="token number">0</span>  <span class="token number">1</span>  a  A
-<span class="token keyword">print</span><span class="token punctuation">(</span>df<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token comment">#选择0至2行，slice为2，等同于print(df.loc[0:2:2,:])因为只有3行</span>
-   a  b  c
-<span class="token number">0</span>  <span class="token number">1</span>  a  A
-<span class="token number">2</span>  <span class="token number">3</span>  c  C<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="notes"><a class="markdownIt-Anchor" href="#notes"></a> notes</h1>
+<p>音符</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> notes <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token comment">// A quarter-note C.</span>
+  <span class="token keyword">new</span> <span class="token class-name">VF<span class="token punctuation">.</span>StaveNote</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token literal-property property">clef</span><span class="token operator">:</span> <span class="token string">"treble"</span><span class="token punctuation">,</span> <span class="token literal-property property">keys</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"c/4"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token string">"q"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="voice"><a class="markdownIt-Anchor" href="#voice"></a> voice</h1>
+<p>将多个notes称为一个<code>voice</code>, 多个<code>voice</code>可以形成<code>voiceGroup</code></p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> voice <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VF<span class="token punctuation">.</span>Voice</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token literal-property property">num_beats</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>  <span class="token literal-property property">beat_value</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+voice<span class="token punctuation">.</span><span class="token function">addTickables</span><span class="token punctuation">(</span>notes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+voice<span class="token punctuation">.</span><span class="token function">draw</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> stave<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="formatter"><a class="markdownIt-Anchor" href="#formatter"></a> formatter</h1>
+<p>用来设置音符的样式</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VF<span class="token punctuation">.</span>Formatter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">joinVoices</span><span class="token punctuation">(</span><span class="token punctuation">[</span>voice<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token punctuation">[</span>voice<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">350</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
       
     </div>
 
@@ -1390,7 +1946,7 @@ condition <span class="token operator">=</span> df<span class="token punctuation
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/pandas_sort/">
+    <link itemprop="mainEntityOfPage" href="https://claroja.github.io/vim/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1408,7 +1964,7 @@ condition <span class="token operator">=</span> df<span class="token punctuation
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/pandas_sort/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/vim/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1432,16 +1988,175 @@ condition <span class="token operator">=</span> df<span class="token punctuation
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="1sort_values应用"><a class="markdownIt-Anchor" href="#1sort_values应用"></a> 1.sort_values应用</h1>
-<p>1）单行排序</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">df<span class="token punctuation">.</span>sort_values<span class="token punctuation">(</span>by<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'col1'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>2）多行排序</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">df<span class="token punctuation">.</span>sort_values<span class="token punctuation">(</span>by<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'col1'</span><span class="token punctuation">,</span> <span class="token string">'col2'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h1 id="2sort_index应用"><a class="markdownIt-Anchor" href="#2sort_index应用"></a> 2.sort_index应用</h1>
-<p>index不能通过sort_values传入，所以有单独的方法</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">df <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">,</span> index<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">29</span><span class="token punctuation">,</span> <span class="token number">234</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">150</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-                  columns<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'A'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-df<span class="token punctuation">.</span>sort_index<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+          <h1 id="基础命令"><a class="markdownIt-Anchor" href="#基础命令"></a> 基础命令</h1>
+<p><code>:help [keyword]</code> 打印命令说明<br />
+<code>:e [file]</code> 打开或创建文件<br />
+<code>:w</code> 保存文件<br />
+<code>:w [filename]</code> 保存指定文件<br />
+<code>:wq</code> 保存并退出<br />
+<code>:q!</code> 不保存退出</p>
+<h1 id="移动"><a class="markdownIt-Anchor" href="#移动"></a> 移动</h1>
+<ol>
+<li>上下移动<br />
+<code>[n]j</code> 向下移动n行,默认为1行<br />
+<code>[n]k</code> 向上移动n行,默认为1行<br />
+<code>[n]G</code> 移动到第n行,默认移动到最后一行<br />
+<code>gg</code> 移动到第一行</li>
+<li>左右移动<br />
+<code>[n]h</code> 向左移动n个字符,默认为1个字符<br />
+<code>[n]l</code> 向右移动n个字符,默认为1个字符<br />
+<code>^</code>移动到行首<br />
+<code>$</code>移动到行尾部<br />
+<code>f [char]</code> 移动到行内指定的字母<br />
+<code>[n]w</code> 向右移动n个单词,默认为1个单词<br />
+<code>[n]b</code> 向左移动n个单词,默认为1个单词</li>
+</ol>
+<p>3.其他<br />
+<code>''</code>移动到上一次的位置</p>
+<h1 id="修改"><a class="markdownIt-Anchor" href="#修改"></a> 修改</h1>
+<h2 id="常规操作"><a class="markdownIt-Anchor" href="#常规操作"></a> 常规操作</h2>
+<table>
+<thead>
+<tr>
+<th>目标</th>
+<th>修改</th>
+<th>删除</th>
+<th>复制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一个单词</td>
+<td>cw</td>
+<td>dw</td>
+<td>yw</td>
+</tr>
+<tr>
+<td>一行</td>
+<td>cc</td>
+<td>dd</td>
+<td>yy</td>
+</tr>
+<tr>
+<td>到行尾</td>
+<td>c$</td>
+<td>d$</td>
+<td>y$</td>
+</tr>
+<tr>
+<td>到行首</td>
+<td>c0</td>
+<td>d0</td>
+<td>y0</td>
+</tr>
+<tr>
+<td>单个字符</td>
+<td>s</td>
+<td>x</td>
+<td>yl或yh</td>
+</tr>
+</tbody>
+</table>
+<h2 id="多行编辑"><a class="markdownIt-Anchor" href="#多行编辑"></a> 多行编辑</h2>
+<p><code>ctrl+v</code> 按行选择<br />
+<code>v</code> 选择多个文件<br />
+<code>V</code> 选择多行文本</p>
+<h2 id="撤销操作"><a class="markdownIt-Anchor" href="#撤销操作"></a> 撤销操作</h2>
+<p><code>u</code> 撤销上次的操作<br />
+<code>ctrl + r</code> 撤销上次的撤销</p>
+<h2 id="插入"><a class="markdownIt-Anchor" href="#插入"></a> 插入</h2>
+<p><code>i I a A o O r R</code></p>
+<h2 id="合并两行"><a class="markdownIt-Anchor" href="#合并两行"></a> 合并两行</h2>
+<p><code>J</code></p>
+<h1 id="查找"><a class="markdownIt-Anchor" href="#查找"></a> 查找</h1>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/[keyword]</code></td>
+<td>在光标以下范围查找</td>
+</tr>
+<tr>
+<td><code>?[keyword]</code></td>
+<td>在光标以上范围查找</td>
+</tr>
+<tr>
+<td><code>G ? or gg /</code></td>
+<td>先到行首或行尾实现全文查找</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>查找下一个匹配的对象</td>
+</tr>
+<tr>
+<td><code>N</code></td>
+<td>查找上一个匹配的对象</td>
+</tr>
+</tbody>
+</table>
+<p><strong>tips</strong>:<br />
+<code>/the</code>会查询包含<code>the</code>三个字母的所有字符<br />
+<code>/\&lt;the</code> 单词首是<code>the</code><br />
+<code>/the\&gt;</code> 单词尾部是<code>the</code><br />
+<code>/\&lt;the\&gt;</code> 只查询<code>the</code>不包含<code>there</code> <code>other</code>等<br />
+<code>/the&amp;</code> 只查询行末是<code>the</code>的<br />
+<code>/^the</code> 只查询行首是<code>the</code>的<br />
+<code>/^the&amp;</code> 整行是<code>the</code>的</p>
+<h1 id="替换"><a class="markdownIt-Anchor" href="#替换"></a> 替换</h1>
+<p><code>:[range]s/from/to/[flags]</code> <code>:&#123;作用范围&#125;s/&#123;目标&#125;/&#123;替换&#125;/&#123;替换标志&#125;</code></p>
+<ol>
+<li>
+<p><code>range</code>:表示作用范围<br />
+范围|描述<br />
+<code>:%</code>|表示命令作用于全部行<br />
+<code>:.</code>|表示当前行<br />
+<code>:1,5</code>|表示在1到5行范围内搜索<br />
+<code>:1,$</code>|表示当前行到末尾行<br />
+<code>:1,$-5</code>|表示当前行到倒数第五行之前<br />
+<code>:4</code>|表示在第4行搜索</p>
+</li>
+<li>
+<p><code>s</code>:substitute的缩写,表示替换操作</p>
+</li>
+<li>
+<p><code>from</code>:原始字符</p>
+</li>
+<li>
+<p><code>to</code>:互换后的字符</p>
+</li>
+<li>
+<p><code>[flags]</code> 表示做用范围，默认只替换第一个匹配的,加上<code>g</code>则全部替换<br />
+g，global表示全部替换<br />
+c，confirm每次替换询问<br />
+i, 区分大小写</p>
+</li>
+</ol>
+<h1 id="分屏"><a class="markdownIt-Anchor" href="#分屏"></a> 分屏</h1>
+<p><code>:bn</code> 切换到下一个打开的文件<br />
+<code>:bp</code> 切换到上一个打开的文件<br />
+<code>.</code>重复上一步操作, 可以快速切换文件</p>
+<p>ctrl+w s 水平打开一个窗口<br />
+ctrl+w v 垂直打开一个窗口<br />
+ctrl+w h 跳转到左边的窗口<br />
+ctrl+w j 跳转到下面的窗口<br />
+ctrl+w k 跳转到上面的窗口<br />
+ctrl+w l 跳转到右边的窗口</p>
+<h1 id="折叠"><a class="markdownIt-Anchor" href="#折叠"></a> 折叠</h1>
+<p><code>zo</code> 打开fold(O pen)<br />
+<code>zc</code> 关闭fold(C lose)<br />
+<code>za</code> 打开或关闭fold</p>
+<h1 id="vscode"><a class="markdownIt-Anchor" href="#vscode"></a> vscode</h1>
+<p>//禁用括号自动补全(和vscode本身有重叠)</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"vim.matchpairs"</span><span class="token operator">:</span> <span class="token string">""</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>参考:<br />
+<a target="_blank" rel="noopener" href="https://www.dazhuanlan.com/loomoo/topics/1022354">https://www.dazhuanlan.com/loomoo/topics/1022354</a><br />
+<a target="_blank" rel="noopener" href="https://abp.today/blog/2016/06/14/cvim">https://abp.today/blog/2016/06/14/cvim</a></p>
+
       
     </div>
 
@@ -1460,7 +2175,7 @@ df<span class="token punctuation">.</span>sort_index<span class="token punctuati
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/other/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/other/">1</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/other/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/46/">46</a><a class="extend next" rel="next" href="/other/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/other/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/other/">1</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/other/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/other/page/47/">47</a><a class="extend next" rel="next" href="/other/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
