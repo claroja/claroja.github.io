@@ -22,16 +22,12 @@ toc: true
 [alg_rec](/alg_rec/)
 [alg_audio_process](/alg_audio_process/)
 
-[transformers_pipeline](/transformers_pipeline/)
-[transformers_autoClasses](/transformers_autoClasses/)
-[transformers_autoModel](/transformers_autoModel/)
-[transformers_datasets](/transformers_datasets/)
-[transformers_evaluate](/transformers_evaluate/)
-[transformers_fineTune](/transformers_fineTune/)
-[transformers_saveModel](/transformers_saveModel/)
-[transformers_task_textClassification](/transformers_task_textClassification/)
-[transformers_task_tokenClassification](/transformers_task_tokenClassification/)
-[transformers_tokenizer](/transformers_tokenizer/)
+
+
+
+
+
+
 
 ## 工具
 1. 基础工具
@@ -51,7 +47,8 @@ toc: true
 
 [scipy_csr_matrix](/scipy_csr_matrix/)
 [pandas_pivot](/pandas_pivot/)
-
+[pandas_crosstab](/pandas_crosstab/)
+[pandas_apply](/pandas_apply/)
 
 2. **Pytorch**
 
@@ -68,6 +65,18 @@ toc: true
 ↑|[data](/basics_data_tutorial/)|[buildmodel](/basics_buildmodel_tutorial/)|[autogradqs](/basics_autogradqs_tutorial/)
 
 [补充](/补充/)
+
+2. **transformers**
+
+主题|一|二|三|四|五
+--|--|--|--|--|--
+**tutorial**|[course](/transformers_course/)|[pipeline](/transformers_pipeline/)|[fineTune](/transformers_fineTune/)|[task_textClassification](/transformers_task_textClassification/)|[task_tokenClassification](/transformers_task_tokenClassification/)
+**dataClean**|[datasets](/transformers_datasets/)|[datasets_load](/transformers_datasets_load/)|[datasets_process](/transformers_datasets_process/)|[datasets_features](/transformers_datasets_features/)
+**tokenizer**|[tokenizer_NLP](/transformers_tokenizer_NLP/)
+**model**|[model](/transformers_model/)|[postprocessing](/transformers_postprocessing/)|[optimization](/transformers_optimization/)|[evaluate](/transformers_evaluate/)|[bert](/transformers_bert/)
+**API**|[autoClasses](/transformers_autoClasses/)|[autoModel](/transformers_autoModel/)
+
+
 
 ## 应用
 主题|一|二|三|四|五
@@ -111,6 +120,8 @@ toc: true
 **尚未归类**|[python_typehint](/python_typehint/)|[python_thrift](/python_thrift/)
 
 [python_wheel](/python_wheel/)
+[python_test](/python_test/)
+[python_set](/python_set/)
 
 # flask
 主题|一|二|三|四|五
@@ -256,6 +267,9 @@ toc: true
 [eslint](/eslint/)
 [vite](/vite/)
 [npm](/npm/)
+
+
+[jupyter](/jupyter/)
 
 
 # 音乐

@@ -1,28 +1,13 @@
 
 
-# 下载数据
 
-1. 首先使用`load_dataset_builder`来获得数据集的描述信息, 比如`description`和`features`
-2. 使用`load_dataset`下载数据. 
-    - 如果不指定`split`参数, 则是获得`DatasetDict`对象, 包含了`train`,`validation`,`test`三组样本
-    - 如果指定`split`参数, 可以获得`Dataset`对象, 既`train`样本 或者`validation`或`test`
+transformers include two main data object: `Dictionary` and `Dataset`.
 
+# Dictionary
+[Dictionary](https://huggingface.co/docs/datasets/v2.3.2/en/package_reference/main_classes#datasets.DatasetDict) with split names as keys (‘train’, ‘test’ for example), and Dataset objects as values. 
 
+## get from hub
 ```python
-from datasets import load_dataset,load_dataset_builder
-
-ds_builder = load_dataset_builder("rotten_tomatoes")
-ds_builder.info.description
-"""
-Movie Review Dataset. This is a dataset of containing 5,331 positive and 5,331 negative processed sentences from... 
-"""
-ds_builder.info.features
-"""
-{'label': ClassLabel(num_classes=2, names=['neg', 'pos'], id=None),
- 'text': Value(dtype='string', id=None)}
-"""
-
-
 from datasets import load_dataset
 dataset_dict = load_dataset("rotten_tomatoes")
 """
@@ -49,9 +34,20 @@ Dataset({
 })
 """
 ```
+## get from Dataset
+```python
+dataset.train_test_split(test_size=0.2, stratify_by_column="label")
+```
 
 
-# 操作数据
+
+
+# Dataset
+The base class Dataset implements a Dataset backed by an Apache Arrow table.
+
+
+
+
 一个`Dataset`对象, 既可以看做是一个list, 也可以看做是dict
 
 ## list
@@ -101,7 +97,7 @@ with Timer():
 
 ```
 
-# process
+## tokenize
 
 ```python
 from transformers import AutoTokenizer
@@ -194,6 +190,7 @@ ds.format
 #  'output_all_columns': False,
 #  'type': 'tensorflow'}
 ```
+
 
 
 

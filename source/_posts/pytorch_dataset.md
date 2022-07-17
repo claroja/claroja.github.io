@@ -87,6 +87,7 @@ print(dataset.classes)  #根据分的文件夹的名字来确定的类别
 print(dataset.class_to_idx) #按顺序为这些类别定义索引为0,1...
 print(dataset.imgs) #返回从所有文件夹中得到的图片的路径以及其类别
 ```
+
 '''
 输出：
 ```python
