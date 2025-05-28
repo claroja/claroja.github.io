@@ -1,7 +1,5 @@
 # api
 
-
-
 在方法注释的`---`作为swagger的开端
 parameters(请求), 
 responses(返回设置)
@@ -28,6 +26,7 @@ array
 object
 
   - String类型
+  
   ```yml
   parameters:                      # 请求的参数
     - name: palette                # 请求参数的key
@@ -83,12 +82,6 @@ object
               name: wang
               size: 100
   ```
-
-
-
-
-
-
 
 
 ## 例子
@@ -197,5 +190,5 @@ app.run(debug=True)
 ```
 
 
-参考:
-https://github.com/flasgger/flasgger
+## 参考:
+1. https://github.com/flasgger/flasgger

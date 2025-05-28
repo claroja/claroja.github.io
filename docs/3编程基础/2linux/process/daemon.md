@@ -1,6 +1,6 @@
 # daemon
 
- I think one of the reasons why daemon threads are confusing to most people(atleast they were to me) is because of the Unix context to the word dameon.
+I think one of the reasons why daemon threads are confusing to most people(atleast they were to me) is because of the Unix context to the word dameon.
 
 In Unix terminology the word `daemon` refers to just a process in the background. If you want to start your program when the OS boots, on linux, you add your start command to `/etc/rc.d/rc.local` (run after all other scripts) or `/etc/startup.sh`
 
