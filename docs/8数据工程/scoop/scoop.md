@@ -4,8 +4,8 @@ Sqoop是Apache下的顶级项目，用来将Hadoop和关系型数据库中的数
 
 将导入或导出命令翻译成mapreduce程序来实现。
 
-![alt text](scoop.png)
 
+![alt text](scoop/scoop.png)
 
 
 
