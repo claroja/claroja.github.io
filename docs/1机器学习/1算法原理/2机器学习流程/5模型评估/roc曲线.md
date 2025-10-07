@@ -66,4 +66,4 @@ plt.show()
 - https://zhuanlan.zhihu.com/p/616190701
 - [ROC曲线与AUC值 - gatherstars - 博客园](https://www.cnblogs.com/gatherstars/p/6084696.html)
 - [Receiver Operating Characteristic (ROC) ‒ scikit-learn 0.24.2 documentation](https://scikit-learn.org/stable/auto_examples/model_selection/plot_roc.html)
-
+- [多分类问题预测模型的ROC做法及解释](https://zhuanlan.zhihu.com/p/16967464523)

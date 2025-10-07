@@ -69,6 +69,7 @@ for n_fold, valid_user in enumerate(user_set):
     
 score_df_ = pd.concat(score_list, axis=0)
 score_df = score_df.merge(score_df_, how='left', on=['user_id', 'click_article_id'])
+
 # 保存训练集交叉验证产生的新特征
 score_df[['user_id', 'click_article_id', 'pred_score', 'pred_rank', 'label']].to_csv(MIDPATH + 'trn_lgb_ranker_feats.csv', index=False)
     
