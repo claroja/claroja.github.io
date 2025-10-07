@@ -16,7 +16,7 @@ Oozie由Cloudera公司贡献给Apache的基于工作流引擎的开源框架,是
 
 请问, 大数据的工作流程是否可以使用工作流来解决呢? 完全可以的
 
-![alt text](大数据工作流.png)
+![alt text](oozie/大数据工作流.png)
 
 oozie本质是将工作流翻译为MR程序来运行
 
