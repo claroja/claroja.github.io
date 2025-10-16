@@ -4,14 +4,18 @@
 ## 最佳实践
 
 
-### 题目总结
+## 考察问
+
+
+
+### 考察点
 
 - 服务注册发现：`Nacos`
 - 服务远程调用：`OpenFeign`
 - 服务链路监控：`Sleuth`
+- 服务保护：`Sentinel`
 - 统一配置管理：`Nacos`
-- 统一网关路由：SpringCloudGateway、Zuul
-- 流控、降级、保护：`Sentinel`
+- 统一网关路由：`SpringCloudGateway`、
 
 
 
