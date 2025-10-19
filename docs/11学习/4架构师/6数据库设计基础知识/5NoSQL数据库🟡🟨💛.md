@@ -25,8 +25,6 @@ NoSQL 最常见的解释是 Non-Relational, Not  Only SQL 也被很多人接受�
 
     NoSQL 数据库没有标准的查询语言(SQL), 因此进行数据库查询需要指定数据模型。许多 NoSQL 数据库都有 REST 式的数据接口或者查询 API 。适合存储通过图进行建模的数据，例如社交网络数据，生物信息网络数据，交通网络数据等。常见的产品有 Neo4J、InfoGri d 、 Infinite Graph 等。
 
-
-
 ✨总结:
 
 |分类|典型应用场景|数据模型|优点|缺点|举例|
