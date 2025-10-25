@@ -23,7 +23,7 @@
 所以，将oss和cdn搭配起来是一种比较好的加速站点方式
 
 
-![alt text](OSS和CDN/OSS和CDN/OSS和CDN.png)
+![alt text](OSS和CDN/OSS和CDN.png)
 
 
 
