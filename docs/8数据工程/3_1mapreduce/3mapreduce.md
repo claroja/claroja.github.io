@@ -9,7 +9,7 @@ MapReduce是“分散->汇总”模式的分布式计算框架，可供开发人
 ## MapReduce执行原理
 
 
-![alt text](../2hadoop/mapreduce/mapreduce%E5%8E%9F%E7%90%86.png)
+![alt text](mapreduce%E5%8E%9F%E7%90%86.png)
 
 
 
