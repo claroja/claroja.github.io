@@ -20,13 +20,13 @@ Hadoop Distributed File System（Hadoop分布式文件系统）
 
 ## 数据存储原理
 
-![alt text](../2hadoop/hdfs/hdfs%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%861.png)
+![alt text](hdfs%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%861.png)
 
 
-![alt text](../2hadoop/hdfs/hdfs%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%862.png)
+![alt text](hdfs%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%862.png)
 
 
-![alt text](../2hadoop/hdfs/hdfs%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%863.png)
+![alt text](hdfs%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%863.png)
 
 
 
@@ -35,7 +35,7 @@ Hadoop Distributed File System（Hadoop分布式文件系统）
 ## 数据写入流程
 
 
-![alt text](../2hadoop/hdfs/%E6%95%B0%E6%8D%AE%E5%86%99%E5%85%A5%E6%B5%81%E7%A8%8B.png)
+![alt text](%E6%95%B0%E6%8D%AE%E5%86%99%E5%85%A5%E6%B5%81%E7%A8%8B.png)
 
 
 
@@ -55,7 +55,7 @@ Hadoop Distributed File System（Hadoop分布式文件系统）
 
 ## 数据读取流程
 
-![alt text](../2hadoop/hdfs/%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B.png)
+![alt text](%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E6%B5%81%E7%A8%8B.png)
 
 
 
