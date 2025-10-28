@@ -2,14 +2,12 @@
 
 ## 最佳实践
 
-
 ### 考察问
-
 
 - 点赞
 
     Set 类型可以保证一个用户只能点一个赞，这里举例一个场景，key是文章id，value是用户id。
-    `()`、`()`、`()`三个用户分别对`()`文章点赞了。
+    uid:1、uid:2、uid:3三个用户分别对article:1文章点赞了。
 
     1. 用户点赞
         - uid:1用户对文章article:1点赞: `()`
@@ -19,9 +17,6 @@
     3. 获取 article:1 文章所有点赞用户: `()`
     4. 获取 article:1 文章的点赞用户数量: `()`
     5. 判断用户 uid:1 是否对文章 article:1 点赞了: `()`
-
-
-
 
 - 共同关注
 
@@ -40,7 +35,6 @@
 
     4. 验证某个公众号是否同时被 uid:1 或 uid:2 关注：`()`
 
-
 - 抽奖活动
 
     存储某活动中中奖的用户名 ，Set 类型因为有去重功能，可以保证同一个用户不会中奖两次。
@@ -56,16 +50,12 @@
         2. 抽取2个二等奖: `()`
         3. 抽取3个三等奖: `()`
 
-
-
-
 ### 考察点
-
 
 - 点赞
 
     Set 类型可以保证一个用户只能点一个赞，这里举例一个场景，key是文章id，value是用户id。
-    `uid:1`、`uid:2`、`uid:3`三个用户分别对`article:1`文章点赞了。
+    uid:1、uid:2、uid:3三个用户分别对article:1文章点赞了。
 
     1. 用户点赞
         - uid:1用户对文章article:1点赞: `SADD article:1 uid:1`
@@ -75,9 +65,6 @@
     3. 获取 article:1 文章所有点赞用户: `SMEMBERS article:1`
     4. 获取 article:1 文章的点赞用户数量: `SCARD article:1`
     5. 判断用户 uid:1 是否对文章 article:1 点赞了: `SISMEMBER article:1 uid:1`
-
-
-
 
 - 共同关注
 
@@ -96,7 +83,6 @@
 
     4. 验证某个公众号是否同时被 uid:1 或 uid:2 关注：`SISMEMBER uid:1 5 \ SISMEMBER uid:2 5`
 
-
 - 抽奖活动
 
     存储某活动中中奖的用户名 ，Set 类型因为有去重功能，可以保证同一个用户不会中奖两次。
@@ -112,13 +98,9 @@
         2. 抽取2个二等奖: `SPOP lucky 2`
         3. 抽取3个三等奖: `SPOP lucky 3`
 
-
-
 ## 概念
 
-
 Set类型是一个`无序`并`唯一`的键值集合. 一个集合最多可以存储 2^32-1 个元素。Set 类型除了支持集合内的增删改查，同时还支持多个集合取交集、并集、差集。
-
 
 ## 原理
 
@@ -127,14 +109,13 @@ Set 类型的底层数据结构是由哈希表或整数集合实现的：
 - 如果集合中的元素都是整数且元素个数小于 512 （默认值，set-maxintset-entries 配置）个，Redis 会使用整数集合作为 Set 类型的底层数据结构；
 - 如果集合中的元素不满足上面条件，则 Redis 使用哈希表作为 Set 类型的底层数据结构。
 
-
 ## 常用命令
 
 - 基本运算
     - 添加元素: `SADD key member [member ...]`
     - 删除元素: `SREM key member [member ...]`
     - 获取所有元素: `SMEMBERS key`
-    - 获得元素个数: `SCARD key`
+    - 获得元素个数: `SCARD key` ✨cardinality, 基数, 集合的元素个数
     - 是否在集合中: `SISMEMBER key member`
     - 随机删除元素: `SPOP key [count]`
 - 集合运算
@@ -144,13 +125,9 @@ Set 类型的底层数据结构是由哈希表或整数集合实现的：
 
     ✨将结果保存在目标集合中: `[SINTER][SUNION][SDIFF]STORE destination key [key ...]`
 
-
-
 ## 常用场景
 
-
 集合的主要几个特性，无序、不可重复、支持并交差等操作。
-
 
 ### 点赞
 
@@ -165,9 +142,6 @@ Set 类型可以保证一个用户只能点一个赞，这里举例一个场景�
 3. 获取 article:1 文章所有点赞用户: `SMEMBERS article:1`
 4. 获取 article:1 文章的点赞用户数量: `SCARD article:1`
 5. 判断用户 uid:1 是否对文章 article:1 点赞了: `SISMEMBER article:1 uid:1`
-
-
-
 
 ### 共同关注
 
@@ -186,7 +160,6 @@ key 可以是用户 id，value 则是已关注的公众号的 id。
 
 4. 验证某个公众号是否同时被 uid:1 或 uid:2 关注：`SISMEMBER uid:1 5 \ SISMEMBER uid:2 5`
 
-
 ### 抽奖活动
 
 存储某活动中中奖的用户名 ，Set 类型因为有去重功能，可以保证同一个用户不会中奖两次。
@@ -202,6 +175,17 @@ key 可以是用户 id，value 则是已关注的公众号的 id。
     2. 抽取2个二等奖: `SPOP lucky 2`
     3. 抽取3个三等奖: `SPOP lucky 3`
 
+### 标签系统
+
+将标签与相关内容的 ID 存储在集合中，用于快速检索和过滤。
+
+
+```sh
+sadd post:1001:tags "redis" "database"
+sinter post:1001:tags post:1002:tags
+```
+
+
 ## 参考
 
-- https://cloud.tencent.com/developer/article/2320413
+- <https://cloud.tencent.com/developer/article/2320413>

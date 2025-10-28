@@ -10,7 +10,7 @@
 
 - 🌰百万级网页 UV 计数等；
 
-    1. 在统计 UV 时，你可以用 PFADD 命令（用于向 HyperLogLog 中添加新元素）把访问页面的每个用户都添加到 HyperLogLog 中。`()`
+    1. 在统计UV时，你可以用PFADD 命令（用于向 HyperLogLog 中添加新元素）把访问页面的每个用户都添加到 HyperLogLog 中。`()`
     2. 用 PFCOUNT 命令直接获得 page1 的 UV 值了，这个命令的作用就是返回 HyperLogLog 的统计结果。`()`
 
 

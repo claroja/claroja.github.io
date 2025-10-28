@@ -14,7 +14,6 @@
     2. 文章阅读量加1: `()`
     3. 获取对应文章的阅读量: `()`
 
-- 分布式系统session
 - 分布式锁
     - 加锁: `()`
     - 解锁:
@@ -25,7 +24,7 @@
 
 - 使用String来缓存对象:
     - json方法: `SET user:1 '{"name":"wang", "age":18}'`
-    - 拆分key方法: `SET user:1:name wang`
+    - 拆分key方法: `SET user:1:name wang; SET user:1:age 18`
 
 - 常规计数
 

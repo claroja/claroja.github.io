@@ -4,14 +4,9 @@
 
 本质上是利用二进制对ID进行哈希映射，最终得到0/1特征向量，且维数少于独热编码，节省存储空间。
 
-
-
 ## pandas
 
-
-
 ## [category_encoders](https://contrib.scikit-learn.org/category_encoders/index.html)
-
 
 ```python
 

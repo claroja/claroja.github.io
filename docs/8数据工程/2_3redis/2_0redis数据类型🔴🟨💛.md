@@ -1,13 +1,56 @@
 # Redis常见命令
 
+## 最佳实践
+
+
+### 考察点
+
+- Redis中key一般是`字符串`，而value包含很多不同的数据类型：
+
+    - `()`：`"hello world"`
+    - `()`：`[A, B, C, C]`
+    - `()`：`(A, B, C)`
+    - `()`：`(A: 1, B: 2, C: 3)`
+    - `()`：`{name: "Jack", age: 21}`
+    - `()`：`{A: (120.3, 30.5)}`
+    - `()`：`0110110101110101011`
+    - `()`：`0110110101110101011`
+- Redis通用命令
+
+    通用指令是都可以使用的指令，常见的有：
+
+    - `EXISTS`：判断key是否存在. 
+        `SET value NX`存在才创建
+    - `KEYS`：查看符合模板的所有key
+
+        `KEYS h?llo` -> `"hello, hallo`
+
+    - `DEL`：删除一个指定的key
+
+- 过期时间
+    - 设置过期时间:
+        - 设置KEY时使用参数设置: `SET key "value" EX "seconds"`
+        - 设置KEY后使用命令设置: `EXPIRE key "seconds"`
+    - 查看过期时间: `TTL key`
+    - 移除过期时间: `PERSIST key`
+
+- redis在内存不足时的解决策略✨`7`(两个维度组合)+`1`(默认不删)
+
+    - 维度1: 区分有过期时间的key: `volatile`和无过期时间的key: `allkeys`
+    - 维度2: 删除的策略
+        - `lru(Least Recently Used)`: 时间度量, 如果数据在最近一段时间内没有被访问，那么在将来也不太可能被访问。
+        - `lfu(Least Frequently Used)`: 频次度量, ：如果某个数据在最近一段时间内被访问次数很少，那么在将来也不太可能被频繁访问。
+        - `random`: 随机删除
+        - `ttl(Time To Live)`: 删除过期时间最早的, 这个维度只有有过期时间的key有, 无过期时间的自然没有ttl. 所以组合起来共有2*4-1=7个组合
+
 ## Redis数据类型
 
-Redis中key一般是字符串，而value包含很多不同的数据类型：
+Redis中key一般是`字符串`，而value包含很多不同的数据类型：
 
-- `String`：`hello world`
-- `List`：`[A -> B -> C -> C]`
-- `Set`：`{A, B, C}`
-- `SortedSet`：`{A: 1, B: 2, C: 3}`
+- `String`：`"hello world"`
+- `List`：`[A, B, C, C]`
+- `Set`：`(A, B, C)`
+- `SortedSet`：`(A: 1, B: 2, C: 3)`
 - `Hash`：`{name: "Jack", age: 21}`
 - `GEO`：`{A: (120.3, 30.5)}`
 - `BitMap`：`0110110101110101011`
@@ -18,8 +61,12 @@ Redis中key一般是字符串，而value包含很多不同的数据类型：
 
 通用指令是都可以使用的指令，常见的有：
 
-- `EXISTS`：判断key是否存在. ✨`SET value NX`存在才创建
+- `EXISTS`：判断key是否存在. 
+    `SET value NX`存在才创建
 - `KEYS`：查看符合模板的所有key
+
+    `KEYS h?llo` -> `"hello, hallo`
+
 - `DEL`：删除一个指定的key
 
 
@@ -69,7 +116,7 @@ Redis中key一般是字符串，而value包含很多不同的数据类型：
     - noeviction 不删除键，返回错误信息(redis默认选项)
 
     ✨策略是两个维度的组合
-    - 维度1: 区分有过期时间的key: `volatitle`和无过期时间的key: `allkeys`
+    - 维度1: 区分有过期时间的key: `volatile`和无过期时间的key: `allkeys`
     - 维度2: 删除的策略
         - lru(Least Recently Used): 时间度量, 如果数据在`最近`一段时间内`没有`被访问，那么在将来也不太可能被访问。
         - lfu(Least Frequently Used): 频次度量, ：如果某个数据在最近一段`时间`内被访问`次数`很少，那么在将来也不太可能被频繁访问。

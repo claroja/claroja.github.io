@@ -1,10 +1,6 @@
-
-
 # 顺序编码(LabelEncoder)
 
 对于特征, 有顺序无顺序都是进行LabelEncoder
-
-
 
 ## pandas
 
@@ -28,9 +24,7 @@ df['Grade'].map({'Low':0, 'Medium':1, 'High':2})
 
 ✨缺失值(missing)和未知值(unknown)被当成NaN对待
 
-
 ## [category_encoders](https://contrib.scikit-learn.org/category_encoders/index.html)
-
 
 ```python
 class category_encoders.ordinal.OrdinalEncoder(
@@ -67,22 +61,16 @@ ce.OrdinalEncoder(
 # 4   -1.0    e
 
 ```
+
 1. ✨handle_missing参数没有起作用
 2. ✨在mapping参数存在的情况下, 不需要传入cols
 
-
-
 ✨功能上是一致的, 区别在于:
+
 1. label encoder是给目标类别编码的, 所以输入的数据形状是一维的, (n_samples,)
 2. ordinal encoder是给特征类别编码的, 所以输入的数据形状是多维的, (n_samples, n_features)
 
-
-
-
-
-
-
-
 ## 参考
-1. https://datascience.stackexchange.com/questions/39317/difference-between-ordinalencoder-and-labelencoder
-2. https://www.cnblogs.com/dangui/p/15836197.html
+
+1. <https://datascience.stackexchange.com/questions/39317/difference-between-ordinalencoder-and-labelencoder>
+2. <https://www.cnblogs.com/dangui/p/15836197.html>

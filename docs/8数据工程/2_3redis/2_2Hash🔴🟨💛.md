@@ -2,13 +2,11 @@
 
 ## 最佳实践
 
-
-### 考察点
+### 考察问
 
 - 购物车
 
-
-    以用户 id 为 key，商品 id 为 field，商品数量为 value，恰好构成了购物车的3个要素，如下图所示。
+    以用户id为key，商品id为field，商品数量为value，恰好构成了购物车的3个要素，如下图所示。
 
     ![alt text](redis数据类型/hash_购物车.png)
 
@@ -21,6 +19,22 @@
     - 获取购物车所有商品：`()`
 
 
+
+### 考察点
+
+- 购物车
+
+    以用户id为key，商品id为field，商品数量为value，恰好构成了购物车的3个要素，如下图所示。
+
+    ![alt text](redis数据类型/hash_购物车.png)
+
+    涉及的命令如下：
+
+    - 添加商品：`HSET cart:{用户id} {商品id} 1`
+    - 添加数量：`HINCRBY cart:{用户id} {商品id} 1`
+    - 商品总数：`HLEN cart:{用户id}`
+    - 删除商品：`HDEL cart:{用户id} {商品id}`
+    - 获取购物车所有商品：`HGETALL cart:{用户id}`
 
 
 

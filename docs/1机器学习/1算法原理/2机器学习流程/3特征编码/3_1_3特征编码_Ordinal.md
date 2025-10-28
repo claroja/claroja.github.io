@@ -11,8 +11,6 @@
 1. 打比赛中, 测试集是批量给出的, 使用pandas的map方法更快
 2. 真实应用中, 用于生产是单条, 单条处理, 适用scikit进行单调转换(虽然也可以用map转换, 但是one-hot编码pandas对单条处理不友好, 为了和onehot保持一致, 所以建议使用scikit)
 
-
-
 ## OrdinalEncoder
 
 
