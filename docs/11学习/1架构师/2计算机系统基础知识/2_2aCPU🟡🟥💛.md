@@ -60,15 +60,14 @@
 
 ### 考察问
 
-- 指令集分类
-    - `()`以Intel、AMD的x86 CPU为代表💚
-    - `()`以ARM和Power为代表, 特点💚
-        - 指令: 数量`()`, 长度`()` ✨除了该条, 其他都是`()`💛
-        - 寄存器: 数量`()`💛
-        - 结果: 编程量`()`, 效率`()`❤️
+- 💚指令集分类
+    - `()`以Intel、AMD的x86 CPU为代表
+    - `()`以ARM和Power为代表, 特点
+        - 指令: 数量`()`, 长度`()` ✨除了该条, 其他都是`()`
+        - 寄存器: 数量`()`
+        - 结果: 编程量`()`, 效率`()`
 
-- 运算器和控制器的组件❤️
-
+- ❤️运算器和控制器的组件
     - CPU的两个组成部分是`()`和`()`
     - 运算器的组件包含哪些
         - 算术逻辑单元(Arithmetic Logic Unit, ALU)的作用: `()`
@@ -76,7 +75,7 @@
         - 数据缓冲寄存器(Data Register, DR)的作用: `()`
         - 状态条件寄存器(Program Status Word，PSW)的作用: `()`
 
-        ✨CPU内的计算存储, `()`, `()`; CPU到内存是`()`.
+        ✨`()`计算, `()`数据; CPU到内存是`()`.
 
     - 控制器的组件包含哪些
         - 指令寄存器(Instruction Register，IR)的作用: `()`指令
@@ -86,18 +85,16 @@
 
         ✨当前指令`()`, 下一条指令`()`, 要操作的数据`()`
 
-    ✨DR是`()`, AR是`()`
+- 💛专用目的处理器芯片
 
-- 专用目的处理器芯片
+    - 数字信号处理器(Digital Signal Processor, DSP)处理`()`
+    - 微处理器(Microprocessor Unit, MPU)类似`()`
+    - 片上系统(System on Chip, SOC)是`()`
+    - 微控制单元, 单片机(Microcontroller Unit，MCU)是`()`
 
-    - 数字信号处理器(Digital Signal Processor, DSP)处理`()`💚
-    - 微处理器(Microprocessor Unit, MPU)类似`()`❤️
-    - 片上系统(System on Chip, SOC)是`()`❤️
-    - 微控制单元, 单片机(Microcontroller Unit，MCU)是`()`❤️
+- 💚CPU的工作频率 (主频) = `()` x `()`
 
-- CPU的工作频率 (主频) = `()` x `()`💚
-
-- CPU结构适用场景(PC or 嵌入式)💚
+- 💚CPU结构适用场景(PC or 嵌入式)
     - 冯诺依曼, 常用于`()`
     - 哈佛结构, 常用于`()`
 
@@ -118,7 +115,7 @@
         - 数据缓冲寄存器(Data Register, DR)的作用: `数据缓冲, CPU和内存的桥梁`
         - 状态条件寄存器(Program Status Word，PSW)的作用: `进位标志`
 
-        ✨CPU内的计算存储, `ALU`, `AR`; CPU到内存是`DR`.
+        ✨`ALU`计算, `AC`数据; CPU到内存是`DR`.
 
     - 控制器的组件包含哪些
         - 指令寄存器(Instruction Register，IR)的作用: `当前`指令
@@ -128,7 +125,8 @@
 
         ✨当前指令`IR`, 下一条指令`PC`, 要操作的数据`AR`
 
-    ✨DR是`运算器`, AR是`寄存器`
+
+
 
 - 专用目的处理器芯片
 

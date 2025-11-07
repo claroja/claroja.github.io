@@ -2,11 +2,19 @@
 
 ## 最佳实践
 
+
+### 考察问
+
+- 论文
+
+- 💛面向服务架构设计(Service Oriented Architecture, SOA)定义: 将应用`()`拆分成不同`()`, 通过这些服务之间定义良好的`()`联系起来。
+
+
 ### 考察点
 
 - 论文
 
-- 面向服务架构设计(Service Oriented Architecture, SOA)定义: SOA(Service Oriented Architecture): 将应用`程序`拆分成不同`服务`, 通过这些服务之间定义良好的`接口`联系起来。
+- 💛面向服务架构设计(Service Oriented Architecture, SOA)定义: 将应用`程序`拆分成不同`服务`, 通过这些服务之间定义良好的`接口`联系起来。
 
 🔒问答题
 

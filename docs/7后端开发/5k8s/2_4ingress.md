@@ -1,5 +1,5 @@
 
-## Ingress介绍
+# Ingress介绍
 
 ​在前面课程中已经提到，Service对集群之外暴露服务的主要方式有两种：NotePort和LoadBalancer，但是这两种方式，都有一定的缺点：
 
@@ -7,8 +7,6 @@
 - LB方式的缺点是每个service需要一个LB，浪费、麻烦，并且需要kubernetes之外设备的支持
 
 ​基于这种现状，kubernetes提供了Ingress资源对象，Ingress只需要一个NodePort或者一个LB就可以满足暴露多个Service的需求。工作机制大致如下图表示：
-
-
 
 ![alt text](ingress/ingress.png)
 
@@ -26,14 +24,7 @@ Ingress（以Nginx为例）的工作原理如下：
 
 ![alt text](ingress/ingress工作原理.png)
 
-
 具体使用：
+
 1. http代理
 2. https代理
-
-
-
-
-
-
-

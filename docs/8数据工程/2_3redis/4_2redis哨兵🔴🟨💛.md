@@ -4,16 +4,16 @@
 
 ### 考察问
 
-- 哨兵的作用如下：
+- 💛哨兵的作用如下：
 
     - `()`：Sentinel 会不断检查您的master和slave是否按预期工作
-    - `()`：如果master故障，Sentinel会将一个slave提升为master。当故障实例恢复后也以新的master为主
     - `()`：Sentinel充当Redis客户端的服务发现来源，当集群发生故障转移时，会将最新信息推送给Redis的客户端
+    - `()`：如果master故障，Sentinel会将一个slave提升为master。当故障实例恢复后也以新的master为主
 
     ![alt text](redis哨兵/redis哨兵结构_评估.png)
 
 
-- 集群监控原理
+- 💚集群监控原理
 
     Sentinel基于`()`机制监测服务状态，每隔1秒向集群的每个实例发送ping命令：
 
@@ -30,8 +30,8 @@
 - 哨兵的作用如下：
 
     - `监控`：Sentinel 会不断检查您的master和slave是否按预期工作
-    - `故障恢复`：如果master故障，Sentinel会将一个slave提升为master。当故障实例恢复后也以新的master为主
     - `通知`：Sentinel充当Redis客户端的服务发现来源，当集群发生故障转移时，会将最新信息推送给Redis的客户端
+    - `故障恢复`：如果master故障，Sentinel会将一个slave提升为master。当故障实例恢复后也以新的master为主
 
     ![alt text](redis哨兵/redis哨兵结构.png)
 
