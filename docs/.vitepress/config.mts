@@ -18,5 +18,9 @@ export default defineConfig({
     },
     markdown: {
         math: true
-    }
+    },
+    footer: false,
+    prev: false,
+    next: false
+
 })
