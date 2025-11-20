@@ -1,7 +1,11 @@
 # 虚拟环境
 
+相当于安装了一个新的python环境
+
 ## 创建虚拟环境
-`python3 -m venv PATH`创建虚拟环境相当于安装了一个新的python环境, 目录如下:
+创建虚拟环境: `python3 -m venv PATH`, PATH即Python环境的文件夹(工程目录的下一级), 文件夹的内容如下:
+
+
 
 - `Include/  `
 - `Lib/` 虚拟环境的第三方包 
