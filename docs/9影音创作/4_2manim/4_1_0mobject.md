@@ -26,6 +26,7 @@
     - `set_z(z, direction=array([0., 0., 0.]))`: 设置Mobject中心的z坐标值
     - `set_z_index(z_index_value, family=True)`: 设置Mobject的z轴层级（控制渲染顺序，值越大越靠上）
     - `set_z_index_by_z_Point3D()`: 根据Mobject的z坐标自动设置z轴层级，z值越大层级越高，确保3D场景中渲染顺序正确
+
 - 变换
     
     - `rotate(angle, axis=array([0., 0., 1.]), about_point=None, **kwargs)`: 旋转Mobject
@@ -100,7 +101,6 @@
     - `match_x(mobject, direction=array([0., 0., 0.]))`: 匹配目标对象的x坐标，使当前Mobject在x轴的位置与mobject一致
     - `match_y(mobject, direction=array([0., 0., 0.]))`: 匹配目标对象的y坐标，使当前Mobject在y轴的位置与mobject一致
     - `match_z(mobject, direction=array([0., 0., 0.]))`: 匹配目标对象的z坐标，使当前Mobject在z轴的位置与mobject一致
-
 
 - 更新器
 

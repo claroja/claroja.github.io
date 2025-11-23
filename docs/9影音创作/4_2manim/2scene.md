@@ -1,7 +1,5 @@
 # scene
 
-
-
 - moving_camera_scene：摄像机可自由移动的场景（支持镜头平移、跟随动画对象等操作）
 - section：分段视频API的基础构建模块（用于拆分视频流程、实现模块化动画）
 - scene：动画的基础画布（所有几何对象、动画效果的承载容器）
@@ -10,9 +8,7 @@
 - vector_space_scene：适用于向量空间的场景（优化向量、坐标、图表等元素的展示效果）
 - zoomed_scene：支持对指定区域放大的场景（可聚焦局部细节，实现缩放动画）
 
-
 ## [MovingCameraScene](https://docs.manim.community/en/stable/reference/manim.scene.moving_camera_scene.html)
-
 
 ```python
 from manim import *
@@ -25,14 +21,12 @@ class MovingAndZoomingCamera(MovingCameraScene):
         self.play(self.camera.frame.animate.move_to(s).set(width=s.width*2))
         self.wait(0.3)
         self.play(self.camera.frame.animate.move_to(t).set(width=t.width*2))
-
         self.play(self.camera.frame.animate.move_to(ORIGIN).set(width=14))
 ```
 
 ## [Section](https://docs.manim.community/en/stable/reference/manim.scene.section.Section.html)
 
 每个Scene可以被分解为多个Section
-
 
 ```python
 def construct(self):
@@ -45,25 +39,15 @@ def construct(self):
     self.next_section("this is a section without any animations, it will be removed")
 ```
 
-
-
 ## [Scene](https://docs.manim.community/en/stable/reference/manim.scene.scene.Scene.html)
 
 Scene是画布(canvas). 包含了`frame`,`mobject`,`cameras`等一系列的对象.
 
 - 用户通过重写`Scene.construct()`来控制画布.
-- 通过`Scene.add()`添加Mobject, 通过`Scene.remove()`删除Mobject. 画布上所有的Mobject会保存在`Scene.mobjects`. 
+- 通过`Scene.add()`添加Mobject, 通过`Scene.remove()`删除Mobject. 画布上所有的Mobject会保存在`Scene.mobjects`.
 - 通过`Scene.play()`开始动画.
 
-
 `class Scene(renderer=None, camera_class=<class 'manim.camera.camera.Camera'>, always_update_mobjects=False, random_seed=None, skip_animations=False)`
-
-
-
-
-
-
-
 
 ### 属性
 
@@ -82,14 +66,11 @@ play|表演动画
 remove|移除对象
 wait|等待
 
-
-
-
 - `add(*mobjects)`: 添加mobject
 - `add_foreground_mobject(mobject)`
 - `add_foreground_mobjects(*mobjects)`
 - `add_sound(sound_file, time_offset=0, gain=None, **kwargs)`: 添加声音
-- `add_subcaption(content, duration=1, offset=0)`: 
+- `add_subcaption(content, duration=1, offset=0)`:
 - `add_updater(func)`
 - `begin_animations()`
 - `bring_to_back(*mobjects)`: 移动mobject到后台
@@ -126,37 +107,26 @@ wait|等待
 - `wait(duration=1.0, stop_condition=None, frozen_frame=None)`
 - `wait_until(stop_condition, max_time=60)`
 
-
-
 ## SceneFileWriter
 
 将动画写入视频文件, 用户基本不会用到.
-
 
 ## ThreeDScene
 
 3D
 
-## vector_space_scene 
+## vector_space_scene
 
 - [LinearTransformationScene](https://docs.manim.community/en/stable/reference/manim.scene.vector_space_scene.LinearTransformationScene.html)
 
     为线性变换专门定制
 
-
-
-
 - [VectorScene](https://docs.manim.community/en/stable/reference/manim.scene.vector_space_scene.VectorScene.html)
-
 
 ## [ZoomedScene](https://docs.manim.community/en/stable/reference/manim.scene.zoomed_scene.html)
 
 可以在局部放大
 
+## 参考
 
-
-
-
-## 参考:
-
-- https://docs.manim.community/en/stable/reference_index/scenes.html
+- <https://docs.manim.community/en/stable/reference_index/scenes.html>

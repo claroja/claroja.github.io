@@ -8,81 +8,120 @@
 
 ## 最佳实践
 
-常用的一些配置项
-```python
-
-from manim import *
-
-## 背景设置
-config.background_color  # black
-config.background_opacity  # 1.0
-
-## 画布的大小
-
-### 像素
-config.pixel_height  # 1080
-config.pixel_width  # 1920
-config.frame_size  # 1920, 1080
-### 坐标系
-config.frame_height  # 8
-config.frame_width  # 14.22
-config.frame_x_radius  # 4
-config.frame_y_radius  # 7.11
-config.bottom # array([ 0., -4.,  0.])
-config.left_side  # array([-7.11, 0., 0.])
-config.right_side  # array([-7.11, 0., 0.])
-config.top  # array([0., 4., 0.])
-### 输出配置
-config.assets_dir  # './'
-config.media_dir  # './media'
-config.images_dir  # '{media_dir}/images/{module_name}'
-config.log_dir  # '{media_dir}/logs'
-config.partial_movie_dir  # '{video_dir}/partial_movie_files/{scene_name}'
-config.sections_dir  # '{video_dir}/sections'
-config.tex_dir  # '{media_dir}/Tex'
-config.text_dir  # '{media_dir}/texts'
-config.video_dir  # '{media_dir}/videos/{module_name}/{quality}'
-```
 
 
-## utils
 
-- [ManimConfig](https://docs.manim.community/en/stable/reference/manim._config.utils.ManimConfig.html)
+## [ManimConfig](https://docs.manim.community/en/stable/reference/manim._config.utils.ManimConfig.html)
 
-    字典结构保存所有配置. 全局的`config`对象就是这个类的实例. 可以通过以下方式配置, 有顺序的配置:
+
+
+字典结构保存所有配置. 全局的`config`对象就是这个类的实例. 可以通过以下方式配置, 有顺序的配置:
+
+1. 配置文件, `manim.cfg`
+
+    ```markdown
+    [CLI]
+    background_color = WHITE
+    ```
+
+2. 命令行参数, 
+
+    `manim scene.py -c BLUE`
+
+3. 代码
+
+    ```python
+    from manim import config
+
+    config.background_color = RED
+    ```
+
+
+## 常用参数以及默认值
+
+打印`config`得来
+
+
+- 背景类
+
+    - background_opacity: `1.0`
+    - background_color: `#000000`
+
+- 画布
+    - frame_height: `8.0`
+    - frame_rate: `60.0`
+    - frame_width: `14.222222222222221`
+    - frame_x_radius: `None`
+    - frame_y_radius: `None`
+    - pixel_height: `1080`
+    - pixel_width: `1920`
+
+- 路径设置
     
-    1. 配置文件, `manim.cfg`
+    - assets_dir: `./`
+    - images_dir: `{media_dir}/images/{module_name}`
+    - log_dir: `{media_dir}/logs`
+    - media_dir: `./media`
+    - partial_movie_dir: `{video_dir}/partial_movie_files/{scene_name}`
+    - sections_dir: `{video_dir}/sections`
+    - tex_dir: `{media_dir}/Tex`
+    - text_dir: `{media_dir}/texts`
+    - video_dir: `{media_dir}/videos/{module_name}/{quality}`
 
-        ```markdown
-        [CLI]
-        background_color = WHITE
-        ```
+- 其他
 
-    2. 命令行参数, 
+    - movie_file_extension: `.mp4`
+    - custom_folders: `False`
+    - disable_caching: `False`
+    - disable_caching_warning: `False`
+    - dry_run: `None`
+    - enable_gui: `False`
+    - enable_wireframe: `False`
+    - ffmpeg_loglevel: `ERROR`
+    - flush_cache: `False`
+    - force_window: `False`
+    - format: `None`
+    - from_animation_number: `0`
+    - fullscreen: `False`
+    - gui_location: `(0, 0)`
+    - input_file: `` (空字符串)
+    - log_to_file: `False`
+    - max_files_cached: `100`
+    - media_embed: `False`
+    - media_width: `60%`
+    - no_latex_cleanup: `False`
+    - notify_outdated_version: `True`
+    - output_file: `` (空字符串)
+    - plugins: `[]`
+    - preview: `False`
+    - preview_command: `None`
+    - progress_bar: `display`
+    - quality: `None`
+    - renderer: `RendererType.CAIRO`
+    - save_as_gif: `False`
+    - save_last_frame: `False`
+    - save_pngs: `False`
+    - save_sections: `False`
+    - scene_names: `None`
+    - show_in_file_browser: `False`
+    - tex_template: `None`
+    - tex_template_file: `None`
+    - upto_animation_number: `inf`
+    - use_projection_fill_shaders: `False`
+    - use_projection_stroke_shaders: `False`
+    - verbosity: `INFO`
+    - window_monitor: `0`
+    - window_position: `UR`
+    - window_size: `default`
+    - write_all: `False`
+    - write_to_movie: `True`
+    - zero_pad: `4`
 
-        `manim scene.py -c BLUE`
-
-    3. 代码
-
-        ```python
-        from manim import *
-
-        config.background_color = RED
-        ```
-
-## 配置对象
-方法
-
-- copy：深度复制当前 ManimConfig 的全部内容（复制后修改不影响原配置）
-- digest_args：处理命令行参数（CLI）中包含的配置选项
-- digest_file：处理 .cfg 配置文件中包含的配置选项
-- digest_parser：处理 ConfigParser 对象中包含的配置选项
-- get_dir：解析存储目录路径的配置选项（返回规范后的目录路径）
-- resolve_movie_file_extension：解析视频文件的扩展名（适配不同输出格式需求）
-- update：处理另一个 ManimConfig 对象或字典中包含的配置选项（合并更新当前配置）
 
 
-属性
+## [API文档提供的配置参数](https://docs.manim.community/en/stable/reference/manim._config.utils.ManimConfig.html)
+
+API提供了更多的配置参数, 比`config`对象打印的还要多
 
 - aspect_ratio：像素层面的宽高比（width/height），对应命令行参数 --resolution、-r
 - assets_dir：视频资源查找目录（无命令行标识）

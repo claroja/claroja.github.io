@@ -96,7 +96,7 @@
 - Swap：交换两个对象（Mobjects）的位置或状态
 - Transform：将一个对象（Mobject）变换为目标对象（核心变换类动画）
 
-
+    ![Alt text](animation/Transform.gif)
 
 - TransformAnimations：变换类动画的集合/抽象类（用于管理多个变换动画）
-- TransformFromCopy：以反向变换的方式执行——保留原对象，复制一份并变换为目标对象（与普通 Transform 不同，原对象不消失）
+- TransformFromCopy：以反向变换的方式执行——保留原对象，复制一份并变换为目标对象（与普通 Transform不同，原对象不消失）
