@@ -2,6 +2,10 @@
 
 
 
+
+
+## API
+
 - camera：将场景（Scene）中包含的对象（mobjects）转换为像素数组的相机
 
     - BackgroundColoredVMobjectDisplayer：辅助类，用于处理带有设定背景图像的矢量化对象（vectorized mobjects）的显示
