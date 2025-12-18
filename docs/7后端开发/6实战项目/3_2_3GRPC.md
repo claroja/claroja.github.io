@@ -1,26 +1,23 @@
 # grpc
 
+## GPRC简介
 
-
-#### 3.1 GPRC简介
-
-gRPC 是Google开源的高性能、通用的RPC框架。客户端与服务端约定接口调用， 可以在各种环境中运行，具有跨语言特性， 适合构建分布式、微服务应用。
+gRPC是Google开源的高性能、通用的RPC框架。客户端与服务端约定接口调用，可以在各种环境中运行，具有跨语言特性，适合构建分布式、微服务应用。
 
 ![alt text](金融项目/grpc_server.png)
 
-#### 3.2 GPRC特性
+## GPRC特性
 
 - 性能优异：
-
     1. 采用Proto Buffer作序列化传输， 对比JSON与XML有数倍提升。
-    2. 采用HTTP2协议， 头部信息压缩， 对连接进行复用， 减少TCP连接次数。
-    3. gRPC底层采用Netty作为NIO处理框架， 提升性能。
-- 多语言支持，多客户端接入， 支持C++/GO/Ruby等语言。
+    2. 采用HTTP2协议，头部信息压缩，对连接进行复用，减少TCP连接次数。
+    3. gRPC底层采用Netty作为NIO处理框架，提升性能。
+- 多语言支持，多客户端接入，支持C++/GO/Ruby等语言。
 - 支持负载均衡、跟踪、健康检查和认证。
 
-#### 3.3 GPRC线程模型
+## GPRC线程模型
 
-gRPC 的线程模型遵循 Netty 的线程分工原则，协议层消息的接收和编解码由 Netty 的 I/O(NioEventLoop) 线程负责, 应用层的处理由应用线程负责，防止由于应用处理耗时而阻塞 Netty 的 I/O 线程。
+gRPC的线程模型遵循Netty的线程分工原则，协议层消息的接收和编解码由Netty的I/O(NioEventLoop)线程负责, 应用层的处理由应用线程负责，防止由于应用处理耗时而阻塞Netty的I/O线程。
 
 ![grpc_thread_model](金融项目/grpc_thread_model.png)
 
@@ -35,7 +32,7 @@ NIO 线程模型(Reactor模式):
 ![img](金融项目/grpc-03-04-1576986296675.png)
 
 
-#### 3.4 客户端调用流程
+## 客户端调用流程
 
 ![grpc_client_flow](金融项目/grpc_client_flow.png)
 
@@ -47,40 +44,10 @@ NIO 线程模型(Reactor模式):
 6. 回调 GrpcFuture 的 set(Response) 方法，唤醒阻塞的客户端调用线程，获取 RPC 响应数据。
 
 
-#### 3.5 GRpc vs Rest 性能对比
+## GRpc vs Rest 性能对比
 
 实测结果显示GRpc的通讯方案, 性能有32%的提升, 资源占用降低30%左右。
 
-
-
-
-#### 3.6 服务设计
+## 服务设计
 
 ![grpc_server_design](金融项目/grpc_server_design.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
