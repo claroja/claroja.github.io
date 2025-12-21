@@ -76,9 +76,9 @@ AT 模式基于 支持本地 ACID 事务 的 关系型数据库：
 - 二阶段 rollback 行为：调用 自定义 的 rollback 逻辑。
 所谓 TCC 模式，是指支持把 自定义 的分支事务纳入到全局事务的管理中。
 
-![alt text](分布式事务/Seata_TCC.png)
+![alt text](Seata/Seata_TCC.png)
 
-![alt text](分布式事务/Seata_TCC3.png)
+![alt text](Seata/Seata_TCC3.png)
 
 
 ## 优缺点

@@ -77,7 +77,7 @@ Saga其核心思想是将长事务拆分为多个本地短事务并依次正常�
     - 成功则什么都不做；
     - 失败则通过`编写补偿业务`来回滚
 
-![alt text](分布式事务/Seata_Saga.png)
+![alt text](Seata/Seata_Saga.png)
 
 ## 优缺点
 
