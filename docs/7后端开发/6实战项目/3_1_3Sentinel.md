@@ -52,3 +52,91 @@
 ## 限流演示
 
 流量控制（flow control），其原理是监控应用流量的 QPS 或并发线程数等指标，当达到指定的阈值时对流量进行控制，以避免被瞬时的流量高峰冲垮，从而保障应用的高可用性。
+
+
+
+## 生产环境最优配置方案
+
+配置模式选择：
+
+|推送模式|说明|优点|缺点|
+|--|--|--|--|
+|[原始模式](https://github.com/alibaba/Sentinel/wiki/在生产环境中使用-Sentinel#原始模式)|API将规则推送至客户端并直接更新到内存中，扩展写数据源（[`WritableDataSource`](https://github.com/alibaba/Sentinel/wiki/动态规则扩展)）|简单，无任何依赖|不保证一致性；规则保存在内存中，重启即消失。严重不建议用于生产环境|
+|[Pull模式](https://github.com/alibaba/Sentinel/wiki/在生产环境中使用-Sentinel#Pull模式)|扩展写数据源（[`WritableDataSource`](https://github.com/alibaba/Sentinel/wiki/动态规则扩展)），客户端主动向某个规则管理中心定期轮询拉取规则，这个规则中心可以是RDBMS、文件等|简单，无任何依赖；规则持久化|不保证一致性；实时性不保证，拉取过于频繁也可能会有性能问题。|
+|Push模式|扩展读数据源（[`ReadableDataSource`](https://github.com/alibaba/Sentinel/wiki/动态规则扩展)），规则中心统一推送，客户端通过注册监听器的方式时刻监听变化，比如使用Nacos、Zookeeper等配置中心。这种方式有更好的实时性和一致性保证。生产环境下一般采用push模式的数据源。|规则持久化；一致性；快速|引入第三方依赖|
+
+
+1. 原始模式
+
+   ![1563869745028](金融项目/1563869745028.png)
+
+2. Pull拉取模式
+
+   ![1563869917856](金融项目/1563869917856.png)
+
+3. Push推送模式
+
+   ![1563869960784](金融项目/1563869960784.png)
+
+官方建议采用Push模式。
+
+## 用户服务集成
+
+![1563872639386](金融项目/1563872639386.png)
+我们把上一章完成的用户接口进行改造， 加入降级与限流处理。
+
+整个部署结构采用PUSH模式， 配置规则放置Nacos配置中心，统一发布与更新。
+
+在生产环境中， 如果在峰值时间段， 出现大量用户请求或者内部系统出现问题， 这个时候就有必要进行限流和降级处理， 防止穿透、雪崩导致整个服务瘫痪。
+
+
+## 熔断规则配置
+
+启动Nacos服务， 在配置管理里面新建两项配置： 
+
+
+sentinel-user-degrade为降级配置策略， 内容：
+
+```json
+[
+  {
+    "resource": "userLogin",
+    "count": 0.2,
+    "grade": 1,    
+    "timeWindow": 4
+  }
+]
+```
+
+- resource:  为资源名称。
+- count: 为百分比[0-1]， 这里代表20%
+- grade:  为降级策略， 0： 代表响应时间， 1： 代表异常比例， 2： 代表异常数量， 这里采用的是异常比。
+- timeWindow：为时间窗， 单位为秒。 
+
+
+sentinel-user-flow为限流配置策略： 内容：
+
+```json
+[
+   {
+    "resource": "userLogin",
+    "controlBehavior": 0,
+    "count": 12,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  }
+]
+```
+
+- resource:  为资源名称。
+- controlBehavior：流量整形的控制效果，目前支持快速失败和匀速排队两种模式，默认是0, 快速失败。
+- count: 线程数量。
+- grade：限流配置策略， 0：代表线程数量， 1：代表QPS并发数。
+- limitApp： 限流针对的来源， 填写default即可。
+- strategy： 基于调用关系的流量控制策略， 有三种
+    - 0-STRATEGY_DIRECT，根据调用方进行限流， 结合limitApp使用。
+    - 1-STRATEGY_RELATE， 根据关联流量限流， 当多个资源间具有资源争抢和关联关系的时候，比如同一个数据表的读与写请求， 如果写操作比较频繁， 那么读数据的请求就会被限流处理。
+    - 2-STRATEGY_CHAIN,   根据调用链的入口限流， 比如两个请求Req1和Req2,  同时再配合设置FlowRule.refResource 指定Req1为入口请求， 那么Req1就会受到限流控制， Req2则可放行。
+
+注意配置内容的JSON格式要符合要求， 如果填写错误， 配置不会生效。
